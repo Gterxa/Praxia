@@ -1,0 +1,284 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Seccion from '../components/Seccion.astro';
+import Icon from '../components/Icon.astro';
+import ListaCheck from '../components/ListaCheck.astro';
+import { MENSAJES_WHATSAPP, whatsappLink } from '../consts';
+
+// Endpoint del servicio de formularios. Ver .env.example y el README.
+const endpoint = import.meta.env['PUBLIC_FORM_ENDPOINT'] ?? '';
+const accessKey = import.meta.env['PUBLIC_FORM_ACCESS_KEY'] ?? '';
+
+const queObtienes = [
+  'Una respuesta clara sobre qué se puede hacer con la tecnología de hoy',
+  'El camino recomendado, aunque no sea el que tenías en mente',
+  'Qué haría falta de tu lado y cuánto tomaría',
+  'Por dónde conviene empezar si hay más de una cosa que automatizar',
+];
+---
+
+<Layout
+  titulo="Agenda tu diagnóstico"
+  descripcion="Conversemos 45 minutos. Nos cuentas qué te gustaría automatizar y sales con una respuesta clara: qué se puede hacer, cómo y por dónde empezar."
+  mensajeWhatsApp={MENSAJES_WHATSAPP.diagnostico}
+>
+  <Seccion>
+    <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+      <div>
+        <p class="antetitulo">Diagnóstico</p>
+        <h1 class="mt-4">Conversemos 45 minutos.</h1>
+        <p class="lead mt-7">
+          Nos cuentas qué te gustaría automatizar y salimos de la conversación con una respuesta
+          clara: qué se puede hacer, cómo lo haríamos y por dónde conviene empezar.
+        </p>
+
+        <div class="mt-10 rounded-praxia border border-gris-200 bg-blanco p-6">
+          <h2 class="text-[1.125rem] md:text-[1.25rem]">Qué pasa después</h2>
+          <p class="mt-3 text-gris-600">
+            Te escribimos por WhatsApp en menos de 24 horas para coordinar el horario.
+          </p>
+        </div>
+
+        <h2 class="mt-12 text-[1.25rem] md:text-[1.5rem]">Con qué te quedas</h2>
+        <ListaCheck items={queObtienes} class="mt-6" />
+
+        <div class="mt-12 border-t border-gris-200 pt-8">
+          <p class="text-gris-600">
+            ¿Prefieres no llenar formularios? Escríbenos directo. Es el mismo camino y suele ser
+            más rápido.
+          </p>
+          <a
+            href={whatsappLink(MENSAJES_WHATSAPP.diagnostico)}
+            target="_blank"
+            rel="noopener"
+            class="boton boton-primario mt-5"
+          >
+            <Icon nombre="whatsapp" tamano={20} />
+            Escríbenos por WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="rounded-praxia border border-gris-200 bg-blanco p-6 md:p-8">
+          <h2 class="text-[1.25rem] md:text-[1.5rem]">Déjanos tus datos</h2>
+          <p class="pequeno mt-2 text-gris-600">Cuatro campos. Nada más.</p>
+
+          <form
+            id="form-diagnostico"
+            class="mt-7 space-y-5"
+            method="post"
+            action={endpoint || undefined}
+            data-endpoint={endpoint}
+            novalidate
+          >
+            {accessKey && <input type="hidden" name="access_key" value={accessKey} />}
+            <input type="hidden" name="origen" value="web-diagnostico" />
+            <input
+              type="text"
+              name="empresa_web"
+              tabindex="-1"
+              autocomplete="off"
+              class="hidden"
+              aria-hidden="true"
+            />
+
+            <div>
+              <label for="nombre" class="block font-medium">Tu nombre</label>
+              <input
+                id="nombre"
+                name="nombre"
+                type="text"
+                required
+                autocomplete="name"
+                class="mt-2 w-full rounded-praxia border border-gris-200 bg-hueso px-4 py-3 text-tinta placeholder:text-gris-600/70"
+                placeholder="Como te llaman en el negocio"
+              />
+              <p class="pequeno mt-1.5 hidden text-arcilla-800" data-error-de="nombre"></p>
+            </div>
+
+            <div>
+              <label for="whatsapp" class="block font-medium">Tu WhatsApp</label>
+              <input
+                id="whatsapp"
+                name="whatsapp"
+                type="tel"
+                required
+                inputmode="tel"
+                autocomplete="tel"
+                class="mt-2 w-full rounded-praxia border border-gris-200 bg-hueso px-4 py-3 text-tinta placeholder:text-gris-600/70"
+                placeholder="9XX XXX XXX"
+              />
+              <p class="pequeno mt-1.5 hidden text-arcilla-800" data-error-de="whatsapp"></p>
+            </div>
+
+            <div>
+              <label for="rubro" class="block font-medium">Tu rubro</label>
+              <input
+                id="rubro"
+                name="rubro"
+                type="text"
+                required
+                class="mt-2 w-full rounded-praxia border border-gris-200 bg-hueso px-4 py-3 text-tinta placeholder:text-gris-600/70"
+                placeholder="Veterinaria, grifo, contabilidad, ferretería…"
+              />
+              <p class="pequeno mt-1.5 hidden text-arcilla-800" data-error-de="rubro"></p>
+            </div>
+
+            <div>
+              <label for="idea" class="block font-medium">¿Qué te gustaría automatizar?</label>
+              <textarea
+                id="idea"
+                name="idea"
+                rows="4"
+                required
+                class="mt-2 w-full rounded-praxia border border-gris-200 bg-hueso px-4 py-3 text-tinta placeholder:text-gris-600/70"
+                placeholder="Cuéntanoslo en tus palabras. No necesitas saber cómo se hace."></textarea>
+              <p class="pequeno mt-1.5 hidden text-arcilla-800" data-error-de="idea"></p>
+            </div>
+
+            <button type="submit" class="boton boton-primario w-full" data-boton-enviar>
+              Enviar y coordinar el horario
+            </button>
+
+            <p class="pequeno text-gris-600">
+              Usamos tus datos solo para contactarte por este diagnóstico. Lee la{' '}
+              <a href="/privacidad" class="enlace">política de privacidad</a>.
+            </p>
+          </form>
+
+          <div
+            id="form-exito"
+            class="hidden rounded-praxia border border-verde/40 bg-verde/5 p-6"
+            role="status"
+          >
+            <h2 class="text-[1.25rem] text-verde">Listo, recibimos tu mensaje.</h2>
+            <p class="mt-3 text-gris-600">
+              Te escribimos por WhatsApp en menos de 24 horas para coordinar el horario. Si
+              prefieres adelantarlo, escríbenos tú.
+            </p>
+            <a
+              href={whatsappLink(MENSAJES_WHATSAPP.diagnostico)}
+              target="_blank"
+              rel="noopener"
+              class="boton boton-primario mt-5">Abrir WhatsApp</a
+            >
+          </div>
+
+          <div
+            id="form-error"
+            class="mt-5 hidden rounded-praxia border border-arcilla/50 bg-arcilla-50 p-5"
+            role="alert"
+          >
+            <p class="text-tinta">
+              No pudimos enviar el formulario desde aquí. Escríbenos por WhatsApp y lo resolvemos en el momento.
+            </p>
+            <a
+              href={whatsappLink(MENSAJES_WHATSAPP.diagnostico)}
+              target="_blank"
+              rel="noopener"
+              class="enlace mt-3 inline-block">Escribir por WhatsApp</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </Seccion>
+</Layout>
+
+<script>
+  const form = document.getElementById('form-diagnostico') as HTMLFormElement | null;
+  const exito = document.getElementById('form-exito');
+  const error = document.getElementById('form-error');
+
+  const MENSAJES: Record<string, string> = {
+    nombre: 'Escribe tu nombre para saber cómo llamarte.',
+    whatsapp: 'Necesitamos un número de WhatsApp de 9 dígitos.',
+    rubro: 'Cuéntanos a qué se dedica tu negocio.',
+    idea: 'Escríbenos aunque sea una línea de lo que te gustaría automatizar.',
+  };
+
+  function mostrarError(campo: HTMLInputElement | HTMLTextAreaElement, mensaje: string | null) {
+    const aviso = document.querySelector<HTMLElement>(`[data-error-de="${campo.name}"]`);
+    if (!aviso) return;
+    if (mensaje) {
+      aviso.textContent = mensaje;
+      aviso.classList.remove('hidden');
+      campo.setAttribute('aria-invalid', 'true');
+      campo.classList.add('!border-arcilla');
+    } else {
+      aviso.textContent = '';
+      aviso.classList.add('hidden');
+      campo.removeAttribute('aria-invalid');
+      campo.classList.remove('!border-arcilla');
+    }
+  }
+
+  function validar(campo: HTMLInputElement | HTMLTextAreaElement): boolean {
+    const valor = campo.value.trim();
+    let ok = valor.length > 1;
+    if (campo.name === 'whatsapp') {
+      ok = valor.replace(/\D/g, '').length >= 9;
+    }
+    mostrarError(campo, ok ? null : (MENSAJES[campo.name] ?? 'Completa este campo.'));
+    return ok;
+  }
+
+  if (form) {
+    const campos = Array.from(
+      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]'),
+    );
+
+    campos.forEach((campo) => {
+      campo.addEventListener('blur', () => validar(campo));
+      campo.addEventListener('input', () => {
+        if (campo.getAttribute('aria-invalid') === 'true') validar(campo);
+      });
+    });
+
+    form.addEventListener('submit', async (evento) => {
+      const validos = campos.map(validar);
+      if (validos.includes(false)) {
+        evento.preventDefault();
+        campos.find((c) => c.getAttribute('aria-invalid') === 'true')?.focus();
+        return;
+      }
+
+      evento.preventDefault();
+
+      // Sin endpoint configurado mostramos la salida por WhatsApp en vez de
+      // enviar el formulario a ninguna parte. Ver README.
+      const endpoint = form.dataset['endpoint'];
+      if (!endpoint) {
+        error?.classList.remove('hidden');
+        error?.scrollIntoView({ block: 'center' });
+        return;
+      }
+
+      const boton = form.querySelector<HTMLButtonElement>('[data-boton-enviar]');
+      if (boton) {
+        boton.disabled = true;
+        boton.textContent = 'Enviando…';
+      }
+      error?.classList.add('hidden');
+
+      try {
+        const respuesta = await fetch(endpoint, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(form),
+        });
+        if (!respuesta.ok) throw new Error(String(respuesta.status));
+        form.classList.add('hidden');
+        exito?.classList.remove('hidden');
+        exito?.scrollIntoView({ block: 'center' });
+      } catch {
+        error?.classList.remove('hidden');
+        if (boton) {
+          boton.disabled = false;
+          boton.textContent = 'Enviar y coordinar el horario';
+        }
+      }
+    });
+  }
+</script>

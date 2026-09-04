@@ -1,0 +1,63 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Seccion from '../components/Seccion.astro';
+import CTABand from '../components/CTABand.astro';
+import Pendiente from '../components/Pendiente.astro';
+import { MENSAJES_WHATSAPP } from '../consts';
+---
+
+<Layout
+  titulo="Nosotros"
+  descripcion="Praxia viene de praxis: llevar una idea a la práctica. Somos una agencia peruana de automatización con IA para negocios pequeños y medianos."
+  mensajeWhatsApp={MENSAJES_WHATSAPP.nosotros}
+>
+  <Hero
+    antetitulo="Nosotros"
+    titulo="Praxia viene de praxis. Llevar la idea a la práctica."
+    subtitulo="Es literalmente lo que hacemos: tomamos una idea de automatización que vive en la cabeza del dueño y la volvemos algo que funciona."
+    mensajeWhatsApp={MENSAJES_WHATSAPP.nosotros}
+  />
+
+  <Seccion fondo="blanco">
+    <div class="medida">
+      <h2 class="mt-0 text-[1.375rem] md:text-[1.75rem]">Por qué existimos</h2>
+      <p class="mt-5 text-gris-600">
+        La inteligencia artificial llegó primero a las empresas que ya tenían equipo técnico.
+        El dueño de una veterinaria, de un grifo o de un estudio contable escucha que se está
+        quedando atrás, pero no encuentra a nadie que le hable en su idioma ni que se tome el
+        trabajo de entender cómo funciona su negocio.
+      </p>
+      <p class="mt-4 text-gris-600">
+        Praxia existe para ese negocio. Nuestra misión es hacer que la automatización con IA sea
+        real y rentable para las pequeñas y medianas empresas del Perú.
+      </p>
+
+      <h2 class="mt-14 text-[1.375rem] md:text-[1.75rem]">Cómo somos</h2>
+      <p class="mt-5 text-gris-600">
+        Nos importa más lo que dejamos funcionando que lo que prometimos en una reunión. Por eso
+        validamos antes de construir y te proponemos el mejor camino, aunque no sea el que tenías
+        en mente. Y hablamos en el idioma del negocio, no en el de la tecnología, porque
+        diseñamos para quien no tiene tiempo, no para el ingeniero.
+      </p>
+      <p class="mt-4 text-gris-600">
+        Y te enseñamos lo que hicimos. No nos interesa que dependas de nosotros: nos interesa que
+        entiendas la herramienta y puedas decidir sobre ella. Si algún día quieres seguir sin
+        Praxia, te vas con la documentación bajo el brazo.
+      </p>
+
+      <h2 class="mt-14 text-[1.375rem] md:text-[1.75rem]">Quién está detrás</h2>
+      <p class="mt-5 text-gris-600">
+        <Pendiente que="bio del fundador y foto" />
+      </p>
+
+      <h2 class="mt-14 text-[1.375rem] md:text-[1.75rem]">Dónde trabajamos</h2>
+      <p class="mt-5 text-gris-600">
+        En todo el Perú. Trabajamos por videollamada y WhatsApp, así que la distancia no es
+        problema.
+      </p>
+    </div>
+  </Seccion>
+
+  <CTABand mensajeWhatsApp={MENSAJES_WHATSAPP.nosotros} />
+</Layout>

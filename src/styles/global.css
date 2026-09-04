@@ -1,0 +1,352 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   Paleta y tokens de diseño de Praxia.
+   Los tokens de @theme se convierten en utilidades de Tailwind:
+   --color-tinta -> bg-tinta / text-tinta / border-tinta
+   ========================================================================== */
+
+@theme {
+  /* Color */
+  --color-tinta: #1a2332;
+  --color-tinta-800: #2e3d52;
+  --color-arcilla: #c4623d;
+  /* Variantes oscuras del acento: la terracota original da 3.8:1 sobre hueso,
+     suficiente para títulos grandes pero no para texto de cuerpo (AA pide 4.5).
+     Para texto y botones se usan estas. Ver README, "Contraste". */
+  --color-arcilla-700: #9a4a2a;
+  --color-arcilla-800: #7e3c22;
+  /* Terracota aclarada para texto pequeño sobre el fondo tinta: la original
+     da 3.87:1 sobre tinta y no llega a AA en tamaño de antetítulo. */
+  --color-arcilla-300: #e39272;
+  --color-arcilla-50: #fbf1ed;
+  --color-hueso: #faf8f5;
+  --color-blanco: #ffffff;
+  --color-gris-600: #5c6672;
+  --color-gris-200: #e2e0dc;
+  --color-verde: #2f6f4e;
+  --color-ambar: #b8860b;
+  --color-ambar-700: #8a6508;
+
+  /* Tipografía.
+     Ojo: --font-titulos y --font-cuerpo NO se definen aquí. Los define Astro
+     en :root a partir de la configuración de `fonts` en astro.config.mjs, ya
+     con los fallbacks ajustados por métrica. Si los redefines acá, pisas los
+     de Astro y el sitio se queda sin Fraunces ni Inter. */
+
+  /* Medida de línea: máximo ~70 caracteres en texto corrido */
+  --container-medida: 38rem;
+
+  /* Radios y sombras: discretos, nada de tarjetas flotando */
+  --radius-praxia: 0.625rem;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-hueso);
+    color: var(--color-tinta);
+    font-family: var(--font-cuerpo);
+    font-size: 1.0625rem; /* 17px en celular: el lector tiene 45 años */
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (min-width: 48rem) {
+    body {
+      font-size: 1.125rem; /* 18px */
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-titulos);
+    font-weight: 600;
+    color: var(--color-tinta);
+    text-wrap: balance;
+    letter-spacing: -0.015em;
+  }
+
+  h1 {
+    font-size: 2rem;
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: 1.625rem;
+    line-height: 1.15;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.25;
+  }
+
+  @media (min-width: 48rem) {
+    h1 {
+      font-size: 3.5rem;
+    }
+    h2 {
+      font-size: 2.5rem;
+    }
+    h3 {
+      font-size: 1.625rem;
+    }
+  }
+
+  a {
+    color: inherit;
+  }
+
+  /* Foco visible en todo lo que se puede enfocar con teclado */
+  :focus-visible {
+    outline: 3px solid var(--color-arcilla-700);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-arcilla-50);
+    color: var(--color-tinta);
+  }
+
+  /* Respeta a quien pidió menos movimiento */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ==========================================================================
+   Componentes de uso repetido
+   ========================================================================== */
+
+@layer components {
+  /* --- Contenedor --- */
+  .contenedor {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 48rem) {
+    .contenedor {
+      padding-inline: 2rem;
+    }
+  }
+
+  .medida {
+    max-width: 38rem; /* ~70 caracteres */
+  }
+
+  /* --- Ritmo vertical de secciones --- */
+  .seccion {
+    padding-block: 3.5rem;
+  }
+
+  @media (min-width: 48rem) {
+    .seccion {
+      padding-block: 5.5rem;
+    }
+  }
+
+  /* --- Texto --- */
+  .lead {
+    font-size: 1.1875rem; /* 19px */
+    line-height: 1.55;
+    color: var(--color-gris-600);
+  }
+
+  @media (min-width: 48rem) {
+    .lead {
+      font-size: 1.375rem; /* 22px */
+    }
+  }
+
+  .pequeno {
+    font-size: 0.9375rem; /* 15px */
+    line-height: 1.55;
+  }
+
+  .antetitulo {
+    font-family: var(--font-cuerpo);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-arcilla-700);
+  }
+
+  /* --- Botones --- */
+  .boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.375rem;
+    border-radius: var(--radius-praxia);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    line-height: 1.2;
+    text-align: center;
+    border: 1px solid transparent;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .boton-primario {
+    background-color: var(--color-arcilla-700);
+    color: var(--color-blanco);
+  }
+
+  .boton-primario:hover {
+    background-color: var(--color-arcilla-800);
+  }
+
+  .boton-secundario {
+    background-color: transparent;
+    color: var(--color-tinta);
+    border-color: var(--color-tinta);
+  }
+
+  .boton-secundario:hover {
+    background-color: var(--color-tinta);
+    color: var(--color-hueso);
+  }
+
+  /* Sobre fondo oscuro */
+  .boton-claro {
+    background-color: var(--color-hueso);
+    color: var(--color-tinta);
+  }
+
+  .boton-claro:hover {
+    background-color: var(--color-blanco);
+  }
+
+  .boton-borde-claro {
+    background-color: transparent;
+    color: var(--color-hueso);
+    border-color: color-mix(in srgb, var(--color-hueso) 55%, transparent);
+  }
+
+  .boton-borde-claro:hover {
+    border-color: var(--color-hueso);
+    background-color: color-mix(in srgb, var(--color-hueso) 12%, transparent);
+  }
+
+  /* --- Enlaces de texto --- */
+  .enlace {
+    color: var(--color-arcilla-700);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+
+  .enlace:hover {
+    color: var(--color-arcilla-800);
+    text-decoration-thickness: 2px;
+  }
+
+  /* --- Tarjeta --- */
+  .tarjeta {
+    background-color: var(--color-blanco);
+    border: 1px solid var(--color-gris-200);
+    border-radius: var(--radius-praxia);
+    padding: 1.5rem;
+  }
+
+  /* --- Marcador de contenido pendiente --- */
+  .pendiente {
+    display: inline;
+    background-color: #fdf6e3;
+    color: var(--color-ambar-700);
+    border-bottom: 2px dotted var(--color-ambar-700);
+    padding-inline: 0.25rem;
+    font-weight: 600;
+    font-size: 0.95em;
+  }
+
+  /* --- Acordeón nativo (details/summary) --- */
+  .acordeon {
+    border-bottom: 1px solid var(--color-gris-200);
+  }
+
+  .acordeon > summary {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1.125rem;
+    cursor: pointer;
+    font-weight: 600;
+    list-style: none;
+    color: var(--color-tinta);
+  }
+
+  .acordeon > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .acordeon > summary::after {
+    content: '';
+    flex: none;
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-top: 0.45rem;
+    border-right: 2px solid var(--color-arcilla-700);
+    border-bottom: 2px solid var(--color-arcilla-700);
+    transform: rotate(45deg);
+    transition: transform 150ms ease;
+  }
+
+  .acordeon[open] > summary::after {
+    transform: rotate(-135deg);
+    margin-top: 0.75rem;
+  }
+
+  .acordeon > .acordeon-cuerpo {
+    padding-bottom: 1.25rem;
+    color: var(--color-gris-600);
+    max-width: 38rem;
+  }
+
+  /* --- Enlace de salto al contenido --- */
+  .skip-link {
+    position: absolute;
+    left: 0.75rem;
+    top: -100%;
+    z-index: 100;
+    background: var(--color-tinta);
+    color: var(--color-hueso);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-praxia);
+    font-weight: 600;
+  }
+
+  .skip-link:focus {
+    top: 0.75rem;
+  }
+}

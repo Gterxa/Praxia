@@ -1,0 +1,22 @@
+---
+interface Props {
+  /** Fondo de la sección. */
+  fondo?: 'hueso' | 'blanco' | 'tinta' | 'arcilla';
+  id?: string;
+  class?: string;
+}
+const { fondo = 'hueso', id, class: clase = '' } = Astro.props;
+
+const fondos = {
+  hueso: 'bg-hueso',
+  blanco: 'bg-blanco border-y border-gris-200',
+  tinta: 'bg-tinta text-hueso',
+  arcilla: 'bg-arcilla-50',
+} as const;
+---
+
+<section id={id} class:list={['seccion', fondos[fondo], clase]}>
+  <div class="contenedor">
+    <slot />
+  </div>
+</section>

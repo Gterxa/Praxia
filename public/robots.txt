@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /legal
+Disallow: /privacidad
+
+Sitemap: https://praxia.pe/sitemap-index.xml

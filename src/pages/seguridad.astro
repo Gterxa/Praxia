@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Seccion from '../components/Seccion.astro';
+import CTABand from '../components/CTABand.astro';
+import Pendiente from '../components/Pendiente.astro';
+import Icon from '../components/Icon.astro';
+import { MENSAJES_WHATSAPP } from '../consts';
+
+const temas = [
+  {
+    titulo: 'Dónde se guardan tus datos',
+    texto:
+      'Cada automatización usa los servicios que se definen contigo en la implementación. Te decimos cuáles son, en qué región están alojados y qué información pasa por cada uno, antes de encender nada.',
+    pendiente: 'proveedores y región concretos que uses',
+  },
+  {
+    titulo: 'Tu información no entrena modelos',
+    texto:
+      'Configuramos los servicios de IA en la modalidad que no usa tu contenido para entrenar modelos. Es una casilla que hay que marcar y la marcamos.',
+    pendiente: 'confirmar la configuración exacta de cada proveedor',
+  },
+  {
+    titulo: 'Quién tiene acceso',
+    texto:
+      'El acceso se limita a las personas de Praxia que están trabajando en tu implementación, y queda registrado. Cuando termina el trabajo, los accesos que ya no hacen falta se cierran.',
+    pendiente: 'describir cómo registras los accesos en la práctica',
+  },
+  {
+    titulo: 'Ley N° 29733 de Protección de Datos Personales',
+    texto:
+      'Trabajamos dentro de la Ley N° 29733 y su reglamento actualizado por el DS 016-2024-JUS. Eso incluye tratar los datos solo para lo que nos autorizaste y poder atender los pedidos de acceso, rectificación y cancelación de tus clientes.',
+    pendiente: 'validar con asesoría legal antes de publicar',
+  },
+  {
+    titulo: 'Si quieres que borremos todo',
+    texto:
+      'Nos lo pides y lo hacemos. Te confirmamos por escrito qué se borró y qué quedó, si algo debe conservarse por obligación legal tuya.',
+    pendiente: 'definir el plazo en el que te comprometes a borrar',
+  },
+];
+---
+
+<Layout
+  titulo="Seguridad y datos"
+  descripcion="Dónde viven tus datos, quién accede a ellos, por qué no entrenan modelos y qué pasa si quieres que los borremos."
+  mensajeWhatsApp={MENSAJES_WHATSAPP.seguridad}
+>
+  <Hero
+    antetitulo="Seguridad"
+    titulo="Tus datos son tuyos. Te contamos qué hacemos con ellos."
+    subtitulo="Dónde se guardan, quién accede, por qué no entrenan modelos y qué pasa si un día quieres que los borremos."
+    mensajeWhatsApp={MENSAJES_WHATSAPP.seguridad}
+  />
+
+  <Seccion fondo="blanco">
+    <div
+      class="mb-10 flex max-w-3xl gap-3 rounded-praxia border border-ambar/40 bg-[#FDF6E3] p-5 text-ambar-700"
+    >
+      <span class="mt-0.5 flex-none"><Icon nombre="alerta" tamano={20} /></span>
+      <p class="pequeno">
+        <strong>Nota para el dueño de Praxia, no para el visitante:</strong> cada afirmación de esta
+        página debe corresponder a algo efectivamente implementado. No agregues certificaciones ni
+        estándares que no tengas. Borra esta nota cuando hayas validado el contenido.
+      </p>
+    </div>
+
+    <div class="max-w-3xl divide-y divide-gris-200">
+      {
+        temas.map((t) => (
+          <div class="py-8 first:pt-0 last:pb-0">
+            <h2 class="text-[1.25rem] md:text-[1.5rem]">{t.titulo}</h2>
+            <p class="mt-4 text-gris-600">{t.texto}</p>
+            <p class="pequeno mt-3">
+              <Pendiente que={t.pendiente} />
+            </p>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="mt-12 max-w-3xl text-gris-600">
+      ¿Tienes una duda que no está acá? Pregúntala en el diagnóstico y la resolvemos ahí.
+    </p>
+  </Seccion>
+
+  <CTABand mensajeWhatsApp={MENSAJES_WHATSAPP.seguridad} />
+</Layout>

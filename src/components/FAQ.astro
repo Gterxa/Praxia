@@ -1,0 +1,25 @@
+---
+/**
+ * Acordeón accesible con details/summary nativo. Sin JavaScript.
+ * El slot de cada pregunta permite meter enlaces dentro de la respuesta.
+ */
+interface Props {
+  preguntas: readonly { pregunta: string; respuesta: string }[];
+  titulo?: string;
+}
+const { preguntas, titulo } = Astro.props;
+---
+
+<div>
+  {titulo && <h2 class="mb-8">{titulo}</h2>}
+  <div class="border-t border-gris-200">
+    {
+      preguntas.map((p) => (
+        <details class="acordeon">
+          <summary>{p.pregunta}</summary>
+          <div class="acordeon-cuerpo" set:html={p.respuesta} />
+        </details>
+      ))
+    }
+  </div>
+</div>

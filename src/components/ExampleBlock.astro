@@ -1,0 +1,18 @@
+---
+
+interface Props {
+  ejemplos: readonly { rubro: string; ejemplo: string }[];
+}
+const { ejemplos } = Astro.props;
+---
+
+<ul class="grid gap-4 sm:grid-cols-2">
+  {
+    ejemplos.map((e) => (
+      <li class="tarjeta">
+        <span class="antetitulo">{e.rubro}</span>
+        <p class="mt-2 text-tinta">{e.ejemplo}</p>
+      </li>
+    ))
+  }
+</ul>

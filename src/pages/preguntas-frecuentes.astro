@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Seccion from '../components/Seccion.astro';
+import FAQ from '../components/FAQ.astro';
+import CTABand from '../components/CTABand.astro';
+import { MENSAJES_WHATSAPP } from '../consts';
+
+/**
+ * Las preguntas que la gente hace antes de escribirnos.
+ * Para agregar una, súmala a este arreglo. La respuesta admite enlaces en HTML.
+ */
+const preguntas = [
+  {
+    pregunta: '¿Cómo definen el presupuesto de un proyecto?',
+    respuesta:
+      'Sale del diagnóstico. Depende de cuántos sistemas hay que conectar, si necesitas algo hecho a medida, y el volumen. Te lo explicamos con detalle antes de que decidas nada.',
+  },
+  {
+    pregunta: '¿Hay contratos de permanencia?',
+    respuesta:
+      'No. Sin contratos de permanencia. Si un día quieres seguir sin nosotros, te vas con la documentación de lo que construimos.',
+  },
+  {
+    pregunta: '¿Emiten factura?',
+    respuesta: 'Sí.',
+  },
+  {
+    pregunta: '¿Cuánto demora una automatización?',
+    respuesta:
+      '<span class="pendiente">[PENDIENTE: plazo real]</span> El plazo exacto sale del diagnóstico, cuando ya sabemos qué hay que conectar.',
+  },
+  {
+    pregunta: '¿Qué pasa si mi idea no es viable?',
+    respuesta:
+      'Te lo decimos en el diagnóstico y te proponemos una alternativa si la hay. Muchas veces la idea sí funciona, pero por otro camino.',
+  },
+  {
+    pregunta: '¿Necesito tener sistemas o ser técnico?',
+    respuesta:
+      'No. Trabajamos con lo que ya usas: WhatsApp, correo, Excel, tus redes.',
+  },
+  {
+    pregunta: '¿Qué pasa si quiero dejar de trabajar con ustedes?',
+    respuesta:
+      'Te dejamos documentado qué hicimos y cómo funciona, para que tu equipo o cualquier otro proveedor pueda tomarlo desde ahí.',
+  },
+  {
+    pregunta: '¿Mis datos están seguros?',
+    respuesta:
+      'Te contamos dónde se guardan, quién accede y qué pasa si quieres borrarlos en <a class="enlace" href="/seguridad">la página de seguridad</a>.',
+  },
+];
+---
+
+<Layout
+  titulo="Preguntas frecuentes"
+  descripcion="Cómo definimos el presupuesto, cuánto demora una automatización, qué pasa si tu idea no es viable y qué necesitas para empezar."
+  mensajeWhatsApp={MENSAJES_WHATSAPP.preguntas}
+>
+  <Hero
+    antetitulo="Preguntas frecuentes"
+    titulo="Lo que todos preguntan antes de escribirnos."
+    subtitulo="Si tu duda no está acá, escríbenos y te la respondemos."
+    mensajeWhatsApp={MENSAJES_WHATSAPP.preguntas}
+  />
+
+  <Seccion fondo="blanco">
+    <div class="max-w-3xl">
+      <FAQ preguntas={preguntas} />
+    </div>
+  </Seccion>
+
+  <CTABand mensajeWhatsApp={MENSAJES_WHATSAPP.preguntas} />
+</Layout>

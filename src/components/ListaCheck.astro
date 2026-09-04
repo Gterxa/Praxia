@@ -1,0 +1,29 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  items: readonly string[];
+  /** Color del check. */
+  tono?: 'verde' | 'arcilla';
+  class?: string;
+}
+const { items, tono = 'verde', class: clase = '' } = Astro.props;
+---
+
+<ul class:list={['space-y-3.5', clase]}>
+  {
+    items.map((item) => (
+      <li class="flex gap-3">
+        <span
+          class:list={[
+            'mt-1 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full text-blanco',
+            tono === 'verde' ? 'bg-verde' : 'bg-arcilla-700',
+          ]}
+        >
+          <Icon nombre="check" tamano={13} />
+        </span>
+        <span>{item}</span>
+      </li>
+    ))
+  }
+</ul>

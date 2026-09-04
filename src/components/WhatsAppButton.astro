@@ -1,0 +1,20 @@
+---
+import Icon from './Icon.astro';
+import { whatsappLink } from '../consts';
+
+interface Props {
+  mensaje: string;
+}
+const { mensaje } = Astro.props;
+---
+
+<a
+  href={whatsappLink(mensaje)}
+  target="_blank"
+  rel="noopener"
+  class="fixed right-4 bottom-4 z-40 inline-flex items-center gap-2 rounded-full bg-verde px-4 py-3.5 font-semibold text-blanco shadow-lg shadow-tinta/20 transition-transform hover:scale-[1.03] md:right-6 md:bottom-6 md:px-4 md:py-3"
+>
+  <Icon nombre="whatsapp" tamano={22} />
+  <span class="pequeno hidden sm:inline">Escríbenos</span>
+  <span class="sr-only sm:hidden">Escríbenos por WhatsApp</span>
+</a>

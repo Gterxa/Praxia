@@ -1,0 +1,85 @@
+---
+import Icon from './Icon.astro';
+import { whatsappLink } from '../consts';
+
+interface Props {
+  antetitulo?: string;
+  titulo: string;
+  subtitulo: string;
+  /** Línea chica de refuerzo debajo de los botones. */
+  refuerzo?: string;
+  ctaPrimario?: { texto: string; href: string };
+  /** Si se pasa, el segundo botón abre WhatsApp con este mensaje. */
+  mensajeWhatsApp?: string;
+  /** Fondo oscuro para las páginas que lo necesitan. */
+  oscuro?: boolean;
+}
+
+/** Si se pasa algo al slot "visual", el hero se parte en dos columnas. */
+const tieneVisual = Astro.slots.has('visual');
+
+const {
+  antetitulo,
+  titulo,
+  subtitulo,
+  refuerzo,
+  ctaPrimario = { texto: 'Agenda tu diagnóstico', href: '/diagnostico' },
+  mensajeWhatsApp,
+  oscuro = false,
+} = Astro.props;
+---
+
+<section class:list={['seccion', oscuro ? 'bg-tinta text-hueso' : 'bg-hueso']}>
+  <div
+    class:list={[
+      'contenedor',
+      tieneVisual && 'grid items-center gap-12 lg:grid-cols-[1fr_auto] lg:gap-16',
+    ]}
+  >
+    <div>
+    {antetitulo && <p class:list={['antetitulo', oscuro && '!text-arcilla-300']}>{antetitulo}</p>}
+    <h1 class:list={['mt-3', tieneVisual ? 'max-w-2xl' : 'max-w-3xl', oscuro && 'text-hueso']}>
+      {titulo}
+    </h1>
+    <p class:list={['lead mt-6 max-w-2xl', oscuro && '!text-gris-200']}>{subtitulo}</p>
+
+    <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+      <a
+        href={ctaPrimario.href}
+        class:list={['boton', oscuro ? 'boton-claro' : 'boton-primario']}
+      >
+        {ctaPrimario.texto}
+      </a>
+      {
+        mensajeWhatsApp && (
+          <a
+            href={whatsappLink(mensajeWhatsApp)}
+            target="_blank"
+            rel="noopener"
+            class:list={['boton', oscuro ? 'boton-borde-claro' : 'boton-secundario']}
+          >
+            <Icon nombre="whatsapp" tamano={20} />
+            Escríbenos por WhatsApp
+          </a>
+        )
+      }
+    </div>
+
+    {
+      refuerzo && (
+        <p class:list={['pequeno mt-5 max-w-md', oscuro ? 'text-gris-200' : 'text-gris-600']}>
+          {refuerzo}
+        </p>
+      )
+    }
+    </div>
+
+    {
+      tieneVisual && (
+        <div class="flex justify-center lg:justify-end">
+          <slot name="visual" />
+        </div>
+      )
+    }
+  </div>
+</section>

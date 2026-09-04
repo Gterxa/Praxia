@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Seccion from '../components/Seccion.astro';
+---
+
+<Layout
+  titulo="Página no encontrada"
+  descripcion="Esta página no existe. Te dejamos por dónde seguir."
+  noIndex={true}
+>
+  <Seccion>
+    <div class="medida">
+      <p class="antetitulo">Error 404</p>
+      <h1 class="mt-4">Esta página no existe.</h1>
+      <p class="lead mt-6">
+        Se movió, se borró o el enlace estaba mal escrito. Te dejamos por dónde seguir.
+      </p>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+        <a href="/" class="boton boton-primario">Ir al inicio</a>
+        <a href="/que-puedes-automatizar" class="boton boton-secundario">
+          Ver qué puedes automatizar
+        </a>
+      </div>
+    </div>
+  </Seccion>
+</Layout>

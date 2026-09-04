@@ -1,0 +1,78 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Seccion from '../components/Seccion.astro';
+import Pendiente from '../components/Pendiente.astro';
+import { CONTACTO } from '../consts';
+---
+
+<Layout
+  titulo="Política de privacidad"
+  descripcion="Qué datos recogemos en este sitio, para qué los usamos y cómo pides que los borremos."
+  noIndex={true}
+>
+  <Seccion>
+    <div class="medida">
+      <h1>Política de privacidad</h1>
+      <p class="pequeno mt-4 text-gris-600">
+        Última actualización: <Pendiente que="fecha" />
+      </p>
+
+      <div class="mt-10 space-y-8">
+        <div>
+          <h2 class="text-[1.25rem] md:text-[1.5rem]">Qué datos recogemos</h2>
+          <p class="mt-3 text-gris-600">
+            Solo lo que tú escribes en el formulario de diagnóstico: tu nombre, tu número de
+            WhatsApp, tu rubro y lo que te gustaría automatizar. Si nos escribes por WhatsApp o por
+            correo, guardamos esa conversación.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[1.25rem] md:text-[1.5rem]">Para qué los usamos</h2>
+          <p class="mt-3 text-gris-600">
+            Para contactarte y coordinar el diagnóstico, y para responder tus consultas. No
+            vendemos ni cedemos tus datos a terceros con fines comerciales.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[1.25rem] md:text-[1.5rem]">Cuánto tiempo los guardamos</h2>
+          <p class="mt-3 text-gris-600">
+            <Pendiente que="plazo de conservación" /> Si nos pides que los borremos antes, los
+            borramos.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[1.25rem] md:text-[1.5rem]">Tus derechos</h2>
+          <p class="mt-3 text-gris-600">
+            La Ley N° 29733 de Protección de Datos Personales te da derecho a acceder a tus datos,
+            corregirlos, cancelarlos y oponerte a su tratamiento. Para ejercerlos, escríbenos a{' '}
+            <a href={`mailto:${CONTACTO.email}`} class="enlace">{CONTACTO.email}</a>.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[1.25rem] md:text-[1.5rem]">Cookies y medición</h2>
+          <p class="mt-3 text-gris-600">
+            Este sitio no usa cookies de publicidad ni de seguimiento entre sitios. Las fuentes
+            tipográficas se sirven desde nuestro propio dominio, así que tampoco hay pedidos a
+            terceros al cargar la página.
+          </p>
+          <p class="mt-3 text-gris-600">
+            <Pendiente que="declarar aquí la herramienta de analítica, si instalas una" />
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[1.25rem] md:text-[1.5rem]">Datos de tus clientes</h2>
+          <p class="mt-3 text-gris-600">
+            Cuando implementamos una automatización, los datos de tus clientes siguen siendo tuyos
+            y los tratamos solo para operar lo que nos encargaste. Lo detallamos en{' '}
+            <a href="/seguridad" class="enlace">la página de seguridad</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </Seccion>
+</Layout>

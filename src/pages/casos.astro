@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Seccion from '../components/Seccion.astro';
+import CTABand from '../components/CTABand.astro';
+import { MENSAJES_WHATSAPP } from '../consts';
+
+// Solo se muestran los casos que el cliente autorizó por escrito.
+const casos = (await getCollection('casos'))
+  .filter((c) => c.data.autorizado)
+  .sort((a, b) => a.data.orden - b.data.orden);
+
+const rubros = [...new Set(casos.map((c) => c.data.rubro))];
+---
+
+<Layout
+  titulo="Casos"
+  descripcion="Ejemplos de automatizaciones por rubro. Publicamos un caso solo cuando existe y el cliente autoriza contarlo."
+  mensajeWhatsApp={MENSAJES_WHATSAPP.casos}
+>
+  <Hero
+    antetitulo="Casos"
+    titulo="Esta página se va a llenar pronto."
+    subtitulo="Praxia recién arranca. Cuando terminemos nuestras primeras implementaciones y el cliente nos autorice a contarlo, acá vas a leer qué le pasaba al negocio, qué automatizamos, qué cambió y cuánto tomó."
+    mensajeWhatsApp={MENSAJES_WHATSAPP.casos}
+  />
+
+  <Seccion fondo="blanco">
+    <div class="medida">
+      <h2 class="text-[1.375rem] md:text-[1.75rem]">Mientras tanto</h2>
+      <p class="mt-5 text-gris-600">
+        Si quieres ver qué tipo de cosas hacemos, la página de{' '}
+        <a href="/que-puedes-automatizar" class="enlace">qué puedes automatizar</a> tiene una
+        conversación de ejemplo por cada capacidad y ejemplos concretos por rubro.
+      </p>
+      <a href="/que-puedes-automatizar" class="boton boton-secundario mt-8">
+        Ver qué puedes automatizar
+      </a>
+    </div>
+  </Seccion>
+
+  {
+    casos.length > 0 && (
+      <Seccion fondo="blanco">
+        {rubros.map((rubro) => (
+          <div class="mb-14 last:mb-0">
+            <h2 class="text-[1.375rem] md:text-[1.75rem]">{rubro}</h2>
+            <div class="mt-6 grid gap-5 lg:grid-cols-2">
+              {casos
+                .filter((c) => c.data.rubro === rubro)
+                .map((c) => (
+                  <article class="tarjeta">
+                    <h3>{c.data.titulo}</h3>
+                    <p class="pequeno mt-1 text-gris-600">{c.data.tamano}</p>
+                    <dl class="mt-5 space-y-3.5">
+                      <div>
+                        <dt class="antetitulo">Qué le pasaba</dt>
+                        <dd class="mt-1">{c.data.queLePasaba}</dd>
+                      </div>
+                      <div>
+                        <dt class="antetitulo">Qué automatizamos</dt>
+                        <dd class="mt-1">{c.data.queAutomatizamos}</dd>
+                      </div>
+                      <div>
+                        <dt class="antetitulo">Qué cambió</dt>
+                        <dd class="mt-1">{c.data.queCambio}</dd>
+                      </div>
+                      <div>
+                        <dt class="antetitulo">Cuánto tomó</dt>
+                        <dd class="mt-1">{c.data.cuantoTomo}</dd>
+                      </div>
+                    </dl>
+                  </article>
+                ))}
+            </div>
+          </div>
+        ))}
+      </Seccion>
+    )
+  }
+
+  <CTABand
+    titulo="¿Quieres ser el primer caso?"
+    texto="Conversemos 45 minutos. Si trabajamos juntos y el resultado es bueno, te vamos a pedir que lo cuentes."
+    mensajeWhatsApp={MENSAJES_WHATSAPP.casos}
+  />
+</Layout>

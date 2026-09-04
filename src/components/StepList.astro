@@ -1,0 +1,26 @@
+---
+import { METODO } from '../consts';
+
+interface Props {
+  /** true: muestra el párrafo largo de cada paso (página /como-trabajamos). */
+  detallado?: boolean;
+  /** Nivel del encabezado, para no romper la jerarquía de la página. */
+  nivel?: 2 | 3;
+}
+const { detallado = false, nivel = 3 } = Astro.props;
+const Titulo = `h${nivel}` as 'h2' | 'h3';
+---
+
+<ol class="grid gap-px overflow-hidden rounded-praxia border border-gris-200 bg-gris-200 md:grid-cols-2">
+  {
+    METODO.map((paso) => (
+      <li class="flex flex-col bg-blanco p-6 md:p-8">
+        <span class="font-[family-name:var(--font-titulos)] text-[2.5rem] leading-none font-semibold text-arcilla">
+          {paso.numero}
+        </span>
+        <Titulo class="mt-4 text-[1.1875rem] md:text-[1.3125rem]">{paso.titulo}</Titulo>
+        <p class="mt-2.5 text-gris-600">{detallado ? paso.detalle : paso.resumen}</p>
+      </li>
+    ))
+  }
+</ol>

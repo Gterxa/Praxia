@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import Seccion from '../../components/Seccion.astro';
+import CapabilityCard from '../../components/CapabilityCard.astro';
+import CTABand from '../../components/CTABand.astro';
+import { MENSAJES_WHATSAPP } from '../../consts';
+
+const capacidades = (await getCollection('capacidades')).sort(
+  (a, b) => a.data.orden - b.data.orden,
+);
+---
+
+<Layout
+  titulo="Qué puedes automatizar en tu negocio"
+  descripcion="Las seis cosas que la inteligencia artificial sí puede hacer hoy por un negocio pequeño o mediano en Perú, con ejemplos concretos por rubro."
+  mensajeWhatsApp={MENSAJES_WHATSAPP.hub}
+>
+  <Hero
+    antetitulo="Qué puedes automatizar"
+    titulo="Esto es lo que la IA puede hacer por tu negocio hoy."
+    subtitulo="Estas son las seis cosas que mejor funcionan hoy, con ejemplos de negocios como el tuyo."
+    mensajeWhatsApp={MENSAJES_WHATSAPP.hub}
+  />
+
+  <Seccion fondo="blanco">
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {
+        capacidades.map((c) => (
+          <CapabilityCard
+            href={`/que-puedes-automatizar/${c.id}`}
+            titulo={c.data.nombreCorto}
+            resumen={c.data.resumen}
+            icono={c.data.icono}
+            nivel={2}
+          />
+        ))
+      }
+    </div>
+
+    <div class="medida mt-14">
+      <h2 class="text-[1.375rem] md:text-[1.75rem]">¿No ves lo tuyo en la lista?</h2>
+      <p class="mt-4 text-gris-600">
+        Estas seis capacidades cubren casi todo lo que un negocio pequeño o mediano nos pide. Si
+        lo que tienes en mente no calza en ninguna, escríbenos igual y lo vemos en el
+        diagnóstico.
+      </p>
+      <a href="/diagnostico" class="enlace mt-5 inline-block">Cuéntanos tu idea</a>
+    </div>
+  </Seccion>
+
+  <CTABand />
+</Layout>

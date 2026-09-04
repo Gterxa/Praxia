@@ -1,0 +1,14 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: clase = '' } = Astro.props;
+---
+
+<span class={`inline-flex items-baseline gap-[0.15em] ${clase}`}>
+  <span
+    class="font-[family-name:var(--font-titulos)] text-[1.375rem] font-semibold tracking-tight text-tinta"
+    >Praxia</span
+  >
+  <span class="block h-[0.3rem] w-[0.3rem] rounded-full bg-arcilla" aria-hidden="true"></span>
+</span>

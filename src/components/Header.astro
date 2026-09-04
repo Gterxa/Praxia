@@ -1,0 +1,100 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { NAV_PRINCIPAL } from '../consts';
+
+const ruta = Astro.url.pathname.replace(/\/$/, '') || '/';
+const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
+---
+
+<header class="sticky top-0 z-40 border-b border-gris-200 bg-hueso/95 backdrop-blur-sm">
+  <div class="contenedor flex h-16 items-center justify-between gap-4 md:h-20">
+    <a href="/" class="rounded-sm" aria-label="Praxia, ir al inicio">
+      <Logo />
+    </a>
+
+    <nav class="hidden items-center gap-7 lg:flex" aria-label="Principal">
+      {
+        NAV_PRINCIPAL.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'pequeno font-medium transition-colors hover:text-arcilla-700',
+              esActiva(item.href) ? 'text-arcilla-700' : 'text-tinta',
+            ]}
+            aria-current={esActiva(item.href) ? 'page' : undefined}
+          >
+            {item.texto}
+          </a>
+        ))
+      }
+      <a href="/diagnostico" class="boton boton-primario !py-2.5 !text-[0.9375rem]">
+        Agenda tu diagnóstico
+      </a>
+    </nav>
+
+    <button
+      type="button"
+      id="boton-menu"
+      class="-mr-2 inline-flex items-center justify-center rounded-praxia p-2 text-tinta lg:hidden"
+      aria-expanded="false"
+      aria-controls="menu-movil"
+    >
+      <span class="sr-only">Abrir menú</span>
+      <Icon nombre="menu" tamano={26} class="[[aria-expanded=true]_&]:hidden" />
+      <Icon nombre="cerrar" tamano={26} class="hidden [[aria-expanded=true]_&]:block" />
+    </button>
+  </div>
+
+  <div id="menu-movil" class="hidden border-t border-gris-200 bg-hueso lg:hidden">
+    <nav class="contenedor flex flex-col py-3" aria-label="Principal, celular">
+      {
+        NAV_PRINCIPAL.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'border-b border-gris-200 py-3.5 font-medium',
+              esActiva(item.href) ? 'text-arcilla-700' : 'text-tinta',
+            ]}
+            aria-current={esActiva(item.href) ? 'page' : undefined}
+          >
+            {item.texto}
+          </a>
+        ))
+      }
+      <a href="/diagnostico" class="boton boton-primario mt-4 mb-2 w-full">
+        Agenda tu diagnóstico
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const boton = document.getElementById('boton-menu');
+  const menu = document.getElementById('menu-movil');
+
+  if (boton && menu) {
+    const cerrar = () => {
+      boton.setAttribute('aria-expanded', 'false');
+      menu.classList.add('hidden');
+    };
+
+    boton.addEventListener('click', () => {
+      const abierto = boton.getAttribute('aria-expanded') === 'true';
+      boton.setAttribute('aria-expanded', String(!abierto));
+      menu.classList.toggle('hidden', abierto);
+    });
+
+    document.addEventListener('keydown', (evento) => {
+      if (evento.key === 'Escape' && boton.getAttribute('aria-expanded') === 'true') {
+        cerrar();
+        boton.focus();
+      }
+    });
+
+    // Si la pantalla crece, el menú de celular no debe quedar abierto.
+    window.matchMedia('(min-width: 64rem)').addEventListener('change', (e) => {
+      if (e.matches) cerrar();
+    });
+  }
+</script>

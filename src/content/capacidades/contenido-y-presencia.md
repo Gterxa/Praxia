@@ -1,0 +1,46 @@
+---
+titulo: "Presente todas las semanas. Sin que te robe la tarde."
+nombreCorto: "Contenido y presencia"
+subtitulo: "Publicaciones, novedades y respuestas a lo de siempre, preparadas para que tú solo revises y apruebes."
+orden: 6
+icono: "contenido"
+resumen: "Publicaciones y novedades preparadas para que tú solo revises y apruebes."
+queHace:
+  - "Prepara publicaciones para tus redes según tu rubro y tu voz"
+  - "Te avisa de cambios normativos o novedades que te afectan"
+  - "Arma respuestas a las preguntas que más te hacen"
+  - "Programa la publicación una vez que tú apruebas"
+conversacion:
+  negocio: "Praxia"
+  mensajes:
+    - de: "negocio"
+      texto: "Salió la resolución de SUNAT sobre comprobantes electrónicos. Te preparé el aviso para tus clientes:"
+      hora: "08:30"
+    - de: "negocio"
+      texto: "«Desde el 1 de noviembre cambia el plazo para emitir tus comprobantes. Si facturas a diario, esto te afecta. Escríbenos y lo revisamos juntos.»"
+      hora: "08:30"
+    - de: "negocio"
+      texto: "¿Lo publico hoy a las 6 pm, que es cuando más te leen?"
+      hora: "08:31"
+    - de: "cliente"
+      texto: "Sí, pero cambia lo último por «coordinamos una llamada»"
+      hora: "09:05"
+    - de: "negocio"
+      texto: "Corregido y programado para hoy 6:00 pm."
+      hora: "09:05"
+ejemplosPorRubro:
+  - rubro: "Contador"
+    ejemplo: "Informa a sus clientes de cambios tributarios el mismo día que salen."
+  - rubro: "Salón de belleza"
+    ejemplo: "Publica todas las semanas sin contratar a alguien que le lleve las redes."
+  - rubro: "Inmobiliaria"
+    ejemplo: "Arma las fichas de propiedades a partir de los datos que ya tiene."
+  - rubro: "Veterinaria"
+    ejemplo: "Comparte consejos de cuidado según la época del año."
+queNecesitas:
+  - "Tus cuentas de redes y quién las administra"
+  - "Algunas publicaciones anteriores que representen cómo hablas"
+  - "Diez minutos a la semana para revisar y aprobar"
+seoTitulo: "Contenido y publicaciones preparadas para tu negocio"
+seoDescripcion: "Publicaciones y novedades listas cada semana para que tú solo revises y apruebes. Nada se publica sin tu visto bueno."
+---

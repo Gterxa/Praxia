@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Seccion from '../components/Seccion.astro';
+import StepList from '../components/StepList.astro';
+import FAQ from '../components/FAQ.astro';
+import CTABand from '../components/CTABand.astro';
+import { MENSAJES_WHATSAPP } from '../consts';
+
+const preguntas = [
+  {
+    pregunta: '¿Qué pasa en el diagnóstico exactamente?',
+    respuesta:
+      'Conversamos 45 minutos, presencial o por videollamada. Te preguntamos por tu operación, no por tu tecnología. De ahí sale si tu idea se sostiene y cuál es la mejor ruta.',
+  },
+  {
+    pregunta: '¿Cuánto de mi tiempo se va en esto?',
+    respuesta:
+      'La conversación inicial, un par de revisiones mientras construimos, y la capacitación al final. El resto lo hacemos nosotros.',
+  },
+  {
+    pregunta: '¿Tengo que cambiar mis herramientas?',
+    respuesta:
+      'No. Trabajamos sobre lo que ya usas. Si en algún momento tiene sentido cambiar algo, te lo explicamos antes y decides tú.',
+  },
+  {
+    pregunta: '¿Quién queda a cargo cuando terminan?',
+    respuesta:
+      'Tú. Capacitamos a tu equipo durante la implementación y te dejamos documentado qué se construyó y cómo funciona.',
+  },
+  {
+    pregunta: '¿Y el resto de mis dudas?',
+    respuesta:
+      'Están en <a class="enlace" href="/preguntas-frecuentes">preguntas frecuentes</a>: plazos, presupuesto, facturación y qué pasa si quieres dejar de trabajar con nosotros.',
+  },
+];
+---
+
+<Layout
+  titulo="Cómo trabajamos — el método Praxia"
+  descripcion="Cuatro pasos: conversamos, validamos, implementamos y te enseñamos. Así una idea que tienes en la cabeza termina funcionando en tu negocio."
+  mensajeWhatsApp={MENSAJES_WHATSAPP.comoTrabajamos}
+>
+  <Hero
+    antetitulo="Cómo trabajamos"
+    titulo="De una idea a algo que funciona. En cuatro pasos."
+    subtitulo="Sabes en qué etapa estamos, qué sigue y qué se espera de ti. Sin sorpresas en el camino."
+    mensajeWhatsApp={MENSAJES_WHATSAPP.comoTrabajamos}
+  />
+
+  <Seccion fondo="blanco">
+    <StepList detallado={true} nivel={2} />
+  </Seccion>
+
+  <Seccion>
+    <div class="medida">
+      <h2 class="text-[1.625rem] md:text-[2rem]">Por qué validamos antes de construir</h2>
+      <p class="mt-5 text-gris-600">
+        Una automatización mal elegida cuesta tiempo, y suele terminar resolviendo un problema que
+        no era el importante. Por eso el segundo paso existe: antes de construir nada,
+        confirmamos que lo que vas a tener es lo que de verdad te va a ahorrar trabajo.
+      </p>
+      <p class="mt-4 text-gris-600">
+        A veces eso significa cambiar la idea original por una más simple, o empezar por otra
+        parte de tu operación. Todo eso sale de esa conversación.
+      </p>
+    </div>
+  </Seccion>
+
+  <Seccion fondo="blanco">
+    <FAQ titulo="Dudas sobre el proceso" preguntas={preguntas} />
+  </Seccion>
+
+  <CTABand mensajeWhatsApp={MENSAJES_WHATSAPP.comoTrabajamos} />
+</Layout>

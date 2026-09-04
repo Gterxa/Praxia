@@ -1,0 +1,13 @@
+---
+/**
+ * Marca visible de contenido que el dueño todavía debe completar.
+ * Buscar "Pendiente" en el proyecto para encontrarlas todas. Ver README.
+ */
+interface Props {
+  /** Qué falta, en dos o tres palabras. */
+  que: string;
+}
+const { que } = Astro.props;
+---
+
+<span class="pendiente" data-pendiente>[PENDIENTE: {que}]</span>

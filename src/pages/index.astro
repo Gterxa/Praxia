@@ -1,0 +1,175 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Seccion from '../components/Seccion.astro';
+import CapabilityCard from '../components/CapabilityCard.astro';
+import StepList from '../components/StepList.astro';
+import CTABand from '../components/CTABand.astro';
+import ChatMockup from '../components/ChatMockup.astro';
+import Icon from '../components/Icon.astro';
+import { TENSIONES, COMPARATIVA, MENSAJES_WHATSAPP, HAY_PRUEBA_SOCIAL } from '../consts';
+
+const capacidades = (await getCollection('capacidades')).sort(
+  (a, b) => a.data.orden - b.data.orden,
+);
+---
+
+<Layout
+  titulo="Praxia — Automatización con IA para negocios en Perú"
+  descripcion="Automatizamos las tareas repetitivas de tu negocio con inteligencia artificial. Validamos tu idea, la implementamos y te enseñamos a usarla."
+  mensajeWhatsApp={MENSAJES_WHATSAPP.home}
+>
+  <Hero
+    titulo="Tienes una idea. Nosotros la hacemos funcionar."
+    subtitulo="Automatizamos las tareas repetitivas de tu negocio con inteligencia artificial. Validamos tu idea, la implementamos y te enseñamos a usarla."
+    refuerzo="Diagnóstico sin costo. Sales sabiendo qué se puede hacer y por dónde empezar."
+    mensajeWhatsApp={MENSAJES_WHATSAPP.home}
+  >
+    <ChatMockup
+      slot="visual"
+      negocio="Escuela de Manejo Vía Libre"
+      mensajes={[
+        {
+          de: 'cliente',
+          texto: 'Buenas, ¿qué necesito para sacar el brevete A-I?',
+          hora: '23:07',
+        },
+        {
+          de: 'negocio',
+          texto:
+            '¡Hola! Tu DNI, el certificado médico y ser mayor de 18. El curso son 12 horas: 8 de manejo y 4 de teoría.',
+          hora: '23:07',
+        },
+        { de: 'cliente', texto: '¿Y cuándo empieza el próximo grupo?', hora: '23:09' },
+        {
+          de: 'negocio',
+          texto:
+            'El lunes 14, turno mañana y turno noche. ¿Te reservo un cupo y mañana te llama un asesor?',
+          hora: '23:09',
+        },
+        { de: 'cliente', texto: 'Sí, el de la noche', hora: '23:10' },
+      ]}
+    />
+  </Hero>
+
+  <!-- Las tensiones del visitante -->
+  <Seccion fondo="blanco">
+    <h2 class="max-w-2xl">Si algo de esto te suena, estás en el lugar correcto.</h2>
+    <div class="mt-10 grid gap-4 md:grid-cols-2">
+      {
+        TENSIONES.map((t) => (
+          <div class="rounded-praxia border border-gris-200 p-6">
+            <p class="font-[family-name:var(--font-titulos)] text-[1.125rem] leading-snug text-tinta italic md:text-[1.25rem]">
+              «{t.tension}»
+            </p>
+            <p class="mt-4 flex gap-2.5 text-gris-600">
+              <span class="mt-1 flex-none text-arcilla-700">
+                <Icon nombre="flecha" tamano={18} />
+              </span>
+              {t.respuesta}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </Seccion>
+
+  <!-- Qué puedes automatizar -->
+  <Seccion>
+    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <h2 class="max-w-xl">Esto es lo que ya puedes automatizar.</h2>
+      <a href="/que-puedes-automatizar" class="enlace flex-none">Ver las seis capacidades</a>
+    </div>
+    <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {
+        capacidades.map((c) => (
+          <CapabilityCard
+            href={`/que-puedes-automatizar/${c.id}`}
+            titulo={c.data.nombreCorto}
+            resumen={c.data.resumen}
+            icono={c.data.icono}
+          />
+        ))
+      }
+    </div>
+  </Seccion>
+
+  <!-- Cómo trabajamos -->
+  <Seccion fondo="blanco">
+    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <h2 class="max-w-xl">Cuatro pasos. Sin sorpresas.</h2>
+      <a href="/como-trabajamos" class="enlace flex-none">Cómo trabajamos en detalle</a>
+    </div>
+    <div class="mt-10">
+      <StepList />
+    </div>
+  </Seccion>
+
+  <!--
+    Prueba social. Praxia recién empieza: no hay logos, testimonios ni métricas,
+    y no se inventan. Cuando existan clientes reales que autoricen contarlo,
+    cambia HAY_PRUEBA_SOCIAL a true en src/consts.ts y reemplaza este bloque.
+  -->
+  {
+    !HAY_PRUEBA_SOCIAL && (
+      <Seccion fondo="arcilla">
+        <div class="medida">
+          <h2>Praxia recién empieza.</h2>
+          <p class="lead mt-6 !text-tinta">
+            Todavía no tenemos logos de clientes ni testimonios que mostrarte, así que no vas a
+            encontrarlos en esta página.
+          </p>
+          <p class="mt-5 text-gris-600">
+            Lo que sí vas a tener es un proyecto atendido de cerca, que es la ventaja de trabajar
+            con alguien que está armando su cartera.
+          </p>
+          <p class="mt-5 text-gris-600">
+            Si trabajamos juntos y el resultado es bueno, te vamos a pedir que lo cuentes. Ese es
+            el trato.
+          </p>
+        </div>
+      </Seccion>
+    )
+  }
+
+  <!-- Por qué Praxia -->
+  <Seccion fondo="blanco">
+    <h2 class="max-w-xl">Lo que nos hace distintos</h2>
+
+    <div class="mt-10 overflow-hidden rounded-praxia border border-gris-200">
+      <div class="grid grid-cols-2">
+        <p class="border-b border-gris-200 bg-arcilla-50 px-5 py-4 font-[family-name:var(--font-titulos)] font-semibold text-tinta md:px-7">
+          Praxia
+        </p>
+        <p class="border-b border-l border-gris-200 px-5 py-4 font-[family-name:var(--font-titulos)] font-semibold text-gris-600 md:px-7">
+          La alternativa típica
+        </p>
+        {
+          COMPARATIVA.map((fila, i) => (
+            <>
+              <p
+                class:list={[
+                  'bg-arcilla-50 px-5 py-4 text-tinta md:px-7',
+                  i < COMPARATIVA.length - 1 && 'border-b border-gris-200',
+                ]}
+              >
+                {fila.praxia}
+              </p>
+              <p
+                class:list={[
+                  'border-l border-gris-200 px-5 py-4 text-gris-600 md:px-7',
+                  i < COMPARATIVA.length - 1 && 'border-b',
+                ]}
+              >
+                {fila.alternativa}
+              </p>
+            </>
+          ))
+        }
+      </div>
+    </div>
+  </Seccion>
+
+  <CTABand />
+</Layout>

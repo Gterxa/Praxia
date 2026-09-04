@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Seccion from '../components/Seccion.astro';
+import CTABand from '../components/CTABand.astro';
+import { MENSAJES_WHATSAPP } from '../consts';
+---
+
+<Layout
+  titulo="Soluciones mayores"
+  descripcion="Cuando el problema no es una tarea repetitiva sino un archivo entero de documentos que nadie puede consultar rápido y con confianza."
+  mensajeWhatsApp={MENSAJES_WHATSAPP.solucionesMayores}
+>
+  <Hero
+    antetitulo="Soluciones mayores"
+    titulo="Cuando una automatización ya no alcanza."
+    subtitulo="A veces el problema no es una tarea repetitiva sino un montón de información dispersa: cientos de contratos, expedientes o documentos que nadie puede consultar de forma rápida y confiable."
+    mensajeWhatsApp={MENSAJES_WHATSAPP.solucionesMayores}
+  />
+
+  <Seccion fondo="blanco">
+    <div class="medida">
+      <h2 class="text-[1.375rem] md:text-[1.75rem]">Qué construimos para esos casos</h2>
+
+      <p class="mt-5 text-gris-600">
+        Algo más grande: un espacio de trabajo donde tus documentos viven ordenados, se pueden
+        consultar en lenguaje normal —y cada respuesta te dice de qué documento salió— y donde lo
+        que entra se revisa contra tus propias reglas.
+      </p>
+
+      <p class="mt-5 text-gris-600">
+        Es para una etapa distinta del negocio, cuando el volumen ya no se maneja carpeta por
+        carpeta. Si crees que tu caso va por ahí, conversémoslo en el diagnóstico y vemos si tiene
+        sentido para ti hoy.
+      </p>
+
+      <p class="pequeno mt-10 border-t border-gris-200 pt-6 text-gris-600">
+        Si lo tuyo por ahora es ordenar lo que entra cada día, empieza por{' '}
+        <a href="/que-puedes-automatizar/documentos-y-archivo" class="enlace"
+          >documentos y archivo</a
+        >.
+      </p>
+    </div>
+  </Seccion>
+
+  <CTABand
+    titulo="Conversemos tu caso."
+    texto="Cuéntanos qué tienes hoy y cuánto volumen manejas. De ahí sale si esto tiene sentido para ti o si te conviene empezar por una automatización más simple."
+    mensajeWhatsApp={MENSAJES_WHATSAPP.solucionesMayores}
+  />
+</Layout>

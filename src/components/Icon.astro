@@ -1,0 +1,55 @@
+---
+/**
+ * Íconos SVG en línea (trazados de Lucide, MIT).
+ * Se copian a mano para no cargar una librería entera por seis íconos.
+ */
+interface Props {
+  nombre: keyof typeof TRAZOS;
+  class?: string;
+  tamano?: number;
+}
+
+const TRAZOS = {
+  conversacion: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/>',
+  calendario:
+    '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/>',
+  personas:
+    '<path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/>',
+  documentos:
+    '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h5"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M20 8v3"/><circle cx="17" cy="17" r="3"/><path d="m21 21-1.9-1.9"/>',
+  reportes:
+    '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16h2v-5H7z"/><path d="M12 16h2V8h-2z"/><path d="M17 16h2v-9h-2z"/>',
+  contenido:
+    '<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  flecha: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  whatsapp:
+    '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/><path d="M9 10.5c0 2.5 2 4.5 4.5 4.5l1-1 1.5.8"/>',
+  escudo:
+    '<path d="M20 13c0 5-3.5 7.5-7.7 8.9a1.9 1.9 0 0 1-1.3 0C6.8 20.5 3.3 18 3.3 13V6a2 2 0 0 1 2-2c2 0 4.5-1.2 6.2-2.7a1.9 1.9 0 0 1 2.4 0C15.6 2.8 18 4 20 4a2 2 0 0 1 2 2z" transform="translate(-1)"/>',
+  menu: '<path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/>',
+  cerrar: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  correo:
+    '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+  alerta:
+    '<path d="M12 9v4"/><path d="M10.36 3.23a1.9 1.9 0 0 1 3.28 0l8.2 14.2a1.9 1.9 0 0 1-1.64 2.85H3.8a1.9 1.9 0 0 1-1.64-2.85z"/><path d="M12 17h.01"/>',
+} as const;
+
+const { nombre, class: clase = '', tamano = 24 } = Astro.props;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width={tamano}
+  height={tamano}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.75"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class={clase}
+  aria-hidden="true"
+  focusable="false"
+  set:html={TRAZOS[nombre]}
+/>
