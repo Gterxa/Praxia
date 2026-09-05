@@ -28,15 +28,11 @@ conversacion:
     - de: "negocio"
       texto: "Corregido y programado para hoy 6:00 pm."
       hora: "09:05"
-ejemplosPorRubro:
-  - rubro: "Contador"
-    ejemplo: "Informa a sus clientes de cambios tributarios el mismo día que salen."
-  - rubro: "Salón de belleza"
-    ejemplo: "Publica todas las semanas sin contratar a alguien que le lleve las redes."
-  - rubro: "Inmobiliaria"
-    ejemplo: "Arma las fichas de propiedades a partir de los datos que ya tiene."
-  - rubro: "Veterinaria"
-    ejemplo: "Comparte consejos de cuidado según la época del año."
+ejemplos:
+  - "Avisa a tus clientes de un cambio normativo el mismo día que sale."
+  - "Publica todas las semanas sin contratar a alguien que te lleve las redes."
+  - "Arma las fichas de lo que vendes a partir de los datos que ya tienes."
+  - "Comparte consejos útiles según la época del año."
 queNecesitas:
   - "Tus cuentas de redes y quién las administra"
   - "Algunas publicaciones anteriores que representen cómo hablas"

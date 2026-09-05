@@ -4,7 +4,7 @@ import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
 import CTABand from '../components/CTABand.astro';
 import Pendiente from '../components/Pendiente.astro';
-import { MENSAJES_WHATSAPP } from '../consts';
+import { MENSAJES_WHATSAPP, MOSTRAR_PENDIENTES } from '../consts';
 ---
 
 <Layout
@@ -46,10 +46,16 @@ import { MENSAJES_WHATSAPP } from '../consts';
         Praxia, te vas con la documentación bajo el brazo.
       </p>
 
-      <h2 class="mt-14 text-[1.375rem] md:text-[1.75rem]">Quién está detrás</h2>
-      <p class="mt-5 text-gris-600">
-        <Pendiente que="bio del fundador y foto" />
-      </p>
+      {
+        MOSTRAR_PENDIENTES && (
+          <>
+            <h2 class="mt-14 text-[1.375rem] md:text-[1.75rem]">Quién está detrás</h2>
+            <p class="mt-5 text-gris-600">
+              <Pendiente que="bio del fundador y foto" />
+            </p>
+          </>
+        )
+      }
 
       <h2 class="mt-14 text-[1.375rem] md:text-[1.75rem]">Dónde trabajamos</h2>
       <p class="mt-5 text-gris-600">

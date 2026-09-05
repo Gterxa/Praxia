@@ -25,15 +25,11 @@ conversacion:
     - de: "cliente"
       texto: "Ya, hago el pedido en la mañana"
       hora: "07:12"
-ejemplosPorRubro:
-  - rubro: "Grifo"
-    ejemplo: "Recibe el reporte de ventas y turnos cada mañana, antes de llegar al local."
-  - rubro: "Salón de belleza"
-    ejemplo: "Ve qué servicios crecen y cuáles no, sin sacar la cuenta a mano."
-  - rubro: "Contador"
-    ejemplo: "Controla los vencimientos del mes en una sola lista, por cliente."
-  - rubro: "Constructor"
-    ejemplo: "Envía el avance de obra al propietario sin armarlo a mano cada semana."
+ejemplos:
+  - "Manda el reporte de ventas y turnos cada mañana, antes de que llegues al local."
+  - "Muestra qué servicios crecen y cuáles no, sin que nadie saque la cuenta a mano."
+  - "Ordena los vencimientos del mes en una sola lista, por cliente."
+  - "Arma el avance para el cliente sin que nadie lo prepare a mano cada semana."
 queNecesitas:
   - "Que los datos existan en algún lado, aunque sea en un Excel o en un cuaderno digitalizado"
   - "Saber qué tres o cuatro números miras para decidir"

@@ -23,33 +23,68 @@ npm run dev        # http://localhost:4321
 | `npm run check` | Revisa tipos y errores de Astro (debe dar 0 errores) |
 | `npm run og` | Regenera la imagen que se ve al compartir el sitio |
 | `npm run contraste` | Verifica que la paleta cumpla WCAG AA |
+| `npm run limpiar` | Borra el caché de contenido y vuelve a construir |
 
 La primera compilación descarga las fuentes (Fraunces e Inter) desde Google y las guarda dentro
 del sitio. Necesita internet una vez; después ya no.
+
+### Si una sección aparece vacía
+
+Astro guarda el contenido de las colecciones en un caché que vive en **`node_modules/.astro`**,
+no en la carpeta `.astro` de la raíz. Cuando cambias el schema de `src/content.config.ts` o
+reescribes varios `.md` de golpe con el servidor de desarrollo encendido, ese caché se queda con
+la versión vieja y las capacidades pueden desaparecer de la home y del hub sin dar ningún error.
+
+La cura es reiniciar el servidor de desarrollo. Si insiste:
+
+```bash
+npm run limpiar
+```
+
+Desde que existe `src/capacidades.ts`, una colección vacía **rompe el build** con un mensaje
+claro en vez de renderizar una página sin capacidades. Que reviente es lo que queremos: una
+página sin las seis tarjetas no se ve rota, se ve como si Praxia no ofreciera nada.
 
 ---
 
 ## Antes de publicar: lo que falta completar
 
-Todo lo pendiente está marcado en el sitio con un fondo amarillo y el texto `[PENDIENTE: …]`.
-Para encontrarlos todos:
+**Hoy las partes pendientes están ocultas.** No se ve ninguna a medio hacer: el interruptor
+`MOSTRAR_PENDIENTES` de `src/consts.ts` está en `false`, y eso esconde exactamente los trozos cuyo
+contenido todavía no existe. Ninguna página se cae entera — solo desaparece el pedazo que falta, y
+el resto de la página se muestra normal.
+
+Para verlas todas con su marcador amarillo y saber qué falta:
+
+```ts
+// src/consts.ts
+export const MOSTRAR_PENDIENTES = true;
+```
+
+A medida que completes un dato, reemplaza el `<Pendiente>` por el contenido real y saca esa parte
+de la condición. Cuando no quede ninguna, borra el interruptor y el componente `Pendiente.astro`.
+
+Para encontrarlas en el código:
 
 ```bash
-grep -rn "PENDIENTE" src/
+grep -rn "MOSTRAR_PENDIENTES" src/
 ```
 
 ### Lista completa
 
-**Datos de contacto — `src/consts.ts`** (bloquean el lanzamiento)
+**Datos de contacto — `src/consts.ts`**
 
 | Qué | Dónde | Estado hoy |
 |---|---|---|
-| Número de WhatsApp | `CONTACTO.whatsapp` | `51000000000`, número falso a propósito |
-| Correo | `CONTACTO.email` | `hola@praxia.pe`, hay que confirmarlo o cambiarlo |
-| Dominio real | `SITE.url` | `https://praxia.pe` |
+| Número de WhatsApp | `CONTACTO.whatsapp` | `51960041731`, real |
+| Correo | `CONTACTO.email` | `contacto.praxias@gmail.com`, real |
+| Dominio real | `SITE.url` | `https://praxia.pe` — **falta confirmar** |
 
-Con el WhatsApp falso, **todos los botones de WhatsApp del sitio llevan a una página de error**.
-Es lo primero que hay que cambiar. Se cambia en un solo lugar y se propaga a todo el sitio.
+El WhatsApp y el correo ya están puestos. Viven en un solo lugar y se propagan a todos los
+botones, enlaces y datos estructurados del sitio: no los repitas en ningún otro archivo.
+
+El dominio sigue pendiente. De `SITE.url` salen las URLs canónicas, el sitemap y las etiquetas
+para compartir, así que hay que cambiarlo antes de publicar.
 
 **Plazos — `src/pages/preguntas-frecuentes.astro`**
 
@@ -62,8 +97,8 @@ Es lo primero que hay que cambiar. Se cambia en un solo lugar y se propaga a tod
 
 **Seguridad — `src/pages/seguridad.astro`**
 
-Esta página tiene una nota visible dirigida al dueño que hay que borrar después de validar el
-contenido. **Cada afirmación debe corresponder a algo efectivamente implementado.** No agregues
+Con el interruptor en `true` esta página muestra una nota dirigida al dueño, no al visitante.
+**Cada afirmación debe corresponder a algo efectivamente implementado.** No agregues
 certificaciones ni estándares que no tengas. Falta definir:
 
 - Proveedores y región concretos donde viven los datos
@@ -82,6 +117,10 @@ certificaciones ni estándares que no tengas. Falta definir:
 
 Las dos páginas legales llevan `noindex` mientras estén incompletas. Cuando las cierres, quita el
 `noIndex={true}` de cada una y borra las líneas `Disallow` de `public/robots.txt`.
+
+Ojo con estas dos: mientras el interruptor esté en `false`, `/legal` sale sin fecha, sin razón
+social y sin condiciones generales, y `/privacidad` sin fecha y sin plazo de conservación. Lo que
+queda dicho es cierto, pero están incompletas — por eso siguen fuera de los buscadores.
 
 ---
 
@@ -239,7 +278,8 @@ fuentes sin dar ningún error.
 títulos grandes, no para texto de cuerpo. Por eso hay dos variantes más oscuras, `--color-arcilla-700`
 y `--color-arcilla-800`, que son las que se usan en enlaces, botones y textos pequeños. La
 terracota original queda para bloques grandes: números, íconos, bordes. `npm run contraste`
-verifica los 16 pares del sitio.
+verifica los 22 pares del sitio y falla con código de salida 1 si alguno cae por debajo
+del mínimo.
 
 **Cero dark mode**, por decisión del brief. La paleta clara está definida completa.
 

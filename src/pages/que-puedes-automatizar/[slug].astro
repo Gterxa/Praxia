@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import { getCollection } from 'astro:content';
+import { getCapacidades } from '../../capacidades';
 import Layout from '../../layouts/Layout.astro';
 import Hero from '../../components/Hero.astro';
 import Seccion from '../../components/Seccion.astro';
@@ -12,22 +12,19 @@ import CTABand from '../../components/CTABand.astro';
 import { MENSAJES_WHATSAPP } from '../../consts';
 
 export const getStaticPaths = (async () => {
-  const capacidades = await getCollection('capacidades');
+  const capacidades = await getCapacidades();
   return capacidades.map((capacidad) => ({
     params: { slug: capacidad.id },
     props: { capacidad },
   }));
 }) satisfies GetStaticPaths;
 
-type Props = { capacidad: Awaited<ReturnType<typeof getCollection<'capacidades'>>>[number] };
+type Props = { capacidad: Awaited<ReturnType<typeof getCapacidades>>[number] };
 
 const { capacidad } = Astro.props;
 const d = capacidad.data;
 
-const otras = (await getCollection('capacidades'))
-  .filter((c) => c.id !== capacidad.id)
-  .sort((a, b) => a.data.orden - b.data.orden)
-  .slice(0, 3);
+const otras = (await getCapacidades()).filter((c) => c.id !== capacidad.id).slice(0, 3);
 
 const mensaje = MENSAJES_WHATSAPP.capacidad(d.nombreCorto);
 ---
@@ -63,14 +60,14 @@ const mensaje = MENSAJES_WHATSAPP.capacidad(d.nombreCorto);
     </div>
   </Seccion>
 
-  <!-- En tu rubro -->
+  <!-- Dónde se nota -->
   <Seccion fondo="blanco">
-    <h2 class="text-[1.625rem] md:text-[2rem]">En tu rubro</h2>
+    <h2 class="text-[1.625rem] md:text-[2rem]">Dónde se nota</h2>
     <p class="mt-3 max-w-xl text-gris-600">
-      Lo que esta automatización resuelve en negocios distintos.
+      Situaciones concretas del día a día. Pasan en negocios muy distintos entre sí.
     </p>
     <div class="mt-8">
-      <ExampleBlock ejemplos={d.ejemplosPorRubro} />
+      <ExampleBlock ejemplos={d.ejemplos} />
     </div>
   </Seccion>
 

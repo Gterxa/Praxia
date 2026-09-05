@@ -1,12 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCapacidades } from '../capacidades';
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { CONTACTO, SITE, whatsappLink, MENSAJES_WHATSAPP } from '../consts';
 
-const capacidades = (await getCollection('capacidades')).sort(
-  (a, b) => a.data.orden - b.data.orden,
-);
+const capacidades = await getCapacidades();
 
 const anio = new Date().getFullYear();
 ---

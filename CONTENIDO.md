@@ -39,14 +39,21 @@ No uses ninguna de estas en el sitio: *transformación digital, sinergia, disrup
 solución integral, escalable, robusto, empoderar, potenciar, revolucionar, de última generación,
 end-to-end, seamless.* Tampoco emojis. Y siempre de tú, nunca de usted.
 
-**5. El sitio no habla de dinero.**
+**5. Nunca listes rubros.**
+Los ejemplos describen situaciones, no industrias. Una lista de cuatro rubros le dice a la
+ferretería y al taller que la solución no es para ellos, y eso es exactamente lo contrario de lo
+que queremos. Escribe *"baja la cantidad de citas que nadie usa"*, no *"salón de belleza: baja
+las clientas que no llegan"*. Decir **"tu rubro"** —el del visitante— siempre está bien; una
+lista de rubros, no.
+
+**6. El sitio no habla de dinero.**
 Sin montos, sin rangos, sin planes, sin "desde S/", sin "económico" ni "accesible". El
 presupuesto sale del diagnóstico y se conversa ahí. Hay exactamente cuatro frases en todo el
 sitio que rozan el tema, y ya están escritas: la de debajo del botón del hero, la de "negocios
 de 1 a 50 personas", la del paso 2 del método y la de "sin contratos de permanencia" en las
 preguntas frecuentes. No agregues una quinta.
 
-**6. El sitio habla de Perú, sin subdividir.**
+**7. El sitio habla de Perú, sin subdividir.**
 Nada de Lima, provincias ni ciudades.
 
 ---
@@ -59,17 +66,16 @@ Arriba de todo vas a ver algo así:
 
 ```ts
 export const CONTACTO = {
-  /** [PENDIENTE] Número real de WhatsApp, formato internacional sin + ni espacios. */
-  whatsapp: '51000000000',
-  /** [PENDIENTE] Correo real. */
-  email: 'hola@praxia.pe',
+  /** Formato internacional, sin + ni espacios: así lo pide wa.me. */
+  whatsapp: '51960041731',
+  email: 'contacto.praxias@gmail.com',
 ```
 
-Cambia el número entre comillas por el tuyo. Va sin el `+`, sin espacios y con el 51 de Perú
-adelante. Por ejemplo, si tu celular es 987 654 321, escribes `'51987654321'`.
+Si algún día cambia el número, se cambia solo acá. Va sin el `+`, sin espacios y con el 51 de
+Perú adelante. Por ejemplo, si el celular fuera 987 654 321, escribes `'51987654321'`.
 
 Ese número alimenta **todos** los botones de WhatsApp del sitio. No lo escribas en ningún otro
-lado.
+lado. Lo mismo con el correo.
 
 > Mientras diga `51000000000`, los botones de WhatsApp llevan a una página de error. Es a
 > propósito, para que no se te pase.
@@ -123,9 +129,8 @@ conversacion:
     - de: "negocio"
       texto: "¡Hola! Claro. Mañana tengo 10:00, 11:30 y 4:00 pm. ¿Cuál te acomoda?"
       hora: "09:14"
-ejemplosPorRubro:
-  - rubro: "Salón de belleza"
-    ejemplo: "Reduce las clientas que reservan y después no llegan."
+ejemplos:
+  - "Baja la cantidad de citas que se reservan y después nadie usa."
 queNecesitas:
   - "Tus horarios de atención y cuánto dura cada servicio"
 seoTitulo: "Agenda citas y recordatorios automáticos por WhatsApp"
@@ -145,7 +150,7 @@ seoDescripcion: "Reserva, confirma y recuerda citas por WhatsApp..."
 | `resumen` | La línea que se lee en la tarjeta de la home |
 | `queHace` | Lista de viñetas. Concretas, en lenguaje de negocio |
 | `conversacion` | El chat de WhatsApp que se muestra en la página. Ver más abajo |
-| `ejemplosPorRubro` | Cada uno tiene un `rubro` y un `ejemplo`. Van cuatro |
+| `ejemplos` | Situaciones concretas del día a día. Van cuatro. **Sin nombrar rubros** |
 | `queNecesitas` | Los requisitos honestos para empezar |
 | `seoTitulo` | El texto que sale en Google. Máximo unos 60 caracteres |
 | `seoDescripcion` | El párrafo que sale en Google. Máximo unos 155 caracteres |
@@ -286,20 +291,24 @@ Cámbialos ahí una vez y se actualizan en todas partes.
 
 ---
 
-## Los avisos amarillos que dicen PENDIENTE
+## Lo que todavía está pendiente
 
-Los `[PENDIENTE: …]` con fondo amarillo son cosas que faltan definir: el plazo de una
-automatización, tu bio, tus datos fiscales. Son visibles a propósito, para que no se publiquen por descuido.
+Hay partes del sitio cuyo contenido todavía no existe: el plazo de una automatización, tu bio, tus
+datos fiscales, las fechas de las legales. **Ahora mismo están ocultas**, así que nadie las ve a
+medio hacer. No falta ninguna página entera, solo esos pedacitos.
 
-Para encontrarlos todos, en la terminal:
+Para verlas todas y saber qué falta, abre `src/consts.ts` y cambia esta línea:
 
+```ts
+export const MOSTRAR_PENDIENTES = false;   // ponlo en true
 ```
-grep -rn "PENDIENTE" src/
-```
+
+Guarda y mira el sitio: aparecen con fondo amarillo y el texto `[PENDIENTE: …]`. Cuando termines
+de revisar, vuelve a ponerlo en `false`.
 
 La lista completa, explicada una por una, está en el [README](./README.md).
 
-Cuando completes uno, borra la etiqueta entera. Por ejemplo, esto:
+Cuando completes uno, borra la etiqueta **y la condición que la esconde**. Por ejemplo, esto:
 
 ```
 Última actualización: <Pendiente que="fecha" />
@@ -317,11 +326,12 @@ se convierte en esto:
 
 - [ ] El WhatsApp de `src/consts.ts` es el real
 - [ ] El correo es el real
-- [ ] No queda ningún `[PENDIENTE: …]` visible en el sitio
-- [ ] Borraste la nota amarilla dirigida a ti en la página de Seguridad
+- [ ] Revisaste con `MOSTRAR_PENDIENTES = true` qué falta, y lo volviste a poner en `false`
+- [ ] La nota dirigida a ti en la página de Seguridad no se ve con el interruptor en `false`
 - [ ] Cada afirmación de la página de Seguridad corresponde a algo que realmente haces
 - [ ] Ningún logo, testimonio, métrica ni caso inventado
 - [ ] Ninguna frase que declare que somos honestos, ni descargos de "no sirve para todo"
+- [ ] Ningún ejemplo etiquetado con un rubro
 - [ ] Los negocios de las conversaciones son ficticios, no clientes reales
 - [ ] Ninguna palabra de la lista prohibida
 - [ ] No hay montos ni precios en ninguna página

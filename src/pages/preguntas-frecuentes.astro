@@ -4,7 +4,7 @@ import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
 import FAQ from '../components/FAQ.astro';
 import CTABand from '../components/CTABand.astro';
-import { MENSAJES_WHATSAPP } from '../consts';
+import { MENSAJES_WHATSAPP, MOSTRAR_PENDIENTES } from '../consts';
 
 /**
  * Las preguntas que la gente hace antes de escribirnos.
@@ -28,7 +28,8 @@ const preguntas = [
   {
     pregunta: '¿Cuánto demora una automatización?',
     respuesta:
-      '<span class="pendiente">[PENDIENTE: plazo real]</span> El plazo exacto sale del diagnóstico, cuando ya sabemos qué hay que conectar.',
+      (MOSTRAR_PENDIENTES ? '<span class="pendiente">[PENDIENTE: plazo real]</span> ' : '') +
+      'El plazo exacto sale del diagnóstico, cuando ya sabemos qué hay que conectar y con qué volumen.',
   },
   {
     pregunta: '¿Qué pasa si mi idea no es viable?',

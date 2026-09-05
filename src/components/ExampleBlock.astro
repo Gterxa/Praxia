@@ -1,17 +1,20 @@
 ---
+import Icon from './Icon.astro';
 
 interface Props {
-  ejemplos: readonly { rubro: string; ejemplo: string }[];
+  ejemplos: readonly string[];
 }
 const { ejemplos } = Astro.props;
 ---
 
 <ul class="grid gap-4 sm:grid-cols-2">
   {
-    ejemplos.map((e) => (
-      <li class="tarjeta">
-        <span class="antetitulo">{e.rubro}</span>
-        <p class="mt-2 text-tinta">{e.ejemplo}</p>
+    ejemplos.map((ejemplo) => (
+      <li class="tarjeta flex gap-3.5">
+        <span class="mt-1 flex-none text-arcilla-700">
+          <Icon nombre="flecha" tamano={18} />
+        </span>
+        <span class="text-tinta">{ejemplo}</span>
       </li>
     ))
   }

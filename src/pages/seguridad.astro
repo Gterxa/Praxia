@@ -5,7 +5,7 @@ import Seccion from '../components/Seccion.astro';
 import CTABand from '../components/CTABand.astro';
 import Pendiente from '../components/Pendiente.astro';
 import Icon from '../components/Icon.astro';
-import { MENSAJES_WHATSAPP } from '../consts';
+import { MENSAJES_WHATSAPP, MOSTRAR_PENDIENTES } from '../consts';
 
 const temas = [
   {
@@ -54,16 +54,20 @@ const temas = [
   />
 
   <Seccion fondo="blanco">
-    <div
-      class="mb-10 flex max-w-3xl gap-3 rounded-praxia border border-ambar/40 bg-[#FDF6E3] p-5 text-ambar-700"
-    >
-      <span class="mt-0.5 flex-none"><Icon nombre="alerta" tamano={20} /></span>
-      <p class="pequeno">
-        <strong>Nota para el dueño de Praxia, no para el visitante:</strong> cada afirmación de esta
-        página debe corresponder a algo efectivamente implementado. No agregues certificaciones ni
-        estándares que no tengas. Borra esta nota cuando hayas validado el contenido.
-      </p>
-    </div>
+    {
+      MOSTRAR_PENDIENTES && (
+        <div class="mb-10 flex max-w-3xl gap-3 rounded-praxia border border-ambar/40 bg-[#FDF6E3] p-5 text-ambar-700">
+          <span class="mt-0.5 flex-none">
+            <Icon nombre="alerta" tamano={20} />
+          </span>
+          <p class="pequeno">
+            <strong>Nota para el dueño de Praxia, no para el visitante:</strong> cada afirmación de
+            esta página debe corresponder a algo efectivamente implementado. No agregues
+            certificaciones ni estándares que no tengas.
+          </p>
+        </div>
+      )
+    }
 
     <div class="max-w-3xl divide-y divide-gris-200">
       {
@@ -71,9 +75,11 @@ const temas = [
           <div class="py-8 first:pt-0 last:pb-0">
             <h2 class="text-[1.25rem] md:text-[1.5rem]">{t.titulo}</h2>
             <p class="mt-4 text-gris-600">{t.texto}</p>
-            <p class="pequeno mt-3">
-              <Pendiente que={t.pendiente} />
-            </p>
+            {MOSTRAR_PENDIENTES && (
+              <p class="pequeno mt-3">
+                <Pendiente que={t.pendiente} />
+              </p>
+            )}
           </div>
         ))
       }

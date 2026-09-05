@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Seccion from '../components/Seccion.astro';
 import Pendiente from '../components/Pendiente.astro';
-import { CONTACTO } from '../consts';
+import { CONTACTO, MOSTRAR_PENDIENTES } from '../consts';
 ---
 
 <Layout
@@ -13,9 +13,13 @@ import { CONTACTO } from '../consts';
   <Seccion>
     <div class="medida">
       <h1>Política de privacidad</h1>
-      <p class="pequeno mt-4 text-gris-600">
-        Última actualización: <Pendiente que="fecha" />
-      </p>
+      {
+        MOSTRAR_PENDIENTES && (
+          <p class="pequeno mt-4 text-gris-600">
+            Última actualización: <Pendiente que="fecha" />
+          </p>
+        )
+      }
 
       <div class="mt-10 space-y-8">
         <div>
@@ -38,8 +42,8 @@ import { CONTACTO } from '../consts';
         <div>
           <h2 class="text-[1.25rem] md:text-[1.5rem]">Cuánto tiempo los guardamos</h2>
           <p class="mt-3 text-gris-600">
-            <Pendiente que="plazo de conservación" /> Si nos pides que los borremos antes, los
-            borramos.
+            {MOSTRAR_PENDIENTES && <Pendiente que="plazo de conservación" />} Si nos pides que
+            borremos tus datos, los borramos.
           </p>
         </div>
 
@@ -59,9 +63,13 @@ import { CONTACTO } from '../consts';
             tipográficas se sirven desde nuestro propio dominio, así que tampoco hay pedidos a
             terceros al cargar la página.
           </p>
-          <p class="mt-3 text-gris-600">
-            <Pendiente que="declarar aquí la herramienta de analítica, si instalas una" />
-          </p>
+          {
+            MOSTRAR_PENDIENTES && (
+              <p class="mt-3 text-gris-600">
+                <Pendiente que="declarar aquí la herramienta de analítica, si instalas una" />
+              </p>
+            )
+          }
         </div>
 
         <div>

@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Seccion from '../components/Seccion.astro';
 import Pendiente from '../components/Pendiente.astro';
-import { SITE, CONTACTO } from '../consts';
+import { SITE, CONTACTO, MOSTRAR_PENDIENTES } from '../consts';
 ---
 
 <Layout
@@ -13,24 +13,37 @@ import { SITE, CONTACTO } from '../consts';
   <Seccion>
     <div class="medida">
       <h1>Términos legales</h1>
-      <p class="pequeno mt-4 text-gris-600">
-        Última actualización: <Pendiente que="fecha" />
-      </p>
+      {
+        MOSTRAR_PENDIENTES && (
+          <p class="pequeno mt-4 text-gris-600">
+            Última actualización: <Pendiente que="fecha" />
+          </p>
+        )
+      }
 
       <div class="mt-10 space-y-8">
         <div>
           <h2 class="text-[1.25rem] md:text-[1.5rem]">Quiénes somos</h2>
-          <p class="mt-3 text-gris-600">
-            {SITE.nombre}, <Pendiente que="razón social y RUC" />, con domicilio en{' '}
-            <Pendiente que="dirección fiscal" />. Puedes escribirnos a {CONTACTO.email}.
-          </p>
+          {
+            MOSTRAR_PENDIENTES ? (
+              <p class="mt-3 text-gris-600">
+                {SITE.nombre}, <Pendiente que="razón social y RUC" />, con domicilio en{' '}
+                <Pendiente que="dirección fiscal" />. Puedes escribirnos a {CONTACTO.email}.
+              </p>
+            ) : (
+              <p class="mt-3 text-gris-600">
+                {SITE.nombre}, agencia de automatización con inteligencia artificial que opera en
+                el Perú. Puedes escribirnos a {CONTACTO.email}.
+              </p>
+            )
+          }
         </div>
 
         <div>
           <h2 class="text-[1.25rem] md:text-[1.5rem]">Uso de este sitio</h2>
           <p class="mt-3 text-gris-600">
-            El contenido de este sitio es informativo. Los ejemplos por rubro y las conversaciones
-            que se muestran son ilustrativos: no son clientes atendidos ni promesas de resultado.
+            El contenido de este sitio es informativo. Los ejemplos y las conversaciones que se
+            muestran son ilustrativos: no son clientes atendidos ni promesas de resultado.
             Las condiciones de cada trabajo se definen por escrito antes de empezar.
           </p>
         </div>
@@ -42,9 +55,13 @@ import { SITE, CONTACTO } from '../consts';
             propiedad de lo construido, se establecen en la propuesta que firmamos contigo. Nada de
             lo publicado en este sitio reemplaza ese documento.
           </p>
-          <p class="mt-3 text-gris-600">
-            <Pendiente que="condiciones generales revisadas por un abogado" />
-          </p>
+          {
+            MOSTRAR_PENDIENTES && (
+              <p class="mt-3 text-gris-600">
+                <Pendiente que="condiciones generales revisadas por un abogado" />
+              </p>
+            )
+          }
         </div>
 
         <div>

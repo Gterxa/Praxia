@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCapacidades } from '../capacidades';
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
@@ -10,9 +10,7 @@ import ChatMockup from '../components/ChatMockup.astro';
 import Icon from '../components/Icon.astro';
 import { TENSIONES, COMPARATIVA, MENSAJES_WHATSAPP, HAY_PRUEBA_SOCIAL } from '../consts';
 
-const capacidades = (await getCollection('capacidades')).sort(
-  (a, b) => a.data.orden - b.data.orden,
-);
+const capacidades = await getCapacidades();
 ---
 
 <Layout

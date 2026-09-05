@@ -15,10 +15,9 @@ export const SITE = {
 } as const;
 
 export const CONTACTO = {
-  /** [PENDIENTE] Número real de WhatsApp, formato internacional sin + ni espacios. */
-  whatsapp: '51000000000',
-  /** [PENDIENTE] Correo real. */
-  email: 'hola@praxia.pe',
+  /** Formato internacional, sin + ni espacios: así lo pide wa.me. */
+  whatsapp: '51960041731',
+  email: 'contacto.praxias@gmail.com',
   pais: 'Perú',
 } as const;
 
@@ -126,6 +125,22 @@ export const TENSIONES = [
     respuesta: 'Eso es exactamente lo que automatizamos.',
   },
 ] as const;
+
+/**
+ * Interruptor de lo que todavía no existe.
+ *
+ * En `false`, las partes del sitio cuyo contenido está pendiente se ocultan:
+ * la bio del fundador, los datos fiscales, las fechas de las legales, los
+ * plazos y las notas internas de la página de seguridad. El resto de cada
+ * página se muestra normal — no se oculta ninguna página entera.
+ *
+ * Ponlo en `true` para verlas con los marcadores amarillos y saber qué falta.
+ * A medida que completes cada dato, reemplaza el `<Pendiente>` por el
+ * contenido real y saca esa parte de la condición.
+ *
+ * Busca `MOSTRAR_PENDIENTES` en src/ para encontrar todas.
+ */
+export const MOSTRAR_PENDIENTES = false;
 
 /**
  * Prueba social: hoy no existe.

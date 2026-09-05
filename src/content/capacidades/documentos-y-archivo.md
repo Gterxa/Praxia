@@ -31,15 +31,11 @@ conversacion:
     - de: "negocio"
       texto: "En Contratos › 2024. Es el que vence el 31 de enero y tiene renovación automática."
       hora: "16:24"
-ejemplosPorRubro:
-  - rubro: "Contador"
-    ejemplo: "Deja de perseguir y digitar comprobantes uno por uno cada fin de mes."
-  - rubro: "Notaría"
-    ejemplo: "Encuentra el expediente sin recorrer carpetas ni preguntarle al que lo archivó."
-  - rubro: "Constructor"
-    ejemplo: "Tiene las adendas ordenadas en un solo lugar y no dispersas en cadenas de correo."
-  - rubro: "Inmobiliaria"
-    ejemplo: "Sabe qué contratos vencen este trimestre sin abrirlos uno por uno."
+ejemplos:
+  - "Clasifica los comprobantes que llegan a fin de mes, sin que nadie los digite."
+  - "Encuentra el expediente sin recorrer carpetas ni preguntarle a quien lo archivó."
+  - "Mantiene anexos y adendas en un solo lugar, no dispersos en cadenas de correo."
+  - "Avisa qué contratos vencen este trimestre sin que tengas que abrir ninguno."
 queNecesitas:
   - "Un correo o un WhatsApp por donde entren los documentos"
   - "Un lugar donde guardarlos, como Google Drive o una carpeta compartida"

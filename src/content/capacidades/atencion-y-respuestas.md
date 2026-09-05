@@ -31,15 +31,11 @@ conversacion:
     - de: "negocio"
       texto: "Listo, Marcela. Le paso tus datos al asesor y mañana temprano te confirma la hora exacta."
       hora: "22:45"
-ejemplosPorRubro:
-  - rubro: "Inmobiliaria"
-    ejemplo: "Responde por una propiedad a las 10 de la noche y agenda la visita para el fin de semana."
-  - rubro: "Veterinaria"
-    ejemplo: "Resuelve el \"¿a qué hora atienden?\" sin que nadie interrumpa la consulta."
-  - rubro: "Grifo"
-    ejemplo: "Contesta por precios, horarios y formas de pago sin sacar a nadie de la isla."
-  - rubro: "Escuela de manejo"
-    ejemplo: "Informa requisitos, precios de paquetes y qué documentos hay que traer."
+ejemplos:
+  - "Responde por una propiedad a las 10 de la noche y agenda la visita para el fin de semana."
+  - "Resuelve el «¿a qué hora atienden?» sin que nadie deje lo que está haciendo."
+  - "Contesta por precios, horarios y formas de pago sin sacar a nadie de su puesto."
+  - "Informa requisitos, condiciones y qué documentos hay que traer."
 queNecesitas:
   - "Una cuenta de WhatsApp Business con tu número de negocio"
   - "Las preguntas que más te hacen y sus respuestas, aunque sea en una hoja suelta"

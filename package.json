@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "og": "node scripts/generar-og.mjs",
-    "contraste": "node scripts/verificar-contraste.mjs"
+    "contraste": "node scripts/verificar-contraste.mjs",
+    "limpiar": "rm -rf .astro dist node_modules/.astro && astro build"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

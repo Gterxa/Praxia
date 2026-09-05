@@ -28,15 +28,11 @@ conversacion:
     - de: "negocio"
       texto: "Perfecto, viernes 5:00 pm con Kelly. Te lo dejo separado."
       hora: "13:38"
-ejemplosPorRubro:
-  - rubro: "Salón de belleza"
-    ejemplo: "Reactiva a la clienta que no vuelve hace tres meses con un mensaje que no suena a publicidad."
-  - rubro: "Concesionaria"
-    ejemplo: "Hace seguimiento del financiamiento sin que el vendedor tenga que acordarse de cada caso."
-  - rubro: "Inmobiliaria"
-    ejemplo: "Califica prospectos y separa a quien está mirando de quien está listo para visitar."
-  - rubro: "Constructor"
-    ejemplo: "Da seguimiento a las cotizaciones enviadas que quedaron sin respuesta."
+ejemplos:
+  - "Reactiva a quien no vuelve hace tres meses, con un mensaje que no suena a publicidad."
+  - "Hace seguimiento de cada trámite abierto sin que tu vendedor se acuerde de todos."
+  - "Separa a quien está mirando de quien ya está listo para comprar."
+  - "Da seguimiento a las cotizaciones enviadas que quedaron sin respuesta."
 queNecesitas:
   - "Un lugar donde estén tus clientes, aunque sea un Excel o los chats de WhatsApp"
   - "Saber cada cuánto tiempo tiene sentido volver a escribirle a alguien en tu rubro"

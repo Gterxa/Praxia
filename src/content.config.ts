@@ -41,14 +41,12 @@ const capacidades = defineCollection({
         )
         .min(2),
     }),
-    ejemplosPorRubro: z
-      .array(
-        z.object({
-          rubro: z.string(),
-          ejemplo: z.string(),
-        }),
-      )
-      .min(3),
+    /**
+     * Situaciones concretas en las que se nota la automatización.
+     * Sin nombrar rubros: una lista de rubros le dice a quien no está en ella
+     * que la solución no es para su negocio.
+     */
+    ejemplos: z.array(z.string()).min(3),
     queNecesitas: z.array(z.string()).min(1),
     seoTitulo: z.string(),
     seoDescripcion: z.string(),

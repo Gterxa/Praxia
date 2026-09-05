@@ -31,15 +31,11 @@ conversacion:
     - de: "cliente"
       texto: "Confirmada, ahí estaré"
       hora: "20:06"
-ejemplosPorRubro:
-  - rubro: "Salón de belleza"
-    ejemplo: "Reduce las clientas que reservan y después no llegan."
-  - rubro: "Veterinaria"
-    ejemplo: "Recuerda la vacuna y la desparasitación cuando toca, sin que nadie revise fichas."
-  - rubro: "Escuela de manejo"
-    ejemplo: "Confirma la clase del día siguiente y libera el auto si el alumno no puede."
-  - rubro: "Concesionaria"
-    ejemplo: "Agenda test drives y avisa al vendedor con quién se va a encontrar."
+ejemplos:
+  - "Baja la cantidad de citas que se reservan y después nadie usa."
+  - "Avisa del control que toca este mes, sin que nadie revise fichas una por una."
+  - "Confirma la cita del día siguiente y libera el espacio si la persona no puede."
+  - "Agenda la visita y le avisa a quien va a atender con quién se va a encontrar."
 queNecesitas:
   - "Tus horarios de atención y cuánto dura cada servicio"
   - "Tus reglas: con cuánta anticipación se reserva, hasta cuándo se puede cancelar"
