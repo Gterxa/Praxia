@@ -1,0 +1,202 @@
+---
+/**
+ * El diagrama de "cómo funciona por dentro".
+ *
+ * Todo en HTML y CSS: cuatro etapas en fila en escritorio y en columna en
+ * móvil, más la caja de REGISTRO colgando de la tercera. Un punto de luz
+ * recorre las conexiones en bucle lento — es movimiento que representa
+ * cómputo, no decoración, y se detiene con prefers-reduced-motion.
+ */
+const etapas = [
+  { titulo: 'Entrada', lineas: ['WhatsApp', 'Correo', 'Formulario'] },
+  { titulo: 'Clasificación', lineas: ['Identifica qué', 'se está', 'pidiendo'] },
+  { titulo: 'Ejecución', lineas: ['Consulta lo', 'que necesita', 'y ejecuta la acción'] },
+  { titulo: 'Respuesta', lineas: ['Contesta,', 'agenda, archiva', 'o te avisa'] },
+];
+---
+
+<div class="mecanismo">
+  <ol class="grid gap-0 lg:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr]">
+    {
+      etapas.map((etapa, i) => (
+        <>
+          <li class="etapa">
+            <p class="mono text-cian">{etapa.titulo}</p>
+            <div class="mt-3 space-y-0.5 text-texto-2">
+              {etapa.lineas.map((linea) => (
+                <p class="pequeno">{linea}</p>
+              ))}
+            </div>
+          </li>
+          {i < etapas.length - 1 && (
+            <li class="conector" aria-hidden="true">
+              <span class="conector-linea">
+                <span class="pulso" style={`animation-delay:${i * 0.9}s`} />
+              </span>
+            </li>
+          )}
+        </>
+      ))
+    }
+  </ol>
+
+  <!-- El registro cuelga de "Ejecución": es la pieza que conecta con soluciones mayores. -->
+  <div class="registro-fila" aria-hidden="true">
+    <span class="registro-linea"></span>
+  </div>
+
+  <div class="registro-fila">
+    <div class="registro">
+      <p class="mono text-brasa">Registro</p>
+      <p class="pequeno mt-3 text-texto-2">
+        Todo queda guardado y se puede consultar después
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mecanismo {
+    --caja: 1px solid var(--color-linea);
+  }
+
+  .etapa,
+  .registro {
+    background-color: var(--color-surface);
+    border: var(--caja);
+    border-radius: var(--radius-praxia);
+    padding: 1.25rem;
+    list-style: none;
+  }
+
+  .registro {
+    border-color: var(--color-brasa);
+    max-width: 20rem;
+    margin-inline: auto;
+  }
+
+  /* --- Conectores --- */
+  .conector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    padding-block: 0.5rem;
+  }
+
+  .conector-linea {
+    position: relative;
+    display: block;
+    width: 1px;
+    height: 1.75rem;
+    background-color: var(--color-linea);
+    overflow: visible;
+  }
+
+  .pulso {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 3px;
+    height: 3px;
+    margin-left: -1px;
+    border-radius: 999px;
+    background-color: var(--color-brasa);
+    animation: pulso-y 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes pulso-y {
+    0%,
+    8% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
+    }
+    38% {
+      transform: translateY(1.75rem);
+      opacity: 1;
+    }
+    46%,
+    100% {
+      transform: translateY(1.75rem);
+      opacity: 0;
+    }
+  }
+
+  /* --- Registro: la línea que baja desde Ejecución --- */
+  .registro-fila {
+    display: flex;
+    justify-content: center;
+  }
+
+  .registro-linea {
+    display: block;
+    width: 1px;
+    height: 1.75rem;
+    background-color: var(--color-linea);
+  }
+
+  /* --- Escritorio: etapas en fila, registro bajo la tercera --- */
+  @media (min-width: 64rem) {
+    .conector-linea {
+      width: 2.5rem;
+      height: 1px;
+    }
+
+    .pulso {
+      left: 0;
+      top: 50%;
+      margin-left: 0;
+      margin-top: -1px;
+      animation-name: pulso-x;
+    }
+
+    @keyframes pulso-x {
+      0%,
+      8% {
+        transform: translateX(0);
+        opacity: 0;
+      }
+      12% {
+        opacity: 1;
+      }
+      38% {
+        transform: translateX(2.5rem);
+        opacity: 1;
+      }
+      46%,
+      100% {
+        transform: translateX(2.5rem);
+        opacity: 0;
+      }
+    }
+
+    /* Misma grilla que las etapas, para colgar exactamente de la tercera
+       columna ("Ejecución"), que es la número 5 contando los conectores. */
+    .registro-fila {
+      display: grid;
+      grid-template-columns: 1fr 2.5rem 1fr 2.5rem 1fr 2.5rem 1fr;
+    }
+
+    .registro-fila > * {
+      grid-column: 5;
+    }
+
+    .registro-linea {
+      justify-self: center;
+    }
+
+    .registro {
+      max-width: none;
+      margin-inline: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pulso {
+      display: none;
+    }
+  }
+</style>

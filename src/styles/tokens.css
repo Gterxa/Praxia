@@ -1,0 +1,67 @@
+/* ==========================================================================
+   Tokens de Praxia — dirección "Brasa"
+   ==========================================================================
+
+   Este es el único archivo con valores de color y tipografía del sitio.
+   Ningún componente hardcodea un color: todos usan estos tokens a través de
+   las utilidades de Tailwind (bg-void, text-texto-2, border-linea…).
+
+   Para revertir al tema claro anterior, reemplaza este archivo. Nada más.
+
+   Dos valores se apartan de la especificación original, y por una razón
+   medible — `npm run contraste` los verifica en cada build:
+
+   · --texto-3 era #5C6880 y daba 2.76:1 sobre --surface-2. Aclarado a
+     #7B8BAB llega a 4.51:1 sobre el peor de sus tres fondos.
+   · --linea-viva era #3D4A66 y daba 1.96:1. Como también dibuja el borde de
+     los campos del formulario, necesita 3:1 (WCAG 1.4.11). #54668C da 3.02:1.
+     Los divisores decorativos siguen usando --linea, que no necesita umbral.
+   ========================================================================== */
+
+@theme {
+  /* --- Superficies ---
+     Ojo al revertir: `<meta name="theme-color">` en Layout.astro no acepta una
+     variable CSS, así que --void está repetido ahí a mano. Es el único color
+     hardcodeado del proyecto, y hay que cambiarlo junto con este. */
+  --color-void: #0a0f1c;
+  --color-surface: #131a2b;
+  --color-surface-2: #1c2438;
+
+  /* --- Líneas --- */
+  --color-linea: #2a3348;
+  --color-linea-viva: #54668c;
+
+  /* --- Texto. Nunca blanco puro: produce halación sobre fondo oscuro. --- */
+  --color-texto: #e8ecf4;
+  --color-texto-2: #8a96ac;
+  --color-texto-3: #7b8bab;
+
+  /* --- Acento. CTAs, subrayados, énfasis. Nunca fondo de sección. --- */
+  --color-brasa: #ff6b35;
+  --color-brasa-alto: #ff8659;
+  --color-brasa-tenue: rgb(255 107 53 / 0.12);
+
+  /* --- Datos y estados. El cian es para lo que parece dato, nunca CTA. --- */
+  --color-cian: #35e0d4;
+  --color-verde: #3ddc97;
+  --color-ambar: #f5a623;
+
+  /* Verde oscuro de las burbujas de WhatsApp. */
+  --color-wa: #134d37;
+  /* Hora y checks del chat. --texto-3 da 2.86:1 sobre la burbuja verde:
+     este tono llega a 4.68:1 sobre ella y a 7.38:1 sobre la del cliente. */
+  --color-chat-meta: #a8b4c8;
+
+  /* --- Forma. Radio chico: el radio grande se lee blando, no técnico. --- */
+  --radius-praxia: 0.5rem;
+
+  /* --- Medida de línea --- */
+  --container-medida: 38rem;
+
+  /* Tipografía.
+     --font-titulos (Space Grotesk), --font-cuerpo (Inter) y --font-mono
+     (JetBrains Mono) NO se declaran aquí: los define Astro en :root a partir
+     de `fonts` en astro.config.mjs, ya con los fallbacks ajustados por
+     métrica. Si los redefines acá, pisas los de Astro y el sitio se queda sin
+     sus fuentes sin dar ningún error. */
+}

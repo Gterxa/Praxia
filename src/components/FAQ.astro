@@ -12,7 +12,7 @@ const { preguntas, titulo } = Astro.props;
 
 <div>
   {titulo && <h2 class="mb-8">{titulo}</h2>}
-  <div class="border-t border-gris-200">
+  <div class="border-t border-linea">
     {
       preguntas.map((p) => (
         <details class="acordeon">

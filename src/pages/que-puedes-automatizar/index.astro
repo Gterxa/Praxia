@@ -22,7 +22,7 @@ const capacidades = await getCapacidades();
     contextoWhatsApp={CONTEXTO.hub}
   />
 
-  <Seccion fondo="blanco">
+  <Seccion fondo="surface">
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {
         capacidades.map((c) => (
@@ -32,6 +32,7 @@ const capacidades = await getCapacidades();
             resumen={c.data.resumen}
             icono={c.data.icono}
             nivel={2}
+            destacada={c.id === 'documentos-y-archivo'}
           />
         ))
       }
@@ -39,7 +40,7 @@ const capacidades = await getCapacidades();
 
     <div class="medida mt-14">
       <h2 class="text-[1.375rem] md:text-[1.75rem]">¿No ves lo tuyo en la lista?</h2>
-      <p class="mt-4 text-gris-600">
+      <p class="mt-4 text-texto-2">
         Estas seis capacidades cubren casi todo lo que un negocio pequeño o mediano nos pide. Si
         lo que tienes en mente no calza en ninguna, escríbenos igual y lo vemos en el
         diagnóstico.

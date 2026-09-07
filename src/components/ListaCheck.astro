@@ -4,7 +4,7 @@ import Icon from './Icon.astro';
 interface Props {
   items: readonly string[];
   /** Color del check. */
-  tono?: 'verde' | 'arcilla';
+  tono?: 'verde' | 'brasa';
   class?: string;
 }
 const { items, tono = 'verde', class: clase = '' } = Astro.props;
@@ -16,8 +16,8 @@ const { items, tono = 'verde', class: clase = '' } = Astro.props;
       <li class="flex gap-3">
         <span
           class:list={[
-            'mt-1 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full text-blanco',
-            tono === 'verde' ? 'bg-verde' : 'bg-arcilla-700',
+            'mt-1 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full text-void',
+            tono === 'verde' ? 'bg-verde' : 'bg-brasa',
           ]}
         >
           <Icon nombre="check" tamano={13} />

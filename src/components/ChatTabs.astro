@@ -2,13 +2,10 @@
 import ChatMockup from './ChatMockup.astro';
 
 /**
- * Varias conversaciones de ejemplo, elegibles con pestañas.
+ * Varias conversaciones de ejemplo, elegibles con pestañas en monoespaciada.
  *
  * Sin rotación automática a propósito: un carrusel que se mueve solo distrae y
- * no deja terminar de leer. El visitante elige.
- *
- * Sin JavaScript se ve la primera conversación, que es una respuesta completa
- * por sí sola.
+ * no deja terminar de leer. Sin JavaScript se ve la primera, que funciona sola.
  */
 interface Conversacion {
   etiqueta: string;
@@ -18,16 +15,15 @@ interface Conversacion {
 
 interface Props {
   conversaciones: readonly Conversacion[];
-  /** Identificador único: puede haber más de un grupo por página. */
   id?: string;
 }
 
 const { conversaciones, id = 'chats' } = Astro.props;
 ---
 
-<div class="chats w-full max-w-sm" data-chats>
+<div class="w-full max-w-sm" data-chats>
   <div
-    class="mb-3 flex gap-1"
+    class="mb-4 flex gap-5 border-b border-linea"
     role="tablist"
     aria-label="Ejemplos de conversación por tipo de negocio"
   >
@@ -40,7 +36,7 @@ const { conversaciones, id = 'chats' } = Astro.props;
           aria-controls={`${id}-panel-${i}`}
           aria-selected={i === 0 ? 'true' : 'false'}
           tabindex={i === 0 ? 0 : -1}
-          class="chats-pestana"
+          class="pestana mono"
         >
           {c.etiqueta}
         </button>
@@ -64,28 +60,38 @@ const { conversaciones, id = 'chats' } = Astro.props;
 </div>
 
 <style>
-  .chats-pestana {
-    border-radius: 999px;
-    padding: 0.375rem 0.75rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--color-gris-600);
+  .pestana {
+    position: relative;
+    padding-block: 0 0.625rem;
+    color: var(--color-texto-3);
     cursor: pointer;
-    transition:
-      background-color 150ms ease,
-      color 150ms ease;
+    background: none;
+    border: 0;
+    transition: color 150ms ease;
   }
 
-  .chats-pestana:hover {
-    color: var(--color-tinta);
+  .pestana::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: var(--color-brasa);
+    opacity: 0;
+    transition: opacity 150ms ease;
   }
 
-  .chats-pestana[aria-selected='true'] {
-    background-color: var(--color-arcilla-50);
-    color: var(--color-arcilla-700);
+  .pestana:hover {
+    color: var(--color-texto-2);
+  }
+
+  .pestana[aria-selected='true'] {
+    color: var(--color-brasa);
+  }
+
+  .pestana[aria-selected='true']::after {
+    opacity: 1;
   }
 </style>
 
@@ -107,8 +113,7 @@ const { conversaciones, id = 'chats' } = Astro.props;
     pestanas.forEach((pestana, i) => {
       pestana.addEventListener('click', () => activar(i, false));
       pestana.addEventListener('keydown', (evento) => {
-        const salto =
-          evento.key === 'ArrowRight' ? 1 : evento.key === 'ArrowLeft' ? -1 : 0;
+        const salto = evento.key === 'ArrowRight' ? 1 : evento.key === 'ArrowLeft' ? -1 : 0;
         if (salto === 0) return;
         evento.preventDefault();
         activar((i + salto + pestanas.length) % pestanas.length);

@@ -1,0 +1,28 @@
+---
+/**
+ * Píldora de estado en monoespaciada: `● en línea`, `● procesando`.
+ */
+interface Props {
+  texto: string;
+  estado?: 'verde' | 'cian' | 'brasa' | 'ambar';
+  class?: string;
+}
+const { texto, estado = 'verde', class: clase = '' } = Astro.props;
+
+const puntos = {
+  verde: 'bg-verde',
+  cian: 'bg-cian',
+  brasa: 'bg-brasa',
+  ambar: 'bg-ambar',
+} as const;
+---
+
+<span
+  class:list={[
+    'mono inline-flex items-center gap-1.5 rounded-full border border-linea bg-surface-2 px-2 py-0.5 text-texto-3',
+    clase,
+  ]}
+>
+  <span class:list={['block h-1.5 w-1.5 rounded-full', puntos[estado]]} aria-hidden="true"></span>
+  {texto}
+</span>

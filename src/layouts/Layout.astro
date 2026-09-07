@@ -88,7 +88,7 @@ const datosEstructurados = {
     <meta name="twitter:description" content={descripcion} />
     <meta name="twitter:image" content={imagenOG} />
 
-    <meta name="theme-color" content="#FAF8F5" />
+    <meta name="theme-color" content="#0A0F1C" />
 
     <Font cssVariable="--font-titulos" preload />
     <Font cssVariable="--font-cuerpo" preload />
@@ -108,5 +108,33 @@ const datosEstructurados = {
     </main>
     <Footer />
     <WhatsAppButton contexto={contextoWhatsApp} />
+
+    <script>
+      // Aparición de sección: fade + 12px, una sola vez. Se desactiva sola con
+      // prefers-reduced-motion (la clase .revelar no oculta nada en ese caso).
+      const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const secciones = document.querySelectorAll<HTMLElement>('main > section');
+
+      if (!reducido.matches && 'IntersectionObserver' in window) {
+        secciones.forEach((seccion, i) => {
+          // La primera está sobre el pliegue: no tiene sentido animarla.
+          if (i === 0) return;
+          seccion.classList.add('revelar');
+        });
+
+        const observador = new IntersectionObserver(
+          (entradas) => {
+            entradas.forEach((entrada) => {
+              if (!entrada.isIntersecting) return;
+              entrada.target.classList.add('visible');
+              observador.unobserve(entrada.target);
+            });
+          },
+          { rootMargin: '0px 0px 120% 0px', threshold: 0 },
+        );
+
+        document.querySelectorAll('.revelar').forEach((el) => observador.observe(el));
+      }
+    </script>
   </body>
 </html>

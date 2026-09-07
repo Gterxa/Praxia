@@ -15,17 +15,17 @@ const {
 } = Astro.props;
 ---
 
-<section class="seccion bg-tinta text-hueso">
+<section class="seccion bg-surface text-texto">
   <div class="contenedor">
-    <h2 class="max-w-2xl text-hueso">{titulo}</h2>
-    <p class="lead mt-5 max-w-2xl !text-gris-200">{texto}</p>
+    <h2 class="max-w-2xl text-texto">{titulo}</h2>
+    <p class="lead mt-5 max-w-2xl !text-texto-2">{texto}</p>
     <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-      <a href="/diagnostico" class="boton boton-claro">Agenda tu diagnóstico</a>
+      <a href="/diagnostico" class="boton boton-primario">Agenda tu diagnóstico</a>
       <a
         href={waLink(contextoWhatsApp)}
         target="_blank"
         rel="noopener"
-        class="boton boton-borde-claro"
+        class="boton boton-secundario"
       >
         <Icon nombre="whatsapp" tamano={20} />
         WhatsApp

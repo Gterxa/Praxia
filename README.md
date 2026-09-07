@@ -25,6 +25,9 @@ npm run dev        # http://localhost:4321
 | `npm run contraste` | Verifica que la paleta cumpla WCAG AA |
 | `npm run limpiar` | Borra el caché de contenido y vuelve a construir |
 
+Las capturas para comparar contra `main` están en `capturas-rediseno/`, en escritorio y móvil,
+de la home y de una página de capacidad.
+
 La primera compilación descarga las fuentes (Fraunces e Inter) desde Google y las guarda dentro
 del sitio. Necesita internet una vez; después ya no.
 
@@ -182,6 +185,19 @@ para compartir.
 
 ---
 
+### Bajo el capó: el diagrama de mecanismo
+
+`Mecanismo.astro` dibuja las cuatro etapas —entrada, clasificación, ejecución, respuesta— en HTML
+y CSS, con la caja de **Registro** colgando de la tercera y con borde `--brasa`.
+
+Ese destaque es deliberado y no es decorativo: el registro es la pieza que conecta con la línea
+de soluciones mayores. Que el visitante entienda que todo lo que pasa por la automatización queda
+guardado prepara esa conversación, y por eso debajo del diagrama hay un enlace a
+`/soluciones-mayores`.
+
+Un punto de luz recorre las conexiones en bucle lento. Es movimiento que representa cómputo, no
+adorno, y se detiene con `prefers-reduced-motion`.
+
 ### Las conversaciones del hero
 
 El hero muestra tres ejemplos con pestañas —Servicios, Comercio, Profesionales— que el visitante
@@ -313,14 +329,56 @@ Astro a partir de `fonts` en `astro.config.mjs`, ya con los fallbacks ajustados 
 las declaras de nuevo en el bloque `@theme`, pisas las de Astro y el sitio se queda sin sus
 fuentes sin dar ningún error.
 
-**Contraste.** La terracota del brief (`#C4623D`) da 3.84:1 sobre el fondo hueso: alcanza para
-títulos grandes, no para texto de cuerpo. Por eso hay dos variantes más oscuras, `--color-arcilla-700`
-y `--color-arcilla-800`, que son las que se usan en enlaces, botones y textos pequeños. La
-terracota original queda para bloques grandes: números, íconos, bordes. `npm run contraste`
-verifica los 22 pares del sitio y falla con código de salida 1 si alguno cae por debajo
-del mínimo.
+**El sitio es oscuro por defecto — dirección "Brasa".** El fondo dominante es `--void`
+(`#0A0F1C`), las secciones alternan con `--surface`, y el naranja `--brasa` (`#FF6B35`) es la
+terracota anterior electrificada: el cambio se lee como evolución, no como otra empresa.
 
-**Cero dark mode**, por decisión del brief. La paleta clara está definida completa.
+**Toda la paleta y la tipografía viven en `src/styles/tokens.css`.** Ningún componente hardcodea
+un color. **Revertir el rediseño es reemplazar ese archivo**, nada más.
+
+| Grupo | Tokens |
+|---|---|
+| Superficies | `void` `#0A0F1C` · `surface` `#131A2B` · `surface-2` `#1C2438` |
+| Líneas | `linea` `#2A3348` · `linea-viva` `#54668C` |
+| Texto | `texto` `#E8ECF4` · `texto-2` `#8A96AC` · `texto-3` `#7B8BAB` |
+| Acento | `brasa` `#FF6B35` · `brasa-alto` `#FF8659` · `brasa-tenue` |
+| Datos y estados | `cian` `#35E0D4` · `verde` `#3DDC97` · `ambar` `#F5A623` |
+
+Reglas que no conviene romper:
+
+- **El naranja es acento, nunca fondo de sección.** CTAs, un subrayado, un ícono activo, el borde
+  de la tarjeta destacada.
+- **El cian es para lo que parece dato**: números, etiquetas técnicas, los títulos del diagrama.
+  Nunca para un CTA.
+- **Nunca blanco puro sobre fondo oscuro** — produce halación. Siempre `--texto`.
+- **La monoespaciada nunca va en texto corrido.** Solo etiquetas, numeración y datos.
+
+**Tres valores se apartan de la especificación original, por medición.** `npm run contraste` los
+verifica en cada cambio:
+
+| Token | Especificado | Publicado | Por qué |
+|---|---|---|---|
+| `--texto-3` | `#5C6880` | `#7B8BAB` | Daba 2.76:1 sobre `--surface-2`. Ahora 4.51:1 sobre el peor de sus fondos |
+| `--linea-viva` | `#3D4A66` | `#54668C` | Dibuja el borde de los campos, que necesita 3:1 (WCAG 1.4.11). Daba 1.96:1 |
+| `--color-chat-meta` | no existía | `#A8B4C8` | La hora del chat en `--texto-3` daba 2.86:1 sobre la burbuja verde |
+
+El anillo de foco usa `--brasa`, no `--linea-viva`: un foco que no se ve deja el sitio sin
+navegación por teclado.
+
+**Tipografía:** Space Grotesk (500, 700) para títulos, Inter (400, 500, 600) para cuerpo,
+JetBrains Mono (400, 500) para etiquetas y datos. Siete cortes, **99 KB** en total, servidos desde
+el propio dominio.
+
+### Cómo volver al tema claro anterior
+
+1. Recupera `src/styles/tokens.css` de la versión anterior a este rediseño
+2. Actualiza la paleta de `scripts/verificar-contraste.mjs` con los valores viejos y corre
+   `npm run contraste`
+3. `astro.config.mjs` vuelve a Fraunces + Inter
+
+El resto del sitio no distingue temas: los componentes solo usan tokens.
+
+**Cero tema claro.** El sitio es oscuro y punto: no hay un modo alterno que mantener.
 
 **JavaScript en el cliente:** solo el menú de celular y la validación del formulario. El acordeón
 de preguntas usa `<details>`/`<summary>` nativo. Todo el sitio se lee y se navega con JavaScript
@@ -334,10 +392,10 @@ Lighthouse en móvil, sobre el build de producción:
 
 | Página | Rendimiento | Accesibilidad | Buenas prácticas | SEO |
 |---|---|---|---|---|
-| `/` (con el mockup en el hero) | 100 | 100 | 100 | 100 |
-| `/que-puedes-automatizar/documentos-y-archivo` | 100 | 100 | 100 | 100 |
-| `/preguntas-frecuentes` | 100 | 100 | 100 | 100 |
+| `/` (con el diagrama y las pestañas) | 100 | 100 | 100 | 100 |
+| `/que-puedes-automatizar/citas-y-recordatorios` | 100 | 100 | 100 | 100 |
 | `/diagnostico` | 100 | 100 | 100 | 100 |
+| `/nosotros` | — | 100 | — | 100 |
 
 Accesibilidad medida además en `/que-puedes-automatizar`, `/como-trabajamos`, `/casos`,
 `/soluciones-mayores`, `/nosotros`, `/seguridad`, `/legal` y `/privacidad`: 100 en todas, sin
@@ -345,8 +403,8 @@ auditorías fallidas.
 
 Además, verificado a mano: un solo `<h1>` por página, títulos y descripciones únicos, cero
 enlaces internos rotos, jerarquía de encabezados sin saltos, cero palabras de la lista de jerga
-prohibida, cero emojis, cero menciones de montos y cero referencias geográficas. Los 22 pares
-de color —incluidos los seis del mockup de WhatsApp— cumplen WCAG AA. El menú de celular se abre,
+prohibida, cero emojis, cero menciones de montos y cero referencias geográficas. Los 26 pares
+de color de la paleta oscura cumplen WCAG AA. El menú de celular se abre,
 se cierra con Escape y expone `aria-expanded`; el formulario valida en español sin recargar.
 
 Si tocas los estilos, vuelve a correr `npm run contraste` antes de publicar.

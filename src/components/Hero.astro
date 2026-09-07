@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import SectionLabel from './SectionLabel.astro';
 import { waLink } from '../consts';
 
 interface Props {
@@ -11,8 +12,6 @@ interface Props {
   ctaPrimario?: { texto: string; href: string };
   /** Si se pasa, el segundo botón abre WhatsApp con este mensaje. */
   contextoWhatsApp?: string;
-  /** Fondo oscuro para las páginas que lo necesitan. */
-  oscuro?: boolean;
 }
 
 /** Si se pasa algo al slot "visual", el hero se parte en dos columnas. */
@@ -25,11 +24,10 @@ const {
   refuerzo,
   ctaPrimario = { texto: 'Agenda tu diagnóstico', href: '/diagnostico' },
   contextoWhatsApp,
-  oscuro = false,
 } = Astro.props;
 ---
 
-<section class:list={['seccion', oscuro ? 'bg-tinta text-hueso' : 'bg-hueso']}>
+<section class="seccion puntos bg-void">
   <div
     class:list={[
       'contenedor',
@@ -37,16 +35,16 @@ const {
     ]}
   >
     <div>
-    {antetitulo && <p class:list={['antetitulo', oscuro && '!text-arcilla-300']}>{antetitulo}</p>}
-    <h1 class:list={['mt-3', tieneVisual ? 'max-w-2xl' : 'max-w-3xl', oscuro && 'text-hueso']}>
+    {antetitulo && <SectionLabel texto={antetitulo} />}
+    <h1 class:list={['mt-4', tieneVisual ? 'max-w-2xl' : 'max-w-3xl']}>
       {titulo}
     </h1>
-    <p class:list={['lead mt-6 max-w-2xl', oscuro && '!text-gris-200']}>{subtitulo}</p>
+    <p class="lead mt-6 max-w-2xl">{subtitulo}</p>
 
     <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
       <a
         href={ctaPrimario.href}
-        class:list={['boton', oscuro ? 'boton-claro' : 'boton-primario']}
+        class="boton boton-primario"
       >
         {ctaPrimario.texto}
       </a>
@@ -56,7 +54,7 @@ const {
             href={waLink(contextoWhatsApp)}
             target="_blank"
             rel="noopener"
-            class:list={['boton', oscuro ? 'boton-borde-claro' : 'boton-secundario']}
+            class="boton boton-secundario"
           >
             <Icon nombre="whatsapp" tamano={20} />
             Escríbenos por WhatsApp
@@ -67,9 +65,7 @@ const {
 
     {
       refuerzo && (
-        <p class:list={['pequeno mt-5 max-w-md', oscuro ? 'text-gris-200' : 'text-gris-600']}>
-          {refuerzo}
-        </p>
+        <p class="pequeno mt-5 max-w-md text-texto-2">{refuerzo}</p>
       )
     }
     </div>

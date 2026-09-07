@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/SectionLabel.astro';
 import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
 import CTABand from '../components/CTABand.astro';
@@ -19,35 +20,38 @@ import { CONTEXTO, MOSTRAR_PENDIENTES } from '../consts';
     contextoWhatsApp={CONTEXTO.nosotros}
   />
 
-  <Seccion fondo="blanco">
+  <Seccion fondo="surface">
     <div class="medida">
+      <SectionLabel numero="01" texto="Por qué existimos" />
       <h2 class="mt-0 text-[1.375rem] md:text-[1.75rem]">Por qué existimos</h2>
-      <p class="mt-5 text-gris-600">
+      <p class="mt-5 text-texto-2">
         La inteligencia artificial llegó primero a las empresas que ya tenían equipo técnico.
         El dueño de una veterinaria, de un grifo o de un estudio contable escucha que se está
         quedando atrás, pero no encuentra a nadie que le hable en su idioma ni que se tome el
         trabajo de entender cómo funciona su negocio.
       </p>
-      <p class="mt-4 text-gris-600">
+      <p class="mt-4 text-texto-2">
         Praxia existe para ese negocio. Nuestra misión es hacer que la automatización con IA sea
         real y rentable para las pequeñas y medianas empresas del Perú.
       </p>
 
+      <SectionLabel numero="02" texto="Cómo somos" />
       <h2 class="mt-14 text-[1.375rem] md:text-[1.75rem]">Cómo somos</h2>
-      <p class="mt-5 text-gris-600">
+      <p class="mt-5 text-texto-2">
         Nos importa más lo que dejamos funcionando que lo que prometimos en una reunión. Por eso
         validamos antes de construir y te proponemos el mejor camino, aunque no sea el que tenías
         en mente. Y hablamos en el idioma del negocio, no en el de la tecnología, porque
         diseñamos para quien no tiene tiempo, no para el ingeniero.
       </p>
-      <p class="mt-4 text-gris-600">
+      <p class="mt-4 text-texto-2">
         Y te enseñamos lo que hicimos. No nos interesa que dependas de nosotros: nos interesa que
         entiendas la herramienta y puedas decidir sobre ella. Si algún día quieres seguir sin
         Praxia, te vas con la documentación bajo el brazo.
       </p>
 
+      <SectionLabel numero="03" texto="Dónde trabajamos" />
       <h2 class="mt-14 text-[1.375rem] md:text-[1.75rem]">Dónde trabajamos</h2>
-      <p class="mt-5 text-gris-600">
+      <p class="mt-5 text-texto-2">
         En todo el Perú. Trabajamos por videollamada y WhatsApp, así que la distancia no es
         problema.
       </p>
@@ -68,7 +72,7 @@ import { CONTEXTO, MOSTRAR_PENDIENTES } from '../consts';
       <Seccion id="fundador">
         <div class="grid gap-10 md:grid-cols-[minmax(0,17rem)_1fr] md:gap-14 lg:gap-20">
           <div class="mx-auto w-full max-w-[17rem] md:mx-0">
-            <div class="flex aspect-square items-center justify-center overflow-hidden rounded-praxia border border-gris-200 bg-arcilla-50 p-6">
+            <div class="flex aspect-square items-center justify-center overflow-hidden rounded-praxia border border-linea bg-brasa-tenue p-6">
               <p class="pequeno text-center">
                 <Pendiente que="foto del fundador, cuadrada, 400×400 mínimo" />
               </p>
@@ -76,13 +80,13 @@ import { CONTEXTO, MOSTRAR_PENDIENTES } from '../consts';
           </div>
 
           <div class="max-w-xl">
-            <p class="antetitulo">Quién está detrás</p>
+            <SectionLabel texto="Quién está detrás" />
             <h2 class="mt-3 text-[1.625rem] md:text-[2rem]">
               <Pendiente que="nombre" />
             </h2>
-            <p class="pequeno mt-1.5 font-medium text-gris-600">Fundador de Praxia</p>
+            <p class="pequeno mt-1.5 font-medium text-texto-2">Fundador de Praxia</p>
 
-            <div class="mt-6 space-y-4 text-gris-600">
+            <div class="mt-6 space-y-4 text-texto-2">
               <p>
                 <Pendiente que="de dónde vienes: formación y camino hasta acá, dos líneas" />
               </p>

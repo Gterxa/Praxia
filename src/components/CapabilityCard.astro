@@ -8,25 +8,27 @@ interface Props {
   icono: 'conversacion' | 'calendario' | 'personas' | 'documentos' | 'reportes' | 'contenido';
   /** Nivel del encabezado, para no romper la jerarquía de la página. */
   nivel?: 2 | 3;
+  /** Marca la tarjeta que conecta con soluciones mayores. */
+  destacada?: boolean;
 }
 
-const { href, titulo, resumen, icono, nivel = 3 } = Astro.props;
+const { href, titulo, resumen, icono, nivel = 3, destacada = false } = Astro.props;
 const Titulo = `h${nivel}` as 'h2' | 'h3';
 ---
 
 <a
   href={href}
-  class="group tarjeta flex flex-col transition-colors hover:border-arcilla focus-visible:border-arcilla"
+  class:list={['group tarjeta flex flex-col', destacada && '!border-brasa']}
 >
   <span
-    class="inline-flex h-11 w-11 items-center justify-center rounded-praxia bg-arcilla-50 text-arcilla-700"
+    class="inline-flex h-11 w-11 items-center justify-center rounded-praxia bg-brasa-tenue text-brasa"
   >
     <Icon nombre={icono} tamano={22} />
   </span>
   <Titulo class="mt-5 text-[1.1875rem] md:text-[1.3125rem]">{titulo}</Titulo>
-  <p class="mt-2.5 text-gris-600">{resumen}</p>
+  <p class="mt-2.5 text-texto-2">{resumen}</p>
   <span
-    class="pequeno mt-5 inline-flex items-center gap-1.5 font-semibold text-arcilla-700 group-hover:gap-2.5 motion-safe:transition-all"
+    class="pequeno mt-5 inline-flex items-center gap-1.5 font-semibold text-brasa group-hover:gap-2.5 motion-safe:transition-all"
   >
     Ver cómo funciona
     <Icon nombre="flecha" tamano={16} />

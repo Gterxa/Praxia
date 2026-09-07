@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/SectionLabel.astro';
 import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
 import StepList from '../components/StepList.astro';
@@ -48,26 +49,27 @@ const preguntas = [
     contextoWhatsApp={CONTEXTO.comoTrabajamos}
   />
 
-  <Seccion fondo="blanco">
+  <Seccion fondo="surface">
     <StepList detallado={true} nivel={2} />
   </Seccion>
 
   <Seccion>
     <div class="medida">
+      <SectionLabel numero="02" texto="Por qué validamos" />
       <h2 class="text-[1.625rem] md:text-[2rem]">Por qué validamos antes de construir</h2>
-      <p class="mt-5 text-gris-600">
+      <p class="mt-5 text-texto-2">
         Una automatización mal elegida cuesta tiempo, y suele terminar resolviendo un problema que
         no era el importante. Por eso el segundo paso existe: antes de construir nada,
         confirmamos que lo que vas a tener es lo que de verdad te va a ahorrar trabajo.
       </p>
-      <p class="mt-4 text-gris-600">
+      <p class="mt-4 text-texto-2">
         A veces eso significa cambiar la idea original por una más simple, o empezar por otra
         parte de tu operación. Todo eso sale de esa conversación.
       </p>
     </div>
   </Seccion>
 
-  <Seccion fondo="blanco">
+  <Seccion fondo="surface">
     <FAQ titulo="Dudas sobre el proceso" preguntas={preguntas} />
   </Seccion>
 

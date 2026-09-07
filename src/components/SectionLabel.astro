@@ -1,0 +1,19 @@
+---
+/**
+ * La etiqueta monoespaciada que abre cada sección: `01 / EL PROBLEMA`.
+ * Es el elemento que más unifica la lectura del sitio.
+ */
+interface Props {
+  numero?: string;
+  texto: string;
+  class?: string;
+}
+const { numero, texto, class: clase = '' } = Astro.props;
+---
+
+<p class:list={['mono flex items-center gap-2.5 text-texto-3', clase]}>
+  <span class="block h-px w-6 flex-none bg-brasa" aria-hidden="true"></span>
+  {numero && <span class="text-brasa">{numero}</span>}
+  {numero && <span class="text-linea-viva" aria-hidden="true">/</span>}
+  <span>{texto}</span>
+</p>

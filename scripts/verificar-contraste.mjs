@@ -1,58 +1,63 @@
 /**
  * Verifica que todos los pares de color del sitio cumplan WCAG AA.
  *
+ * Los divisores decorativos (--linea) no entran: no comunican estado ni límite
+ * de control, así que no tienen umbral. Los bordes de campo sí, y usan
+ * --linea-viva, que por eso se aclaró hasta 3:1.
+ *
  *   node scripts/verificar-contraste.mjs
  *
- * Si cambias la paleta en src/styles/global.css, cambia también los valores
+ * Si cambias la paleta en src/styles/tokens.css, cambia también los valores
  * de PALETA acá y vuelve a correrlo antes de publicar.
  */
 
 const PALETA = {
-  tinta: '#1A2332',
-  tinta800: '#2E3D52',
-  arcilla: '#C4623D',
-  arcilla700: '#9A4A2A',
-  arcilla800: '#7E3C22',
-  arcilla300: '#E39272',
-  arcilla50: '#FBF1ED',
-  hueso: '#FAF8F5',
-  blanco: '#FFFFFF',
-  gris600: '#5C6672',
-  gris200: '#E2E0DC',
-  verde: '#2F6F4E',
-  ambar700: '#8A6508',
-  crema: '#FDF6E3',
-  // Colores del ChatMockup
-  chatCliente: '#FFFFFF',
-  chatNegocio: '#D8EDDF',
-  chatChip: '#3E4551', // hueso al 16 % sobre tinta, el fondo de la etiqueta "Ejemplo"
+  void: '#0A0F1C',
+  surface: '#131A2B',
+  surface2: '#1C2438',
+  linea: '#2A3348',
+  lineaViva: '#54668C',
+  texto: '#E8ECF4',
+  texto2: '#8A96AC',
+  texto3: '#7B8BAB',
+  brasa: '#FF6B35',
+  brasaAlto: '#FF8659',
+  cian: '#35E0D4',
+  verde: '#3DDC97',
+  ambar: '#F5A623',
+  wa: '#134D37',
+  chatMeta: '#A8B4C8',
 };
 
 // [descripción, texto, fondo, mínimo exigido]
-// 4.5 para cuerpo, 3 para títulos grandes y elementos no textuales.
+// 4.5 para texto; 3 para elementos no textuales que comunican estado o límite.
 const PARES = [
-  ['texto principal', 'tinta', 'hueso', 4.5],
-  ['texto principal en tarjeta', 'tinta', 'blanco', 4.5],
-  ['texto secundario', 'gris600', 'hueso', 4.5],
-  ['texto secundario en tarjeta', 'gris600', 'blanco', 4.5],
-  ['enlaces y antetítulos', 'arcilla700', 'hueso', 4.5],
-  ['enlaces sobre tarjeta', 'arcilla700', 'blanco', 4.5],
-  ['enlace sobre fondo acento', 'arcilla700', 'arcilla50', 4.5],
-  ['botón primario', 'blanco', 'arcilla700', 4.5],
-  ['botón primario al pasar el mouse', 'blanco', 'arcilla800', 4.5],
-  ['botón de WhatsApp', 'blanco', 'verde', 4.5],
-  ['texto sobre fondo tinta', 'hueso', 'tinta', 4.5],
-  ['párrafos sobre fondo tinta', 'gris200', 'tinta', 4.5],
-  ['antetítulo sobre fondo tinta', 'arcilla300', 'tinta', 4.5],
-  ['marcador PENDIENTE', 'ambar700', 'crema', 4.5],
-  ['número grande del método', 'arcilla', 'blanco', 3],
-  ['anillo de foco', 'arcilla700', 'hueso', 3],
-  ['chat: mensaje del cliente', 'tinta', 'chatCliente', 4.5],
-  ['chat: mensaje del negocio', 'tinta', 'chatNegocio', 4.5],
-  ['chat: hora sobre burbuja clara', 'gris600', 'chatCliente', 4.5],
-  ['chat: hora sobre burbuja verde', 'gris600', 'chatNegocio', 4.5],
-  ['chat: etiqueta "Ejemplo"', 'gris200', 'chatChip', 4.5],
-  ['chat: checks de leído', 'verde', 'chatNegocio', 3],
+  ['texto sobre void', 'texto', 'void', 4.5],
+  ['texto sobre surface', 'texto', 'surface', 4.5],
+  ['texto sobre surface-2', 'texto', 'surface2', 4.5],
+  ['texto-2 sobre void', 'texto2', 'void', 4.5],
+  ['texto-2 sobre surface', 'texto2', 'surface', 4.5],
+  ['texto-2 sobre surface-2', 'texto2', 'surface2', 4.5],
+  ['mono texto-3 sobre void', 'texto3', 'void', 4.5],
+  ['mono texto-3 sobre surface', 'texto3', 'surface', 4.5],
+  ['mono texto-3 sobre surface-2', 'texto3', 'surface2', 4.5],
+  ['brasa como texto sobre void', 'brasa', 'void', 4.5],
+  ['brasa como texto sobre surface', 'brasa', 'surface', 4.5],
+  ['botón primario (void sobre brasa)', 'void', 'brasa', 4.5],
+  ['botón primario al pasar el mouse', 'void', 'brasaAlto', 4.5],
+  ['cian sobre surface', 'cian', 'surface', 4.5],
+  ['cian sobre void', 'cian', 'void', 4.5],
+  ['verde sobre surface', 'verde', 'surface', 4.5],
+  ['ámbar sobre surface', 'ambar', 'surface', 4.5],
+  ['botón de WhatsApp (void sobre verde)', 'void', 'verde', 4.5],
+  ['chat: texto en burbuja del negocio', 'texto', 'wa', 4.5],
+  ['chat: texto en burbuja del cliente', 'texto', 'surface2', 4.5],
+  ['chat: hora sobre burbuja del negocio', 'chatMeta', 'wa', 4.5],
+  ['chat: hora sobre burbuja del cliente', 'chatMeta', 'surface2', 4.5],
+  ['borde de campo sobre surface', 'lineaViva', 'surface', 3],
+  ['borde de campo sobre void', 'lineaViva', 'void', 3],
+  ['anillo de foco sobre void', 'brasa', 'void', 3],
+  ['anillo de foco sobre surface', 'brasa', 'surface', 3],
 ];
 
 const canal = (c) => {

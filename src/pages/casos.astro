@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/SectionLabel.astro';
 import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
 import CTABand from '../components/CTABand.astro';
@@ -26,10 +27,11 @@ const rubros = [...new Set(casos.map((c) => c.data.rubro))];
     contextoWhatsApp={CONTEXTO.casos}
   />
 
-  <Seccion fondo="blanco">
+  <Seccion fondo="surface">
     <div class="medida">
+      <SectionLabel numero="01" texto="Mientras tanto" />
       <h2 class="text-[1.375rem] md:text-[1.75rem]">Mientras tanto</h2>
-      <p class="mt-5 text-gris-600">
+      <p class="mt-5 text-texto-2">
         Si quieres ver qué tipo de cosas hacemos, la página de{' '}
         <a href="/que-puedes-automatizar" class="enlace">qué puedes automatizar</a> tiene una
         conversación de ejemplo por cada capacidad y situaciones concretas del día a día.
@@ -42,7 +44,7 @@ const rubros = [...new Set(casos.map((c) => c.data.rubro))];
 
   {
     casos.length > 0 && (
-      <Seccion fondo="blanco">
+      <Seccion fondo="surface">
         {rubros.map((rubro) => (
           <div class="mb-14 last:mb-0">
             <h2 class="text-[1.375rem] md:text-[1.75rem]">{rubro}</h2>
@@ -52,22 +54,22 @@ const rubros = [...new Set(casos.map((c) => c.data.rubro))];
                 .map((c) => (
                   <article class="tarjeta">
                     <h3>{c.data.titulo}</h3>
-                    <p class="pequeno mt-1 text-gris-600">{c.data.tamano}</p>
+                    <p class="pequeno mt-1 text-texto-2">{c.data.tamano}</p>
                     <dl class="mt-5 space-y-3.5">
                       <div>
-                        <dt class="antetitulo">Qué le pasaba</dt>
+                        <dt class="mono text-texto-3">Qué le pasaba</dt>
                         <dd class="mt-1">{c.data.queLePasaba}</dd>
                       </div>
                       <div>
-                        <dt class="antetitulo">Qué automatizamos</dt>
+                        <dt class="mono text-texto-3">Qué automatizamos</dt>
                         <dd class="mt-1">{c.data.queAutomatizamos}</dd>
                       </div>
                       <div>
-                        <dt class="antetitulo">Qué cambió</dt>
+                        <dt class="mono text-texto-3">Qué cambió</dt>
                         <dd class="mt-1">{c.data.queCambio}</dd>
                       </div>
                       <div>
-                        <dt class="antetitulo">Cuánto tomó</dt>
+                        <dt class="mono text-texto-3">Cuánto tomó</dt>
                         <dd class="mt-1">{c.data.cuantoTomo}</dd>
                       </div>
                     </dl>

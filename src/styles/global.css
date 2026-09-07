@@ -1,45 +1,5 @@
 @import 'tailwindcss';
-
-/* ==========================================================================
-   Paleta y tokens de diseño de Praxia.
-   Los tokens de @theme se convierten en utilidades de Tailwind:
-   --color-tinta -> bg-tinta / text-tinta / border-tinta
-   ========================================================================== */
-
-@theme {
-  /* Color */
-  --color-tinta: #1a2332;
-  --color-tinta-800: #2e3d52;
-  --color-arcilla: #c4623d;
-  /* Variantes oscuras del acento: la terracota original da 3.8:1 sobre hueso,
-     suficiente para títulos grandes pero no para texto de cuerpo (AA pide 4.5).
-     Para texto y botones se usan estas. Ver README, "Contraste". */
-  --color-arcilla-700: #9a4a2a;
-  --color-arcilla-800: #7e3c22;
-  /* Terracota aclarada para texto pequeño sobre el fondo tinta: la original
-     da 3.87:1 sobre tinta y no llega a AA en tamaño de antetítulo. */
-  --color-arcilla-300: #e39272;
-  --color-arcilla-50: #fbf1ed;
-  --color-hueso: #faf8f5;
-  --color-blanco: #ffffff;
-  --color-gris-600: #5c6672;
-  --color-gris-200: #e2e0dc;
-  --color-verde: #2f6f4e;
-  --color-ambar: #b8860b;
-  --color-ambar-700: #8a6508;
-
-  /* Tipografía.
-     Ojo: --font-titulos y --font-cuerpo NO se definen aquí. Los define Astro
-     en :root a partir de la configuración de `fonts` en astro.config.mjs, ya
-     con los fallbacks ajustados por métrica. Si los redefines acá, pisas los
-     de Astro y el sitio se queda sin Fraunces ni Inter. */
-
-  /* Medida de línea: máximo ~70 caracteres en texto corrido */
-  --container-medida: 38rem;
-
-  /* Radios y sombras: discretos, nada de tarjetas flotando */
-  --radius-praxia: 0.625rem;
-}
+@import './tokens.css';
 
 /* ==========================================================================
    Base
@@ -49,11 +9,12 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    color-scheme: dark;
   }
 
   body {
-    background-color: var(--color-hueso);
-    color: var(--color-tinta);
+    background-color: var(--color-void);
+    color: var(--color-texto);
     font-family: var(--font-cuerpo);
     font-size: 1.0625rem; /* 17px en celular: el lector tiene 45 años */
     line-height: 1.65;
@@ -71,36 +32,38 @@
   h3,
   h4 {
     font-family: var(--font-titulos);
-    font-weight: 600;
-    color: var(--color-tinta);
+    font-weight: 700;
+    color: var(--color-texto);
     text-wrap: balance;
-    letter-spacing: -0.015em;
   }
 
   h1 {
-    font-size: 2rem;
-    line-height: 1.1;
+    font-size: 2.125rem; /* 34px */
+    line-height: 1.06;
+    letter-spacing: -0.03em;
   }
 
   h2 {
-    font-size: 1.625rem;
-    line-height: 1.15;
+    font-size: 1.6875rem; /* 27px */
+    line-height: 1.12;
+    letter-spacing: -0.02em;
   }
 
   h3 {
-    font-size: 1.25rem;
+    font-size: 1.25rem; /* 20px */
     line-height: 1.25;
+    letter-spacing: -0.01em;
   }
 
   @media (min-width: 48rem) {
     h1 {
-      font-size: 3.5rem;
+      font-size: 3.75rem; /* 60px */
     }
     h2 {
-      font-size: 2.5rem;
+      font-size: 2.625rem; /* 42px */
     }
     h3 {
-      font-size: 1.625rem;
+      font-size: 1.6875rem; /* 27px */
     }
   }
 
@@ -108,19 +71,19 @@
     color: inherit;
   }
 
-  /* Foco visible en todo lo que se puede enfocar con teclado */
+  /* El anillo de foco usa --brasa: --linea-viva no llega a 3:1 y un foco
+     que no se ve deja el sitio sin navegación por teclado. */
   :focus-visible {
-    outline: 3px solid var(--color-arcilla-700);
+    outline: 2px solid var(--color-brasa);
     outline-offset: 3px;
     border-radius: 2px;
   }
 
   ::selection {
-    background: var(--color-arcilla-50);
-    color: var(--color-tinta);
+    background: var(--color-brasa);
+    color: var(--color-void);
   }
 
-  /* Respeta a quien pidió menos movimiento */
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
@@ -136,11 +99,11 @@
 }
 
 /* ==========================================================================
-   Componentes de uso repetido
+   Componentes
    ========================================================================== */
 
 @layer components {
-  /* --- Contenedor --- */
+  /* --- Estructura --- */
   .contenedor {
     width: 100%;
     max-width: 72rem;
@@ -158,14 +121,13 @@
     max-width: 38rem; /* ~70 caracteres */
   }
 
-  /* --- Ritmo vertical de secciones --- */
   .seccion {
-    padding-block: 3.5rem;
+    padding-block: 4rem;
   }
 
   @media (min-width: 48rem) {
     .seccion {
-      padding-block: 5.5rem;
+      padding-block: 6rem;
     }
   }
 
@@ -173,7 +135,7 @@
   .lead {
     font-size: 1.1875rem; /* 19px */
     line-height: 1.55;
-    color: var(--color-gris-600);
+    color: var(--color-texto-2);
   }
 
   @media (min-width: 48rem) {
@@ -187,13 +149,14 @@
     line-height: 1.55;
   }
 
-  .antetitulo {
-    font-family: var(--font-cuerpo);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.09em;
+  /* La monoespaciada es la señal técnica del sitio. Nunca en texto corrido. */
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 0.75rem; /* 12px */
+    font-weight: 500;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-arcilla-700);
+    line-height: 1.4;
   }
 
   /* --- Botones --- */
@@ -202,9 +165,10 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.875rem 1.375rem;
+    padding: 0.8125rem 1.375rem;
     border-radius: var(--radius-praxia);
-    font-weight: 600;
+    font-family: var(--font-titulos);
+    font-weight: 500;
     font-size: 1.0625rem;
     line-height: 1.2;
     text-align: center;
@@ -216,82 +180,108 @@
   }
 
   .boton-primario {
-    background-color: var(--color-arcilla-700);
-    color: var(--color-blanco);
+    background-color: var(--color-brasa);
+    color: var(--color-void);
   }
 
   .boton-primario:hover {
-    background-color: var(--color-arcilla-800);
+    background-color: var(--color-brasa-alto);
   }
 
   .boton-secundario {
     background-color: transparent;
-    color: var(--color-tinta);
-    border-color: var(--color-tinta);
+    color: var(--color-texto);
+    border-color: var(--color-linea-viva);
   }
 
   .boton-secundario:hover {
-    background-color: var(--color-tinta);
-    color: var(--color-hueso);
+    border-color: var(--color-brasa);
+    background-color: var(--color-brasa-tenue);
   }
 
-  /* Sobre fondo oscuro */
-  .boton-claro {
-    background-color: var(--color-hueso);
-    color: var(--color-tinta);
-  }
-
-  .boton-claro:hover {
-    background-color: var(--color-blanco);
-  }
-
-  .boton-borde-claro {
-    background-color: transparent;
-    color: var(--color-hueso);
-    border-color: color-mix(in srgb, var(--color-hueso) 55%, transparent);
-  }
-
-  .boton-borde-claro:hover {
-    border-color: var(--color-hueso);
-    background-color: color-mix(in srgb, var(--color-hueso) 12%, transparent);
-  }
-
-  /* --- Enlaces de texto --- */
+  /* --- Enlaces --- */
   .enlace {
-    color: var(--color-arcilla-700);
+    color: var(--color-brasa);
     font-weight: 500;
     text-decoration: underline;
-    text-underline-offset: 3px;
+    text-underline-offset: 4px;
     text-decoration-thickness: 1px;
   }
 
   .enlace:hover {
-    color: var(--color-arcilla-800);
+    color: var(--color-brasa-alto);
     text-decoration-thickness: 2px;
   }
 
-  /* --- Tarjeta --- */
+  /* --- Tarjetas. La elevación se comunica con borde, no con blur. --- */
   .tarjeta {
-    background-color: var(--color-blanco);
-    border: 1px solid var(--color-gris-200);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-linea);
     border-radius: var(--radius-praxia);
     padding: 1.5rem;
+    transition:
+      border-color 150ms ease,
+      background-color 150ms ease;
   }
 
-  /* --- Marcador de contenido pendiente --- */
-  .pendiente {
-    display: inline;
-    background-color: #fdf6e3;
-    color: var(--color-ambar-700);
-    border-bottom: 2px dotted var(--color-ambar-700);
-    padding-inline: 0.25rem;
-    font-weight: 600;
-    font-size: 0.95em;
+  a.tarjeta:hover,
+  .tarjeta-interactiva:hover {
+    border-color: var(--color-linea-viva);
+    background-color: var(--color-surface-2);
   }
 
-  /* --- Acordeón nativo (details/summary) --- */
+  /* --- Campos del formulario. Nada redondeado. --- */
+  .campo {
+    width: 100%;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-linea-viva);
+    border-radius: 0.25rem;
+    padding: 0.75rem 0.875rem;
+    color: var(--color-texto);
+    font-family: var(--font-cuerpo);
+    transition: border-color 150ms ease;
+  }
+
+  .campo::placeholder {
+    color: var(--color-texto-3);
+  }
+
+  .campo:focus {
+    outline: none;
+    border-color: var(--color-brasa);
+    box-shadow: 0 0 0 1px var(--color-brasa);
+  }
+
+  .campo[aria-invalid='true'] {
+    border-color: var(--color-ambar);
+  }
+
+  /* --- Grilla de puntos. Solo en el hero, y apenas visible. --- */
+  .puntos {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .puntos::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: radial-gradient(circle, var(--color-linea) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(ellipse 100% 70% at 50% 30%, #000 30%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse 100% 70% at 50% 30%, #000 30%, transparent 78%);
+  }
+
+  .puntos-marcados::before {
+    background-size: 24px 24px;
+    mask-image: radial-gradient(ellipse 90% 80% at 20% 20%, #000 20%, transparent 72%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 20% 20%, #000 20%, transparent 72%);
+  }
+
+  /* --- Acordeón nativo --- */
   .acordeon {
-    border-bottom: 1px solid var(--color-gris-200);
+    border-bottom: 1px solid var(--color-linea);
   }
 
   .acordeon > summary {
@@ -301,9 +291,10 @@
     gap: 1rem;
     padding-block: 1.125rem;
     cursor: pointer;
-    font-weight: 600;
+    font-family: var(--font-titulos);
+    font-weight: 500;
     list-style: none;
-    color: var(--color-tinta);
+    color: var(--color-texto);
   }
 
   .acordeon > summary::-webkit-details-marker {
@@ -313,11 +304,11 @@
   .acordeon > summary::after {
     content: '';
     flex: none;
-    width: 0.75rem;
-    height: 0.75rem;
-    margin-top: 0.45rem;
-    border-right: 2px solid var(--color-arcilla-700);
-    border-bottom: 2px solid var(--color-arcilla-700);
+    width: 0.7rem;
+    height: 0.7rem;
+    margin-top: 0.5rem;
+    border-right: 1.5px solid var(--color-brasa);
+    border-bottom: 1.5px solid var(--color-brasa);
     transform: rotate(45deg);
     transition: transform 150ms ease;
   }
@@ -329,18 +320,29 @@
 
   .acordeon > .acordeon-cuerpo {
     padding-bottom: 1.25rem;
-    color: var(--color-gris-600);
+    color: var(--color-texto-2);
     max-width: 38rem;
   }
 
-  /* --- Enlace de salto al contenido --- */
+  /* --- Marcador de contenido pendiente --- */
+  .pendiente {
+    display: inline;
+    background-color: rgb(245 166 35 / 0.14);
+    color: var(--color-ambar);
+    border-bottom: 1px dotted var(--color-ambar);
+    padding-inline: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+
+  /* --- Salto al contenido --- */
   .skip-link {
     position: absolute;
     left: 0.75rem;
     top: -100%;
     z-index: 100;
-    background: var(--color-tinta);
-    color: var(--color-hueso);
+    background: var(--color-brasa);
+    color: var(--color-void);
     padding: 0.75rem 1rem;
     border-radius: var(--radius-praxia);
     font-weight: 600;
@@ -348,5 +350,35 @@
 
   .skip-link:focus {
     top: 0.75rem;
+  }
+
+  /* --- Aparición de sección. Una vez, al entrar al viewport. --- */
+  .revelar {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 500ms ease,
+      transform 500ms ease;
+  }
+
+  .revelar.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .revelar {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Al imprimir no hay scroll que dispare el observador: sin esto, media
+     página sale en blanco. */
+  @media print {
+    .revelar {
+      opacity: 1 !important;
+      transform: none !important;
+    }
   }
 }

@@ -15,7 +15,7 @@ import { MOSTRAR_PENDIENTES, EMAIL, mailtoLink } from '../consts';
       <h1>Política de privacidad</h1>
       {
         MOSTRAR_PENDIENTES && (
-          <p class="pequeno mt-4 text-gris-600">
+          <p class="pequeno mt-4 text-texto-2">
             Última actualización: <Pendiente que="fecha" />
           </p>
         )
@@ -24,7 +24,7 @@ import { MOSTRAR_PENDIENTES, EMAIL, mailtoLink } from '../consts';
       <div class="mt-10 space-y-8">
         <div>
           <h2 class="text-[1.25rem] md:text-[1.5rem]">Qué datos recogemos</h2>
-          <p class="mt-3 text-gris-600">
+          <p class="mt-3 text-texto-2">
             Solo lo que tú escribes en el formulario de diagnóstico: tu nombre, tu número de
             WhatsApp, tu rubro y lo que te gustaría automatizar. Si nos escribes por WhatsApp o por
             correo, guardamos esa conversación.
@@ -33,7 +33,7 @@ import { MOSTRAR_PENDIENTES, EMAIL, mailtoLink } from '../consts';
 
         <div>
           <h2 class="text-[1.25rem] md:text-[1.5rem]">Para qué los usamos</h2>
-          <p class="mt-3 text-gris-600">
+          <p class="mt-3 text-texto-2">
             Para contactarte y coordinar el diagnóstico, y para responder tus consultas. No
             vendemos ni cedemos tus datos a terceros con fines comerciales.
           </p>
@@ -41,7 +41,7 @@ import { MOSTRAR_PENDIENTES, EMAIL, mailtoLink } from '../consts';
 
         <div>
           <h2 class="text-[1.25rem] md:text-[1.5rem]">Cuánto tiempo los guardamos</h2>
-          <p class="mt-3 text-gris-600">
+          <p class="mt-3 text-texto-2">
             {MOSTRAR_PENDIENTES && <Pendiente que="plazo de conservación" />} Si nos pides que
             borremos tus datos, los borramos.
           </p>
@@ -49,7 +49,7 @@ import { MOSTRAR_PENDIENTES, EMAIL, mailtoLink } from '../consts';
 
         <div>
           <h2 class="text-[1.25rem] md:text-[1.5rem]">Tus derechos</h2>
-          <p class="mt-3 text-gris-600">
+          <p class="mt-3 text-texto-2">
             La Ley N° 29733 de Protección de Datos Personales te da derecho a acceder a tus datos,
             corregirlos, cancelarlos y oponerte a su tratamiento. Para ejercerlos, escríbenos a{' '}
             <a href={mailtoLink} class="enlace">{EMAIL}</a>.
@@ -58,14 +58,14 @@ import { MOSTRAR_PENDIENTES, EMAIL, mailtoLink } from '../consts';
 
         <div>
           <h2 class="text-[1.25rem] md:text-[1.5rem]">Cookies y medición</h2>
-          <p class="mt-3 text-gris-600">
+          <p class="mt-3 text-texto-2">
             Este sitio no usa cookies de publicidad ni de seguimiento entre sitios. Las fuentes
             tipográficas se sirven desde nuestro propio dominio, así que tampoco hay pedidos a
             terceros al cargar la página.
           </p>
           {
             MOSTRAR_PENDIENTES && (
-              <p class="mt-3 text-gris-600">
+              <p class="mt-3 text-texto-2">
                 <Pendiente que="declarar aquí la herramienta de analítica, si instalas una" />
               </p>
             )
@@ -74,7 +74,7 @@ import { MOSTRAR_PENDIENTES, EMAIL, mailtoLink } from '../consts';
 
         <div>
           <h2 class="text-[1.25rem] md:text-[1.5rem]">Datos de tus clientes</h2>
-          <p class="mt-3 text-gris-600">
+          <p class="mt-3 text-texto-2">
             Cuando implementamos una automatización, los datos de tus clientes siguen siendo tuyos
             y los tratamos solo para operar lo que nos encargaste. Lo detallamos en{' '}
             <a href="/seguridad" class="enlace">la página de seguridad</a>.

@@ -25,24 +25,35 @@ export default defineConfig({
 
   // Las fuentes se descargan en el build y se sirven desde el mismo dominio.
   // No hay pedidos a Google en tiempo de ejecución.
+  // Siete cortes en total. Se descargan en el build y se sirven desde el
+  // mismo dominio: no hay pedidos a Google en tiempo de ejecución.
   fonts: [
     {
       provider: fontProviders.google(),
-      name: 'Fraunces',
+      name: 'Space Grotesk',
       cssVariable: '--font-titulos',
-      weights: [600, 700],
+      weights: [500, 700],
       styles: ['normal'],
       subsets: ['latin'],
-      fallbacks: ['Georgia', 'Times New Roman', 'serif'],
+      fallbacks: ['system-ui', 'sans-serif'],
     },
     {
       provider: fontProviders.google(),
       name: 'Inter',
       cssVariable: '--font-cuerpo',
-      weights: [400, 500, 600, 700],
+      weights: [400, 500, 600],
       styles: ['normal'],
       subsets: ['latin'],
-      fallbacks: ['system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+      fallbacks: ['system-ui', 'sans-serif'],
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'JetBrains Mono',
+      cssVariable: '--font-mono',
+      weights: [400, 500],
+      styles: ['normal'],
+      subsets: ['latin'],
+      fallbacks: ['ui-monospace', 'SF Mono', 'Consolas', 'monospace'],
     },
   ],
 

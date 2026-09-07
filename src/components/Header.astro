@@ -7,7 +7,7 @@ const ruta = Astro.url.pathname.replace(/\/$/, '') || '/';
 const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
 ---
 
-<header class="sticky top-0 z-40 border-b border-gris-200 bg-hueso/95 backdrop-blur-sm">
+<header class="sticky top-0 z-40 border-b border-linea bg-void">
   <div class="contenedor flex h-16 items-center justify-between gap-4 md:h-20">
     <a href="/" class="rounded-sm" aria-label="Praxia, ir al inicio">
       <Logo />
@@ -19,8 +19,8 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
           <a
             href={item.href}
             class:list={[
-              'pequeno font-medium transition-colors hover:text-arcilla-700',
-              esActiva(item.href) ? 'text-arcilla-700' : 'text-tinta',
+              'pequeno font-medium transition-colors hover:text-brasa',
+              esActiva(item.href) ? 'text-brasa' : 'text-texto',
             ]}
             aria-current={esActiva(item.href) ? 'page' : undefined}
           >
@@ -36,7 +36,7 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
     <button
       type="button"
       id="boton-menu"
-      class="-mr-2 inline-flex items-center justify-center rounded-praxia p-2 text-tinta lg:hidden"
+      class="-mr-2 inline-flex items-center justify-center rounded-praxia p-2 text-texto lg:hidden"
       aria-expanded="false"
       aria-controls="menu-movil"
     >
@@ -46,15 +46,15 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
     </button>
   </div>
 
-  <div id="menu-movil" class="hidden border-t border-gris-200 bg-hueso lg:hidden">
+  <div id="menu-movil" class="hidden border-t border-linea bg-void lg:hidden">
     <nav class="contenedor flex flex-col py-3" aria-label="Principal, celular">
       {
         NAV_PRINCIPAL.map((item) => (
           <a
             href={item.href}
             class:list={[
-              'border-b border-gris-200 py-3.5 font-medium',
-              esActiva(item.href) ? 'text-arcilla-700' : 'text-tinta',
+              'border-b border-linea py-3.5 font-medium',
+              esActiva(item.href) ? 'text-brasa' : 'text-texto',
             ]}
             aria-current={esActiva(item.href) ? 'page' : undefined}
           >

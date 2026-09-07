@@ -1,17 +1,16 @@
 ---
 interface Props {
   /** Fondo de la sección. */
-  fondo?: 'hueso' | 'blanco' | 'tinta' | 'arcilla';
+  fondo?: 'void' | 'surface' | 'acento';
   id?: string;
   class?: string;
 }
-const { fondo = 'hueso', id, class: clase = '' } = Astro.props;
+const { fondo = 'void', id, class: clase = '' } = Astro.props;
 
 const fondos = {
-  hueso: 'bg-hueso',
-  blanco: 'bg-blanco border-y border-gris-200',
-  tinta: 'bg-tinta text-hueso',
-  arcilla: 'bg-arcilla-50',
+  void: 'bg-void',
+  surface: 'bg-surface border-y border-linea',
+  acento: 'bg-surface',
 } as const;
 ---
 

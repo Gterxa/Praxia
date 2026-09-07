@@ -11,16 +11,65 @@ const { detallado = false, nivel = 3 } = Astro.props;
 const Titulo = `h${nivel}` as 'h2' | 'h3';
 ---
 
-<ol class="grid gap-px overflow-hidden rounded-praxia border border-gris-200 bg-gris-200 md:grid-cols-2">
+<ol class="pasos">
   {
-    METODO.map((paso) => (
-      <li class="flex flex-col bg-blanco p-6 md:p-8">
-        <span class="font-[family-name:var(--font-titulos)] text-[2.5rem] leading-none font-semibold text-arcilla">
-          {paso.numero}
-        </span>
-        <Titulo class="mt-4 text-[1.1875rem] md:text-[1.3125rem]">{paso.titulo}</Titulo>
-        <p class="mt-2.5 text-gris-600">{detallado ? paso.detalle : paso.resumen}</p>
+    METODO.map((paso, i) => (
+      <li class="paso">
+        <div class="paso-marca" aria-hidden="true">
+          <span class="paso-numero">{String(paso.numero).padStart(2, '0')}</span>
+          {i < METODO.length - 1 && <span class="paso-linea" />}
+        </div>
+        <div class="pb-8 last:pb-0">
+          <Titulo class="text-[1.1875rem] md:text-[1.3125rem]">{paso.titulo}</Titulo>
+          <p class="mt-2.5 text-texto-2">{detallado ? paso.detalle : paso.resumen}</p>
+        </div>
       </li>
     ))
   }
 </ol>
+
+<style>
+  .pasos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .paso {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+  }
+
+  .paso-marca {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .paso-numero {
+    font-family: var(--font-mono);
+    font-size: 1.375rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--color-brasa);
+    letter-spacing: -0.02em;
+  }
+
+  .paso-linea {
+    flex: 1;
+    width: 1px;
+    background-color: var(--color-linea);
+    min-height: 1.5rem;
+  }
+
+  @media (min-width: 48rem) {
+    .paso {
+      gap: 1.75rem;
+    }
+    .paso-numero {
+      font-size: 1.75rem;
+    }
+  }
+</style>

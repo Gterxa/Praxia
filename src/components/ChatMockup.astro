@@ -1,12 +1,12 @@
 ---
+import StatusPill from './StatusPill.astro';
+
 /**
- * Conversación de WhatsApp simulada, en HTML y CSS. Sin imágenes ni capturas.
+ * Conversación de WhatsApp simulada, en modo oscuro. HTML y CSS, sin imágenes.
  *
- * Es el "screenshot de producto" de Praxia: el comprador vive en WhatsApp, así
- * que mostrar la automatización funcionando es mostrar un chat.
- *
- * El contenido viene del markdown de cada capacidad (campo `conversacion`).
- * Ver CONTENIDO.md para editarlas.
+ * El último mensaje del negocio entra con un indicador de "escribiendo…" que
+ * se dispara una sola vez, cuando el componente entra al viewport. Con
+ * prefers-reduced-motion el mensaje aparece directamente.
  */
 interface Props {
   negocio: string;
@@ -16,7 +16,6 @@ interface Props {
 
 const { negocio, mensajes, class: clase = '' } = Astro.props;
 
-/** Iniciales para el avatar del encabezado. */
 const iniciales = negocio
   .split(' ')
   .filter((p) => p.length > 2)
@@ -24,75 +23,79 @@ const iniciales = negocio
   .map((p) => p[0])
   .join('')
   .toUpperCase();
+
+/** El último mensaje del negocio es el que se revela tras el indicador. */
+const ultimoDelNegocio = mensajes.reduce(
+  (acc, m, i) => (m.de === 'negocio' ? i : acc),
+  -1,
+);
 ---
 
-<figure class:list={['chat', clase]}>
-  <div class="chat-marco">
-    <div class="chat-encabezado">
-      <span class="chat-avatar" aria-hidden="true">{iniciales}</span>
-      <span class="chat-identidad">
-        <span class="chat-negocio">{negocio}</span>
-        <span class="chat-estado">en línea</span>
-      </span>
-      <span class="chat-etiqueta">Ejemplo</span>
-    </div>
-
-    <ol class="chat-cuerpo">
-      {
-        mensajes.map((m) => (
-          <li class:list={['chat-fila', m.de === 'negocio' && 'es-negocio']}>
-            <div class="chat-burbuja">
-              <span class="sr-only">{m.de === 'negocio' ? `${negocio}:` : 'Cliente:'}</span>
-              <p class="chat-texto" set:html={m.texto.replace(/\n/g, '<br />')} />
-              <span class="chat-meta">
-                <span class="chat-hora">{m.hora}</span>
-                {m.de === 'negocio' && (
-                  <svg
-                    class="chat-checks"
-                    viewBox="0 0 18 12"
-                    width="16"
-                    height="11"
-                    aria-hidden="true"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.6"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M1 6.6 4.1 9.8 10.4 2.2" />
-                    <path d="M7.2 6.6 10.3 9.8 16.6 2.2" />
-                  </svg>
-                )}
-              </span>
-            </div>
-          </li>
-        ))
-      }
-    </ol>
+<figure class:list={['chat', clase]} data-chat>
+  <div class="chat-encabezado">
+    <span class="chat-avatar" aria-hidden="true">{iniciales}</span>
+    <span class="chat-identidad">
+      <span class="chat-negocio">{negocio}</span>
+      <StatusPill texto="en línea" class="mt-1 self-start !border-0 !bg-transparent !px-0" />
+    </span>
+    <span class="mono chat-etiqueta">Ejemplo</span>
   </div>
-  <figcaption class="sr-only">
-    Ejemplo de una conversación automatizada por WhatsApp con {negocio}, un negocio ficticio.
-  </figcaption>
+
+  <ol class="chat-cuerpo">
+    {
+      mensajes.map((m, i) => (
+        <li
+          class:list={['chat-fila', m.de === 'negocio' && 'es-negocio']}
+          data-revelable={i === ultimoDelNegocio ? '' : undefined}
+        >
+          <div class="chat-burbuja">
+            <span class="sr-only">{m.de === 'negocio' ? `${negocio}:` : 'Cliente:'}</span>
+            <p class="chat-texto" set:html={m.texto.replace(/\n/g, '<br />')} />
+            <span class="chat-meta mono">
+              <span>{m.hora}</span>
+              {m.de === 'negocio' && (
+                <svg
+                  class="chat-checks"
+                  viewBox="0 0 18 12"
+                  width="15"
+                  height="10"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M1 6.6 4.1 9.8 10.4 2.2" />
+                  <path d="M7.2 6.6 10.3 9.8 16.6 2.2" />
+                </svg>
+              )}
+            </span>
+          </div>
+        </li>
+      ))
+    }
+
+    <li class="chat-fila es-negocio chat-escribiendo" data-escribiendo hidden>
+      <div class="chat-burbuja">
+        <span class="sr-only">Escribiendo</span>
+        <span class="puntos-escribiendo" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+      </div>
+    </li>
+  </ol>
 </figure>
 
 <style>
   .chat {
-    --chat-fondo: #ece7df;
-    --chat-cliente: #ffffff;
-    --chat-negocio: #d8eddf;
     width: 100%;
     max-width: 24rem;
     margin: 0;
-  }
-
-  .chat-marco {
     overflow: hidden;
-    border: 1px solid var(--color-gris-200);
-    border-radius: 1.25rem;
-    background: var(--chat-fondo);
-    box-shadow:
-      0 1px 2px rgb(26 35 50 / 0.06),
-      0 12px 28px -12px rgb(26 35 50 / 0.22);
+    border: 1px solid var(--color-linea);
+    border-radius: var(--radius-praxia);
+    background: var(--color-void);
   }
 
   /* --- Encabezado --- */
@@ -101,54 +104,45 @@ const iniciales = negocio
     align-items: center;
     gap: 0.625rem;
     padding: 0.75rem 0.875rem;
-    background: var(--color-tinta);
-    color: var(--color-hueso);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-linea);
   }
 
   .chat-avatar {
     display: grid;
     place-items: center;
     flex: none;
-    width: 2.125rem;
-    height: 2.125rem;
+    width: 2rem;
+    height: 2rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--color-hueso) 18%, transparent);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    border: 1px solid var(--color-linea-viva);
+    background: var(--color-surface-2);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-texto-2);
   }
 
   .chat-identidad {
     display: flex;
     min-width: 0;
     flex-direction: column;
-    line-height: 1.25;
+    line-height: 1.2;
   }
 
   .chat-negocio {
+    font-family: var(--font-titulos);
     font-size: 0.9375rem;
-    font-weight: 600;
+    font-weight: 500;
+    color: var(--color-texto);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .chat-estado {
-    font-size: 0.75rem;
-    color: var(--color-gris-200);
-  }
-
   .chat-etiqueta {
     margin-left: auto;
     flex: none;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--color-hueso) 16%, transparent);
-    padding: 0.1875rem 0.5rem;
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-gris-200);
+    color: var(--color-texto-3);
   }
 
   /* --- Mensajes --- */
@@ -159,6 +153,7 @@ const iniciales = negocio
     margin: 0;
     padding: 1rem 0.875rem 1.125rem;
     list-style: none;
+    background: var(--color-surface);
   }
 
   .chat-fila {
@@ -171,24 +166,24 @@ const iniciales = negocio
   }
 
   .chat-burbuja {
-    position: relative;
     max-width: 86%;
-    border-radius: 0.875rem 0.875rem 0.875rem 0.25rem;
-    background: var(--chat-cliente);
+    border-radius: 0.625rem 0.625rem 0.625rem 0.1875rem;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-linea);
     padding: 0.5rem 0.6875rem 0.4375rem;
-    box-shadow: 0 1px 1px rgb(26 35 50 / 0.08);
   }
 
   .es-negocio .chat-burbuja {
-    border-radius: 0.875rem 0.875rem 0.25rem 0.875rem;
-    background: var(--chat-negocio);
+    border-radius: 0.625rem 0.625rem 0.1875rem 0.625rem;
+    background: var(--color-wa);
+    border-color: color-mix(in srgb, var(--color-verde) 22%, transparent);
   }
 
   .chat-texto {
     margin: 0;
     font-size: 0.875rem;
     line-height: 1.45;
-    color: var(--color-tinta);
+    color: var(--color-texto);
     white-space: pre-line;
   }
 
@@ -196,14 +191,12 @@ const iniciales = negocio
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 0.25rem;
-    margin-top: 0.125rem;
-    color: var(--color-gris-600);
-  }
-
-  .chat-hora {
-    font-size: 0.6875rem;
-    line-height: 1;
+    gap: 0.3125rem;
+    margin-top: 0.1875rem;
+    font-size: 0.6875rem; /* 11px */
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: var(--color-chat-meta);
   }
 
   .chat-checks {
@@ -216,4 +209,80 @@ const iniciales = negocio
       font-size: 0.9375rem;
     }
   }
+
+  /* --- Indicador de escritura --- */
+  .puntos-escribiendo {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding-block: 0.25rem;
+  }
+
+  .puntos-escribiendo span {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 999px;
+    background: var(--color-texto-2);
+    animation: escribir 1.2s ease-in-out infinite;
+  }
+
+  .puntos-escribiendo span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .puntos-escribiendo span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes escribir {
+    0%,
+    60%,
+    100% {
+      opacity: 0.25;
+      transform: translateY(0);
+    }
+    30% {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+  }
+
+  /* Ambas clases las pone el script: sin JavaScript el mensaje ya está visible
+     y el indicador nunca se muestra. */
+  .chat-fila.pendiente-revelar {
+    display: none;
+  }
+
+  /* [hidden] y display:flex tienen la misma especificidad: lo hago explícito. */
+  .chat-fila[hidden] {
+    display: none;
+  }
 </style>
+
+<script>
+  const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  document.querySelectorAll<HTMLElement>('[data-chat]').forEach((chat) => {
+    const revelable = chat.querySelector<HTMLElement>('[data-revelable]');
+    const escribiendo = chat.querySelector<HTMLElement>('[data-escribiendo]');
+    if (!revelable || !escribiendo || reducido.matches) return;
+
+    revelable.classList.add('pendiente-revelar');
+    escribiendo.hidden = false;
+
+    let hecho = false;
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((entrada) => {
+          if (!entrada.isIntersecting || hecho) return;
+          hecho = true;
+          observador.disconnect();
+          window.setTimeout(() => {
+            escribiendo.hidden = true;
+            revelable.classList.remove('pendiente-revelar');
+          }, 800);
+        });
+      },
+      { threshold: 0.35 },
+    );
+    observador.observe(chat);
+  });
+</script>

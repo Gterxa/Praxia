@@ -9,11 +9,11 @@ const capacidades = await getCapacidades();
 const anio = new Date().getFullYear();
 ---
 
-<footer class="mt-auto border-t border-gris-200 bg-blanco">
+<footer class="mt-auto border-t border-linea bg-surface">
   <div class="contenedor py-14 md:py-16">
     <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
       <div>
-        <h2 class="font-[family-name:var(--font-cuerpo)] text-[0.8125rem] font-semibold tracking-[0.09em] text-gris-600 uppercase">
+        <h2 class="font-[family-name:var(--font-cuerpo)] text-[0.8125rem] font-semibold tracking-[0.09em] text-texto-2 uppercase">
           Qué puedes automatizar
         </h2>
         <ul class="mt-4 space-y-2.5">
@@ -22,7 +22,7 @@ const anio = new Date().getFullYear();
               <li>
                 <a
                   href={`/que-puedes-automatizar/${c.id}`}
-                  class="pequeno text-gris-600 hover:text-arcilla-700 hover:underline"
+                  class="pequeno text-texto-2 hover:text-brasa hover:underline"
                 >
                   {c.data.nombreCorto}
                 </a>
@@ -33,36 +33,36 @@ const anio = new Date().getFullYear();
       </div>
 
       <div>
-        <h2 class="font-[family-name:var(--font-cuerpo)] text-[0.8125rem] font-semibold tracking-[0.09em] text-gris-600 uppercase">
+        <h2 class="font-[family-name:var(--font-cuerpo)] text-[0.8125rem] font-semibold tracking-[0.09em] text-texto-2 uppercase">
           Empresa
         </h2>
         <ul class="mt-4 space-y-2.5">
-          <li><a href="/nosotros" class="pequeno text-gris-600 hover:text-arcilla-700 hover:underline">Nosotros</a></li>
-          <li><a href="/como-trabajamos" class="pequeno text-gris-600 hover:text-arcilla-700 hover:underline">Cómo trabajamos</a></li>
-          <li><a href="/seguridad" class="pequeno text-gris-600 hover:text-arcilla-700 hover:underline">Seguridad</a></li>
+          <li><a href="/nosotros" class="pequeno text-texto-2 hover:text-brasa hover:underline">Nosotros</a></li>
+          <li><a href="/como-trabajamos" class="pequeno text-texto-2 hover:text-brasa hover:underline">Cómo trabajamos</a></li>
+          <li><a href="/seguridad" class="pequeno text-texto-2 hover:text-brasa hover:underline">Seguridad</a></li>
         </ul>
       </div>
 
       <div>
-        <h2 class="font-[family-name:var(--font-cuerpo)] text-[0.8125rem] font-semibold tracking-[0.09em] text-gris-600 uppercase">
+        <h2 class="font-[family-name:var(--font-cuerpo)] text-[0.8125rem] font-semibold tracking-[0.09em] text-texto-2 uppercase">
           Recursos
         </h2>
         <ul class="mt-4 space-y-2.5">
-          <li><a href="/casos" class="pequeno text-gris-600 hover:text-arcilla-700 hover:underline">Casos</a></li>
-          <li><a href="/preguntas-frecuentes" class="pequeno text-gris-600 hover:text-arcilla-700 hover:underline">Preguntas frecuentes</a></li>
-          <li><a href="/soluciones-mayores" class="pequeno text-gris-600 hover:text-arcilla-700 hover:underline">Soluciones mayores</a></li>
+          <li><a href="/casos" class="pequeno text-texto-2 hover:text-brasa hover:underline">Casos</a></li>
+          <li><a href="/preguntas-frecuentes" class="pequeno text-texto-2 hover:text-brasa hover:underline">Preguntas frecuentes</a></li>
+          <li><a href="/soluciones-mayores" class="pequeno text-texto-2 hover:text-brasa hover:underline">Soluciones mayores</a></li>
         </ul>
       </div>
 
       <div>
-        <h2 class="font-[family-name:var(--font-cuerpo)] text-[0.8125rem] font-semibold tracking-[0.09em] text-gris-600 uppercase">
+        <h2 class="font-[family-name:var(--font-cuerpo)] text-[0.8125rem] font-semibold tracking-[0.09em] text-texto-2 uppercase">
           Contacto
         </h2>
         <ul class="mt-4 space-y-2.5">
           <li>
             <a
               href={waLink(CONTEXTO.flotante)}
-              class="pequeno inline-flex items-center gap-2 text-gris-600 hover:text-arcilla-700 hover:underline"
+              class="pequeno inline-flex items-center gap-2 text-texto-2 hover:text-brasa hover:underline"
               rel="noopener"
               target="_blank"
             >
@@ -73,24 +73,24 @@ const anio = new Date().getFullYear();
           <li>
             <a
               href={mailtoLink}
-              class="pequeno inline-flex items-center gap-2 text-gris-600 hover:text-arcilla-700 hover:underline"
+              class="pequeno inline-flex items-center gap-2 text-texto-2 hover:text-brasa hover:underline"
             >
               <Icon nombre="correo" tamano={16} />
               {EMAIL}
             </a>
           </li>
-          <li><a href="/legal" class="pequeno text-gris-600 hover:text-arcilla-700 hover:underline">Términos legales</a></li>
-          <li><a href="/privacidad" class="pequeno text-gris-600 hover:text-arcilla-700 hover:underline">Privacidad</a></li>
+          <li><a href="/legal" class="pequeno text-texto-2 hover:text-brasa hover:underline">Términos legales</a></li>
+          <li><a href="/privacidad" class="pequeno text-texto-2 hover:text-brasa hover:underline">Privacidad</a></li>
         </ul>
       </div>
     </div>
 
-    <div class="mt-12 flex flex-col gap-4 border-t border-gris-200 pt-8 sm:flex-row sm:items-center sm:justify-between">
+    <div class="mt-12 flex flex-col gap-4 border-t border-linea pt-8 sm:flex-row sm:items-center sm:justify-between">
       <div class="flex flex-col gap-1">
         <Logo />
-        <p class="pequeno text-gris-600">{SITE.tagline}</p>
+        <p class="pequeno text-texto-2">{SITE.tagline}</p>
       </div>
-      <p class="pequeno text-gris-600">
+      <p class="pequeno text-texto-2">
         {anio} {SITE.nombre}. Automatización con IA para negocios del Perú.
       </p>
     </div>
