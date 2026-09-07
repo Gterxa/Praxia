@@ -9,7 +9,7 @@ import ChatMockup from '../../components/ChatMockup.astro';
 import ExampleBlock from '../../components/ExampleBlock.astro';
 import CapabilityCard from '../../components/CapabilityCard.astro';
 import CTABand from '../../components/CTABand.astro';
-import { MENSAJES_WHATSAPP } from '../../consts';
+import { CONTEXTO } from '../../consts';
 
 export const getStaticPaths = (async () => {
   const capacidades = await getCapacidades();
@@ -26,15 +26,15 @@ const d = capacidad.data;
 
 const otras = (await getCapacidades()).filter((c) => c.id !== capacidad.id).slice(0, 3);
 
-const mensaje = MENSAJES_WHATSAPP.capacidad(d.nombreCorto);
+const mensaje = CONTEXTO.capacidad(d.nombreCorto);
 ---
 
-<Layout titulo={d.seoTitulo} descripcion={d.seoDescripcion} mensajeWhatsApp={mensaje}>
+<Layout titulo={d.seoTitulo} descripcion={d.seoDescripcion} contextoWhatsApp={mensaje}>
   <Hero
     antetitulo={d.nombreCorto}
     titulo={d.titulo}
     subtitulo={d.subtitulo}
-    mensajeWhatsApp={mensaje}
+    contextoWhatsApp={mensaje}
   />
 
   <!-- Qué hace -->
@@ -129,5 +129,5 @@ const mensaje = MENSAJES_WHATSAPP.capacidad(d.nombreCorto);
     </div>
   </Seccion>
 
-  <CTABand mensajeWhatsApp={mensaje} />
+  <CTABand contextoWhatsApp={mensaje} />
 </Layout>

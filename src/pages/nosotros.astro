@@ -4,19 +4,19 @@ import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
 import CTABand from '../components/CTABand.astro';
 import Pendiente from '../components/Pendiente.astro';
-import { MENSAJES_WHATSAPP, MOSTRAR_PENDIENTES } from '../consts';
+import { CONTEXTO, MOSTRAR_PENDIENTES } from '../consts';
 ---
 
 <Layout
   titulo="Nosotros"
-  descripcion="Praxia viene de praxis: llevar una idea a la práctica. Somos una agencia peruana de automatización con IA para negocios pequeños y medianos."
-  mensajeWhatsApp={MENSAJES_WHATSAPP.nosotros}
+  descripcion="Praxia existe para que la automatización con IA sea real y rentable para las pequeñas y medianas empresas del Perú."
+  contextoWhatsApp={CONTEXTO.nosotros}
 >
   <Hero
     antetitulo="Nosotros"
     titulo="Praxia viene de praxis. Llevar la idea a la práctica."
     subtitulo="Es literalmente lo que hacemos: tomamos una idea de automatización que vive en la cabeza del dueño y la volvemos algo que funciona."
-    mensajeWhatsApp={MENSAJES_WHATSAPP.nosotros}
+    contextoWhatsApp={CONTEXTO.nosotros}
   />
 
   <Seccion fondo="blanco">
@@ -46,17 +46,6 @@ import { MENSAJES_WHATSAPP, MOSTRAR_PENDIENTES } from '../consts';
         Praxia, te vas con la documentación bajo el brazo.
       </p>
 
-      {
-        MOSTRAR_PENDIENTES && (
-          <>
-            <h2 class="mt-14 text-[1.375rem] md:text-[1.75rem]">Quién está detrás</h2>
-            <p class="mt-5 text-gris-600">
-              <Pendiente que="bio del fundador y foto" />
-            </p>
-          </>
-        )
-      }
-
       <h2 class="mt-14 text-[1.375rem] md:text-[1.75rem]">Dónde trabajamos</h2>
       <p class="mt-5 text-gris-600">
         En todo el Perú. Trabajamos por videollamada y WhatsApp, así que la distancia no es
@@ -65,5 +54,54 @@ import { MENSAJES_WHATSAPP, MOSTRAR_PENDIENTES } from '../consts';
     </div>
   </Seccion>
 
-  <CTABand mensajeWhatsApp={MENSAJES_WHATSAPP.nosotros} />
+  <!--
+    Quién está detrás. Es una sola persona y así se muestra: nada de tarjetas
+    de equipo. En un negocio donde el cliente entrega acceso a sus datos y a
+    sus clientes, la cara humana es parte del producto.
+
+    El bloque está construido y listo. Aparece cuando haya contenido: reemplaza
+    cada <Pendiente> por el texto real, pon la foto en public/fundador.jpg y
+    saca la condición MOSTRAR_PENDIENTES de esta sección.
+  -->
+  {
+    MOSTRAR_PENDIENTES && (
+      <Seccion id="fundador">
+        <div class="grid gap-10 md:grid-cols-[minmax(0,17rem)_1fr] md:gap-14 lg:gap-20">
+          <div class="mx-auto w-full max-w-[17rem] md:mx-0">
+            <div class="flex aspect-square items-center justify-center overflow-hidden rounded-praxia border border-gris-200 bg-arcilla-50 p-6">
+              <p class="pequeno text-center">
+                <Pendiente que="foto del fundador, cuadrada, 400×400 mínimo" />
+              </p>
+            </div>
+          </div>
+
+          <div class="max-w-xl">
+            <p class="antetitulo">Quién está detrás</p>
+            <h2 class="mt-3 text-[1.625rem] md:text-[2rem]">
+              <Pendiente que="nombre" />
+            </h2>
+            <p class="pequeno mt-1.5 font-medium text-gris-600">Fundador de Praxia</p>
+
+            <div class="mt-6 space-y-4 text-gris-600">
+              <p>
+                <Pendiente que="de dónde vienes: formación y camino hasta acá, dos líneas" />
+              </p>
+              <p>
+                <Pendiente que="qué hacías antes de Praxia y qué aprendiste ahí, dos líneas" />
+              </p>
+              <p>
+                <Pendiente que="por qué existe Praxia, en primera persona, dos líneas" />
+              </p>
+            </div>
+
+            <p class="mt-7">
+              <Pendiente que="enlace a LinkedIn" />
+            </p>
+          </div>
+        </div>
+      </Seccion>
+    )
+  }
+
+  <CTABand contextoWhatsApp={CONTEXTO.nosotros} />
 </Layout>

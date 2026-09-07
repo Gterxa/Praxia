@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Seccion from '../components/Seccion.astro';
 import Pendiente from '../components/Pendiente.astro';
-import { CONTACTO, MOSTRAR_PENDIENTES } from '../consts';
+import { MOSTRAR_PENDIENTES, EMAIL, mailtoLink } from '../consts';
 ---
 
 <Layout
@@ -52,7 +52,7 @@ import { CONTACTO, MOSTRAR_PENDIENTES } from '../consts';
           <p class="mt-3 text-gris-600">
             La Ley N° 29733 de Protección de Datos Personales te da derecho a acceder a tus datos,
             corregirlos, cancelarlos y oponerte a su tratamiento. Para ejercerlos, escríbenos a{' '}
-            <a href={`mailto:${CONTACTO.email}`} class="enlace">{CONTACTO.email}</a>.
+            <a href={mailtoLink} class="enlace">{EMAIL}</a>.
           </p>
         </div>
 

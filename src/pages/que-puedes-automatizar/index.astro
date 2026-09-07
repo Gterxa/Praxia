@@ -5,21 +5,21 @@ import Hero from '../../components/Hero.astro';
 import Seccion from '../../components/Seccion.astro';
 import CapabilityCard from '../../components/CapabilityCard.astro';
 import CTABand from '../../components/CTABand.astro';
-import { MENSAJES_WHATSAPP } from '../../consts';
+import { CONTEXTO } from '../../consts';
 
 const capacidades = await getCapacidades();
 ---
 
 <Layout
   titulo="Qué puedes automatizar en tu negocio"
-  descripcion="Las seis cosas que la inteligencia artificial sí puede hacer hoy por un negocio pequeño o mediano en Perú, con ejemplos concretos de cada una."
-  mensajeWhatsApp={MENSAJES_WHATSAPP.hub}
+  descripcion="Responder clientes, agendar citas, hacer seguimiento, clasificar documentos, sacar reportes y publicar. Seis cosas que la IA sí puede hacer hoy por tu negocio."
+  contextoWhatsApp={CONTEXTO.hub}
 >
   <Hero
     antetitulo="Qué puedes automatizar"
     titulo="Esto es lo que la IA puede hacer por tu negocio hoy."
     subtitulo="Estas son las seis cosas que mejor funcionan hoy. Sirven para cualquier negocio que atienda gente, agende, cobre o archive."
-    mensajeWhatsApp={MENSAJES_WHATSAPP.hub}
+    contextoWhatsApp={CONTEXTO.hub}
   />
 
   <Seccion fondo="blanco">

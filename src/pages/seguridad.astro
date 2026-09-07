@@ -5,7 +5,7 @@ import Seccion from '../components/Seccion.astro';
 import CTABand from '../components/CTABand.astro';
 import Pendiente from '../components/Pendiente.astro';
 import Icon from '../components/Icon.astro';
-import { MENSAJES_WHATSAPP, MOSTRAR_PENDIENTES } from '../consts';
+import { CONTEXTO, MOSTRAR_PENDIENTES } from '../consts';
 
 const temas = [
   {
@@ -43,14 +43,14 @@ const temas = [
 
 <Layout
   titulo="Seguridad y datos"
-  descripcion="Dónde viven tus datos, quién accede a ellos, por qué no entrenan modelos y qué pasa si quieres que los borremos."
-  mensajeWhatsApp={MENSAJES_WHATSAPP.seguridad}
+  descripcion="Dónde se guardan los datos de tu negocio, quién accede a ellos, por qué no entrenan modelos y qué pasa si decides irte."
+  contextoWhatsApp={CONTEXTO.seguridad}
 >
   <Hero
     antetitulo="Seguridad"
     titulo="Tus datos son tuyos. Te contamos qué hacemos con ellos."
     subtitulo="Dónde se guardan, quién accede, por qué no entrenan modelos y qué pasa si un día quieres que los borremos."
-    mensajeWhatsApp={MENSAJES_WHATSAPP.seguridad}
+    contextoWhatsApp={CONTEXTO.seguridad}
   />
 
   <Seccion fondo="blanco">
@@ -90,5 +90,5 @@ const temas = [
     </p>
   </Seccion>
 
-  <CTABand mensajeWhatsApp={MENSAJES_WHATSAPP.seguridad} />
+  <CTABand contextoWhatsApp={CONTEXTO.seguridad} />
 </Layout>

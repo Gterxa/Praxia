@@ -14,50 +14,61 @@ export const SITE = {
   pais: 'PE',
 } as const;
 
-export const CONTACTO = {
-  /** Formato internacional, sin + ni espacios: así lo pide wa.me. */
-  whatsapp: '51960041731',
-  email: 'contacto.praxias@gmail.com',
-  pais: 'Perú',
-} as const;
+/* ==========================================================================
+   Contacto. Único lugar del proyecto donde viven el número y el correo.
+   ========================================================================== */
+
+/** Formato internacional, sin + ni espacios: así lo pide wa.me. */
+export const WHATSAPP = '51960041731';
+export const WHATSAPP_URL = `https://wa.me/${WHATSAPP}`;
+export const EMAIL = 'contacto.praxias@gmail.com';
 
 /**
- * Arma un enlace de WhatsApp con mensaje prellenado.
- * El mensaje cambia según la página de origen: así sabes de dónde vino el contacto.
+ * Freno de mano. Si alguien reintroduce un placeholder, el build revienta en
+ * vez de publicar un botón de conversión que lleva a un chat inexistente.
  */
-export function whatsappLink(mensaje: string): string {
-  return `https://wa.me/${CONTACTO.whatsapp}?text=${encodeURIComponent(mensaje)}`;
+if (WHATSAPP.includes('000000') || EMAIL.includes('ejemplo')) {
+  throw new Error('Datos de contacto con placeholder. No publicar.');
 }
 
-/** Mensajes por página de origen. La clave es la ruta. */
-export const MENSAJES_WHATSAPP = {
-  home: 'Hola Praxia, vi su web y quiero automatizar algo en mi negocio.',
-  hub: 'Hola Praxia, estuve viendo qué se puede automatizar y quiero conversarlo.',
-  capacidad: (titulo: string) =>
-    `Hola Praxia, me interesa lo de ${titulo.toLowerCase()} para mi negocio.`,
-  comoTrabajamos: 'Hola Praxia, leí cómo trabajan y quiero agendar el diagnóstico.',
-  casos: 'Hola Praxia, vi los ejemplos de su web y quiero contarles mi caso.',
-  preguntas: 'Hola Praxia, tengo una consulta sobre cómo trabajan.',
-  diagnostico: 'Hola Praxia, quiero agendar el diagnóstico.',
-  solucionesMayores:
-    'Hola Praxia, creo que mi caso necesita algo más grande que una automatización.',
-  seguridad: 'Hola Praxia, tengo una consulta sobre el manejo de mis datos.',
-  nosotros: 'Hola Praxia, quiero conversar con ustedes.',
-  flotante: 'Hola Praxia, quiero hacer una consulta.',
-  cierre: 'Hola Praxia, quiero agendar los 45 minutos de diagnóstico.',
+/**
+ * Arma un enlace de WhatsApp con el mensaje ya escrito.
+ * El contexto cambia según la página de origen: así sabes de dónde vino cada
+ * contacto sin preguntarlo.
+ */
+export const waLink = (contexto: string) =>
+  `${WHATSAPP_URL}?text=${encodeURIComponent(`Hola Praxia, ${contexto}.`)}`;
+
+export const mailtoLink = `mailto:${EMAIL}`;
+
+/** El contexto que se prellena en cada página. */
+export const CONTEXTO = {
+  home: 'quiero automatizar algo en mi negocio',
+  hub: 'estuve viendo qué se puede automatizar y quiero conversarlo',
+  capacidad: (nombreCorto: string) =>
+    `me interesa automatizar ${nombreCorto.toLowerCase()} en mi negocio`,
+  comoTrabajamos: 'leí cómo trabajan y quiero agendar un diagnóstico',
+  casos: 'vi los ejemplos de su web y quiero contarles mi caso',
+  preguntas: 'tengo una consulta sobre cómo trabajan',
+  diagnostico: 'quiero agendar un diagnóstico',
+  solucionesMayores: 'creo que mi caso necesita algo más grande que una automatización',
+  seguridad: 'tengo una consulta sobre el manejo de mis datos',
+  nosotros: 'quiero conversar con ustedes',
+  flotante: 'quiero hacer una consulta',
+  cierre: 'quiero agendar los 45 minutos de diagnóstico',
 } as const;
 
 /**
  * Menú principal del header.
- * `/casos` no está acá a propósito: hoy la página dice que todavía no hay casos
- * que contar, y eso no va en el menú. Vive en el pie, bajo Recursos. Cuando
- * existan dos casos reales publicados, agrégalo entre "Cómo trabajamos" y
- * "Preguntas frecuentes":  { texto: 'Casos', href: '/casos' },
+ * "Preguntas frecuentes" vive solo en el pie. Medido: con cinco enlaces más el
+ * botón, a 1024 px quedan 16 px entre el logo y el menú. Con cuatro quedan 138.
+ * Y "Nosotros" pesa más para la confianza que el FAQ.
  */
 export const NAV_PRINCIPAL = [
   { texto: 'Qué puedes automatizar', href: '/que-puedes-automatizar' },
   { texto: 'Cómo trabajamos', href: '/como-trabajamos' },
-  { texto: 'Preguntas frecuentes', href: '/preguntas-frecuentes' },
+  { texto: 'Casos', href: '/casos' },
+  { texto: 'Nosotros', href: '/nosotros' },
 ] as const;
 
 /**
@@ -83,9 +94,9 @@ export const METODO = [
     numero: 3,
     titulo: 'Implementamos',
     resumen:
-      'Construimos la automatización y la dejamos andando, integrada a tus herramientas actuales.',
+      'Construimos la automatización y la dejamos andando, integrada a lo que ya usas: WhatsApp, correo, tus redes. La mayoría de proyectos toma entre una y dos semanas.',
     detalle:
-      'Trabajamos sobre lo que ya tienes: WhatsApp, correo, tu Excel, tu sistema, tus redes. No te pedimos cambiar de plataforma ni comprar software nuevo si no hace falta. Te mostramos avances mientras construimos, probamos con casos reales de tu negocio antes de encender, y encendemos cuando tú das el visto bueno.',
+      'La mayoría de proyectos toma entre una y dos semanas. Trabajamos sobre lo que ya tienes: WhatsApp, correo, tu Excel, tu sistema, tus redes. No te pedimos cambiar de plataforma ni comprar software nuevo si no hace falta. Te mostramos avances mientras construimos, probamos con casos reales de tu negocio antes de encender, y encendemos cuando tú das el visto bueno.',
   },
   {
     numero: 4,
@@ -98,12 +109,18 @@ export const METODO = [
 ] as const;
 
 /** Tabla comparativa de la home. */
+/**
+ * Tres filas, no cinco. Se fueron "implementamos y dejamos funcionando" y
+ * "hablamos claro, sin jerga": son ciertas pero genéricas, y ya se comunican
+ * en otras partes de la página. Cinco comparaciones diluyen.
+ */
 export const COMPARATIVA = [
-  { praxia: 'Validamos la idea antes de construirla', alternativa: 'Empiezan a construir sin saber si funcionará' },
-  { praxia: 'Implementamos y dejamos funcionando', alternativa: 'Te entregan un informe o un curso' },
+  { praxia: 'Validamos antes de venderte', alternativa: 'Te venden directo sin saber si funcionará' },
   { praxia: 'Te enseñamos para que seas autónomo', alternativa: 'Te dejan dependiente del proveedor' },
-  { praxia: 'Hablamos claro, sin jerga', alternativa: 'Tecnicismos que confunden' },
-  { praxia: 'Diseñamos para el dueño, no para el ingeniero', alternativa: 'Diseñan para quien ya sabe de tecnología' },
+  {
+    praxia: 'Diseñamos para el dueño, no para el ingeniero',
+    alternativa: 'Soluciones pensadas para equipos técnicos',
+  },
 ] as const;
 
 /** Las cuatro tensiones del visitante, con su respuesta. */

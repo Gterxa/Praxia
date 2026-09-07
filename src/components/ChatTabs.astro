@@ -1,0 +1,118 @@
+---
+import ChatMockup from './ChatMockup.astro';
+
+/**
+ * Varias conversaciones de ejemplo, elegibles con pestañas.
+ *
+ * Sin rotación automática a propósito: un carrusel que se mueve solo distrae y
+ * no deja terminar de leer. El visitante elige.
+ *
+ * Sin JavaScript se ve la primera conversación, que es una respuesta completa
+ * por sí sola.
+ */
+interface Conversacion {
+  etiqueta: string;
+  negocio: string;
+  mensajes: readonly { de: 'cliente' | 'negocio'; texto: string; hora: string }[];
+}
+
+interface Props {
+  conversaciones: readonly Conversacion[];
+  /** Identificador único: puede haber más de un grupo por página. */
+  id?: string;
+}
+
+const { conversaciones, id = 'chats' } = Astro.props;
+---
+
+<div class="chats w-full max-w-sm" data-chats>
+  <div
+    class="mb-3 flex gap-1"
+    role="tablist"
+    aria-label="Ejemplos de conversación por tipo de negocio"
+  >
+    {
+      conversaciones.map((c, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`${id}-tab-${i}`}
+          aria-controls={`${id}-panel-${i}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+          class="chats-pestana"
+        >
+          {c.etiqueta}
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    conversaciones.map((c, i) => (
+      <div
+        role="tabpanel"
+        id={`${id}-panel-${i}`}
+        aria-labelledby={`${id}-tab-${i}`}
+        tabindex="0"
+        hidden={i !== 0}
+      >
+        <ChatMockup negocio={c.negocio} mensajes={c.mensajes} class="!max-w-none" />
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .chats-pestana {
+    border-radius: 999px;
+    padding: 0.375rem 0.75rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-gris-600);
+    cursor: pointer;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .chats-pestana:hover {
+    color: var(--color-tinta);
+  }
+
+  .chats-pestana[aria-selected='true'] {
+    background-color: var(--color-arcilla-50);
+    color: var(--color-arcilla-700);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-chats]').forEach((grupo) => {
+    const pestanas = Array.from(grupo.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const paneles = Array.from(grupo.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+
+    const activar = (indice: number, mover = true) => {
+      pestanas.forEach((pestana, i) => {
+        const activa = i === indice;
+        pestana.setAttribute('aria-selected', String(activa));
+        pestana.tabIndex = activa ? 0 : -1;
+        paneles[i]?.toggleAttribute('hidden', !activa);
+      });
+      if (mover) pestanas[indice]?.focus();
+    };
+
+    pestanas.forEach((pestana, i) => {
+      pestana.addEventListener('click', () => activar(i, false));
+      pestana.addEventListener('keydown', (evento) => {
+        const salto =
+          evento.key === 'ArrowRight' ? 1 : evento.key === 'ArrowLeft' ? -1 : 0;
+        if (salto === 0) return;
+        evento.preventDefault();
+        activar((i + salto + pestanas.length) % pestanas.length);
+      });
+    });
+  });
+</script>

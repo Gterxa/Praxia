@@ -1,17 +1,17 @@
 ---
 import Icon from './Icon.astro';
-import { whatsappLink, MENSAJES_WHATSAPP } from '../consts';
+import { waLink, CONTEXTO } from '../consts';
 
 interface Props {
   titulo?: string;
   texto?: string;
-  mensajeWhatsApp?: string;
+  contextoWhatsApp?: string;
 }
 
 const {
   titulo = 'Conversemos 45 minutos.',
   texto = 'Nos cuentas qué te gustaría automatizar y salimos de ahí con una respuesta clara: qué se puede hacer y cómo lo haríamos.',
-  mensajeWhatsApp = MENSAJES_WHATSAPP.cierre,
+  contextoWhatsApp = CONTEXTO.cierre,
 } = Astro.props;
 ---
 
@@ -22,7 +22,7 @@ const {
     <div class="mt-8 flex flex-col gap-3 sm:flex-row">
       <a href="/diagnostico" class="boton boton-claro">Agenda tu diagnóstico</a>
       <a
-        href={whatsappLink(mensajeWhatsApp)}
+        href={waLink(contextoWhatsApp)}
         target="_blank"
         rel="noopener"
         class="boton boton-borde-claro"

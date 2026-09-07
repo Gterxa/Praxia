@@ -4,7 +4,7 @@ import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
 import FAQ from '../components/FAQ.astro';
 import CTABand from '../components/CTABand.astro';
-import { MENSAJES_WHATSAPP, MOSTRAR_PENDIENTES } from '../consts';
+import { CONTEXTO } from '../consts';
 
 /**
  * Las preguntas que la gente hace antes de escribirnos.
@@ -28,8 +28,7 @@ const preguntas = [
   {
     pregunta: '¿Cuánto demora una automatización?',
     respuesta:
-      (MOSTRAR_PENDIENTES ? '<span class="pendiente">[PENDIENTE: plazo real]</span> ' : '') +
-      'El plazo exacto sale del diagnóstico, cuando ya sabemos qué hay que conectar y con qué volumen.',
+      'Entre una y dos semanas para la mayoría de los casos, contadas desde que definimos el alcance. Si tu caso necesita más, te lo decimos en el diagnóstico antes de empezar.',
   },
   {
     pregunta: '¿Qué pasa si mi idea no es viable?',
@@ -56,14 +55,14 @@ const preguntas = [
 
 <Layout
   titulo="Preguntas frecuentes"
-  descripcion="Cómo definimos el presupuesto, cuánto demora una automatización, qué pasa si tu idea no es viable y qué necesitas para empezar."
-  mensajeWhatsApp={MENSAJES_WHATSAPP.preguntas}
+  descripcion="Cuánto demora una automatización, cómo definimos el presupuesto, qué pasa si tu idea no es viable y qué necesitas para empezar."
+  contextoWhatsApp={CONTEXTO.preguntas}
 >
   <Hero
     antetitulo="Preguntas frecuentes"
     titulo="Lo que todos preguntan antes de escribirnos."
     subtitulo="Si tu duda no está acá, escríbenos y te la respondemos."
-    mensajeWhatsApp={MENSAJES_WHATSAPP.preguntas}
+    contextoWhatsApp={CONTEXTO.preguntas}
   />
 
   <Seccion fondo="blanco">
@@ -72,5 +71,5 @@ const preguntas = [
     </div>
   </Seccion>
 
-  <CTABand mensajeWhatsApp={MENSAJES_WHATSAPP.preguntas} />
+  <CTABand contextoWhatsApp={CONTEXTO.preguntas} />
 </Layout>

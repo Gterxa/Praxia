@@ -37,6 +37,6 @@ queNecesitas:
   - "Un lugar donde estén tus clientes, aunque sea un Excel o los chats de WhatsApp"
   - "Saber cada cuánto tiempo tiene sentido volver a escribirle a alguien en tu rubro"
   - "Definir qué es un cliente listo para comprar en tu negocio"
-seoTitulo: "Seguimiento automático de clientes para tu negocio"
-seoDescripcion: "Registra a cada persona que consulta, reactiva clientes dormidos y te muestra quién está listo para comprar. El seguimiento deja de depender de la memoria."
+seoTitulo: "Automatizar el seguimiento de clientes"
+seoDescripcion: "Registra a cada persona que consulta, reactiva a los que no vuelven y sabe quién está listo para comprar. El seguimiento deja de depender de la memoria."
 ---

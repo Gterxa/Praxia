@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
 import CTABand from '../components/CTABand.astro';
-import { MENSAJES_WHATSAPP } from '../consts';
+import { CONTEXTO } from '../consts';
 
 // Solo se muestran los casos que el cliente autorizó por escrito.
 const casos = (await getCollection('casos'))
@@ -16,14 +16,14 @@ const rubros = [...new Set(casos.map((c) => c.data.rubro))];
 
 <Layout
   titulo="Casos"
-  descripcion="Ejemplos de automatizaciones por rubro. Publicamos un caso solo cuando existe y el cliente autoriza contarlo."
-  mensajeWhatsApp={MENSAJES_WHATSAPP.casos}
+  descripcion="Publicamos un caso solo cuando existe y el cliente autoriza contarlo. Mientras tanto, mira qué puedes automatizar."
+  contextoWhatsApp={CONTEXTO.casos}
 >
   <Hero
     antetitulo="Casos"
     titulo="Esta página se va a llenar pronto."
     subtitulo="Praxia recién arranca. Cuando terminemos nuestras primeras implementaciones y el cliente nos autorice a contarlo, acá vas a leer qué le pasaba al negocio, qué automatizamos, qué cambió y cuánto tomó."
-    mensajeWhatsApp={MENSAJES_WHATSAPP.casos}
+    contextoWhatsApp={CONTEXTO.casos}
   />
 
   <Seccion fondo="blanco">
@@ -83,6 +83,6 @@ const rubros = [...new Set(casos.map((c) => c.data.rubro))];
   <CTABand
     titulo="¿Quieres ser el primer caso?"
     texto="Conversemos 45 minutos. Si trabajamos juntos y el resultado es bueno, te vamos a pedir que lo cuentes."
-    mensajeWhatsApp={MENSAJES_WHATSAPP.casos}
+    contextoWhatsApp={CONTEXTO.casos}
   />
 </Layout>

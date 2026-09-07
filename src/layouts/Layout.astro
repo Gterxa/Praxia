@@ -3,14 +3,14 @@ import { Font } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
-import { SITE, CONTACTO } from '../consts';
+import { SITE, EMAIL, WHATSAPP, CONTEXTO } from '../consts';
 import '../styles/global.css';
 
 interface Props {
   titulo: string;
   descripcion: string;
   /** Mensaje prellenado del botón flotante de WhatsApp. */
-  mensajeWhatsApp?: string;
+  contextoWhatsApp?: string;
   /** Deja fuera de los buscadores páginas que no queremos indexar. */
   noIndex?: boolean;
 }
@@ -18,7 +18,7 @@ interface Props {
 const {
   titulo,
   descripcion,
-  mensajeWhatsApp = 'Hola Praxia, quiero hacer una consulta.',
+  contextoWhatsApp = CONTEXTO.flotante,
   noIndex = false,
 } = Astro.props;
 
@@ -29,30 +29,33 @@ const tituloCompleto = titulo.includes(SITE.nombre)
 const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site);
 const imagenOG = new URL('/og-praxia.png', Astro.site);
 
+/**
+ * Organization + LocalBusiness, con `areaServed: "PE"` y sin ciudad.
+ * Praxia opera de forma remota: segmentar por ciudad no aporta y compite en
+ * keywords carísimas.
+ */
 const datosEstructurados = {
   '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
+  '@type': ['Organization', 'LocalBusiness'],
+  '@id': `${SITE.url}/#praxia`,
   name: SITE.nombre,
   description: SITE.descripcion,
   url: SITE.url,
   slogan: SITE.tagline,
-  email: CONTACTO.email,
-  telephone: `+${CONTACTO.whatsapp}`,
+  email: EMAIL,
+  telephone: `+${WHATSAPP}`,
   image: imagenOG.toString(),
-  address: {
-    '@type': 'PostalAddress',
-    addressCountry: SITE.pais,
-  },
-  areaServed: {
-    '@type': 'Country',
-    name: 'Perú',
-  },
+  logo: imagenOG.toString(),
+  areaServed: SITE.pais,
   knowsLanguage: 'es-PE',
-  serviceType: [
-    'Automatización de procesos con inteligencia artificial',
-    'Automatización de atención por WhatsApp',
-    'Automatización de citas y recordatorios',
-  ],
+  makesOffer: [
+    'Automatizar la atención y las respuestas por WhatsApp',
+    'Automatizar citas y recordatorios',
+    'Automatizar el seguimiento de clientes',
+    'Clasificar y buscar documentos automáticamente',
+    'Automatizar reportes y alertas',
+    'Preparar contenido y publicaciones',
+  ].map((nombre) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: nombre } })),
 };
 ---
 
@@ -104,6 +107,6 @@ const datosEstructurados = {
       <slot />
     </main>
     <Footer />
-    <WhatsAppButton mensaje={mensajeWhatsApp} />
+    <WhatsAppButton contexto={contextoWhatsApp} />
   </body>
 </html>

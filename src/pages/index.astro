@@ -6,54 +6,95 @@ import Seccion from '../components/Seccion.astro';
 import CapabilityCard from '../components/CapabilityCard.astro';
 import StepList from '../components/StepList.astro';
 import CTABand from '../components/CTABand.astro';
-import ChatMockup from '../components/ChatMockup.astro';
+import ChatTabs from '../components/ChatTabs.astro';
 import Icon from '../components/Icon.astro';
-import { TENSIONES, COMPARATIVA, MENSAJES_WHATSAPP, HAY_PRUEBA_SOCIAL } from '../consts';
+import { TENSIONES, COMPARATIVA, CONTEXTO, HAY_PRUEBA_SOCIAL } from '../consts';
 
 const capacidades = await getCapacidades();
 ---
 
 <Layout
-  titulo="Praxia — Automatización con IA para negocios en Perú"
-  descripcion="Automatizamos las tareas repetitivas de tu negocio con inteligencia artificial. Validamos tu idea, la implementamos y te enseñamos a usarla."
-  mensajeWhatsApp={MENSAJES_WHATSAPP.home}
+  titulo="Automatización con IA por WhatsApp para pymes en Perú"
+  descripcion="Automatiza las tareas repetitivas de tu negocio con inteligencia artificial: atención, citas, seguimiento y documentos. Diagnóstico sin costo."
+  contextoWhatsApp={CONTEXTO.home}
 >
   <Hero
     titulo="Tienes una idea. Nosotros la hacemos funcionar."
     subtitulo="Automatizamos las tareas repetitivas de tu negocio con inteligencia artificial. Validamos tu idea, la implementamos y te enseñamos a usarla."
     refuerzo="Diagnóstico sin costo. Sales sabiendo qué se puede hacer y por dónde empezar."
-    mensajeWhatsApp={MENSAJES_WHATSAPP.home}
+    contextoWhatsApp={CONTEXTO.home}
   >
-    <ChatMockup
+    <ChatTabs
       slot="visual"
-      negocio="Escuela de Manejo Vía Libre"
-      mensajes={[
+      id="hero"
+      conversaciones={[
         {
-          de: 'cliente',
-          texto: 'Buenas, ¿qué necesito para sacar el brevete A-I?',
-          hora: '23:07',
+          etiqueta: 'Servicios',
+          negocio: 'Veterinaria San Roque',
+          mensajes: [
+            { de: 'cliente', texto: 'Hola, ¿tienen espacio mañana? Mi perrito está con tos', hora: '23:12' },
+            {
+              de: 'negocio',
+              texto: '¡Hola! Sí, atendemos de 9 am a 7 pm. Con tos conviene traerlo temprano.',
+              hora: '23:12',
+            },
+            { de: 'cliente', texto: '¿Puedo sacar cita para las 10?', hora: '23:14' },
+            {
+              de: 'negocio',
+              texto: 'Listo, mañana 10:00 am. Te escribo en la mañana para confirmar.',
+              hora: '23:14',
+            },
+          ],
         },
         {
-          de: 'negocio',
-          texto:
-            '¡Hola! Tu DNI, el certificado médico y ser mayor de 18. El curso son 12 horas: 8 de manejo y 4 de teoría.',
-          hora: '23:07',
+          etiqueta: 'Comercio',
+          negocio: 'Inmobiliaria Loma Verde',
+          mensajes: [
+            {
+              de: 'cliente',
+              texto: 'Buenas noches, vi el aviso del departamento de dos dormitorios. ¿Sigue disponible?',
+              hora: '22:41',
+            },
+            {
+              de: 'negocio',
+              texto: '¡Hola! Sí. Son 78 m², dos dormitorios y cochera, tercer piso con ascensor.',
+              hora: '22:41',
+            },
+            { de: 'cliente', texto: '¿Se puede ver este fin de semana?', hora: '22:43' },
+            {
+              de: 'negocio',
+              texto: 'Claro. ¿Sábado en la mañana o domingo en la tarde? Dime tu nombre y lo dejo anotado.',
+              hora: '22:43',
+            },
+          ],
         },
-        { de: 'cliente', texto: '¿Y cuándo empieza el próximo grupo?', hora: '23:09' },
         {
-          de: 'negocio',
-          texto:
-            'El lunes 14, turno mañana y turno noche. ¿Te reservo un cupo y mañana te llama un asesor?',
-          hora: '23:09',
+          etiqueta: 'Profesionales',
+          negocio: 'Estudio Contable Marín',
+          mensajes: [
+            { de: 'cliente', texto: 'Te mando las facturas de este mes', hora: '16:20' },
+            { de: 'cliente', texto: 'Adjunto: facturas-setiembre.pdf', hora: '16:20' },
+            {
+              de: 'negocio',
+              texto:
+                'Recibido. Son 14 comprobantes de 6 proveedores, del 2 al 28 de setiembre. Ya quedaron archivados en la carpeta del mes.',
+              hora: '16:21',
+            },
+            {
+              de: 'negocio',
+              texto: 'Ojo: dos vienen sin número de RUC. Te los marqué para que los revises.',
+              hora: '16:21',
+            },
+          ],
         },
-        { de: 'cliente', texto: 'Sí, el de la noche', hora: '23:10' },
       ]}
     />
   </Hero>
 
   <!-- Las tensiones del visitante -->
   <Seccion fondo="blanco">
-    <h2 class="max-w-2xl">Si algo de esto te suena, estás en el lugar correcto.</h2>
+    <p class="antetitulo">01 / El problema</p>
+    <h2 class="mt-3 max-w-2xl">Si algo de esto te suena, estás en el lugar correcto.</h2>
     <div class="mt-10 grid gap-4 md:grid-cols-2">
       {
         TENSIONES.map((t) => (
@@ -76,7 +117,10 @@ const capacidades = await getCapacidades();
   <!-- Qué puedes automatizar -->
   <Seccion>
     <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-      <h2 class="max-w-xl">Esto es lo que ya puedes automatizar.</h2>
+      <div>
+        <p class="antetitulo">02 / Qué puedes automatizar</p>
+        <h2 class="mt-3 max-w-xl">Esto es lo que ya puedes automatizar.</h2>
+      </div>
       <a href="/que-puedes-automatizar" class="enlace flex-none">Ver las seis capacidades</a>
     </div>
     <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -96,11 +140,46 @@ const capacidades = await getCapacidades();
   <!-- Cómo trabajamos -->
   <Seccion fondo="blanco">
     <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-      <h2 class="max-w-xl">Cuatro pasos. Sin sorpresas.</h2>
+      <div>
+        <p class="antetitulo">03 / Cómo trabajamos</p>
+        <h2 class="mt-3 max-w-xl">Cuatro pasos. Sin sorpresas.</h2>
+      </div>
       <a href="/como-trabajamos" class="enlace flex-none">Cómo trabajamos en detalle</a>
     </div>
     <div class="mt-10">
       <StepList />
+    </div>
+  </Seccion>
+
+  <!-- Por qué existimos. La misión estaba enterrada en /nosotros, que es donde menos tráfico hay. -->
+  <Seccion>
+    <div class="medida">
+      <p class="antetitulo">04 / Por qué existimos</p>
+      <h2 class="mt-3">Que la IA deje de ser cosa de empresas grandes.</h2>
+      <p class="lead mt-6">
+        Praxia existe para que la automatización con inteligencia artificial sea real y rentable
+        para las pequeñas y medianas empresas del Perú. No para las que ya tienen equipo de
+        tecnología: para las que no.
+      </p>
+    </div>
+  </Seccion>
+
+  <!--
+    Tus datos. Hace visible la página que ya existe; no agrega ninguna
+    afirmación nueva sobre certificaciones, estándares ni prácticas.
+  -->
+  <Seccion fondo="blanco">
+    <div class="medida">
+      <p class="antetitulo">05 / Tus datos</p>
+      <h2 class="mt-3">La información de tus clientes es de tus clientes.</h2>
+      <p class="mt-6 text-gris-600">
+        Trabajamos con datos de tu negocio: conversaciones, documentos, contactos. Te explicamos
+        dónde se guardan, quién tiene acceso y qué pasa si decides irte.
+      </p>
+      <a href="/seguridad" class="enlace mt-7 inline-flex items-center gap-2">
+        Cómo protegemos tus datos
+        <Icon nombre="flecha" tamano={16} />
+      </a>
     </div>
   </Seccion>
 
@@ -112,19 +191,14 @@ const capacidades = await getCapacidades();
   {
     !HAY_PRUEBA_SOCIAL && (
       <Seccion fondo="arcilla">
-        <div class="medida">
-          <h2>Praxia recién empieza.</h2>
+        <div class="medida border-l-4 border-arcilla pl-6 md:pl-8">
+          <h2>Recién empezamos, y eso te conviene.</h2>
           <p class="lead mt-6 !text-tinta">
-            Todavía no tenemos logos de clientes ni testimonios que mostrarte, así que no vas a
-            encontrarlos en esta página.
+            Tu caso lo atiende el fundador, no un ejecutivo de cuenta.
           </p>
           <p class="mt-5 text-gris-600">
-            Lo que sí vas a tener es un proyecto atendido de cerca, que es la ventaja de trabajar
-            con alguien que está armando su cartera.
-          </p>
-          <p class="mt-5 text-gris-600">
-            Si trabajamos juntos y el resultado es bueno, te vamos a pedir que lo cuentes. Ese es
-            el trato.
+            No vamos a mostrarte testimonios que no nos dieron. Cuando trabajemos juntos y salga
+            bien, te vamos a pedir que lo cuentes.
           </p>
         </div>
       </Seccion>
@@ -133,7 +207,8 @@ const capacidades = await getCapacidades();
 
   <!-- Por qué Praxia -->
   <Seccion fondo="blanco">
-    <h2 class="max-w-xl">Lo que nos hace distintos</h2>
+    <p class="antetitulo">06 / Por qué Praxia</p>
+    <h2 class="mt-3 max-w-xl">Lo que nos hace distintos</h2>
 
     <div class="mt-10 overflow-hidden rounded-praxia border border-gris-200">
       <div class="grid grid-cols-2">

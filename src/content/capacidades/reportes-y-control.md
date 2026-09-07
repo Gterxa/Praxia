@@ -34,6 +34,6 @@ queNecesitas:
   - "Que los datos existan en algún lado, aunque sea en un Excel o en un cuaderno digitalizado"
   - "Saber qué tres o cuatro números miras para decidir"
   - "Definir cada cuánto quieres el reporte y por dónde"
-seoTitulo: "Reportes y alertas automáticas para tu negocio"
-seoDescripcion: "Un resumen de ventas, citas o atenciones que llega solo a tu WhatsApp o tu correo, más alertas cuando algo se sale de lo normal."
+seoTitulo: "Automatizar reportes y alertas de tu negocio"
+seoDescripcion: "Recibe cada semana un resumen de ventas, citas o atenciones en tu WhatsApp, más alertas cuando algo se sale de lo normal. Sin armar un Excel."
 ---

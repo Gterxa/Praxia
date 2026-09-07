@@ -40,6 +40,6 @@ queNecesitas:
   - "Una cuenta de WhatsApp Business con tu número de negocio"
   - "Las preguntas que más te hacen y sus respuestas, aunque sea en una hoja suelta"
   - "Alguien de tu equipo que pueda atender los casos que el asistente derive"
-seoTitulo: "Atención automática por WhatsApp para tu negocio"
-seoDescripcion: "Un asistente que responde las preguntas de siempre por WhatsApp, toma los datos del cliente y te avisa solo cuando alguien necesita hablar contigo."
+seoTitulo: "Responder clientes automáticamente por WhatsApp"
+seoDescripcion: "Responde a tus clientes por WhatsApp a cualquier hora, sin que tú contestes. Toma sus datos y te avisa solo cuando alguien necesita hablar contigo. Diagnóstico sin costo."
 ---

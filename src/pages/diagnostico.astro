@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Seccion from '../components/Seccion.astro';
 import Icon from '../components/Icon.astro';
 import ListaCheck from '../components/ListaCheck.astro';
-import { MENSAJES_WHATSAPP, whatsappLink } from '../consts';
+import { CONTEXTO, waLink } from '../consts';
 
 // Endpoint del servicio de formularios. Ver .env.example y el README.
 const endpoint = import.meta.env['PUBLIC_FORM_ENDPOINT'] ?? '';
@@ -20,7 +20,7 @@ const queObtienes = [
 <Layout
   titulo="Agenda tu diagnóstico"
   descripcion="Conversemos 45 minutos. Nos cuentas qué te gustaría automatizar y sales con una respuesta clara: qué se puede hacer, cómo y por dónde empezar."
-  mensajeWhatsApp={MENSAJES_WHATSAPP.diagnostico}
+  contextoWhatsApp={CONTEXTO.diagnostico}
 >
   <Seccion>
     <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
@@ -48,7 +48,7 @@ const queObtienes = [
             más rápido.
           </p>
           <a
-            href={whatsappLink(MENSAJES_WHATSAPP.diagnostico)}
+            href={waLink(CONTEXTO.diagnostico)}
             target="_blank"
             rel="noopener"
             class="boton boton-primario mt-5"
@@ -158,7 +158,7 @@ const queObtienes = [
               prefieres adelantarlo, escríbenos tú.
             </p>
             <a
-              href={whatsappLink(MENSAJES_WHATSAPP.diagnostico)}
+              href={waLink(CONTEXTO.diagnostico)}
               target="_blank"
               rel="noopener"
               class="boton boton-primario mt-5">Abrir WhatsApp</a
@@ -174,7 +174,7 @@ const queObtienes = [
               No pudimos enviar el formulario desde aquí. Escríbenos por WhatsApp y lo resolvemos en el momento.
             </p>
             <a
-              href={whatsappLink(MENSAJES_WHATSAPP.diagnostico)}
+              href={waLink(CONTEXTO.diagnostico)}
               target="_blank"
               rel="noopener"
               class="enlace mt-3 inline-block">Escribir por WhatsApp</a

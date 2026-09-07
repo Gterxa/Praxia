@@ -86,10 +86,19 @@ botones, enlaces y datos estructurados del sitio: no los repitas en ningún otro
 El dominio sigue pendiente. De `SITE.url` salen las URLs canónicas, el sitemap y las etiquetas
 para compartir, así que hay que cambiarlo antes de publicar.
 
-**Plazos — `src/pages/preguntas-frecuentes.astro`**
+**Bio del fundador — `src/pages/nosotros.astro`** (el que más pesa)
 
-- Cuánto demora una automatización. Es el único `[PENDIENTE]` que queda fuera de las páginas
-  legales y de `/nosotros`.
+El bloque está construido: foto cuadrada a la izquierda, nombre y rol, tres párrafos y enlace a
+LinkedIn. Hoy está detrás de `MOSTRAR_PENDIENTES`, así que no se publica vacío. Falta:
+
+- Foto del fundador, cuadrada, 400×400 como mínimo
+- Nombre
+- De dónde vienes · qué hacías antes de Praxia · por qué existe Praxia, en primera persona
+- Enlace a LinkedIn
+
+En un negocio donde el cliente entrega acceso a sus datos y a los de sus clientes, la cara humana
+es parte del producto. Cuando tengas el contenido, reemplaza cada `<Pendiente>` y saca la
+condición `MOSTRAR_PENDIENTES` de esa sección.
 
 **Nosotros — `src/pages/nosotros.astro`**
 
@@ -173,6 +182,19 @@ para compartir.
 
 ---
 
+### Las conversaciones del hero
+
+El hero muestra tres ejemplos con pestañas —Servicios, Comercio, Profesionales— que el visitante
+elige. **Sin rotación automática a propósito:** un carrusel que se mueve solo distrae y no deja
+terminar de leer.
+
+El componente es `ChatTabs.astro`, que envuelve varios `ChatMockup`. Es un patrón de pestañas
+accesible: se navega con flechas, expone `aria-selected`, y sin JavaScript se ve la primera
+conversación, que funciona sola. Las tres conversaciones están escritas en `src/pages/index.astro`.
+
+En las páginas de capacidad se mantiene una sola conversación, la del rubro que mejor ilustra esa
+capacidad, y viene del markdown.
+
 ## Cómo está armado
 
 ```
@@ -222,6 +244,23 @@ Una página de precios sin precios no tiene sentido, así que el lugar del menú
 `/preguntas-frecuentes`, que absorbe las preguntas sobre presupuesto, plazos, facturación y
 permanencia. `astro.config.mjs` tiene un `redirect` de `/precios` a `/preguntas-frecuentes` para
 no romper enlaces que alguien ya haya compartido.
+
+### Lo que se descartó a propósito
+
+Vino de una revisión externa y quedó fuera con razón. Si más adelante parece una mejora obvia:
+
+- **Casos hipotéticos con métricas estimadas de ahorro.** Un número inventado sigue siendo
+  inventado aunque diga "estimado" en letra chica: el lector se lleva la cifra y no la etiqueta.
+  Y contradice de frente la sección de transparencia. Cuando haya un cliente real con datos
+  medidos, ahí van los números.
+- **Ancla de precio ("desde S/ X").** Praxia trabaja a medida y está construyendo cartera. En
+  esta etapa conviene tener más conversaciones, no filtrarlas.
+- **Declaración de visión a 3-5 años.** El visitante decide en dos minutos desde el celular. La
+  misión aporta porque dice a quién sirves; la visión habla de la empresa.
+- **Logos de alianzas y certificaciones** (AWS, Google Cloud, WhatsApp Business API). Solo se
+  listan cuando estén efectivamente en uso y verificados.
+- **Reordenar las cuatro objeciones.** *"No sé si lo que imagino es posible"* va primera a
+  propósito: es la tensión que diferencia a Praxia y la que le da sentido al diagnóstico.
 
 ### El sitio no habla de dinero
 

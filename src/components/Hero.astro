@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { whatsappLink } from '../consts';
+import { waLink } from '../consts';
 
 interface Props {
   antetitulo?: string;
@@ -10,7 +10,7 @@ interface Props {
   refuerzo?: string;
   ctaPrimario?: { texto: string; href: string };
   /** Si se pasa, el segundo botón abre WhatsApp con este mensaje. */
-  mensajeWhatsApp?: string;
+  contextoWhatsApp?: string;
   /** Fondo oscuro para las páginas que lo necesitan. */
   oscuro?: boolean;
 }
@@ -24,7 +24,7 @@ const {
   subtitulo,
   refuerzo,
   ctaPrimario = { texto: 'Agenda tu diagnóstico', href: '/diagnostico' },
-  mensajeWhatsApp,
+  contextoWhatsApp,
   oscuro = false,
 } = Astro.props;
 ---
@@ -51,9 +51,9 @@ const {
         {ctaPrimario.texto}
       </a>
       {
-        mensajeWhatsApp && (
+        contextoWhatsApp && (
           <a
-            href={whatsappLink(mensajeWhatsApp)}
+            href={waLink(contextoWhatsApp)}
             target="_blank"
             rel="noopener"
             class:list={['boton', oscuro ? 'boton-borde-claro' : 'boton-secundario']}

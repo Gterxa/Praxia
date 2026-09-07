@@ -3,19 +3,19 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
 import CTABand from '../components/CTABand.astro';
-import { MENSAJES_WHATSAPP } from '../consts';
+import { CONTEXTO } from '../consts';
 ---
 
 <Layout
   titulo="Soluciones mayores"
   descripcion="Cuando el problema no es una tarea repetitiva sino un archivo entero de documentos que nadie puede consultar rápido y con confianza."
-  mensajeWhatsApp={MENSAJES_WHATSAPP.solucionesMayores}
+  contextoWhatsApp={CONTEXTO.solucionesMayores}
 >
   <Hero
     antetitulo="Soluciones mayores"
     titulo="Cuando una automatización ya no alcanza."
     subtitulo="A veces el problema no es una tarea repetitiva sino un montón de información dispersa: cientos de contratos, expedientes o documentos que nadie puede consultar de forma rápida y confiable."
-    mensajeWhatsApp={MENSAJES_WHATSAPP.solucionesMayores}
+    contextoWhatsApp={CONTEXTO.solucionesMayores}
   />
 
   <Seccion fondo="blanco">
@@ -46,6 +46,6 @@ import { MENSAJES_WHATSAPP } from '../consts';
   <CTABand
     titulo="Conversemos tu caso."
     texto="Cuéntanos qué tienes hoy y cuánto volumen manejas. De ahí sale si esto tiene sentido para ti o si te conviene empezar por una automatización más simple."
-    mensajeWhatsApp={MENSAJES_WHATSAPP.solucionesMayores}
+    contextoWhatsApp={CONTEXTO.solucionesMayores}
   />
 </Layout>

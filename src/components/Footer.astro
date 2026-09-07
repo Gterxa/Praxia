@@ -2,7 +2,7 @@
 import { getCapacidades } from '../capacidades';
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
-import { CONTACTO, SITE, whatsappLink, MENSAJES_WHATSAPP } from '../consts';
+import { SITE, waLink, CONTEXTO, EMAIL, mailtoLink } from '../consts';
 
 const capacidades = await getCapacidades();
 
@@ -61,7 +61,7 @@ const anio = new Date().getFullYear();
         <ul class="mt-4 space-y-2.5">
           <li>
             <a
-              href={whatsappLink(MENSAJES_WHATSAPP.flotante)}
+              href={waLink(CONTEXTO.flotante)}
               class="pequeno inline-flex items-center gap-2 text-gris-600 hover:text-arcilla-700 hover:underline"
               rel="noopener"
               target="_blank"
@@ -72,11 +72,11 @@ const anio = new Date().getFullYear();
           </li>
           <li>
             <a
-              href={`mailto:${CONTACTO.email}`}
+              href={mailtoLink}
               class="pequeno inline-flex items-center gap-2 text-gris-600 hover:text-arcilla-700 hover:underline"
             >
               <Icon nombre="correo" tamano={16} />
-              {CONTACTO.email}
+              {EMAIL}
             </a>
           </li>
           <li><a href="/legal" class="pequeno text-gris-600 hover:text-arcilla-700 hover:underline">Términos legales</a></li>
