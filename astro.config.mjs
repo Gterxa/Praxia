@@ -9,12 +9,6 @@ import { SITE } from './src/consts.ts';
 export default defineConfig({
   site: SITE.url,
   trailingSlash: 'ignore',
-
-  // /precios ya no existe: la página pasó a ser /preguntas-frecuentes.
-  // El redirect evita romper enlaces que alguien ya haya compartido.
-  redirects: {
-    '/precios': '/preguntas-frecuentes',
-  },
   integrations: [
     sitemap({
       // Las legales llevan noindex mientras estén incompletas: fuera del sitemap.
@@ -57,7 +51,25 @@ export default defineConfig({
     },
   ],
 
+  // Seguridad: nada inline. La CSP de vercel.json permite scripts solo desde
+  // el mismo dominio, así que todo script y hoja de estilos sale como archivo
+  // externo (/_astro/*). Lo único que queda inline son los @font-face que
+  // genera <Font />; para esos, Astro emite un <meta> CSP con su hash.
+  build: {
+    inlineStylesheets: 'never',
+  },
+  security: {
+    csp: {
+      scriptDirective: { resources: ["'self'"] },
+      styleDirective: { resources: ["'self'"] },
+    },
+  },
+
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      // 0 = nunca incrustar scripts ni assets en el HTML.
+      assetsInlineLimit: 0,
+    },
   },
 });

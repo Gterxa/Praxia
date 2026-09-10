@@ -54,6 +54,8 @@ export const CONTEXTO = {
   solucionesMayores: 'creo que mi caso necesita algo más grande que una automatización',
   seguridad: 'tengo una consulta sobre el manejo de mis datos',
   nosotros: 'quiero conversar con ustedes',
+  precios: 'vi los precios de software a medida y quiero conversarlo',
+  plan: (nombrePlan: string) => `me interesa el plan ${nombrePlan} de software a medida`,
   flotante: 'quiero hacer una consulta',
   cierre: 'quiero agendar los 45 minutos de diagnóstico',
 } as const;
@@ -166,3 +168,18 @@ export const MOSTRAR_PENDIENTES = false;
  * Ver README, sección "Cuando tengas tus primeros clientes".
  */
 export const HAY_PRUEBA_SOCIAL = false;
+
+/**
+ * Logos del carrusel de la home. Vacío hasta que existan clientes reales que
+ * autoricen aparecer. Los archivos van en public/clientes/ (SVG o WebP,
+ * 32 px de alto, ancho libre) y `ancho`/`alto` son los del archivo, para que
+ * el navegador reserve el espacio antes de cargarlo.
+ * Mientras esté vacío, el carrusel solo se ve con MOSTRAR_PENDIENTES en `true`.
+ */
+export const CLIENTES: readonly {
+  nombre: string;
+  logo: string;
+  ancho: number;
+  alto: number;
+  url?: string;
+}[] = [];

@@ -6,21 +6,36 @@ interface Props {
   titulo?: string;
   texto?: string;
   contextoWhatsApp?: string;
+  textoPrimario?: string;
+  hrefPrimario?: string;
 }
 
 const {
   titulo = 'Conversemos 45 minutos.',
   texto = 'Nos cuentas qué te gustaría automatizar y salimos de ahí con una respuesta clara: qué se puede hacer y cómo lo haríamos.',
   contextoWhatsApp = CONTEXTO.cierre,
+  textoPrimario = 'Agenda tu diagnóstico',
+  hrefPrimario = '/diagnostico',
 } = Astro.props;
+
+/** Retrato real de quien responde (96×96). Sin foto, el bloque queda como está. */
+const tieneRetrato = Astro.slots.has('retrato');
 ---
 
 <section class="seccion bg-surface text-texto">
-  <div class="contenedor">
+  <div class:list={['contenedor', tieneRetrato && 'md:grid md:grid-cols-[auto_1fr] md:gap-8']}>
+    {
+      tieneRetrato && (
+        <div class="mb-6 size-24 overflow-hidden rounded-full border border-linea md:mb-0">
+          <slot name="retrato" />
+        </div>
+      )
+    }
+    <div>
     <h2 class="max-w-2xl text-texto">{titulo}</h2>
     <p class="lead mt-5 max-w-2xl !text-texto-2">{texto}</p>
     <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-      <a href="/diagnostico" class="boton boton-primario">Agenda tu diagnóstico</a>
+      <a href={hrefPrimario} class="boton boton-primario">{textoPrimario}</a>
       <a
         href={waLink(contextoWhatsApp)}
         target="_blank"
@@ -30,6 +45,7 @@ const {
         <Icon nombre="whatsapp" tamano={20} />
         WhatsApp
       </a>
+    </div>
     </div>
   </div>
 </section>

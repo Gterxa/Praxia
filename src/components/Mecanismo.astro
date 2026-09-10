@@ -31,7 +31,7 @@ const etapas = [
           {i < etapas.length - 1 && (
             <li class="conector" aria-hidden="true">
               <span class="conector-linea">
-                <span class="pulso" style={`animation-delay:${i * 0.9}s`} />
+                <span class="pulso" data-retraso={i} />
               </span>
             </li>
           )}
@@ -104,6 +104,12 @@ const etapas = [
     background-color: var(--color-brasa);
     animation: pulso-y 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
+
+  /* Retraso escalonado sin atributo style inline: la CSP (style-src-attr) lo
+     bloquearía. Si agregas una etapa, agrega la regla siguiente. */
+  .pulso[data-retraso="1"] { animation-delay: 0.9s; }
+  .pulso[data-retraso="2"] { animation-delay: 1.8s; }
+  .pulso[data-retraso="3"] { animation-delay: 2.7s; }
 
   @keyframes pulso-y {
     0%,

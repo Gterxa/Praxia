@@ -28,7 +28,14 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
           </a>
         ))
       }
-      <a href="/diagnostico" class="boton boton-primario !py-2.5 !text-[0.9375rem]">
+      <a
+        href="/precios"
+        class="boton boton-secundario boton-compacto hidden xl:inline-flex"
+        aria-current={esActiva('/precios') ? 'page' : undefined}
+      >
+        Ver precios
+      </a>
+      <a href="/diagnostico" class="boton boton-primario boton-compacto">
         Agenda tu diagnóstico
       </a>
     </nav>
@@ -62,6 +69,16 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
           </a>
         ))
       }
+      <a
+        href="/precios"
+        class:list={[
+          'border-b border-linea py-3.5 font-medium',
+          esActiva('/precios') ? 'text-brasa' : 'text-texto',
+        ]}
+        aria-current={esActiva('/precios') ? 'page' : undefined}
+      >
+        Precios
+      </a>
       <a href="/diagnostico" class="boton boton-primario mt-4 mb-2 w-full">
         Agenda tu diagnóstico
       </a>

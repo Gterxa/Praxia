@@ -5,3 +5,5 @@ dist/
 .env.production
 .DS_Store
 npm-debug.log*
+.gstack/
+.claude/worktrees/

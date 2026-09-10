@@ -173,6 +173,13 @@ El sitio es 100% estático. `npm run build` deja todo en `dist/`.
 **Vercel** — importa el repo, Vercel detecta Astro solo. Framework: Astro. Build: `npm run build`.
 Output: `dist`.
 
+Los headers de seguridad (CSP, X-Frame-Options, Referrer-Policy, Permissions-Policy, etc.) viven en
+`vercel.json`. La CSP solo permite scripts del propio dominio: por eso `astro.config.mjs` fuerza que
+todo script y hoja de estilos salga como archivo externo y prohíbe atributos `style="..."` inline.
+Si agregas un servicio externo (analytics, otro endpoint de formulario, un embed), añádelo a la
+directiva correspondiente de la CSP o el navegador lo bloqueará en silencio. Para probar en local:
+`npm run build` y sirve `dist/` con esos headers; en producción, revisa con securityheaders.com.
+
 **Netlify** — Build: `npm run build`. Publish directory: `dist`. Si usas Netlify Forms en vez de
 Web3Forms, agrega `data-netlify="true"` al `<form>` de `src/pages/diagnostico.astro`.
 
@@ -403,7 +410,7 @@ auditorías fallidas.
 
 Además, verificado a mano: un solo `<h1>` por página, títulos y descripciones únicos, cero
 enlaces internos rotos, jerarquía de encabezados sin saltos, cero palabras de la lista de jerga
-prohibida, cero emojis, cero menciones de montos y cero referencias geográficas. Los 26 pares
+prohibida, cero emojis, cero montos fuera de `/precios` y cero referencias geográficas. Los 26 pares
 de color de la paleta oscura cumplen WCAG AA. El menú de celular se abre,
 se cierra con Escape y expone `aria-expanded`; el formulario valida en español sin recargar.
 
@@ -420,8 +427,12 @@ para hacer bandera de ello: el sitio muestra cómo trabaja, no se declara honest
 Para cambiarlo cuando existan casos reales:
 
 1. En `src/consts.ts`, cambia `HAY_PRUEBA_SOCIAL` a `true`. Eso oculta la sección de
-   transparencia de la home.
-2. Escribe la sección de testimonios en `src/pages/index.astro`, en el bloque marcado con el
+   transparencia de la home y enciende el carrusel de logos debajo del hero.
+2. Llena `CLIENTES` en `src/consts.ts` con nombre, ruta del logo, ancho y alto. Los logos van
+   en `public/clientes/` (SVG o WebP, 32 px de alto). Solo clientes que hayan autorizado por
+   escrito. Para ver el carrusel antes de tener logos, pon `MOSTRAR_PENDIENTES` en `true`:
+   muestra seis rubros de ejemplo marcados en ámbar y nunca sale así a producción.
+3. Escribe la sección de testimonios en `src/pages/index.astro`, en el bloque marcado con el
    comentario correspondiente. Solo con clientes reales que hayan autorizado por escrito.
 3. Agrega los casos en `src/content/casos/` (ver [CONTENIDO.md](./CONTENIDO.md)). La página
    `/casos` se llena sola con los que tengan `autorizado: true`.

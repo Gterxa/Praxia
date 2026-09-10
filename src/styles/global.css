@@ -176,7 +176,18 @@
     transition:
       background-color 150ms ease,
       border-color 150ms ease,
-      color 150ms ease;
+      color 150ms ease,
+      transform 100ms ease;
+  }
+
+  .boton:active {
+    transform: translateY(1px);
+  }
+
+  /* Versión chica para el header, donde el alto de la barra manda. */
+  .boton-compacto {
+    padding: 0.625rem 1rem;
+    font-size: 0.9375rem;
   }
 
   .boton-primario {

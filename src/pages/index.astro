@@ -9,8 +9,15 @@ import StepList from '../components/StepList.astro';
 import CTABand from '../components/CTABand.astro';
 import ChatTabs from '../components/ChatTabs.astro';
 import Mecanismo from '../components/Mecanismo.astro';
+import LogosClientes from '../components/LogosClientes.astro';
 import Icon from '../components/Icon.astro';
-import { TENSIONES, COMPARATIVA, CONTEXTO, HAY_PRUEBA_SOCIAL } from '../consts';
+import {
+  TENSIONES,
+  COMPARATIVA,
+  CONTEXTO,
+  HAY_PRUEBA_SOCIAL,
+  MOSTRAR_PENDIENTES,
+} from '../consts';
 
 const capacidades = await getCapacidades();
 ---
@@ -92,6 +99,12 @@ const capacidades = await getCapacidades();
       ]}
     />
   </Hero>
+
+  <!--
+    Logos de clientes. Solo con clientes reales (HAY_PRUEBA_SOCIAL) o en modo
+    revisión (MOSTRAR_PENDIENTES). Con ambos en false no se renderiza nada.
+  -->
+  {(HAY_PRUEBA_SOCIAL || MOSTRAR_PENDIENTES) && <LogosClientes />}
 
   <!-- Las tensiones del visitante -->
   <Seccion fondo="surface">

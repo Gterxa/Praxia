@@ -58,6 +58,16 @@
   /* --- Medida de línea --- */
   --container-medida: 38rem;
 
+  /* --- Movimiento. Carrusel de logos: una vuelta cada 40 s a velocidad
+     constante. La pista lleva la lista dos veces y se desplaza la mitad. --- */
+  --animate-logos: logos-desplazar 40s linear infinite;
+
+  @keyframes logos-desplazar {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
   /* Tipografía.
      --font-titulos (Space Grotesk), --font-cuerpo (Inter) y --font-mono
      (JetBrains Mono) NO se declaran aquí: los define Astro en :root a partir

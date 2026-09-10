@@ -1,0 +1,141 @@
+---
+/**
+ * Carrusel de logos de clientes. Mecánica: la lista se pinta dos veces y la
+ * pista se desplaza la mitad de su ancho en bucle, así el corte no se nota.
+ * Sin JavaScript. Se pausa con el mouse encima y con el foco dentro, y con
+ * `prefers-reduced-motion` queda quieto y en una sola fila que envuelve.
+ *
+ * Sin clientes en CLIENTES, muestra seis rubros de ejemplo marcados como
+ * pendientes: solo se ven con MOSTRAR_PENDIENTES en `true`.
+ */
+import { CLIENTES, MOSTRAR_PENDIENTES } from '../consts';
+
+const hayClientes = CLIENTES.length > 0;
+const mostrar = hayClientes || MOSTRAR_PENDIENTES;
+
+const MUESTRA = [
+  'Veterinaria',
+  'Inmobiliaria',
+  'Estudio contable',
+  'Clínica dental',
+  'Academia',
+  'Ferretería',
+];
+---
+
+{
+  mostrar && (
+    <section class="border-y border-linea bg-void py-10 md:py-12" aria-label="Clientes de Praxia">
+      <p class="mono text-center text-texto-3">Negocios que ya automatizan con Praxia</p>
+
+      <div class="logos-marco mt-8">
+        <div class="logos-pista flex w-max animate-logos motion-reduce:w-auto motion-reduce:animate-none">
+          {[false, true].map((esCopia) => (
+            <ul
+              class="flex gap-4 pr-4 md:gap-5 md:pr-5 motion-reduce:flex-wrap motion-reduce:justify-center"
+              aria-hidden={esCopia ? 'true' : undefined}
+              class:list={[esCopia && 'motion-reduce:hidden']}
+            >
+              {hayClientes
+                ? CLIENTES.map((c) => (
+                    <li class="flex flex-col items-center gap-1.5">
+                      {c.url ? (
+                        <a
+                          href={c.url}
+                          target="_blank"
+                          rel="noopener"
+                          class="logo-chip"
+                          tabindex={esCopia ? -1 : undefined}
+                        >
+                          <img
+                            src={c.logo}
+                            alt={c.nombre}
+                            width={c.ancho}
+                            height={c.alto}
+                            loading="lazy"
+                            class="h-8 w-auto"
+                          />
+                        </a>
+                      ) : (
+                        <span class="logo-chip">
+                          <img
+                            src={c.logo}
+                            alt={c.nombre}
+                            width={c.ancho}
+                            height={c.alto}
+                            loading="lazy"
+                            class="h-8 w-auto"
+                          />
+                        </span>
+                      )}
+                      <span class="pequeno text-texto-3 md:sr-only" aria-hidden="true">
+                        {c.nombre}
+                      </span>
+                    </li>
+                  ))
+                : MUESTRA.map((rubro) => (
+                    <li class="flex flex-col items-center gap-1.5">
+                      <span class="logo-chip">
+                        <span class="pendiente">{rubro}</span>
+                      </span>
+                    </li>
+                  ))}
+            </ul>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  /* Los bordes se desvanecen con una máscara, no con dos capas de gradiente:
+     un solo elemento, sin z-index. El negro es la parte opaca de la máscara,
+     no un color de la paleta. */
+  .logos-marco {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .logos-pista {
+    will-change: transform;
+  }
+
+  /* Pausa con el mouse encima o con un logo enfocado por teclado. */
+  .logos-marco:hover .logos-pista,
+  .logos-marco:focus-within .logos-pista {
+    animation-play-state: paused;
+  }
+
+  .logo-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 4rem;
+    min-width: 4rem;
+    padding-inline: 1.25rem;
+    border: 1px solid var(--color-linea);
+    border-radius: var(--radius-praxia);
+    background-color: var(--color-surface);
+    transition:
+      border-color 150ms ease,
+      background-color 150ms ease;
+  }
+
+  a.logo-chip:hover {
+    border-color: var(--color-linea-viva);
+    background-color: var(--color-surface-2);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logos-marco {
+      mask-image: none;
+      -webkit-mask-image: none;
+      padding-inline: 1.25rem;
+    }
+    .logos-pista {
+      will-change: auto;
+    }
+  }
+</style>
