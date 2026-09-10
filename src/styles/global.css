@@ -232,13 +232,48 @@
     padding: 1.5rem;
     transition:
       border-color 150ms ease,
-      background-color 150ms ease;
+      background-color 150ms ease,
+      transform 150ms ease;
   }
 
   a.tarjeta:hover,
   .tarjeta-interactiva:hover {
     border-color: var(--color-linea-viva);
     background-color: var(--color-surface-2);
+    transform: translateY(-2px);
+  }
+
+  /* --- Chips de confianza. Afirmaciones que el sitio ya hace, en mono. --- */
+  .chip-mono {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid var(--color-linea);
+    border-radius: 999px;
+    background-color: var(--color-surface);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--color-texto-2);
+  }
+
+  .chip-mono::before {
+    content: '';
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 999px;
+    background-color: var(--color-cian);
+  }
+
+  /* --- Barras de los widgets. Crecen una sola vez, cuando la sección se revela. --- */
+  .widget-barra {
+    transform-origin: bottom;
+    transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .revelar:not(.visible) .widget-barra {
+    transform: scaleY(0.15);
   }
 
   /* --- Campos del formulario. Nada redondeado. --- */

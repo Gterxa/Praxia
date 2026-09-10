@@ -5,6 +5,7 @@ import SectionLabel from '../components/SectionLabel.astro';
 import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
 import CTABand from '../components/CTABand.astro';
+import FichaHero from '../components/FichaHero.astro';
 import { CONTEXTO } from '../consts';
 
 // Solo se muestran los casos que el cliente autorizó por escrito.
@@ -25,7 +26,10 @@ const rubros = [...new Set(casos.map((c) => c.data.rubro))];
     titulo="Esta página se va a llenar pronto."
     subtitulo="Praxia recién arranca. Cuando terminemos nuestras primeras implementaciones y el cliente nos autorice a contarlo, acá vas a leer qué le pasaba al negocio, qué automatizamos, qué cambió y cuánto tomó."
     contextoWhatsApp={CONTEXTO.casos}
-  />
+    compacto
+  >
+    <FichaHero slot="aside" contextoWhatsApp={CONTEXTO.casos} />
+  </Hero>
 
   <Seccion fondo="surface">
     <div class="medida">

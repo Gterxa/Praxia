@@ -20,5 +20,8 @@
     "astro": "^7.3.1",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "simple-icons": "^16.30.0"
   }
 }

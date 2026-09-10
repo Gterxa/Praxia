@@ -4,7 +4,9 @@ import SectionLabel from '../components/SectionLabel.astro';
 import Seccion from '../components/Seccion.astro';
 import Icon from '../components/Icon.astro';
 import ListaCheck from '../components/ListaCheck.astro';
+import { Image } from 'astro:assets';
 import { CONTEXTO, waLink } from '../consts';
+import asesor from '../assets/img/asesor-diagnostico.png';
 
 // Endpoint del servicio de formularios. Ver .env.example y el README.
 const endpoint = import.meta.env['PUBLIC_FORM_ENDPOINT'] ?? '';
@@ -26,6 +28,20 @@ const queObtienes = [
   <Seccion>
     <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
       <div>
+        <!--
+          [REVISAR] Foto generada, como ambiente, sin nombre ni cargo. Cuando haya
+          una real, reemplaza src/assets/img/asesor-diagnostico.png.
+        -->
+        <Image
+          src={asesor}
+          alt="Asesor de Praxia frente a una laptop, en una oficina en Lima"
+          widths={[480, 720, 960]}
+          sizes="(min-width: 1024px) 34rem, 90vw"
+          format="webp"
+          loading="eager"
+          fetchpriority="high"
+          class="mb-8 aspect-[3/2] w-full max-w-xl rounded-praxia border border-linea object-cover object-[50%_30%]"
+        />
         <SectionLabel texto="Diagnóstico" />
         <h1 class="mt-4">Conversemos 45 minutos.</h1>
         <p class="lead mt-7">

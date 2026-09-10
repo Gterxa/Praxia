@@ -51,12 +51,15 @@ export default defineConfig({
     },
   ],
 
-  // Seguridad: nada inline. La CSP de vercel.json permite scripts solo desde
-  // el mismo dominio, así que todo script y hoja de estilos sale como archivo
-  // externo (/_astro/*). Lo único que queda inline son los @font-face que
-  // genera <Font />; para esos, Astro emite un <meta> CSP con su hash.
+  // Seguridad: ningún script inline. La CSP de vercel.json permite scripts solo
+  // desde el mismo dominio, así que todo script sale como archivo externo
+  // (/_astro/*). Las hojas de estilo chicas (< 4 KB, una por componente) sí van
+  // inline: cada una era una petición que bloqueaba el render en celular. Astro
+  // emite en el <meta> CSP el hash de cada <style> que incrusta, igual que hace
+  // con los @font-face de <Font />, así que la política de estilos sigue siendo
+  // 'self' más hashes, sin 'unsafe-inline' efectivo.
   build: {
-    inlineStylesheets: 'never',
+    inlineStylesheets: 'auto',
   },
   security: {
     csp: {
@@ -68,8 +71,9 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     build: {
-      // 0 = nunca incrustar scripts ni assets en el HTML.
-      assetsInlineLimit: 0,
+      // Umbral que usa `inlineStylesheets: 'auto'`: hojas de menos de 4 KB van
+      // inline. Los scripts nunca se incrustan, sin importar este valor.
+      assetsInlineLimit: 4096,
     },
   },
 });

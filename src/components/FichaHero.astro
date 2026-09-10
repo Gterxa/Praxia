@@ -1,0 +1,38 @@
+---
+/**
+ * Ficha para la columna derecha de los heros de texto. Repite en formato de
+ * datos lo que el sitio ya promete, y cierra con WhatsApp.
+ */
+import Icon from './Icon.astro';
+import { FICHA, waLink, CONTEXTO } from '../consts';
+
+interface Props {
+  contextoWhatsApp?: string;
+}
+const { contextoWhatsApp = CONTEXTO.flotante } = Astro.props;
+---
+
+<aside class="w-full max-w-sm rounded-praxia border border-linea bg-surface p-6 md:p-7">
+  <p class="mono text-texto-3">En resumen</p>
+  <ul class="mt-5 space-y-4">
+    {
+      FICHA.map((f) => (
+        <li class="flex items-center gap-3 text-texto">
+          <span class="inline-flex flex-none text-cian">
+            <Icon nombre={f.icono} tamano={20} />
+          </span>
+          {f.texto}
+        </li>
+      ))
+    }
+  </ul>
+  <a
+    href={waLink(contextoWhatsApp)}
+    target="_blank"
+    rel="noopener"
+    class="boton boton-secundario mt-7 w-full"
+  >
+    <Icon nombre="whatsapp" tamano={20} />
+    Escríbenos por WhatsApp
+  </a>
+</aside>

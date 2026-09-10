@@ -7,7 +7,8 @@ import ListaCheck from '../components/ListaCheck.astro';
 import FAQ from '../components/FAQ.astro';
 import CTABand from '../components/CTABand.astro';
 import Icon from '../components/Icon.astro';
-import { CONTEXTO, waLink } from '../consts';
+import { CONTEXTO, waLink, CHIPS_CONFIANZA } from '../consts';
+import cierre from '../assets/img/cierre.png';
 import {
   PLANES,
   COMPARATIVA_PLANES,
@@ -30,6 +31,7 @@ const COLUMNAS = PLANES.map((p) => ({ id: p.id, nombre: p.nombre, destacado: p.d
     titulo="Precio fijo. Sin sorpresas."
     subtitulo="Desde US$ 1,250, entregado en 7 días. Tres formas de empezar: pagas una vez, entregamos una vez. Sin mensualidades escondidas ni alcance que crece solo."
     refuerzo="Sabes el precio, el alcance y la fecha de entrega antes de decidir nada."
+    chips={CHIPS_CONFIANZA}
     ctaPrimario={{ texto: 'Ver los planes', href: '#planes' }}
     contextoWhatsApp={CONTEXTO.precios}
   />
@@ -200,6 +202,8 @@ const COLUMNAS = PLANES.map((p) => ({ id: p.id, nombre: p.nombre, destacado: p.d
     textoPrimario="Empieza tu proyecto"
     hrefPrimario="/diagnostico"
     contextoWhatsApp={CONTEXTO.precios}
+    fondo={cierre}
+    chips={CHIPS_CONFIANZA}
   />
 </Layout>
 

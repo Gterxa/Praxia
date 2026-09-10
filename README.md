@@ -175,7 +175,9 @@ Output: `dist`.
 
 Los headers de seguridad (CSP, X-Frame-Options, Referrer-Policy, Permissions-Policy, etc.) viven en
 `vercel.json`. La CSP solo permite scripts del propio dominio: por eso `astro.config.mjs` fuerza que
-todo script y hoja de estilos salga como archivo externo y prohíbe atributos `style="..."` inline.
+todo script salga como archivo externo y prohíbe atributos `style="..."` inline. Las hojas de estilo
+chicas (menos de 4 KB) sí se incrustan en el HTML para no bloquear el render en celular: Astro
+pone el hash de cada una en el `<meta>` CSP, igual que con los `@font-face`.
 Si agregas un servicio externo (analytics, otro endpoint de formulario, un embed), añádelo a la
 directiva correspondiente de la CSP o el navegador lo bloqueará en silencio. Para probar en local:
 `npm run build` y sirve `dist/` con esos headers; en producción, revisa con securityheaders.com.
@@ -432,8 +434,15 @@ Para cambiarlo cuando existan casos reales:
    en `public/clientes/` (SVG o WebP, 32 px de alto). Solo clientes que hayan autorizado por
    escrito. Para ver el carrusel antes de tener logos, pon `MOSTRAR_PENDIENTES` en `true`:
    muestra seis rubros de ejemplo marcados en ámbar y nunca sale así a producción.
-3. Escribe la sección de testimonios en `src/pages/index.astro`, en el bloque marcado con el
-   comentario correspondiente. Solo con clientes reales que hayan autorizado por escrito.
+3. Llena `TESTIMONIOS` en `src/consts.ts` (cita, nombre, rubro). El carrusel de la home los
+   toma solo. Solo con clientes reales que hayan autorizado por escrito. Con el arreglo vacío y
+   `MOSTRAR_PENDIENTES` en `true` verás seis citas de muestra en ámbar; nunca salen así a
+   producción.
+4. Revisa `HERRAMIENTAS` en `src/consts.ts`: el carrusel de herramientas sí sale en producción
+   porque no es prueba social, pero debe listar solo las que usas de verdad.
+5. Las fotos de `src/assets/img/asesor-diagnostico.png` y `equipo-nosotros.png` son generadas
+   y se publican como ambiente, sin nombre ni cargo. Cuando tengas fotos reales, reemplaza el
+   archivo con el mismo nombre y listo.
 3. Agrega los casos en `src/content/casos/` (ver [CONTENIDO.md](./CONTENIDO.md)). La página
    `/casos` se llena sola con los que tengan `autorizado: true`.
 4. Cuando tengas **dos casos reales**, agrega `/casos` al menú principal, en `NAV_PRINCIPAL`

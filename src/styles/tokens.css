@@ -61,10 +61,20 @@
   /* --- Movimiento. Carrusel de logos: una vuelta cada 40 s a velocidad
      constante. La pista lleva la lista dos veces y se desplaza la mitad. --- */
   --animate-logos: logos-desplazar 40s linear infinite;
+  --animate-logos-inverso: logos-desplazar-inverso 40s linear infinite;
 
   @keyframes logos-desplazar {
     to {
       transform: translateX(-50%);
+    }
+  }
+
+  @keyframes logos-desplazar-inverso {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
     }
   }
 

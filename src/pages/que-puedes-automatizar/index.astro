@@ -4,8 +4,11 @@ import Layout from '../../layouts/Layout.astro';
 import Hero from '../../components/Hero.astro';
 import Seccion from '../../components/Seccion.astro';
 import CapabilityCard from '../../components/CapabilityCard.astro';
+import CTAInline from '../../components/CTAInline.astro';
+import Herramientas from '../../components/Herramientas.astro';
 import CTABand from '../../components/CTABand.astro';
-import { CONTEXTO } from '../../consts';
+import { CONTEXTO, CHIPS_CONFIANZA } from '../../consts';
+import capacidadesImg from '../../assets/img/capacidades.png';
 
 const capacidades = await getCapacidades();
 ---
@@ -19,13 +22,17 @@ const capacidades = await getCapacidades();
     antetitulo="Qué puedes automatizar"
     titulo="Esto es lo que la IA puede hacer por tu negocio hoy."
     subtitulo="Estas son las seis cosas que mejor funcionan hoy. Sirven para cualquier negocio que atienda gente, agende, cobre o archive."
+    chips={CHIPS_CONFIANZA}
     contextoWhatsApp={CONTEXTO.hub}
+    imagen={capacidadesImg}
+    imagenAlt="Seis nodos conectados entre sí, uno por cada capacidad"
+    imagenPrioritaria
   />
 
   <Seccion fondo="surface">
-    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {
-        capacidades.map((c) => (
+        capacidades.map((c, i) => (
           <CapabilityCard
             href={`/que-puedes-automatizar/${c.id}`}
             titulo={c.data.nombreCorto}
@@ -33,21 +40,19 @@ const capacidades = await getCapacidades();
             icono={c.data.icono}
             nivel={2}
             destacada={c.id === 'documentos-y-archivo'}
+            ancha={i === 0 || i === 3}
           />
         ))
       }
     </div>
-
-    <div class="medida mt-14">
-      <h2 class="text-[1.375rem] md:text-[1.75rem]">¿No ves lo tuyo en la lista?</h2>
-      <p class="mt-4 text-texto-2">
-        Estas seis capacidades cubren casi todo lo que un negocio pequeño o mediano nos pide. Si
-        lo que tienes en mente no calza en ninguna, escríbenos igual y lo vemos en el
-        diagnóstico.
-      </p>
-      <a href="/diagnostico" class="enlace mt-5 inline-block">Cuéntanos tu idea</a>
-    </div>
   </Seccion>
 
-  <CTABand />
+  <CTAInline
+    texto="¿No ves lo tuyo en la lista? Cuéntanoslo en el diagnóstico."
+    contextoWhatsApp={CONTEXTO.hub}
+  />
+
+  <Herramientas />
+
+  <CTABand contextoWhatsApp={CONTEXTO.hub} />
 </Layout>

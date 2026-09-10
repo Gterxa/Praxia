@@ -19,7 +19,7 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
           <a
             href={item.href}
             class:list={[
-              'pequeno font-medium transition-colors hover:text-brasa',
+              'nav-enlace pequeno font-medium transition-colors hover:text-brasa',
               esActiva(item.href) ? 'text-brasa' : 'text-texto',
             ]}
             aria-current={esActiva(item.href) ? 'page' : undefined}
@@ -85,6 +85,32 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
     </nav>
   </div>
 </header>
+
+<style>
+  /* Subrayado que crece desde la izquierda: hover y página activa. */
+  .nav-enlace {
+    position: relative;
+    padding-block: 0.25rem;
+  }
+
+  .nav-enlace::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.125rem;
+    height: 1.5px;
+    background-color: var(--color-brasa);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 150ms ease;
+  }
+
+  .nav-enlace:hover::after,
+  .nav-enlace[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+</style>
 
 <script>
   const boton = document.getElementById('boton-menu');

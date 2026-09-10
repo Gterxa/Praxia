@@ -10,7 +10,18 @@ import ChatMockup from '../../components/ChatMockup.astro';
 import ExampleBlock from '../../components/ExampleBlock.astro';
 import CapabilityCard from '../../components/CapabilityCard.astro';
 import CTABand from '../../components/CTABand.astro';
-import { CONTEXTO } from '../../consts';
+import CTAInline from '../../components/CTAInline.astro';
+import Widget from '../../components/Widget.astro';
+import { CONTEXTO, CHIPS_CONFIANZA } from '../../consts';
+
+const widgets = {
+  conversacion: 'chat',
+  calendario: 'agenda',
+  personas: 'clientes',
+  documentos: 'documentos',
+  reportes: 'reportes',
+  contenido: 'contenido',
+} as const;
 
 export const getStaticPaths = (async () => {
   const capacidades = await getCapacidades();
@@ -35,8 +46,14 @@ const mensaje = CONTEXTO.capacidad(d.nombreCorto);
     antetitulo={d.nombreCorto}
     titulo={d.titulo}
     subtitulo={d.subtitulo}
+    chips={CHIPS_CONFIANZA}
     contextoWhatsApp={mensaje}
-  />
+  >
+    <figure slot="visual" class="w-full max-w-sm rounded-praxia border border-linea bg-surface p-5 lg:w-[24rem]">
+      <figcaption class="mono mb-4 text-texto-3">Así se ve por dentro</figcaption>
+      <Widget tipo={widgets[d.icono]} class="!h-48 !gap-3 !p-5 !text-[0.875rem]" />
+    </figure>
+  </Hero>
 
   <!-- Qué hace -->
   <Seccion fondo="surface">
@@ -64,6 +81,8 @@ const mensaje = CONTEXTO.capacidad(d.nombreCorto);
       </div>
     </div>
   </Seccion>
+
+  <CTAInline contextoWhatsApp={mensaje} />
 
   <!-- Dónde se nota -->
   <Seccion fondo="surface">

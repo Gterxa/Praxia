@@ -1,0 +1,82 @@
+---
+/**
+ * Dos carruseles de herramientas en sentidos opuestos, como la franja "Fluent
+ * in every stack" de InvoKube. Los logos salen de simple-icons en el build
+ * (SVG en línea, monocromo, sin peticiones en runtime). Sin ícono disponible,
+ * el nombre va solo.
+ */
+import * as si from 'simple-icons';
+import Marquee from './Marquee.astro';
+import { HERRAMIENTAS } from '../consts';
+
+interface Props {
+  titulo?: string;
+}
+const { titulo = 'Trabajamos con las herramientas que ya usas.' } = Astro.props;
+
+type Herramienta = { nombre: string; icono?: string };
+
+const trazo = (nombre?: string) => {
+  if (!nombre) return null;
+  const clave = `si${nombre[0]!.toUpperCase()}${nombre.slice(1)}` as keyof typeof si;
+  const icono = si[clave] as { path: string } | undefined;
+  return icono?.path ?? null;
+};
+
+const filas: { items: readonly Herramienta[]; direccion: 'izquierda' | 'derecha' }[] = [
+  { items: HERRAMIENTAS.ia, direccion: 'izquierda' },
+  { items: HERRAMIENTAS.negocio, direccion: 'derecha' },
+];
+---
+
+<section class="border-y border-linea bg-void py-10 md:py-12" aria-label="Herramientas con las que trabaja Praxia">
+  <p class="mono text-center text-texto-3">{titulo}</p>
+
+  <div class="mt-8 space-y-4">
+    {
+      filas.map((fila) => (
+        <Marquee direccion={fila.direccion} velocidad={55}>
+          {fila.items.map((h) => {
+            const path = trazo(h.icono);
+            return (
+              <li class="herramienta" translate="no">
+                {path && (
+                  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                    <path d={path} fill="currentColor" />
+                  </svg>
+                )}
+                <span>{h.nombre}</span>
+              </li>
+            );
+          })}
+        </Marquee>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .herramienta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    height: 3rem;
+    padding-inline: 1rem 1.125rem;
+    border: 1px solid var(--color-linea);
+    border-radius: var(--radius-praxia);
+    background-color: var(--color-surface);
+    color: var(--color-texto-2);
+    font-family: var(--font-titulos);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition:
+      color 150ms ease,
+      border-color 150ms ease;
+  }
+
+  .herramienta:hover {
+    color: var(--color-texto);
+    border-color: var(--color-linea-viva);
+  }
+</style>

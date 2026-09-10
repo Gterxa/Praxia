@@ -4,6 +4,7 @@ import SectionLabel from '../components/SectionLabel.astro';
 import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
 import CTABand from '../components/CTABand.astro';
+import FichaHero from '../components/FichaHero.astro';
 import { CONTEXTO } from '../consts';
 ---
 
@@ -17,9 +18,11 @@ import { CONTEXTO } from '../consts';
     titulo="Cuando una automatización ya no alcanza."
     subtitulo="A veces el problema no es una tarea repetitiva sino un montón de información dispersa: cientos de contratos, expedientes o documentos que nadie puede consultar de forma rápida y confiable."
     contextoWhatsApp={CONTEXTO.solucionesMayores}
+    compacto
   />
 
   <Seccion fondo="surface" class="puntos puntos-marcados border-t-2 !border-t-brasa">
+    <FichaHero slot="aside" contextoWhatsApp={CONTEXTO.solucionesMayores} />
     <div class="medida">
       <SectionLabel numero="01" texto="Qué construimos" />
       <h2 class="text-[1.375rem] md:text-[1.75rem]">Qué construimos para esos casos</h2>

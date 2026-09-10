@@ -183,3 +183,51 @@ export const CLIENTES: readonly {
   alto: number;
   url?: string;
 }[] = [];
+
+/**
+ * Testimonios reales. Vacío hasta que un cliente autorice por escrito.
+ * Mientras esté vacío, el carrusel muestra seis citas de muestra marcadas como
+ * pendientes, solo con MOSTRAR_PENDIENTES en `true`.
+ */
+export const TESTIMONIOS: readonly { cita: string; nombre: string; rubro: string }[] = [];
+
+/**
+ * Herramientas con las que Praxia trabaja. Van visibles en producción porque
+ * son verdad, no prueba social. [REVISAR] Deja solo las que uses de verdad.
+ * `icono` es el nombre del ícono en simple-icons; sin `icono` va como texto.
+ */
+export const HERRAMIENTAS = {
+  ia: [
+    { nombre: 'Claude', icono: 'claude' },
+    { nombre: 'OpenAI' },
+    { nombre: 'Gemini', icono: 'googlegemini' },
+    { nombre: 'n8n', icono: 'n8n' },
+    { nombre: 'Make', icono: 'make' },
+  ],
+  negocio: [
+    { nombre: 'WhatsApp', icono: 'whatsapp' },
+    { nombre: 'Gmail', icono: 'gmail' },
+    { nombre: 'Google Sheets', icono: 'googlesheets' },
+    { nombre: 'Google Drive', icono: 'googledrive' },
+    { nombre: 'Google Calendar', icono: 'googlecalendar' },
+    { nombre: 'Notion', icono: 'notion' },
+    { nombre: 'Excel' },
+  ],
+} as const;
+
+/**
+ * Franja de confianza bajo los botones del hero. Tres afirmaciones que el sitio
+ * ya hace en /diagnostico y en el FAQ. Nada que no sea cierto hoy.
+ */
+export const CHIPS_CONFIANZA = [
+  'Diagnóstico sin costo',
+  'Respuesta en 24 h',
+  'Sin permanencia',
+] as const;
+
+/** Ficha que acompaña los heros de texto. Mismos datos, otro formato. */
+export const FICHA = [
+  { icono: 'conversacion', texto: 'Diagnóstico de 45 minutos' },
+  { icono: 'whatsapp', texto: 'Te escribimos en 24 horas' },
+  { icono: 'personas', texto: 'Todo el Perú, por videollamada' },
+] as const;
