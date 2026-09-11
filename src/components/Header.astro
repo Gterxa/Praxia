@@ -19,7 +19,7 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
           <a
             href={item.href}
             class:list={[
-              'pequeno font-medium transition-colors hover:text-brasa',
+              'nav-enlace pequeno font-medium transition-colors hover:text-brasa',
               esActiva(item.href) ? 'text-brasa' : 'text-texto',
             ]}
             aria-current={esActiva(item.href) ? 'page' : undefined}
@@ -28,7 +28,14 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
           </a>
         ))
       }
-      <a href="/diagnostico" class="boton boton-primario !py-2.5 !text-[0.9375rem]">
+      <a
+        href="/precios"
+        class="boton boton-secundario boton-compacto hidden xl:inline-flex"
+        aria-current={esActiva('/precios') ? 'page' : undefined}
+      >
+        Ver precios
+      </a>
+      <a href="/diagnostico" class="boton boton-primario boton-compacto">
         Agenda tu diagnóstico
       </a>
     </nav>
@@ -62,12 +69,48 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
           </a>
         ))
       }
+      <a
+        href="/precios"
+        class:list={[
+          'border-b border-linea py-3.5 font-medium',
+          esActiva('/precios') ? 'text-brasa' : 'text-texto',
+        ]}
+        aria-current={esActiva('/precios') ? 'page' : undefined}
+      >
+        Precios
+      </a>
       <a href="/diagnostico" class="boton boton-primario mt-4 mb-2 w-full">
         Agenda tu diagnóstico
       </a>
     </nav>
   </div>
 </header>
+
+<style>
+  /* Subrayado que crece desde la izquierda: hover y página activa. */
+  .nav-enlace {
+    position: relative;
+    padding-block: 0.25rem;
+  }
+
+  .nav-enlace::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.125rem;
+    height: 1.5px;
+    background-color: var(--color-brasa);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 150ms ease;
+  }
+
+  .nav-enlace:hover::after,
+  .nav-enlace[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+</style>
 
 <script>
   const boton = document.getElementById('boton-menu');

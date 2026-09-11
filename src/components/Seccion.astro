@@ -12,10 +12,26 @@ const fondos = {
   surface: 'bg-surface border-y border-linea',
   acento: 'bg-surface',
 } as const;
+
+/** Con slot "aside", el contenido va en dos columnas y el aside se pega al scroll. */
+const tieneAside = Astro.slots.has('aside');
 ---
 
 <section id={id} class:list={['seccion', fondos[fondo], clase]}>
   <div class="contenedor">
-    <slot />
+    {
+      tieneAside ? (
+        <div class="grid gap-10 lg:grid-cols-[1fr_22rem] lg:gap-16">
+          <div class="min-w-0">
+            <slot />
+          </div>
+          <div class="lg:sticky lg:top-28 lg:self-start">
+            <slot name="aside" />
+          </div>
+        </div>
+      ) : (
+        <slot />
+      )
+    }
   </div>
 </section>

@@ -5,8 +5,11 @@ import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
 import StepList from '../components/StepList.astro';
 import FAQ from '../components/FAQ.astro';
+import FichaHero from '../components/FichaHero.astro';
+import CTAInline from '../components/CTAInline.astro';
 import CTABand from '../components/CTABand.astro';
-import { CONTEXTO } from '../consts';
+import { CONTEXTO, CHIPS_CONFIANZA } from '../consts';
+import metodo from '../assets/img/metodo.png';
 
 const preguntas = [
   {
@@ -46,7 +49,11 @@ const preguntas = [
     antetitulo="Cómo trabajamos"
     titulo="De una idea a algo que funciona. En cuatro pasos."
     subtitulo="Sabes en qué etapa estamos, qué sigue y qué se espera de ti. Sin sorpresas en el camino."
+    chips={CHIPS_CONFIANZA}
     contextoWhatsApp={CONTEXTO.comoTrabajamos}
+    imagen={metodo}
+    imagenAlt="Cuatro bloques conectados en fila, uno por cada paso del método"
+    imagenPrioritaria
   />
 
   <Seccion fondo="surface">
@@ -58,7 +65,7 @@ const preguntas = [
   <Seccion>
     <div class="medida">
       <SectionLabel numero="02" texto="Por qué validamos" />
-      <h2 class="text-[1.625rem] md:text-[2rem]">Por qué validamos antes de construir</h2>
+      <h2 class="mt-3 text-[1.625rem] md:text-[2rem]">Por qué validamos antes de construir</h2>
       <p class="mt-5 text-texto-2">
         Una automatización mal elegida cuesta tiempo, y suele terminar resolviendo un problema que
         no era el importante. Por eso el segundo paso existe: antes de construir nada,
@@ -69,7 +76,10 @@ const preguntas = [
         parte de tu operación. Todo eso sale de esa conversación.
       </p>
     </div>
+    <FichaHero slot="aside" contextoWhatsApp={CONTEXTO.comoTrabajamos} />
   </Seccion>
+
+  <CTAInline contextoWhatsApp={CONTEXTO.comoTrabajamos} />
 
   <Seccion fondo="surface">
     <FAQ titulo="Dudas sobre el proceso" preguntas={preguntas} />

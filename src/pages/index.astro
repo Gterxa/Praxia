@@ -7,12 +7,29 @@ import Seccion from '../components/Seccion.astro';
 import CapabilityCard from '../components/CapabilityCard.astro';
 import StepList from '../components/StepList.astro';
 import CTABand from '../components/CTABand.astro';
+import CTAInline from '../components/CTAInline.astro';
 import ChatTabs from '../components/ChatTabs.astro';
 import Mecanismo from '../components/Mecanismo.astro';
+import Herramientas from '../components/Herramientas.astro';
+import LogosClientes from '../components/LogosClientes.astro';
+import Testimonios from '../components/Testimonios.astro';
+import FAQ from '../components/FAQ.astro';
 import Icon from '../components/Icon.astro';
-import { TENSIONES, COMPARATIVA, CONTEXTO, HAY_PRUEBA_SOCIAL } from '../consts';
+import {
+  TENSIONES,
+  COMPARATIVA,
+  CONTEXTO,
+  HAY_PRUEBA_SOCIAL,
+  MOSTRAR_PENDIENTES,
+  CHIPS_CONFIANZA,
+} from '../consts';
+import { PREGUNTAS_FRECUENTES } from '../faq';
+import heroHome from '../assets/img/hero-home.png';
+import cierre from '../assets/img/cierre.png';
 
 const capacidades = await getCapacidades();
+const preguntasCortas = PREGUNTAS_FRECUENTES.slice(0, 3);
+const mostrarPruebaSocial = HAY_PRUEBA_SOCIAL || MOSTRAR_PENDIENTES;
 ---
 
 <Layout
@@ -23,8 +40,10 @@ const capacidades = await getCapacidades();
   <Hero
     titulo="Tienes una idea. Nosotros la hacemos funcionar."
     subtitulo="Automatizamos las tareas repetitivas de tu negocio con inteligencia artificial. Validamos tu idea, la implementamos y te enseñamos a usarla."
-    refuerzo="Diagnóstico sin costo. Sales sabiendo qué se puede hacer y por dónde empezar."
+    chips={CHIPS_CONFIANZA}
     contextoWhatsApp={CONTEXTO.home}
+    imagen={heroHome}
+    imagenPrioritaria
   >
     <ChatTabs
       slot="visual"
@@ -93,6 +112,15 @@ const capacidades = await getCapacidades();
     />
   </Hero>
 
+  <!-- Herramientas reales. Va visible: no es prueba social, es verdad. -->
+  <Herramientas />
+
+  <!--
+    Logos de clientes. Solo con clientes reales (HAY_PRUEBA_SOCIAL) o en modo
+    revisión (MOSTRAR_PENDIENTES). Con ambos en false no se renderiza nada.
+  -->
+  {mostrarPruebaSocial && <LogosClientes />}
+
   <!-- Las tensiones del visitante -->
   <Seccion fondo="surface">
     <SectionLabel numero="01" texto="El problema" />
@@ -100,7 +128,7 @@ const capacidades = await getCapacidades();
     <div class="mt-10 grid gap-4 md:grid-cols-2">
       {
         TENSIONES.map((t) => (
-          <div class="rounded-praxia border border-linea p-6">
+          <div class="tarjeta">
             <p class="font-[family-name:var(--font-titulos)] text-[1.125rem] leading-snug text-texto italic md:text-[1.25rem]">
               «{t.tension}»
             </p>
@@ -116,7 +144,7 @@ const capacidades = await getCapacidades();
     </div>
   </Seccion>
 
-  <!-- Qué puedes automatizar -->
+  <!-- Qué puedes automatizar: bento con un widget por capacidad -->
   <Seccion>
     <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
       <div>
@@ -125,23 +153,26 @@ const capacidades = await getCapacidades();
       </div>
       <a href="/que-puedes-automatizar" class="enlace flex-none">Ver las seis capacidades</a>
     </div>
-    <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {
-        capacidades.map((c) => (
+        capacidades.map((c, i) => (
           <CapabilityCard
             href={`/que-puedes-automatizar/${c.id}`}
             titulo={c.data.nombreCorto}
             resumen={c.data.resumen}
             icono={c.data.icono}
+            ancha={i === 0 || i === 3}
           />
         ))
       }
     </div>
   </Seccion>
 
+  <CTAInline contextoWhatsApp={CONTEXTO.home} />
+
   <!--
     Bajo el capó. El sitio ya mostraba el resultado (un chat); esto muestra el
-    mecanismo. Va antes del bloque de seguridad a propósito: primero se explica
+    mecanismo. Va antes del bloque de datos a propósito: primero se explica
     qué hace el sistema con la información, después qué pasa con ella.
   -->
   <Seccion fondo="surface">
@@ -164,30 +195,11 @@ const capacidades = await getCapacidades();
     </p>
   </Seccion>
 
-  <!--
-    Tus datos. Hace visible la página que ya existe; no agrega ninguna
-    afirmación nueva sobre certificaciones, estándares ni prácticas.
-  -->
-  <Seccion>
-    <div class="medida">
-      <SectionLabel numero="04" texto="Tus datos" />
-      <h2 class="mt-3">La información de tus clientes es de tus clientes.</h2>
-      <p class="mt-6 text-texto-2">
-        Trabajamos con datos de tu negocio: conversaciones, documentos, contactos. Te explicamos
-        dónde se guardan, quién tiene acceso y qué pasa si decides irte.
-      </p>
-      <a href="/seguridad" class="enlace mt-7 inline-flex items-center gap-2">
-        Cómo protegemos tus datos
-        <Icon nombre="flecha" tamano={16} />
-      </a>
-    </div>
-  </Seccion>
-
   <!-- Cómo trabajamos -->
-  <Seccion fondo="surface">
+  <Seccion>
     <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
       <div>
-        <SectionLabel numero="05" texto="Cómo trabajamos" />
+        <SectionLabel numero="04" texto="Cómo trabajamos" />
         <h2 class="mt-3 max-w-xl">Cuatro pasos. Sin sorpresas.</h2>
       </div>
       <a href="/como-trabajamos" class="enlace flex-none">Cómo trabajamos en detalle</a>
@@ -197,29 +209,45 @@ const capacidades = await getCapacidades();
     </div>
   </Seccion>
 
-  <!-- Por qué existimos. La misión estaba enterrada en /nosotros, que es donde menos tráfico hay. -->
-  <Seccion>
-    <div class="medida">
-      <SectionLabel numero="06" texto="Por qué existimos" />
-      <h2 class="mt-3">Que la IA deje de ser cosa de empresas grandes.</h2>
-      <p class="lead mt-6">
-        Praxia existe para que la automatización con inteligencia artificial sea real y rentable
-        para las pequeñas y medianas empresas del Perú. No para las que ya tienen equipo de
-        tecnología: para las que no.
-      </p>
+  <!-- Por qué existimos y qué pasa con los datos: dos columnas, una sección. -->
+  <Seccion fondo="surface">
+    <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+      <div>
+        <SectionLabel numero="05" texto="Por qué existimos" />
+        <h2 class="mt-3 text-[1.625rem] md:text-[2rem]">Que la IA deje de ser cosa de empresas grandes.</h2>
+        <p class="lead mt-6">
+          Praxia existe para que la automatización con inteligencia artificial sea real y rentable
+          para las pequeñas y medianas empresas del Perú. No para las que ya tienen equipo de
+          tecnología: para las que no.
+        </p>
+      </div>
+      <div>
+        <SectionLabel texto="Tus datos" />
+        <h2 class="mt-3 text-[1.625rem] md:text-[2rem]">La información de tus clientes es de tus clientes.</h2>
+        <p class="mt-6 text-texto-2">
+          Trabajamos con datos de tu negocio: conversaciones, documentos, contactos. Te explicamos
+          dónde se guardan, quién tiene acceso y qué pasa si decides irte.
+        </p>
+        <a href="/seguridad" class="enlace mt-7 inline-flex items-center gap-2">
+          Cómo protegemos tus datos
+          <Icon nombre="flecha" tamano={16} />
+        </a>
+      </div>
     </div>
   </Seccion>
 
   <!--
     Prueba social. Praxia recién empieza: no hay logos, testimonios ni métricas,
     y no se inventan. Cuando existan clientes reales que autoricen contarlo,
-    cambia HAY_PRUEBA_SOCIAL a true en src/consts.ts y reemplaza este bloque.
+    cambia HAY_PRUEBA_SOCIAL a true en src/consts.ts y llena TESTIMONIOS.
   -->
   {
-    !HAY_PRUEBA_SOCIAL && (
+    mostrarPruebaSocial ? (
+      <Testimonios />
+    ) : (
       <Seccion fondo="acento">
         <div class="medida border-l-2 border-brasa pl-6 md:pl-8">
-          <SectionLabel numero="07" texto="Recién empezamos" />
+          <SectionLabel numero="06" texto="Recién empezamos" />
           <h2 class="mt-4">Recién empezamos, y eso te conviene.</h2>
           <p class="lead mt-6 !text-texto">
             Tu caso lo atiende el fundador, no un ejecutivo de cuenta.
@@ -235,7 +263,7 @@ const capacidades = await getCapacidades();
 
   <!-- Por qué Praxia -->
   <Seccion>
-    <SectionLabel numero="08" texto="Qué nos hace distintos" />
+    <SectionLabel numero="07" texto="Qué nos hace distintos" />
     <h2 class="mt-3 max-w-xl">Lo que nos hace distintos</h2>
 
     <div class="mt-10 overflow-hidden rounded-praxia border border-linea">
@@ -272,5 +300,19 @@ const capacidades = await getCapacidades();
     </div>
   </Seccion>
 
-  <CTABand />
+  <!-- Las tres dudas más comunes, antes del cierre. -->
+  <Seccion fondo="surface">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,20rem)_1fr] lg:gap-16">
+      <div>
+        <SectionLabel numero="08" texto="Preguntas" />
+        <h2 class="mt-4 text-[1.625rem] md:text-[2rem]">Lo que todos preguntan antes de escribirnos.</h2>
+        <a href="/preguntas-frecuentes" class="enlace mt-6 inline-block">Ver todas las preguntas</a>
+      </div>
+      <div class="max-w-2xl">
+        <FAQ preguntas={preguntasCortas} />
+      </div>
+    </div>
+  </Seccion>
+
+  <CTABand fondo={cierre} chips={CHIPS_CONFIANZA} />
 </Layout>

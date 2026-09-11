@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import Icon from './Icon.astro';
 import SectionLabel from './SectionLabel.astro';
 import { waLink } from '../consts';
@@ -9,73 +11,126 @@ interface Props {
   subtitulo: string;
   /** Línea chica de refuerzo debajo de los botones. */
   refuerzo?: string;
+  /** Chips de confianza bajo los botones. */
+  chips?: readonly string[];
   ctaPrimario?: { texto: string; href: string };
   /** Si se pasa, el segundo botón abre WhatsApp con este mensaje. */
   contextoWhatsApp?: string;
+  /** Imagen de la columna visual. Con slot "visual", va detrás de él, tenue. */
+  imagen?: ImageMetadata;
+  imagenAlt?: string;
+  /** Prioridad de carga: solo para el hero de la home. */
+  imagenPrioritaria?: boolean;
+  /** Menos alto: para páginas de texto (casos, FAQ, seguridad). */
+  compacto?: boolean;
 }
 
-/** Si se pasa algo al slot "visual", el hero se parte en dos columnas. */
+/** Si se pasa algo al slot "visual" o al slot "aside", el hero se parte en dos columnas. */
 const tieneVisual = Astro.slots.has('visual');
+const tieneAside = Astro.slots.has('aside');
 
 const {
   antetitulo,
   titulo,
   subtitulo,
   refuerzo,
+  chips,
   ctaPrimario = { texto: 'Agenda tu diagnóstico', href: '/diagnostico' },
   contextoWhatsApp,
+  imagen,
+  imagenAlt = '',
+  imagenPrioritaria = false,
+  compacto = false,
 } = Astro.props;
+
+const dosColumnas = tieneVisual || tieneAside || Boolean(imagen);
+/** Imagen sola en la columna derecha: ancho fijo y proporción declarada, sin saltos de layout. */
+const imagenSola = Boolean(imagen) && !tieneVisual;
 ---
 
-<section class="seccion puntos bg-void">
+<section class:list={['puntos bg-void', compacto ? 'py-12 md:py-16' : 'seccion']}>
   <div
     class:list={[
       'contenedor',
-      tieneVisual && 'grid items-center gap-12 lg:grid-cols-[1fr_auto] lg:gap-16',
+      dosColumnas && 'grid items-center gap-12 lg:gap-16',
+      dosColumnas && (imagenSola ? 'lg:grid-cols-[1fr_minmax(0,32rem)]' : 'lg:grid-cols-[1fr_auto]'),
     ]}
   >
     <div>
-    {antetitulo && <SectionLabel texto={antetitulo} />}
-    <h1 class:list={['mt-4', tieneVisual ? 'max-w-2xl' : 'max-w-3xl']}>
-      {titulo}
-    </h1>
-    <p class="lead mt-6 max-w-2xl">{subtitulo}</p>
+      {antetitulo && <SectionLabel texto={antetitulo} />}
+      <h1 class:list={['mt-4', dosColumnas ? 'max-w-2xl' : 'max-w-3xl']}>
+        {titulo}
+      </h1>
+      <p class="lead mt-6 max-w-2xl">{subtitulo}</p>
 
-    <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-      <a
-        href={ctaPrimario.href}
-        class="boton boton-primario"
-      >
-        {ctaPrimario.texto}
-      </a>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <a href={ctaPrimario.href} class="boton boton-primario">
+          {ctaPrimario.texto}
+        </a>
+        {
+          contextoWhatsApp && (
+            <a
+              href={waLink(contextoWhatsApp)}
+              target="_blank"
+              rel="noopener"
+              class="boton boton-secundario"
+            >
+              <Icon nombre="whatsapp" tamano={20} />
+              Escríbenos por WhatsApp
+            </a>
+          )
+        }
+      </div>
+
       {
-        contextoWhatsApp && (
-          <a
-            href={waLink(contextoWhatsApp)}
-            target="_blank"
-            rel="noopener"
-            class="boton boton-secundario"
-          >
-            <Icon nombre="whatsapp" tamano={20} />
-            Escríbenos por WhatsApp
-          </a>
+        chips && (
+          <ul class="mt-6 flex flex-wrap gap-2">
+            {chips.map((c) => (
+              <li class="chip-mono">{c}</li>
+            ))}
+          </ul>
         )
       }
+
+      {refuerzo && <p class="pequeno mt-5 max-w-md text-texto-2">{refuerzo}</p>}
     </div>
 
     {
-      refuerzo && (
-        <p class="pequeno mt-5 max-w-md text-texto-2">{refuerzo}</p>
-      )
-    }
-    </div>
-
-    {
-      tieneVisual && (
-        <div class="flex justify-center lg:justify-end">
-          <slot name="visual" />
+      dosColumnas && (
+        <div class="relative flex justify-center lg:justify-end">
+          {imagen && (
+            <Image
+              src={imagen}
+              alt={imagenAlt}
+              widths={[480, 720, 960]}
+              sizes="(min-width: 1024px) 34rem, 90vw"
+              format="webp"
+              loading={imagenSola && imagenPrioritaria ? 'eager' : 'lazy'}
+              fetchpriority={imagenSola && imagenPrioritaria ? 'high' : undefined}
+              class:list={[
+                tieneVisual
+                  ? 'hero-fondo pointer-events-none absolute inset-0 hidden h-full w-full object-cover opacity-35 lg:block'
+                  : 'aspect-[3/2] w-full rounded-praxia border border-linea object-cover',
+              ]}
+            />
+          )}
+          {tieneVisual && (
+            <div class="relative">
+              <slot name="visual" />
+            </div>
+          )}
+          {tieneAside && <slot name="aside" />}
         </div>
       )
     }
   </div>
 </section>
+
+<style>
+  /* La imagen detrás del visual se funde con el fondo por los bordes: no compite
+     con el chat ni con el texto. */
+  .hero-fondo {
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 75%);
+  }
+</style>

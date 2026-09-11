@@ -1,0 +1,279 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Seccion from '../components/Seccion.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import ListaCheck from '../components/ListaCheck.astro';
+import FAQ from '../components/FAQ.astro';
+import CTABand from '../components/CTABand.astro';
+import Icon from '../components/Icon.astro';
+import { CONTEXTO, waLink, CHIPS_CONFIANZA } from '../consts';
+import cierre from '../assets/img/cierre.png';
+import {
+  PLANES,
+  COMPARATIVA_PLANES,
+  NOTA_PLANES,
+  ADDONS,
+  COMO_COBRAMOS,
+  FAQ_PRECIOS,
+} from '../precios';
+
+const COLUMNAS = PLANES.map((p) => ({ id: p.id, nombre: p.nombre, destacado: p.destacado }));
+---
+
+<Layout
+  titulo="Precios de software a medida"
+  descripcion="Sitio web desde US$ 1,250, MVP desde US$ 6,000 y sistemas a medida por cotización. Precio fijo, 50 % al firmar, el código es tuyo."
+  contextoWhatsApp={CONTEXTO.precios}
+>
+  <Hero
+    antetitulo="Precios"
+    titulo="Precio fijo. Sin sorpresas."
+    subtitulo="Desde US$ 1,250, entregado en 7 días. Tres formas de empezar: pagas una vez, entregamos una vez. Sin mensualidades escondidas ni alcance que crece solo."
+    refuerzo="Sabes el precio, el alcance y la fecha de entrega antes de decidir nada."
+    chips={CHIPS_CONFIANZA}
+    ctaPrimario={{ texto: 'Ver los planes', href: '#planes' }}
+    contextoWhatsApp={CONTEXTO.precios}
+  />
+
+  <!-- Los tres planes. El del medio se destaca con borde y fondo, no con tamaño. -->
+  <Seccion id="planes" fondo="surface" class="scroll-mt-24">
+    <SectionLabel texto="Planes" />
+    <h2 class="mt-3 max-w-xl">Tres formas de empezar.</h2>
+
+    <div class="mt-10 grid gap-4 md:grid-cols-3">
+      {
+        PLANES.map((plan) => (
+          <article
+            class:list={[
+              'plan flex flex-col rounded-praxia border p-6 md:p-7',
+              plan.destacado
+                ? 'order-first border-brasa bg-surface-2 md:order-none'
+                : 'border-linea bg-surface',
+            ]}
+          >
+            {plan.destacado && (
+              <p class="mono mb-4 text-brasa">{plan.etiqueta}</p>
+            )}
+            <h3>{plan.nombre}</h3>
+            <p class="mt-2 text-texto-2">{plan.para}</p>
+
+            <p class="mt-6 font-[family-name:var(--font-titulos)] text-[1.6875rem] leading-none font-bold tabular-nums text-texto md:text-[2rem]">
+              {plan.precio}
+            </p>
+            <p class="pequeno mt-1.5 text-texto-3">{plan.condicion}</p>
+
+            <ListaCheck items={plan.incluye} class="mt-7 text-texto-2" />
+
+            <a
+              href={waLink(CONTEXTO.plan(plan.nombre))}
+              target="_blank"
+              rel="noopener"
+              class:list={['boton mt-8 w-full', plan.destacado ? 'boton-primario' : 'boton-secundario']}
+            >
+              {plan.boton}
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </Seccion>
+
+  <!--
+    La tabla es la pieza central de la página: acá se decide.
+    El overflow-x-hidden de la sección no recorta nada visible: Chrome suma el
+    ancho intrínseco de la tabla al scrollWidth del documento aunque el marco
+    ya la desplace, y Lighthouse lo reporta como "contenido más ancho que la
+    pantalla". Con este recorte el documento mide lo que mide el viewport.
+  -->
+  <Seccion class="overflow-x-hidden">
+    <SectionLabel texto="Qué incluye cada plan" />
+    <h2 class="mt-3 max-w-xl">Compara antes de elegir.</h2>
+
+    <div class="tabla-marco mt-10 overflow-x-auto rounded-praxia border border-linea">
+      <table class="tabla-planes w-full border-collapse text-left">
+        <caption class="sr-only">Comparación de lo que incluye cada plan</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="celda celda-concepto">
+              <span class="sr-only">Concepto</span>
+            </th>
+            {
+              COLUMNAS.map((col) => (
+                <th
+                  scope="col"
+                  class:list={['celda celda-plan', col.destacado && 'celda-destacada']}
+                >
+                  {col.nombre}
+                </th>
+              ))
+            }
+          </tr>
+        </thead>
+        {
+          COMPARATIVA_PLANES.map((grupo) => (
+            <tbody>
+              <tr>
+                <th scope="rowgroup" colspan="4" class="celda celda-grupo mono">
+                  {grupo.grupo}
+                </th>
+              </tr>
+              {grupo.filas.map(([concepto, ...valores]) => (
+                <tr class="fila">
+                  <th scope="row" class="celda celda-concepto">
+                    {concepto}
+                  </th>
+                  {valores.map((valor, i) => (
+                    <td class:list={['celda celda-plan', COLUMNAS[i].destacado && 'celda-destacada']}>
+                      {valor === true ? (
+                        <>
+                          <span class="inline-flex text-verde">
+                            <Icon nombre="check" tamano={20} />
+                          </span>
+                          <span class="sr-only">Incluido</span>
+                        </>
+                      ) : valor === false ? (
+                        <>
+                          <span class="text-texto-3" aria-hidden="true">–</span>
+                          <span class="sr-only">No incluido</span>
+                        </>
+                      ) : (
+                        valor
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          ))
+        }
+      </table>
+    </div>
+
+    <p class="mono mt-6 text-texto-3">{NOTA_PLANES}</p>
+  </Seccion>
+
+  <!-- Extras. Filas, no tarjetas: el precio a la derecha se compara de un vistazo. -->
+  <Seccion fondo="surface">
+    <SectionLabel texto="Extras" />
+    <h2 class="mt-3 max-w-xl">Añade lo que necesites.</h2>
+    <p class="lead mt-5 max-w-2xl">
+      Van con cualquier plan. Los mensuales se cancelan cuando quieras; el resto se cotiza con
+      alcance fijo.
+    </p>
+
+    <ul class="mt-10 border-t border-linea">
+      {
+        ADDONS.map((addon) => (
+          <li class="grid gap-2 border-b border-linea py-5 md:grid-cols-[1fr_auto] md:items-baseline md:gap-8">
+            <div class="max-w-2xl">
+              <h3 class="text-[1.125rem] md:text-[1.25rem]">{addon.nombre}</h3>
+              <p class="mt-1.5 text-texto-2">{addon.detalle}</p>
+            </div>
+            <p class="font-[family-name:var(--font-titulos)] text-[1.125rem] font-medium tabular-nums text-texto md:text-right md:whitespace-nowrap">
+              {addon.precio}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </Seccion>
+
+  <!-- Condiciones. Lo aburrido, por escrito. -->
+  <Seccion>
+    <div class="medida">
+      <SectionLabel texto="Cómo cobramos" />
+      <h2 class="mt-3">Lo aburrido, por escrito.</h2>
+      <ListaCheck items={COMO_COBRAMOS} tono="brasa" class="mt-8 text-texto-2" />
+    </div>
+  </Seccion>
+
+  <Seccion fondo="surface">
+    <div class="max-w-3xl">
+      <SectionLabel texto="Preguntas sobre precios" />
+      <h2 class="mt-3 mb-8">Lo que preguntan en cada llamada.</h2>
+      <FAQ preguntas={FAQ_PRECIOS} abrirPrimera />
+    </div>
+  </Seccion>
+
+  <CTABand
+    titulo="Elige un plan. O conversémoslo."
+    texto="De cualquier forma, vas a saber el precio, el alcance y la fecha de entrega antes de empezar."
+    textoPrimario="Empieza tu proyecto"
+    hrefPrimario="/diagnostico"
+    contextoWhatsApp={CONTEXTO.precios}
+    fondo={cierre}
+    chips={CHIPS_CONFIANZA}
+  />
+</Layout>
+
+<style>
+  /* Tabla comparativa. La columna destacada se pinta de arriba abajo con el
+     mismo fondo que usa la tabla comparativa de la home. */
+  .celda {
+    padding: 0.875rem 1.25rem;
+    border-bottom: 1px solid var(--color-linea);
+    vertical-align: top;
+  }
+
+  @media (min-width: 48rem) {
+    .celda {
+      padding: 1rem 1.75rem;
+    }
+  }
+
+  thead .celda {
+    font-family: var(--font-titulos);
+    font-weight: 500;
+    color: var(--color-texto);
+    background-color: var(--color-surface);
+  }
+
+  .celda-concepto {
+    font-weight: 400;
+    color: var(--color-texto);
+    min-width: 12rem;
+  }
+
+  .celda-plan {
+    color: var(--color-texto-2);
+    min-width: 9rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .celda-destacada {
+    background-color: var(--color-surface-2);
+  }
+
+  thead .celda-destacada {
+    color: var(--color-brasa);
+  }
+
+  .celda-grupo {
+    color: var(--color-texto-3);
+    background-color: var(--color-surface);
+    padding-block: 0.625rem;
+  }
+
+  tbody:last-of-type tr:last-child .celda {
+    border-bottom: 0;
+  }
+
+  .fila:hover .celda:not(.celda-destacada) {
+    background-color: var(--color-surface);
+  }
+
+  /* En celular la primera columna queda fija para no perder de vista el concepto. */
+  @media (max-width: 47.99rem) {
+    .celda-concepto {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background-color: var(--color-void);
+      box-shadow: 1px 0 0 var(--color-linea);
+    }
+    .fila:hover .celda-concepto {
+      background-color: var(--color-surface);
+    }
+  }
+</style>

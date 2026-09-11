@@ -1,5 +1,5 @@
 ---
-import Icon from './Icon.astro';
+import Widget from './Widget.astro';
 
 interface Props {
   href: string;
@@ -10,15 +10,31 @@ interface Props {
   nivel?: 2 | 3;
   /** Marca la tarjeta que conecta con soluciones mayores. */
   destacada?: boolean;
+  /** Ocupa dos columnas en la grilla: rompe la simetría del bento. */
+  ancha?: boolean;
 }
 
-const { href, titulo, resumen, icono, nivel = 3, destacada = false } = Astro.props;
+const { href, titulo, resumen, icono, nivel = 3, destacada = false, ancha = false } = Astro.props;
 const Titulo = `h${nivel}` as 'h2' | 'h3';
+
+/** Cada capacidad tiene su widget: el ícono ya no hace falta. */
+const widgets = {
+  conversacion: 'chat',
+  calendario: 'agenda',
+  personas: 'clientes',
+  documentos: 'documentos',
+  reportes: 'reportes',
+  contenido: 'contenido',
+} as const;
 ---
 
 <a
   href={href}
-  class:list={['group tarjeta flex flex-col', destacada && '!border-brasa']}
+  class:list={[
+    'tarjeta flex flex-col',
+    destacada && '!border-brasa',
+    ancha && 'md:col-span-2',
+  ]}
 >
   {
     destacada && (
@@ -27,17 +43,8 @@ const Titulo = `h${nivel}` as 'h2' | 'h3';
       </span>
     )
   }
-  <span
-    class="inline-flex h-11 w-11 items-center justify-center rounded-praxia bg-brasa-tenue text-brasa"
-  >
-    <Icon nombre={icono} tamano={22} />
-  </span>
+  <Widget tipo={widgets[icono]} class={ancha ? 'md:max-w-sm' : undefined} />
   <Titulo class="mt-5 text-[1.1875rem] md:text-[1.3125rem]">{titulo}</Titulo>
-  <p class="mt-2.5 text-texto-2">{resumen}</p>
-  <span
-    class="pequeno mt-5 inline-flex items-center gap-1.5 font-semibold text-brasa group-hover:gap-2.5 motion-safe:transition-all"
-  >
-    Ver cómo funciona
-    <Icon nombre="flecha" tamano={16} />
-  </span>
+  <p class="mt-2.5 max-w-md text-texto-2">{resumen}</p>
+  <span class="pequeno mt-5 font-semibold text-brasa">Ver cómo funciona</span>
 </a>

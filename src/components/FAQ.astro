@@ -6,16 +6,18 @@
 interface Props {
   preguntas: readonly { pregunta: string; respuesta: string }[];
   titulo?: string;
+  /** Deja la primera pregunta abierta: responde la duda más común sin un clic. */
+  abrirPrimera?: boolean;
 }
-const { preguntas, titulo } = Astro.props;
+const { preguntas, titulo, abrirPrimera = false } = Astro.props;
 ---
 
 <div>
   {titulo && <h2 class="mb-8">{titulo}</h2>}
   <div class="border-t border-linea">
     {
-      preguntas.map((p) => (
-        <details class="acordeon">
+      preguntas.map((p, i) => (
+        <details class="acordeon" open={abrirPrimera && i === 0}>
           <summary>{p.pregunta}</summary>
           <div class="acordeon-cuerpo" set:html={p.respuesta} />
         </details>

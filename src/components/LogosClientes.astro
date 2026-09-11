@@ -1,0 +1,93 @@
+---
+/**
+ * Franja de logos de clientes. Sin clientes en CLIENTES, muestra seis rubros de
+ * ejemplo marcados como pendientes: solo se ven con MOSTRAR_PENDIENTES en `true`.
+ */
+import Marquee from './Marquee.astro';
+import { CLIENTES, MOSTRAR_PENDIENTES } from '../consts';
+
+const hayClientes = CLIENTES.length > 0;
+const mostrar = hayClientes || MOSTRAR_PENDIENTES;
+
+const MUESTRA = [
+  'Veterinaria',
+  'Inmobiliaria',
+  'Estudio contable',
+  'Clínica dental',
+  'Academia',
+  'Ferretería',
+];
+---
+
+{
+  mostrar && (
+    <section class="border-y border-linea bg-void py-10 md:py-12" aria-label="Clientes de Praxia">
+      <p class="mono text-center text-texto-3">Negocios que ya automatizan con Praxia</p>
+
+      <div class="mt-8">
+        <Marquee>
+          {hayClientes
+            ? CLIENTES.map((c) => (
+                <li class="flex flex-col items-center gap-1.5">
+                  {c.url ? (
+                    <a href={c.url} target="_blank" rel="noopener" class="logo-chip">
+                      <img
+                        src={c.logo}
+                        alt={c.nombre}
+                        width={c.ancho}
+                        height={c.alto}
+                        loading="lazy"
+                        class="h-8 w-auto"
+                      />
+                    </a>
+                  ) : (
+                    <span class="logo-chip">
+                      <img
+                        src={c.logo}
+                        alt={c.nombre}
+                        width={c.ancho}
+                        height={c.alto}
+                        loading="lazy"
+                        class="h-8 w-auto"
+                      />
+                    </span>
+                  )}
+                  <span class="pequeno text-texto-3 md:sr-only" aria-hidden="true">
+                    {c.nombre}
+                  </span>
+                </li>
+              ))
+            : MUESTRA.map((rubro) => (
+                <li class="flex flex-col items-center gap-1.5">
+                  <span class="logo-chip">
+                    <span class="pendiente">{rubro}</span>
+                  </span>
+                </li>
+              ))}
+        </Marquee>
+      </div>
+    </section>
+  )
+}
+
+<style is:global>
+  .logo-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 4rem;
+    min-width: 4rem;
+    padding-inline: 1.25rem;
+    border: 1px solid var(--color-linea);
+    border-radius: var(--radius-praxia);
+    background-color: var(--color-surface);
+    transition:
+      border-color 150ms ease,
+      background-color 150ms ease;
+  }
+
+  a.logo-chip:hover {
+    border-color: var(--color-linea-viva);
+    background-color: var(--color-surface-2);
+  }
+</style>

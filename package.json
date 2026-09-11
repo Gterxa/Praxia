@@ -21,6 +21,9 @@
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
   },
+  "devDependencies": {
+    "simple-icons": "^16.30.0"
+  },
   "overrides": {
     "vite": "8.0.16"
   }

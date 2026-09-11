@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
 import CTABand from '../components/CTABand.astro';
+import FichaHero from '../components/FichaHero.astro';
 import Pendiente from '../components/Pendiente.astro';
 import Icon from '../components/Icon.astro';
 import { CONTEXTO, MOSTRAR_PENDIENTES } from '../consts';
@@ -51,9 +52,11 @@ const temas = [
     titulo="Tus datos son tuyos. Te contamos qué hacemos con ellos."
     subtitulo="Dónde se guardan, quién accede, por qué no entrenan modelos y qué pasa si un día quieres que los borremos."
     contextoWhatsApp={CONTEXTO.seguridad}
+    compacto
   />
 
   <Seccion fondo="surface">
+    <FichaHero slot="aside" contextoWhatsApp={CONTEXTO.seguridad} />
     {
       MOSTRAR_PENDIENTES && (
         <div class="mb-10 flex max-w-3xl gap-3 rounded-praxia border border-ambar/40 bg-ambar/10 p-5 text-ambar">

@@ -1,0 +1,95 @@
+---
+/**
+ * Carrusel infinito sin JavaScript. Pinta el contenido dos veces y desplaza la
+ * pista la mitad de su ancho en bucle, así el corte no se nota. Se pausa con el
+ * mouse encima o con el foco dentro; con `prefers-reduced-motion` queda quieto,
+ * sin copia, y los elementos envuelven en varias filas.
+ *
+ * Los hijos van como `<li>`: el componente pone el `<ul>`.
+ */
+interface Props {
+  direccion?: 'izquierda' | 'derecha';
+  /** Segundos por vuelta. */
+  velocidad?: 40 | 55 | 70;
+  class?: string;
+}
+
+const { direccion = 'izquierda', velocidad = 40, class: clase = '' } = Astro.props;
+const contenido = await Astro.slots.render('default');
+---
+
+<div class:list={['marquee', clase]} data-direccion={direccion} data-velocidad={velocidad}>
+  <div class="marquee-pista">
+    <ul class="marquee-grupo" set:html={contenido} />
+    <ul class="marquee-grupo" aria-hidden="true" set:html={contenido} />
+  </div>
+</div>
+
+<style>
+  /* Los bordes se desvanecen con una máscara: un elemento, sin z-index. El
+     negro es la parte opaca de la máscara, no un color de la paleta. */
+  .marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .marquee-pista {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: var(--animate-logos);
+  }
+
+  [data-direccion='derecha'] .marquee-pista {
+    animation: var(--animate-logos-inverso);
+  }
+
+  [data-velocidad='55'] .marquee-pista {
+    animation-duration: 55s;
+  }
+
+  [data-velocidad='70'] .marquee-pista {
+    animation-duration: 70s;
+  }
+
+  .marquee:hover .marquee-pista,
+  .marquee:focus-within .marquee-pista {
+    animation-play-state: paused;
+  }
+
+  .marquee-grupo {
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0 1rem 0 0;
+    list-style: none;
+  }
+
+  @media (min-width: 48rem) {
+    .marquee-grupo {
+      gap: 1.25rem;
+      padding-right: 1.25rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      mask-image: none;
+      -webkit-mask-image: none;
+      padding-inline: 1.25rem;
+    }
+    .marquee-pista {
+      width: auto;
+      animation: none;
+      will-change: auto;
+    }
+    .marquee-grupo {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .marquee-grupo[aria-hidden] {
+      display: none;
+    }
+  }
+</style>

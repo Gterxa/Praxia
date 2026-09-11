@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import Icon from './Icon.astro';
 import { waLink, CONTEXTO } from '../consts';
 
@@ -6,30 +8,80 @@ interface Props {
   titulo?: string;
   texto?: string;
   contextoWhatsApp?: string;
+  textoPrimario?: string;
+  hrefPrimario?: string;
+  /** Imagen de fondo, tenue. Solo donde el cierre debe pesar más (home, precios). */
+  fondo?: ImageMetadata;
+  chips?: readonly string[];
 }
 
 const {
   titulo = 'Conversemos 45 minutos.',
   texto = 'Nos cuentas qué te gustaría automatizar y salimos de ahí con una respuesta clara: qué se puede hacer y cómo lo haríamos.',
   contextoWhatsApp = CONTEXTO.cierre,
+  textoPrimario = 'Agenda tu diagnóstico',
+  hrefPrimario = '/diagnostico',
+  fondo,
+  chips,
 } = Astro.props;
+
+/** Retrato real de quien responde (96×96). Sin foto, el bloque queda como está. */
+const tieneRetrato = Astro.slots.has('retrato');
 ---
 
-<section class="seccion bg-surface text-texto">
-  <div class="contenedor">
-    <h2 class="max-w-2xl text-texto">{titulo}</h2>
-    <p class="lead mt-5 max-w-2xl !text-texto-2">{texto}</p>
-    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-      <a href="/diagnostico" class="boton boton-primario">Agenda tu diagnóstico</a>
-      <a
-        href={waLink(contextoWhatsApp)}
-        target="_blank"
-        rel="noopener"
-        class="boton boton-secundario"
-      >
-        <Icon nombre="whatsapp" tamano={20} />
-        WhatsApp
-      </a>
+<section class="seccion relative overflow-hidden bg-surface text-texto">
+  {
+    fondo && (
+      <Image
+        src={fondo}
+        alt=""
+        widths={[960, 1536]}
+        sizes="100vw"
+        format="webp"
+        loading="lazy"
+        class="cierre-fondo pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25"
+      />
+    )
+  }
+  <div class:list={['contenedor relative', tieneRetrato && 'md:grid md:grid-cols-[auto_1fr] md:gap-8']}>
+    {
+      tieneRetrato && (
+        <div class="mb-6 size-24 overflow-hidden rounded-full border border-linea md:mb-0">
+          <slot name="retrato" />
+        </div>
+      )
+    }
+    <div>
+      <h2 class="max-w-2xl text-texto">{titulo}</h2>
+      <p class="lead mt-5 max-w-2xl !text-texto-2">{texto}</p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a href={hrefPrimario} class="boton boton-primario">{textoPrimario}</a>
+        <a
+          href={waLink(contextoWhatsApp)}
+          target="_blank"
+          rel="noopener"
+          class="boton boton-secundario"
+        >
+          <Icon nombre="whatsapp" tamano={20} />
+          WhatsApp
+        </a>
+      </div>
+      {
+        chips && (
+          <ul class="mt-6 flex flex-wrap gap-2">
+            {chips.map((c) => (
+              <li class="chip-mono">{c}</li>
+            ))}
+          </ul>
+        )
+      }
     </div>
   </div>
 </section>
+
+<style>
+  .cierre-fondo {
+    mask-image: linear-gradient(to bottom, transparent, #000 40%, #000 60%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 40%, #000 60%, transparent);
+  }
+</style>
