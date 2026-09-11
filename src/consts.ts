@@ -67,7 +67,6 @@ export const CONTEXTO = {
 export const NAV_PRINCIPAL = [
   { texto: 'Qué puedes automatizar', href: '/que-puedes-automatizar' },
   { texto: 'Cómo trabajamos', href: '/como-trabajamos' },
-  { texto: 'Casos', href: '/casos' },
   { texto: 'Nosotros', href: '/nosotros' },
 ] as const;
 
