@@ -20,6 +20,13 @@ const Titulo = `h${nivel}` as 'h2' | 'h3';
   href={href}
   class:list={['group tarjeta flex flex-col', destacada && '!border-brasa']}
 >
+  {
+    destacada && (
+      <span class="pequeno mono mb-3 inline-flex w-fit items-center rounded-full border border-brasa/40 bg-brasa-tenue px-2 py-0.5 text-brasa">
+        Conecta con soluciones mayores
+      </span>
+    )
+  }
   <span
     class="inline-flex h-11 w-11 items-center justify-center rounded-praxia bg-brasa-tenue text-brasa"
   >
