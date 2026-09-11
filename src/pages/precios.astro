@@ -55,7 +55,7 @@ const COLUMNAS = PLANES.map((p) => ({ id: p.id, nombre: p.nombre, destacado: p.d
             {plan.destacado && (
               <p class="mono mb-4 text-brasa">{plan.etiqueta}</p>
             )}
-            <h3>{plan.nombre}</h3>
+            <h3 class="md:text-[1.25rem] lg:text-[1.6875rem]">{plan.nombre}</h3>
             <p class="mt-2 text-texto-2">{plan.para}</p>
 
             <p class="mt-6 font-[family-name:var(--font-titulos)] text-[1.6875rem] leading-none font-bold tabular-nums text-texto md:text-[2rem]">
