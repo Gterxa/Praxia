@@ -1,0 +1,52 @@
+---
+import Seccion from './Seccion.astro';
+import SectionLabel from './SectionLabel.astro';
+import Pendiente from './Pendiente.astro';
+import { MOSTRAR_PENDIENTES } from '../consts';
+---
+
+<Seccion id="quienes-somos" fondo="surface">
+  <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
+    <div>
+      <SectionLabel texto="Quiénes somos" />
+      <h2 class="mt-3 revelar" data-retraso="1">Un núcleo pequeño, especialistas según el proyecto</h2>
+      <p class="lead mt-5 text-texto-2 revelar" data-retraso="2">
+        Hablas con quien construye. Nadie te vende algo que no vamos a poder sostener.
+      </p>
+      <p class="mt-4 text-texto-2 revelar" data-retraso="3">
+        Existimos para que la automatización con IA sea real y rentable para negocios sin área de
+        tecnología.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      <div class="col-span-2 flex aspect-video items-center justify-center rounded-tarjeta border border-linea bg-void/40">
+        {
+          MOSTRAR_PENDIENTES ? (
+            <Pendiente que="video corto de presentación del equipo" />
+          ) : (
+            <span class="pequeno text-texto-3">Video del equipo, pronto</span>
+          )
+        }
+      </div>
+      <div class="flex aspect-4/3 items-center justify-center rounded-tarjeta border border-linea bg-void/40">
+        {
+          MOSTRAR_PENDIENTES ? (
+            <Pendiente que="foto de reunión con cliente" />
+          ) : (
+            <span class="pequeno text-texto-3">Foto pronto</span>
+          )
+        }
+      </div>
+      <div class="flex aspect-4/3 items-center justify-center rounded-tarjeta border border-linea bg-void/40">
+        {
+          MOSTRAR_PENDIENTES ? (
+            <Pendiente que="foto trabajando, pantalla real" />
+          ) : (
+            <span class="pequeno text-texto-3">Foto pronto</span>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</Seccion>

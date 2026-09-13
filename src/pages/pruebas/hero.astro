@@ -55,6 +55,8 @@ const FONDOS = [
   { id: 'flujo', nombre: 'Flujo' },
   { id: 'anillos', nombre: 'Anillos' },
   { id: 'tunel', nombre: 'Túnel' },
+  { id: 'olas', nombre: 'Olas' },
+  { id: 'cortina', nombre: 'Cortina' },
 ] as const;
 
 const COMPOSICIONES = [
@@ -78,6 +80,8 @@ const HEROS = [
   { id: 'anillos', nombre: 'Liquid Rings', fondo: 'anillos', composicion: 'centro', copy: 'validacion' },
   { id: 'vortice', nombre: 'Shader Clock', fondo: 'vortice', composicion: 'sangre', copy: 'plazo' },
   { id: 'tunel', nombre: 'Tunnel Hero', fondo: 'tunel', composicion: 'centro', copy: 'actual' },
+  { id: 'olas', nombre: 'Waves', fondo: 'olas', composicion: 'centro', copy: 'actual' },
+  { id: 'cortina', nombre: 'Aurora', fondo: 'cortina', composicion: 'sangre', copy: 'plazo' },
 ] as const;
 
 const FICHA = [
@@ -95,9 +99,10 @@ const FICHA = [
 >
   <section class="banco" id="banco" data-fondo="esfera" data-composicion="centro" data-copy="actual">
     <canvas id="banco-calor" class="banco__calor" aria-hidden="true"></canvas>
-    {/* El flujo es el único fondo que no es WebGL: va en su propio canvas 2D
-        y el CSS enseña uno o el otro según el fondo activo. */}
+    {/* El flujo y las olas son canvas 2D, no WebGL: el CSS enseña uno de los
+        tres lienzos según el fondo activo. */}
     <canvas id="banco-flujo" class="banco__calor banco__flujo" aria-hidden="true"></canvas>
+    <canvas id="banco-olas" class="banco__calor banco__olas" aria-hidden="true"></canvas>
     {/* Los anillos son three.js y necesitan su propio contexto WebGL. */}
     <canvas id="banco-anillos" class="banco__calor banco__anillos" aria-hidden="true"></canvas>
     <div class="banco__estrellas" id="banco-estrellas" aria-hidden="true"></div>
@@ -231,20 +236,23 @@ const FICHA = [
     mask-image: linear-gradient(transparent 0%, #000 7%, #000 86%, transparent 100%);
   }
 
-  /* Los dos lienzos ocupan el mismo hueco: solo se enseña el del fondo activo.
+  /* Los tres lienzos ocupan el mismo hueco: solo se enseña el del fondo activo.
      Se oculta con display para que el que no se usa ni siquiera componga, y de
      paso el 2D deja de dibujar porque su IntersectionObserver lo pausa. */
   .banco__flujo,
+  .banco__olas,
   .banco__anillos {
     display: none;
   }
   [data-fondo='flujo'] .banco__flujo,
+  [data-fondo='olas'] .banco__olas,
   [data-fondo='anillos'] .banco__anillos {
     display: block;
   }
-  /* El :not importa: el lienzo del flujo también lleva .banco__calor para
+  /* El :not importa: cada lienzo propio también lleva .banco__calor para
      heredar posición y máscara, y sin esto esta misma regla lo apagaría. */
   [data-fondo='flujo'] .banco__calor:not(.banco__flujo),
+  [data-fondo='olas'] .banco__calor:not(.banco__olas),
   [data-fondo='anillos'] .banco__calor:not(.banco__anillos) {
     display: none;
   }
@@ -255,7 +263,9 @@ const FICHA = [
   [data-fondo='malla'] .banco__estrellas,
   [data-fondo='anillos'] .banco__estrellas,
   [data-fondo='flujo'] .banco__estrellas,
-  [data-fondo='tunel'] .banco__estrellas {
+  [data-fondo='tunel'] .banco__estrellas,
+  [data-fondo='olas'] .banco__estrellas,
+  [data-fondo='cortina'] .banco__estrellas {
     display: none;
   }
 
@@ -581,12 +591,14 @@ const FICHA = [
 <script>
   import { montarFondo, paletaDeTokens, type Fondo } from '../../scripts/fondos-hero';
   import { montarFlujo } from '../../scripts/fondo-flujo';
+  import { montarOlas } from '../../scripts/fondo-olas';
 
   const banco = document.getElementById('banco');
   const barra = document.getElementById('barra');
   const combo = document.getElementById('barra-combo');
   const lienzo = document.getElementById('banco-calor') as HTMLCanvasElement | null;
   const lienzoFlujo = document.getElementById('banco-flujo') as HTMLCanvasElement | null;
+  const lienzoOlas = document.getElementById('banco-olas') as HTMLCanvasElement | null;
   const lienzoAnillos = document.getElementById('banco-anillos') as HTMLCanvasElement | null;
   const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -649,6 +661,17 @@ const FICHA = [
     );
   }
 
+  /** Igual que el flujo: canvas 2D, se monta perezoso la primera vez que se pide. */
+  let olas: { destruir: () => void } | null = null;
+  function pedirOlas() {
+    if (olas || !lienzoOlas) return;
+    olas = montarOlas(
+      lienzoOlas,
+      { frio: paleta.noche, calido: paleta.sol },
+      reducido,
+    );
+  }
+
   /**
    * Los anillos arrastran three.js: import dinámico, y solo la primera vez que
    * se piden. Mientras no se elijan, ese chunk no se descarga.
@@ -691,15 +714,18 @@ const FICHA = [
     anillos: { fondo: 'anillos', composicion: 'centro', copy: 'validacion' },
     vortice: { fondo: 'vortice', composicion: 'sangre', copy: 'plazo' },
     tunel: { fondo: 'tunel', composicion: 'centro', copy: 'actual' },
+    olas: { fondo: 'olas', composicion: 'centro', copy: 'actual' },
+    cortina: { fondo: 'cortina', composicion: 'sangre', copy: 'plazo' },
   };
 
   function aplicarFondo(valor: string) {
     if (!banco) return;
     banco.dataset['fondo'] = valor;
     if (valor === 'flujo') pedirFlujo();
+    else if (valor === 'olas') pedirOlas();
     else if (valor === 'anillos') pedirAnillos();
-    // El WebGL sigue con el shader anterior mientras el flujo está arriba: no
-    // se destruye para no perder el reloj ni recompilar al volver.
+    // El WebGL sigue con el shader anterior mientras el flujo u olas están
+    // arriba: no se destruye para no perder el reloj ni recompilar al volver.
     else mando?.cambiar(valor as Fondo);
   }
 

@@ -3,6 +3,7 @@ import { Font } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
+import FondoOrbes from '../components/FondoOrbes.astro';
 import { SITE, EMAIL, WHATSAPP, CONTEXTO } from '../consts';
 import '../styles/global.css';
 
@@ -49,12 +50,9 @@ const datosEstructurados = {
   areaServed: SITE.pais,
   knowsLanguage: 'es-PE',
   makesOffer: [
-    'Automatizar la atención y las respuestas por WhatsApp',
-    'Automatizar citas y recordatorios',
-    'Automatizar el seguimiento de clientes',
-    'Clasificar y buscar documentos automáticamente',
-    'Automatizar reportes y alertas',
-    'Preparar contenido y publicaciones',
+    'Automatización con IA: atención, citas, seguimiento, documentos y reportes',
+    'Web, SEO y presencia local',
+    'Seguridad y mantenimiento',
   ].map((nombre) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: nombre } })),
 };
 ---
@@ -81,7 +79,7 @@ const datosEstructurados = {
     <meta property="og:image" content={imagenOG} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${SITE.nombre} — ${SITE.tagline}`} />
+    <meta property="og:image:alt" content={`${SITE.nombre}: ${SITE.tagline}`} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={tituloCompleto} />
@@ -101,27 +99,29 @@ const datosEstructurados = {
   </head>
 
   <body>
+    <FondoOrbes />
     <a class="skip-link" href="#contenido">Ir al contenido</a>
     <Header />
-    <main id="contenido">
+    <main id="contenido" class="relative z-1">
       <slot />
     </main>
     <Footer />
     <WhatsAppButton contexto={contextoWhatsApp} />
 
     <script>
-      // Aparición de sección: fade + 12px, una sola vez. Se desactiva sola con
-      // prefers-reduced-motion (la clase .revelar no oculta nada en ese caso).
+      // Aparición al hacer scroll, una sola vez. Por defecto se marca cada
+      // sección directa de <main> (salvo la primera, sobre el pliegue); los
+      // componentes que necesitan control más fino (encabezado y tarjetas
+      // por separado, con stagger vía data-retraso) marcan `.revelar` ellos
+      // mismos en su propio markup, así que también se observan acá.
+      // Se desactiva sola con prefers-reduced-motion (no hay nada que ocultar).
       const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const secciones = document.querySelectorAll<HTMLElement>('main > section');
+      const secciones = document.querySelectorAll<HTMLElement>('main > section:not(:first-child)');
+      secciones.forEach((seccion) => seccion.classList.add('revelar'));
+
+      const elementos = document.querySelectorAll<HTMLElement>('.revelar');
 
       if (!reducido.matches && 'IntersectionObserver' in window) {
-        secciones.forEach((seccion, i) => {
-          // La primera está sobre el pliegue: no tiene sentido animarla.
-          if (i === 0) return;
-          seccion.classList.add('revelar');
-        });
-
         const observador = new IntersectionObserver(
           (entradas) => {
             entradas.forEach((entrada) => {
@@ -130,10 +130,12 @@ const datosEstructurados = {
               observador.unobserve(entrada.target);
             });
           },
-          { rootMargin: '0px 0px 120% 0px', threshold: 0 },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.05 },
         );
 
-        document.querySelectorAll('.revelar').forEach((el) => observador.observe(el));
+        elementos.forEach((el) => observador.observe(el));
+      } else {
+        elementos.forEach((el) => el.classList.add('visible'));
       }
     </script>
   </body>

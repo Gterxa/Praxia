@@ -11,8 +11,6 @@ interface Props {
   subtitulo: string;
   /** Línea chica de refuerzo debajo de los botones. */
   refuerzo?: string;
-  /** Chips de confianza bajo los botones. */
-  chips?: readonly string[];
   ctaPrimario?: { texto: string; href: string };
   /** Si se pasa, el segundo botón abre WhatsApp con este mensaje. */
   contextoWhatsApp?: string;
@@ -34,8 +32,7 @@ const {
   titulo,
   subtitulo,
   refuerzo,
-  chips,
-  ctaPrimario = { texto: 'Agenda tu diagnóstico', href: '/diagnostico' },
+  ctaPrimario = { texto: 'Validemos en 15 minutos', href: '/validar' },
   contextoWhatsApp,
   imagen,
   imagenAlt = '',
@@ -48,7 +45,7 @@ const dosColumnas = tieneVisual || tieneAside || Boolean(imagen);
 const imagenSola = Boolean(imagen) && !tieneVisual;
 ---
 
-<section class:list={['puntos bg-void', compacto ? 'py-12 md:py-16' : 'seccion']}>
+<section class:list={[compacto ? 'py-12 md:py-16' : 'seccion']}>
   <div
     class:list={[
       'contenedor',
@@ -81,16 +78,6 @@ const imagenSola = Boolean(imagen) && !tieneVisual;
           )
         }
       </div>
-
-      {
-        chips && (
-          <ul class="mt-6 flex flex-wrap gap-2">
-            {chips.map((c) => (
-              <li class="chip-mono">{c}</li>
-            ))}
-          </ul>
-        )
-      }
 
       {refuerzo && <p class="pequeno mt-5 max-w-md text-texto-2">{refuerzo}</p>}
     </div>

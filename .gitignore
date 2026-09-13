@@ -7,3 +7,10 @@ dist/
 npm-debug.log*
 .gstack/
 .claude/worktrees/
+
+# Laboratorio de referencia (componentes originales con sus librerías reales).
+# Es material de comparación, no parte del sitio.
+referencias/node_modules/
+
+# Grabaciones sueltas: no van al historial del repo.
+*.mp4

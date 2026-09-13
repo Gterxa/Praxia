@@ -1,7 +1,7 @@
 ---
 /**
  * Llamada corta para el medio de una página larga. Siempre el mismo verbo de
- * venta que el resto del sitio: "Agenda tu diagnóstico", con WhatsApp al lado.
+ * venta que el resto del sitio: "Validemos en 15 minutos", con WhatsApp al lado.
  */
 import Icon from './Icon.astro';
 import { waLink, CONTEXTO } from '../consts';
@@ -11,19 +11,19 @@ interface Props {
   contextoWhatsApp?: string;
 }
 const {
-  texto = '¿Esto te suena? Conversemos 45 minutos.',
+  texto = 'Validación de tu idea en 15 minutos, sin costo.',
   contextoWhatsApp = CONTEXTO.cierre,
 } = Astro.props;
 ---
 
-<section class="bg-void py-4 md:py-6">
+<section class="py-4 md:py-6">
   <div class="contenedor">
-    <div class="flex flex-col gap-5 rounded-praxia border border-linea bg-surface p-6 md:flex-row md:items-center md:justify-between md:p-7">
+    <div class="tarjeta flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
       <p class="font-[family-name:var(--font-titulos)] text-[1.1875rem] font-medium text-texto md:text-[1.375rem]">
         {texto}
       </p>
       <div class="flex flex-none flex-col gap-3 sm:flex-row">
-        <a href="/diagnostico" class="boton boton-primario">Agenda tu diagnóstico</a>
+        <a href="/validar" class="boton boton-primario">Validemos en 15 minutos</a>
         <a
           href={waLink(contextoWhatsApp)}
           target="_blank"

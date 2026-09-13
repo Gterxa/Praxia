@@ -17,6 +17,14 @@ export default defineConfig({
     }),
   ],
 
+  // Rediseño "v2" (sep 2026): el diagnóstico pasó a llamarse "validación" y la
+  // página de precios se retiró (el precio se da en la llamada, no en la web).
+  // Redirects reales para que los enlaces e índices viejos no rompan.
+  redirects: {
+    '/diagnostico': '/validar',
+    '/precios': '/servicios',
+  },
+
   // Las fuentes se descargan en el build y se sirven desde el mismo dominio.
   // No hay pedidos a Google en tiempo de ejecución.
   // Siete cortes en total. Se descargan en el build y se sirven desde el
@@ -32,8 +40,9 @@ export default defineConfig({
       fallbacks: ['system-ui', 'sans-serif'],
     },
     {
+      // Identidad "v2": reemplaza a Inter como fuente de cuerpo.
       provider: fontProviders.google(),
-      name: 'Inter',
+      name: 'Manrope',
       cssVariable: '--font-cuerpo',
       weights: [400, 500, 600],
       styles: ['normal'],
@@ -41,8 +50,9 @@ export default defineConfig({
       fallbacks: ['system-ui', 'sans-serif'],
     },
     {
+      // Identidad "v2": reemplaza a JetBrains Mono para kickers, chips y datos.
       provider: fontProviders.google(),
-      name: 'JetBrains Mono',
+      name: 'IBM Plex Mono',
       cssVariable: '--font-mono',
       weights: [400, 500],
       styles: ['normal'],

@@ -274,7 +274,8 @@ español.
 | Casos | `src/pages/casos.astro` |
 | Soluciones mayores | `src/pages/soluciones-mayores.astro` |
 | Preguntas frecuentes | `src/pages/preguntas-frecuentes.astro` |
-| Diagnóstico | `src/pages/diagnostico.astro` |
+| Validar (antes "Diagnóstico") | `src/pages/validar.astro` |
+| Servicios | `src/pages/servicios.astro` |
 | Nosotros | `src/pages/nosotros.astro` |
 | Seguridad | `src/pages/seguridad.astro` |
 | Términos legales | `src/pages/legal.astro` |
@@ -282,10 +283,12 @@ español.
 
 Algunos textos que se repiten en varias páginas viven en `src/consts.ts`:
 
-- **Los cuatro pasos del método** → `METODO`
-- **La tabla de "Lo que nos hace distintos"** → `COMPARATIVA`
-- **Las cuatro frases de "Si algo de esto te suena"** → `TENSIONES`
-- **El menú de arriba** → `NAV_PRINCIPAL`
+- **Los cuatro pasos del método** → `METODO` en `src/consts.ts`
+- **Los tres servicios (pestañas)** → `src/servicios.ts`
+- **Los once rubros/industrias** → `src/industrias.ts`
+- **Las tarjetas de "Por qué Praxia"** → `src/porque.ts`
+- **Los casos ilustrativos** → `src/ejemplos.ts`
+- **El menú de arriba** → `NAV_PRINCIPAL` en `src/consts.ts`
 
 Cámbialos ahí una vez y se actualizan en todas partes.
 

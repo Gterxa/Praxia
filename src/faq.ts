@@ -2,17 +2,40 @@
  * Las preguntas que la gente hace antes de escribirnos. Las usa la página de
  * preguntas frecuentes completa y la home (las tres primeras).
  * Para agregar una, súmala a este arreglo. La respuesta admite enlaces en HTML.
+ *
+ * Las primeras 6 son las del rediseño "Praxia v2" (sep 2026). Las últimas 4
+ * vienen del sitio anterior, reescritas al vocabulario de validación.
  */
 export const PREGUNTAS_FRECUENTES = [
   {
-    pregunta: '¿Cómo definen el presupuesto de un proyecto?',
+    pregunta: '¿Y si no funciona en mi rubro?',
     respuesta:
-      'Para automatizaciones, sale del diagnóstico: depende de cuántos sistemas hay que conectar y del volumen. Para software a medida hay <a class="enlace" href="/precios">planes con precio fijo</a>. En ambos casos lo sabes antes de decidir nada.',
+      'Para eso existe la primera conversación. En 15 minutos te decimos si tu idea es viable en tu rubro, con qué y en cuánto tiempo. Si no lo es, te lo decimos y no te cobramos nada.',
   },
   {
-    pregunta: '¿Cuánto demora una automatización?',
+    pregunta: '¿Cuánto cuesta?',
     respuesta:
-      'Entre una y dos semanas para la mayoría de los casos, contadas desde que definimos el alcance. Si tu caso necesita más, te lo decimos en el diagnóstico antes de empezar.',
+      'Depende del alcance, y no te vamos a dar un número inventado. Sales de la llamada de validación con un precio estimado real, antes de comprometerte con nada.',
+  },
+  {
+    pregunta: '¿Tengo que cambiar de herramientas?',
+    respuesta:
+      'No. Construimos sobre lo que ya usas: WhatsApp, Gmail, Google Sheets, tu web, tus redes. Empezar no requiere migrar nada.',
+  },
+  {
+    pregunta: '¿Cuánto demora?',
+    respuesta:
+      'La mayoría de proyectos toma entre 2 y 4 semanas desde que decimos que sí. En la validación te damos el plazo específico para tu caso.',
+  },
+  {
+    pregunta: '¿Qué pasa después de la entrega?',
+    respuesta:
+      'Te enseñamos a usarlo y quedas con acceso a todo. Si quieres, ofrecemos mantenimiento mensual: respaldos, actualizaciones y alguien mirando que todo siga andando.',
+  },
+  {
+    pregunta: '¿Son una agencia grande o una persona?',
+    respuesta:
+      'Somos un núcleo pequeño y traemos especialistas según lo que tu proyecto necesite. Hablas siempre con quien construye.',
   },
   {
     pregunta: '¿Necesito tener sistemas o ser técnico?',
@@ -26,16 +49,6 @@ export const PREGUNTAS_FRECUENTES = [
   {
     pregunta: '¿Emiten factura?',
     respuesta: 'Sí.',
-  },
-  {
-    pregunta: '¿Qué pasa si mi idea no es viable?',
-    respuesta:
-      'Te lo decimos en el diagnóstico y te proponemos una alternativa si la hay. Muchas veces la idea sí funciona, pero por otro camino.',
-  },
-  {
-    pregunta: '¿Qué pasa si quiero dejar de trabajar con ustedes?',
-    respuesta:
-      'Te dejamos documentado qué hicimos y cómo funciona, para que tu equipo o cualquier otro proveedor pueda tomarlo desde ahí.',
   },
   {
     pregunta: '¿Mis datos están seguros?',

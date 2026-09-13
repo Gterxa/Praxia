@@ -21,42 +21,42 @@ const MUESTRA = [
 
 {
   mostrar && (
-    <section class="border-y border-linea bg-void py-10 md:py-12" aria-label="Clientes de Praxia">
-      <p class="mono text-center text-texto-3">Negocios que ya automatizan con Praxia</p>
+    <section class="border-y border-linea py-10 md:py-12" aria-label="Clientes de Praxia">
+      <p class="mono text-center text-texto-3">Hemos trabajado con</p>
 
       <div class="mt-8">
         <Marquee>
           {hayClientes
-            ? CLIENTES.map((c) => (
-                <li class="flex flex-col items-center gap-1.5">
-                  {c.url ? (
-                    <a href={c.url} target="_blank" rel="noopener" class="logo-chip">
-                      <img
-                        src={c.logo}
-                        alt={c.nombre}
-                        width={c.ancho}
-                        height={c.alto}
-                        loading="lazy"
-                        class="h-8 w-auto"
-                      />
-                    </a>
-                  ) : (
-                    <span class="logo-chip">
-                      <img
-                        src={c.logo}
-                        alt={c.nombre}
-                        width={c.ancho}
-                        height={c.alto}
-                        loading="lazy"
-                        class="h-8 w-auto"
-                      />
-                    </span>
-                  )}
-                  <span class="pequeno text-texto-3 md:sr-only" aria-hidden="true">
+            ? CLIENTES.map((c) => {
+                const contenido = c.logo ? (
+                  <img
+                    src={c.logo}
+                    alt={c.nombre}
+                    width={c.ancho}
+                    height={c.alto}
+                    loading="lazy"
+                    class="h-8 w-auto grayscale transition-[filter] duration-300 group-hover:grayscale-0"
+                  />
+                ) : (
+                  <span class="font-[family-name:var(--font-titulos)] font-semibold text-texto-2">
                     {c.nombre}
                   </span>
-                </li>
-              ))
+                );
+                return (
+                  <li class="flex flex-col items-center gap-1.5">
+                    {c.url ? (
+                      <a href={c.url} target="_blank" rel="noopener" class="logo-chip group">
+                        {contenido}
+                      </a>
+                    ) : (
+                      <span class="logo-chip group">{contenido}</span>
+                    )}
+                    <span class="pequeno text-texto-3 md:sr-only" aria-hidden="true">
+                      {c.nombre}
+                    </span>
+                  </li>
+                );
+              })
             : MUESTRA.map((rubro) => (
                 <li class="flex flex-col items-center gap-1.5">
                   <span class="logo-chip">

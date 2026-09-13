@@ -1,319 +1,65 @@
 ---
-import { getCapacidades } from '../capacidades';
 import Layout from '../layouts/Layout.astro';
-import SectionLabel from '../components/SectionLabel.astro';
-import Hero from '../components/Hero.astro';
-import Seccion from '../components/Seccion.astro';
-import CapabilityCard from '../components/CapabilityCard.astro';
-import StepList from '../components/StepList.astro';
-import CTABand from '../components/CTABand.astro';
-import CTAInline from '../components/CTAInline.astro';
-import ChatTabs from '../components/ChatTabs.astro';
-import Mecanismo from '../components/Mecanismo.astro';
-import Herramientas from '../components/Herramientas.astro';
+import HeroHome from '../components/HeroHome.astro';
 import LogosClientes from '../components/LogosClientes.astro';
-import Testimonios from '../components/Testimonios.astro';
+import Marquee from '../components/Marquee.astro';
+import PorQue from '../components/PorQue.astro';
+import Servicios from '../components/Servicios.astro';
+import Industrias from '../components/Industrias.astro';
+import Proceso from '../components/Proceso.astro';
+import SeguridadBasica from '../components/SeguridadBasica.astro';
+import Ejemplos from '../components/Ejemplos.astro';
+import QuienesSomos from '../components/QuienesSomos.astro';
 import FAQ from '../components/FAQ.astro';
-import Icon from '../components/Icon.astro';
-import {
-  TENSIONES,
-  COMPARATIVA,
-  CONTEXTO,
-  HAY_PRUEBA_SOCIAL,
-  MOSTRAR_PENDIENTES,
-  CHIPS_CONFIANZA,
-} from '../consts';
+import CierreValidar from '../components/CierreValidar.astro';
+import { CONTEXTO } from '../consts';
 import { PREGUNTAS_FRECUENTES } from '../faq';
-import heroHome from '../assets/img/hero-home.png';
-import cierre from '../assets/img/cierre.png';
 
-const capacidades = await getCapacidades();
-const preguntasCortas = PREGUNTAS_FRECUENTES.slice(0, 3);
-const mostrarPruebaSocial = HAY_PRUEBA_SOCIAL || MOSTRAR_PENDIENTES;
+const preguntasCortas = PREGUNTAS_FRECUENTES.slice(0, 6);
 ---
 
 <Layout
-  titulo="Automatización con IA por WhatsApp para pymes en Perú"
-  descripcion="Automatiza las tareas repetitivas de tu negocio con inteligencia artificial: atención, citas, seguimiento y documentos. Diagnóstico sin costo."
+  titulo="Automatización con IA, web, SEO y seguridad para pymes en Perú"
+  descripcion="El equipo técnico que tu negocio no tiene. Validamos tu idea en 15 minutos, sin costo, y la construimos en 2 a 4 semanas: automatización con IA, web, SEO y seguridad."
   contextoWhatsApp={CONTEXTO.home}
 >
-  <Hero
-    titulo="Tienes una idea. Nosotros la hacemos funcionar."
-    subtitulo="Automatizamos las tareas repetitivas de tu negocio con inteligencia artificial. Validamos tu idea, la implementamos y te enseñamos a usarla."
-    chips={CHIPS_CONFIANZA}
-    contextoWhatsApp={CONTEXTO.home}
-    imagen={heroHome}
-    imagenPrioritaria
-  >
-    <ChatTabs
-      slot="visual"
-      id="hero"
-      conversaciones={[
-        {
-          etiqueta: 'Servicios',
-          negocio: 'Veterinaria San Roque',
-          mensajes: [
-            { de: 'cliente', texto: 'Hola, ¿tienen espacio mañana? Mi perrito está con tos', hora: '23:12' },
-            {
-              de: 'negocio',
-              texto: '¡Hola! Sí, atendemos de 9 am a 7 pm. Con tos conviene traerlo temprano.',
-              hora: '23:12',
-            },
-            { de: 'cliente', texto: '¿Puedo sacar cita para las 10?', hora: '23:14' },
-            {
-              de: 'negocio',
-              texto: 'Listo, mañana 10:00 am. Te escribo en la mañana para confirmar.',
-              hora: '23:14',
-            },
-          ],
-        },
-        {
-          etiqueta: 'Comercio',
-          negocio: 'Inmobiliaria Loma Verde',
-          mensajes: [
-            {
-              de: 'cliente',
-              texto: 'Buenas noches, vi el aviso del departamento de dos dormitorios. ¿Sigue disponible?',
-              hora: '22:41',
-            },
-            {
-              de: 'negocio',
-              texto: '¡Hola! Sí. Son 78 m², dos dormitorios y cochera, tercer piso con ascensor.',
-              hora: '22:41',
-            },
-            { de: 'cliente', texto: '¿Se puede ver este fin de semana?', hora: '22:43' },
-            {
-              de: 'negocio',
-              texto: 'Claro. ¿Sábado en la mañana o domingo en la tarde? Dime tu nombre y lo dejo anotado.',
-              hora: '22:43',
-            },
-          ],
-        },
-        {
-          etiqueta: 'Profesionales',
-          negocio: 'Estudio Contable Marín',
-          mensajes: [
-            { de: 'cliente', texto: 'Te mando las facturas de este mes', hora: '16:20' },
-            { de: 'cliente', texto: 'Adjunto: facturas-setiembre.pdf', hora: '16:20' },
-            {
-              de: 'negocio',
-              texto:
-                'Recibido. Son 14 comprobantes de 6 proveedores, del 2 al 28 de setiembre. Ya quedaron archivados en la carpeta del mes.',
-              hora: '16:21',
-            },
-            {
-              de: 'negocio',
-              texto: 'Ojo: dos vienen sin número de RUC. Te los marqué para que los revises.',
-              hora: '16:21',
-            },
-          ],
-        },
-      ]}
-    />
-  </Hero>
+  <HeroHome />
 
-  <!-- Herramientas reales. Va visible: no es prueba social, es verdad. -->
-  <Herramientas />
+  <LogosClientes />
 
-  <!--
-    Logos de clientes. Solo con clientes reales (HAY_PRUEBA_SOCIAL) o en modo
-    revisión (MOSTRAR_PENDIENTES). Con ambos en false no se renderiza nada.
-  -->
-  {mostrarPruebaSocial && <LogosClientes />}
+  <section class="border-y border-linea py-6" aria-hidden="true">
+    <Marquee velocidad={55}>
+      <li class="frase-loop">Validamos primero.</li>
+      <li class="frase-loop">Construimos después.</li>
+      <li class="frase-loop">Sobre lo que ya usas.</li>
+    </Marquee>
+  </section>
 
-  <!-- Las tensiones del visitante -->
-  <Seccion fondo="surface">
-    <SectionLabel numero="01" texto="El problema" />
-    <h2 class="mt-3 max-w-2xl">Si algo de esto te suena, estás en el lugar correcto.</h2>
-    <div class="mt-10 grid gap-4 md:grid-cols-2">
-      {
-        TENSIONES.map((t) => (
-          <div class="tarjeta">
-            <p class="font-[family-name:var(--font-titulos)] text-[1.125rem] leading-snug text-texto italic md:text-[1.25rem]">
-              «{t.tension}»
-            </p>
-            <p class="mt-4 flex gap-2.5 text-texto-2">
-              <span class="mt-1 flex-none text-brasa">
-                <Icon nombre="flecha" tamano={18} />
-              </span>
-              {t.respuesta}
-            </p>
-          </div>
-        ))
-      }
+  <PorQue />
+  <Servicios />
+  <Industrias />
+  <Proceso />
+  <SeguridadBasica />
+  <Ejemplos />
+  <QuienesSomos />
+
+  <section class="seccion">
+    <div class="contenedor max-w-3xl">
+      <FAQ preguntas={preguntasCortas} titulo="Lo que nos preguntan antes de empezar" />
     </div>
-  </Seccion>
+  </section>
 
-  <!-- Qué puedes automatizar: bento con un widget por capacidad -->
-  <Seccion>
-    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-      <div>
-        <SectionLabel numero="02" texto="Qué automatizamos" />
-        <h2 class="mt-3 max-w-xl">Esto es lo que ya puedes automatizar.</h2>
-      </div>
-      <a href="/que-puedes-automatizar" class="enlace flex-none">Ver las seis capacidades</a>
-    </div>
-    <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      {
-        capacidades.map((c, i) => (
-          <CapabilityCard
-            href={`/que-puedes-automatizar/${c.id}`}
-            titulo={c.data.nombreCorto}
-            resumen={c.data.resumen}
-            icono={c.data.icono}
-            ancha={i === 0 || i === 3}
-            destacada={c.id === 'documentos-y-archivo'}
-          />
-        ))
-      }
-    </div>
-  </Seccion>
-
-  <CTAInline contextoWhatsApp={CONTEXTO.home} />
-
-  <!--
-    Bajo el capó. El sitio ya mostraba el resultado (un chat); esto muestra el
-    mecanismo. Va antes del bloque de datos a propósito: primero se explica
-    qué hace el sistema con la información, después qué pasa con ella.
-  -->
-  <Seccion fondo="surface">
-    <div class="medida">
-      <SectionLabel numero="03" texto="Bajo el capó" />
-      <h2 class="mt-4">No es magia. Es un proceso que puedes entender.</h2>
-      <p class="lead mt-6">
-        Cada automatización que construimos sigue el mismo camino. Te lo explicamos porque
-        queremos que sepas qué compraste.
-      </p>
-    </div>
-
-    <div class="mt-12">
-      <Mecanismo />
-    </div>
-
-    <p class="mt-10 max-w-2xl text-texto-2">
-      Ese registro es la base de las <a href="/soluciones-mayores" class="enlace">soluciones
-      mayores</a> que construimos cuando un negocio ya acumuló información suficiente.
-    </p>
-  </Seccion>
-
-  <!-- Cómo trabajamos -->
-  <Seccion>
-    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-      <div>
-        <SectionLabel numero="04" texto="Cómo trabajamos" />
-        <h2 class="mt-3 max-w-xl">Cuatro pasos. Sin sorpresas.</h2>
-      </div>
-      <a href="/como-trabajamos" class="enlace flex-none">Cómo trabajamos en detalle</a>
-    </div>
-    <div class="mt-10">
-      <StepList />
-    </div>
-  </Seccion>
-
-  <!-- Por qué existimos y qué pasa con los datos: dos columnas, una sección. -->
-  <Seccion fondo="surface">
-    <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
-      <div>
-        <SectionLabel numero="05" texto="Por qué existimos" />
-        <h2 class="mt-3 text-[1.625rem] md:text-[2rem]">Que la IA deje de ser cosa de empresas grandes.</h2>
-        <p class="lead mt-6">
-          Praxia existe para que la automatización con inteligencia artificial sea real y rentable
-          para las pequeñas y medianas empresas del Perú. No para las que ya tienen equipo de
-          tecnología: para las que no.
-        </p>
-      </div>
-      <div>
-        <SectionLabel texto="Tus datos" />
-        <h2 class="mt-3 text-[1.625rem] md:text-[2rem]">La información de tus clientes es de tus clientes.</h2>
-        <p class="mt-6 text-texto-2">
-          Trabajamos con datos de tu negocio: conversaciones, documentos, contactos. Te explicamos
-          dónde se guardan, quién tiene acceso y qué pasa si decides irte.
-        </p>
-        <a href="/seguridad" class="enlace mt-7 inline-flex items-center gap-2">
-          Cómo protegemos tus datos
-          <Icon nombre="flecha" tamano={16} />
-        </a>
-      </div>
-    </div>
-  </Seccion>
-
-  <!--
-    Prueba social. Praxia recién empieza: no hay logos, testimonios ni métricas,
-    y no se inventan. Cuando existan clientes reales que autoricen contarlo,
-    cambia HAY_PRUEBA_SOCIAL a true en src/consts.ts y llena TESTIMONIOS.
-  -->
-  {
-    mostrarPruebaSocial ? (
-      <Testimonios />
-    ) : (
-      <Seccion fondo="acento">
-        <div class="medida border-l-2 border-brasa pl-6 md:pl-8">
-          <SectionLabel numero="06" texto="Recién empezamos" />
-          <h2 class="mt-4">Recién empezamos, y eso te conviene.</h2>
-          <p class="lead mt-6 !text-texto">
-            Tu caso lo atiende el fundador, no un ejecutivo de cuenta.
-          </p>
-          <p class="mt-5 text-texto-2">
-            No vamos a mostrarte testimonios que no nos dieron. Cuando trabajemos juntos y salga
-            bien, te vamos a pedir que lo cuentes.
-          </p>
-        </div>
-      </Seccion>
-    )
-  }
-
-  <!-- Por qué Praxia -->
-  <Seccion>
-    <SectionLabel numero="07" texto="Qué nos hace distintos" />
-    <h2 class="mt-3 max-w-xl">Lo que nos hace distintos</h2>
-
-    <div class="mt-10 overflow-hidden rounded-praxia border border-linea">
-      <div class="grid grid-cols-2">
-        <p class="border-b border-linea bg-surface-2 px-5 py-4 font-[family-name:var(--font-titulos)] font-medium text-texto md:px-7">
-          Praxia
-        </p>
-        <p class="border-b border-l border-linea px-5 py-4 font-[family-name:var(--font-titulos)] font-medium text-texto-2 md:px-7">
-          La alternativa típica
-        </p>
-        {
-          COMPARATIVA.map((fila, i) => (
-            <>
-              <p
-                class:list={[
-                  'bg-surface-2 px-5 py-4 text-texto md:px-7',
-                  i < COMPARATIVA.length - 1 && 'border-b border-linea',
-                ]}
-              >
-                {fila.praxia}
-              </p>
-              <p
-                class:list={[
-                  'border-l border-linea px-5 py-4 text-texto-2 md:px-7',
-                  i < COMPARATIVA.length - 1 && 'border-b',
-                ]}
-              >
-                {fila.alternativa}
-              </p>
-            </>
-          ))
-        }
-      </div>
-    </div>
-  </Seccion>
-
-  <!-- Las tres dudas más comunes, antes del cierre. -->
-  <Seccion fondo="surface">
-    <div class="grid gap-10 lg:grid-cols-[minmax(0,20rem)_1fr] lg:gap-16">
-      <div>
-        <SectionLabel numero="08" texto="Preguntas" />
-        <h2 class="mt-4 text-[1.625rem] md:text-[2rem]">Lo que todos preguntan antes de escribirnos.</h2>
-        <a href="/preguntas-frecuentes" class="enlace mt-6 inline-block">Ver todas las preguntas</a>
-      </div>
-      <div class="max-w-2xl">
-        <FAQ preguntas={preguntasCortas} />
-      </div>
-    </div>
-  </Seccion>
-
-  <CTABand fondo={cierre} chips={CHIPS_CONFIANZA} />
+  <CierreValidar />
 </Layout>
+
+<style>
+  .frase-loop {
+    padding-inline: 1rem;
+    font-family: var(--font-titulos);
+    font-weight: 600;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    letter-spacing: -0.02em;
+    color: var(--color-texto-2);
+    white-space: nowrap;
+  }
+</style>

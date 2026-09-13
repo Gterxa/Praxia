@@ -136,7 +136,7 @@ queda dicho es cierto, pero están incompletas — por eso siguen fuera de los b
 
 ---
 
-## Configurar el formulario de `/diagnostico`
+## Configurar el formulario de `/validar`
 
 El formulario es de 4 campos y funciona sin backend, contra un servicio externo. Hoy está
 **sin configurar**: si alguien lo envía, ve un aviso que lo manda a WhatsApp.
@@ -183,7 +183,7 @@ directiva correspondiente de la CSP o el navegador lo bloqueará en silencio. Pa
 `npm run build` y sirve `dist/` con esos headers; en producción, revisa con securityheaders.com.
 
 **Netlify** — Build: `npm run build`. Publish directory: `dist`. Si usas Netlify Forms en vez de
-Web3Forms, agrega `data-netlify="true"` al `<form>` de `src/pages/diagnostico.astro`.
+Web3Forms, agrega `data-netlify="true"` al `<form>` de `src/pages/validar.astro`.
 
 **S3 + CloudFront** — sube el contenido de `dist/`. Configura `index.html` como documento raíz y
 `404.html` como página de error 404.
@@ -263,12 +263,13 @@ hero de la home.
   Praxia y no deben presentarse como tales.
 - Para partir un mensaje en varias líneas, usa `\n` dentro de las comillas.
 
-### `/precios` pasó a ser `/preguntas-frecuentes`
+### `/precios` se retiró (rediseño "Praxia v2", sep 2026)
 
-Una página de precios sin precios no tiene sentido, así que el lugar del menú lo ocupa ahora
-`/preguntas-frecuentes`, que absorbe las preguntas sobre presupuesto, plazos, facturación y
-permanencia. `astro.config.mjs` tiene un `redirect` de `/precios` a `/preguntas-frecuentes` para
-no romper enlaces que alguien ya haya compartido.
+El posicionamiento cambió: el precio se da en la llamada de validación de 15 minutos, no en la
+web ("no te vamos a dar un número inventado"). La página completa de planes en dólares
+(`precios.astro`, `precios.ts`) se eliminó. `astro.config.mjs` tiene un `redirect` de `/precios`
+a `/servicios` para no romper enlaces que alguien ya haya compartido. El antiguo `/diagnostico`
+pasó a llamarse `/validar` (mismo redirect, misma razón).
 
 ### Lo que se descartó a propósito
 
@@ -287,20 +288,20 @@ Vino de una revisión externa y quedó fuera con razón. Si más adelante parece
 - **Reordenar las cuatro objeciones.** *"No sé si lo que imagino es posible"* va primera a
   propósito: es la tensión que diferencia a Praxia y la que le da sentido al diagnóstico.
 
-### El sitio no habla de dinero
+### El sitio no habla de montos
 
-No hay montos, rangos ni planes en ninguna página. La accesibilidad se comunica con cuatro
-señales sueltas y nada más:
+No hay cifras en dólares ni soles en ninguna página: el precio se da en la llamada de validación,
+después de entender el caso. Eso sí se comunica, en varios lugares:
 
 | Dónde | Texto | Archivo |
 |---|---|---|
-| Bajo el botón del hero | *Diagnóstico sin costo. Si tu idea no es viable, te lo decimos.* | `src/pages/index.astro` |
-| Sección del problema | *Trabajamos con negocios de 1 a 50 personas.* | `TENSIONES` en `src/consts.ts` |
-| Paso 2 del método | *Acá también te decimos qué costaría, antes de que decidas nada.* | `METODO` en `src/consts.ts` |
-| Preguntas frecuentes | *Sin contratos de permanencia.* | `src/pages/preguntas-frecuentes.astro` |
+| Chips bajo el botón del hero | *Validación sin costo.* | `CHIPS_CONFIANZA` en `src/consts.ts` |
+| Bento "Por qué Praxia" | *Precio estimado: en la llamada.* | `src/porque.ts` |
+| Paso 2 del método | *Precio, plazo, viabilidad... todo antes de cobrarte.* | `METODO` en `src/consts.ts` |
+| Preguntas frecuentes | *¿Cuánto cuesta?* / *Sin contratos de permanencia.* | `src/faq.ts` |
 
-Si agregas copy nuevo, no sumes una quinta. Tampoco vuelvas a mencionar Lima ni provincias: el
-sitio habla de Perú sin subdividir.
+El pie de página menciona "Lima, Perú" (así lo define el rediseño "Praxia v2"); si prefieres
+volver a la regla anterior de no subdividir por ciudad, es una palabra en `Footer.astro`.
 
 ### Todas las páginas tienen la misma forma
 
@@ -309,7 +310,7 @@ Cualquier página de contenido abre con `<Hero>` (título, subtítulo y los dos 
 página, respeta ese molde: mirar dos páginas seguidas y que una abra con hero y la otra en seco es
 lo que hace que un sitio se sienta desarmado.
 
-Las excepciones son a propósito: `/diagnostico` no lleva `CTABand` porque la página entera **es**
+Las excepciones son a propósito: `/validar` no lleva `CTABand` porque la página entera **es**
 la llamada a la acción, y `/legal`, `/privacidad` y la 404 no llevan ni hero ni banda.
 
 ### Cómo suena el copy
@@ -403,7 +404,7 @@ Lighthouse en móvil, sobre el build de producción:
 |---|---|---|---|---|
 | `/` (con el diagrama y las pestañas) | 100 | 100 | 100 | 100 |
 | `/que-puedes-automatizar/citas-y-recordatorios` | 100 | 100 | 100 | 100 |
-| `/diagnostico` | 100 | 100 | 100 | 100 |
+| `/validar` | 100 | 100 | 100 | 100 |
 | `/nosotros` | — | 100 | — | 100 |
 
 Accesibilidad medida además en `/que-puedes-automatizar`, `/como-trabajamos`, `/casos`,
@@ -412,7 +413,7 @@ auditorías fallidas.
 
 Además, verificado a mano: un solo `<h1>` por página, títulos y descripciones únicos, cero
 enlaces internos rotos, jerarquía de encabezados sin saltos, cero palabras de la lista de jerga
-prohibida, cero emojis, cero montos fuera de `/precios` y cero referencias geográficas. Los 26 pares
+prohibida, cero emojis y cero montos en ninguna página. Los pares
 de color de la paleta oscura cumplen WCAG AA. El menú de celular se abre,
 se cierra con Escape y expone `aria-expanded`; el formulario valida en español sin recargar.
 

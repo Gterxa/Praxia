@@ -52,8 +52,79 @@
      este tono llega a 4.68:1 sobre ella y a 7.38:1 sobre la del cliente. */
   --color-chat-meta: #a8b4c8;
 
-  /* --- Forma. Radio chico: el radio grande se lee blando, no técnico. --- */
+  /* --- Rampa "atardecer" — identidad nueva (sep 2026), muestreada de la foto
+     de marca (cielo azul noche → violeta → magenta → coral → brasa → sol).
+     Uso: orbes de fondo, nudo 3D del hero, degradados de texto y de la línea
+     de progreso. Nunca como fondo de botón primario (ese sigue siendo
+     --color-brasa sólido: el checklist anti-IA marca el azul-morado suelto
+     como señal de vibecoding, así que la rampa siempre corre hasta el sol). */
+  --color-noche: #1a2c88;
+  --color-noche-profundo: #061b66;
+  --color-violeta: #4a2178;
+  --color-magenta: #bd356c;
+  --color-coral: #fa5e45;
+  --color-sol: #fdcd39;
+
+  --degradado-atardecer: linear-gradient(
+    90deg,
+    var(--color-noche) 0%,
+    var(--color-violeta) 22%,
+    var(--color-magenta) 45%,
+    var(--color-coral) 65%,
+    var(--color-brasa) 80%,
+    var(--color-sol) 100%
+  );
+  /* Solo la mitad cálida: para texto en degradado y la línea de progreso. */
+  --degradado-calido: linear-gradient(
+    90deg,
+    var(--color-magenta) 0%,
+    var(--color-coral) 35%,
+    var(--color-brasa) 60%,
+    var(--color-sol) 100%
+  );
+  /* El punto del logo y el favicon: una esfera con la rampa completa. */
+  --degradado-punto: radial-gradient(
+    circle at 35% 30%,
+    var(--color-sol),
+    var(--color-coral) 30%,
+    var(--color-magenta) 60%,
+    var(--color-violeta) 100%
+  );
+
+  /* --- Movimiento. Los dos únicos easings del sitio (de la réplica de
+     cosmoq): --ease-suave para opacidad/color, --ease-resorte para
+     transform. Nunca mezclar un tercero. --- */
+  --ease-suave: cubic-bezier(0.44, 0, 0.56, 1);
+  --ease-resorte: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* --- Forma. Radio chico: el radio grande se lee blando, no técnico.
+     --radius-tarjeta y --radius-pill son de la identidad "Praxia v2"
+     (tarjetas grandes y pills de nav/chips/botones); --radius-praxia sigue
+     para paneles internos e inputs. --- */
   --radius-praxia: 0.5rem;
+  --radius-tarjeta: 1.5rem;
+  --radius-pill: 999px;
+
+  /* --- Alto del hero. Un solo valor, consumido por HeroHome.astro y por el
+     banco de pruebas (pruebas/hero.astro), para que no vuelvan a divergir.
+
+     Es un PISO (min-height), no una altura fija: en las composiciones donde
+     el texto es más alto (p. ej. "sangre" con tipografía enorme) la sección
+     crece sola para no recortar nada; acá solo se fija cuánto mide cuando el
+     contenido es corto y no hay nada que lo obligue a estirarse.
+
+     Antes esto era min-height:100svh + justify-content:center, y el error
+     estaba ahí: con un piso igual al viewport completo, cualquier contenido
+     más corto que la pantalla deja un sobrante que centrar solo reparte
+     (mitad arriba, mitad abajo), y en pantallas altas ese sobrante es
+     enorme — 250px o más de cada lado, solo fondo, nada de contenido. El
+     fondo (los shaders de fondos-hero.ts) sí debe ocupar toda la sección
+     igual: sigue siendo `inset:0` sobre este contenedor. Lo que cambia es
+     que el contenedor ya no se infla a fuerza a llenar el monitor: clamp()
+     lo ata a una franja razonable (82vh) con piso y techo, así el sobrante
+     alrededor del texto es chico en cualquier pantalla, sin dejar de ser un
+     fondo grande e inmersivo. */
+  --hero-alto: clamp(34rem, 82vh, 46rem);
 
   /* --- Medida de línea --- */
   --container-medida: 38rem;

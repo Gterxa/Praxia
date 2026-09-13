@@ -8,7 +8,8 @@ interface Props {
 const { fondo = 'void', id, class: clase = '' } = Astro.props;
 
 const fondos = {
-  void: 'bg-void',
+  // Transparente a propósito: deja ver el fondo global de orbes (FondoOrbes).
+  void: '',
   surface: 'bg-surface border-y border-linea',
   acento: 'bg-surface',
 } as const;

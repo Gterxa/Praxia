@@ -12,7 +12,7 @@ import CapabilityCard from '../../components/CapabilityCard.astro';
 import CTABand from '../../components/CTABand.astro';
 import CTAInline from '../../components/CTAInline.astro';
 import Widget from '../../components/Widget.astro';
-import { CONTEXTO, CHIPS_CONFIANZA } from '../../consts';
+import { CONTEXTO } from '../../consts';
 
 const widgets = {
   conversacion: 'chat',
@@ -46,7 +46,6 @@ const mensaje = CONTEXTO.capacidad(d.nombreCorto);
     antetitulo={d.nombreCorto}
     titulo={d.titulo}
     subtitulo={d.subtitulo}
-    chips={CHIPS_CONFIANZA}
     contextoWhatsApp={mensaje}
   >
     <figure slot="visual" class="w-full max-w-sm rounded-praxia border border-linea bg-surface p-5 lg:w-[24rem]">

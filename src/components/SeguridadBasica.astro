@@ -1,0 +1,81 @@
+---
+import Seccion from './Seccion.astro';
+import SectionLabel from './SectionLabel.astro';
+import Icon from './Icon.astro';
+
+const CHECKLIST = [
+  { item: 'Certificado HTTPS', estado: 'OK' },
+  { item: 'Panel admin expuesto', estado: 'CORREGIDO' },
+  { item: 'Plugins sin actualizar', estado: '3 → 0' },
+  { item: 'Respaldos automáticos', estado: 'DIARIO' },
+  { item: 'Contraseñas por defecto', estado: 'NINGUNA' },
+] as const;
+---
+
+<Seccion id="seguridad-basica" fondo="surface">
+  <div class="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
+    <div>
+      <SectionLabel texto="Seguridad básica incluida" />
+      <h2 class="mt-3 revelar" data-retraso="1">Cerramos las puertas obvias antes de que alguien pruebe</h2>
+      <p class="lead mt-5 text-texto-2 revelar" data-retraso="2">
+        Todo lo que construimos pasa por una revisión de seguridad básica: pentesting de lo
+        esencial, accesos, respaldos y actualizaciones.
+      </p>
+      <ul class="mt-6 flex flex-wrap gap-2">
+        <li class="chip-mono">Pentesting básico</li>
+        <li class="chip-mono">Hardening</li>
+        <li class="chip-mono">Respaldos</li>
+        <li class="chip-mono">Accesos y contraseñas</li>
+      </ul>
+    </div>
+
+    <div class="tarjeta panel-revision">
+      <div class="mb-4 flex items-center justify-between">
+        <span class="mono text-texto-3">Revisión · tu-negocio.pe</span>
+        <Icon nombre="escudo" tamano={18} class="text-brasa" />
+      </div>
+      <div class="barrido" aria-hidden="true"></div>
+      <ul class="space-y-3">
+        {
+          CHECKLIST.map((c) => (
+            <li class="flex items-center justify-between border-t border-linea pt-3 first:border-t-0 first:pt-0">
+              <span class="text-[0.9375rem] text-texto">{c.item}</span>
+              <span class="mono text-[0.75rem] text-verde">{c.estado}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</Seccion>
+
+<style>
+  .panel-revision {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .barrido {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-cian), transparent);
+    animation: barrer 3.5s linear infinite;
+  }
+
+  @keyframes barrer {
+    from {
+      top: 0;
+    }
+    to {
+      top: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .barrido {
+      animation: none;
+      opacity: 0.4;
+    }
+  }
+</style>

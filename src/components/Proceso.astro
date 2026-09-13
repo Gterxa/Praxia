@@ -1,0 +1,127 @@
+---
+/**
+ * Los 4 pasos del método, en tarjetas sticky que se van apilando mientras
+ * avanza el scroll, con una línea de progreso en degradado cálido a la
+ * izquierda (patrón "steps" de la réplica de cosmoq, adaptado a vertical).
+ * En celular (`< 64rem`) es una lista simple: el sticky no aporta nada en
+ * una pantalla que ya ocupa toda la tarjeta.
+ */
+import Seccion from './Seccion.astro';
+import SectionLabel from './SectionLabel.astro';
+import { METODO } from '../consts';
+---
+
+<Seccion id="proceso">
+  <SectionLabel texto="Cómo trabajamos" />
+  <h2 class="mt-3 max-w-xl revelar" data-retraso="1">Cuatro pasos, sin sorpresas</h2>
+  <p class="lead mt-5 max-w-xl text-texto-2 revelar" data-retraso="2">
+    De la primera conversación a un sistema andando.
+  </p>
+
+  <div class="proceso mt-10" id="proceso-content">
+    <div class="proceso-riel" aria-hidden="true">
+      <div class="proceso-riel-relleno" id="proceso-relleno"></div>
+    </div>
+
+    <ol class="proceso-lista">
+      {
+        METODO.map((paso) => (
+          <li class="proceso-paso">
+            <div class="tarjeta proceso-tarjeta">
+              <span class="mono text-brasa">{String(paso.numero).padStart(2, '0')}</span>
+              <h3 class="mt-2 text-[1.1875rem] font-semibold text-texto md:text-[1.375rem]">{paso.titulo}</h3>
+              <p class="mt-2.5 text-texto-2">{paso.detalle}</p>
+              <dl class="mt-5 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-linea pt-4">
+                {paso.panel.map((d) => (
+                  <div>
+                    <dt class="pequeno text-texto-3">{d.clave}</dt>
+                    <dd class="text-[0.9375rem] font-medium text-texto">{d.valor}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</Seccion>
+
+<style>
+  .proceso {
+    position: relative;
+  }
+
+  .proceso-lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .proceso-riel {
+    display: none;
+  }
+
+  @media (min-width: 64rem) {
+    .proceso {
+      padding-left: 2.5rem;
+    }
+
+    .proceso-riel {
+      display: block;
+      position: absolute;
+      left: 0.4375rem;
+      top: 0;
+      bottom: 7.5rem;
+      width: 2px;
+      background: var(--color-linea);
+      overflow: hidden;
+    }
+
+    .proceso-riel-relleno {
+      width: 100%;
+      height: 100%;
+      background: var(--degradado-calido);
+      transform: scaleY(0);
+      transform-origin: top;
+      /* Sin transición: sigue al scroll cuadro a cuadro (igual que el beam
+         de la réplica de cosmoq), así no se atrasa respecto al dedo/rueda. */
+    }
+
+    .proceso-paso {
+      position: sticky;
+      top: 6.5rem;
+    }
+
+    .proceso-tarjeta {
+      min-height: 15rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .proceso-riel-relleno {
+      transform: scaleY(1);
+    }
+  }
+</style>
+
+<script>
+  const contenedor = document.getElementById('proceso-content');
+  const relleno = document.getElementById('proceso-relleno');
+  const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (contenedor && relleno && !reducido) {
+    const actualizar = () => {
+      const r = contenedor.getBoundingClientRect();
+      const total = r.height - window.innerHeight * 0.5;
+      const p = Math.min(1, Math.max(0, -r.top / Math.max(1, total)));
+      relleno.style.transform = `scaleY(${p})`;
+    };
+    actualizar();
+    window.addEventListener('scroll', actualizar, { passive: true });
+    window.addEventListener('resize', actualizar);
+  }
+</script>

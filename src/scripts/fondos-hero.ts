@@ -1,5 +1,5 @@
 /**
- * Los fondos animados del hero. Nueve variantes que comparten paleta y se
+ * Los fondos animados del hero. Diez variantes que comparten paleta y se
  * pueden cambiar en caliente desde /pruebas/hero.
  *
  * REGLA DE COLOR (indicación de marca, 12 sep 2026): los protagonistas son
@@ -28,12 +28,14 @@ export type Fondo =
   | 'vortice'
   | 'trama'
   | 'malla'
-  | 'tunel';
+  | 'tunel'
+  | 'cortina';
 
 /**
  * Los otros dos fondos no son shaders de este archivo y por eso no están en
  * Fondo: 'flujo' lo pinta fondo-flujo.ts en canvas 2D, y 'anillos' lo pinta
- * fondo-anillos.ts con three.js, cada uno en su propio lienzo.
+ * fondo-anillos.ts con three.js, cada uno en su propio lienzo. 'olas' tampoco
+ * está acá por la misma razón: la pinta fondo-olas.ts, también en canvas 2D.
  */
 
 const VERTICE = `attribute vec2 a;void main(){gl_Position=vec4(a,0.0,1.0);}`;
@@ -569,6 +571,151 @@ void main() {
   gl_FragColor = vec4(acabado(color), 1.0);
 }`;
 
+/**
+ * J. CORTINA. Una cortina de luz que ondula despacio, con el cursor
+ * apartándola a su paso. Es el shader "Aurora" que trajo Tony (WebGL crudo,
+ * generado con el Shader Builder de 21st.dev, con su propio sistema de
+ * uniforms empaquetados y su propia paleta de 5 colores).
+ *
+ * Lo que se queda: la técnica (dos capas de FBM, una deformando a la otra,
+ * igual que el "shade()" del original) y la mezcla de color en OKLab, que
+ * Tony pidió explícitamente porque da transiciones más limpias que un mix
+ * lineal en sRGB.
+ *
+ * Lo que cambia:
+ *   - Nada de u_colors[8] ni del bloque u_scene/u_shape/u_surface/u_finish/
+ *     u_transform/u_space/u_cursor empaquetado: corre sobre los mismos siete
+ *     uniforms de marca que las otras nueve variantes, así sigue habiendo un
+ *     solo bootstrap de WebGL en este archivo, no dos.
+ *   - La paleta pegada (morado como ancla baja) se reemplaza por azul
+ *     profundo como ancla baja y violeta solo de bisagra hacia el coral y el
+ *     sol, por la regla de color de marca de arriba — el morado del original
+ *     ahí era protagonista, y acá nunca puede serlo.
+ *   - Cursor: solo el modo "repel" que pidió (los otros tres del original —
+ *     swirl, ripple, glow — no se pidieron y no se portan). La posición del
+ *     cursor la entrega el mando (ver u_cursor más abajo en montarFondo, que
+ *     es genérico: cualquier variante puede leerlo, esta es la única que lo
+ *     usa por ahora).
+ *   - Se cae el pipeline genérico de contraste/brillo/saturación/hue/viñeta:
+ *     ninguna de las otras nueve variantes lo tiene, todas ajustan el look a
+ *     mano en la mezcla de color, y esta hace lo mismo.
+ */
+const CORTINA = `${COMUN.replace('mediump', 'highp')}
+uniform vec2 u_cursor;
+
+float hashCortina(vec2 p) {
+  p = fract(p * vec2(234.34, 435.345));
+  p += dot(p, p + 34.23);
+  return fract(p.x * p.y);
+}
+
+float valorCortina(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(
+    mix(hashCortina(i), hashCortina(i + vec2(1.0, 0.0)), u.x),
+    mix(hashCortina(i + vec2(0.0, 1.0)), hashCortina(i + vec2(1.0, 1.0)), u.x),
+    u.y);
+}
+
+float fbmCortina(vec2 p) {
+  float v = 0.0;
+  float a = 0.5;
+  for (int i = 0; i < 5; i++) {
+    v += a * valorCortina(p);
+    p = p * 2.03 + vec2(17.0, 9.2);
+    a *= 0.5;
+  }
+  return v;
+}
+
+/** OKLab: mismas matrices que Björn Ottosson publicó, mezcla perceptual. */
+vec3 aLineal(vec3 c) {
+  return mix(c / 12.92, pow((c + 0.055) / 1.055, vec3(2.4)), step(0.04045, c));
+}
+vec3 aSrgb(vec3 c) {
+  return mix(c * 12.92, 1.055 * pow(max(c, vec3(0.0)), vec3(1.0 / 2.4)) - 0.055, step(0.0031308, c));
+}
+vec3 aOklab(vec3 c) {
+  float l = 0.4122214708 * c.r + 0.5363325363 * c.g + 0.0514459929 * c.b;
+  float m = 0.2119034982 * c.r + 0.6806995451 * c.g + 0.1073969566 * c.b;
+  float s = 0.0883024619 * c.r + 0.2817188376 * c.g + 0.6299787005 * c.b;
+  l = pow(max(l, 0.0), 1.0 / 3.0);
+  m = pow(max(m, 0.0), 1.0 / 3.0);
+  s = pow(max(s, 0.0), 1.0 / 3.0);
+  return vec3(
+    0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s,
+    1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s,
+    0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s);
+}
+vec3 deOklab(vec3 c) {
+  float l = c.x + 0.3963377774 * c.y + 0.2158037573 * c.z;
+  float m = c.x - 0.1055613458 * c.y - 0.0638541728 * c.z;
+  float s = c.x - 0.0894841775 * c.y - 1.2914855480 * c.z;
+  l = l * l * l; m = m * m * m; s = s * s * s;
+  return vec3(
+    4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+    -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+    -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s);
+}
+vec3 mezclarOklab(vec3 a, vec3 b, float t) {
+  vec3 la = aOklab(aLineal(a));
+  vec3 lb = aOklab(aLineal(b));
+  return clamp(aSrgb(deOklab(mix(la, lb, t))), 0.0, 1.0);
+}
+
+/** Rampa de marca en OKLab: profundo -> noche -> violeta de bisagra -> coral
+    -> sol -> un remate casi blanco en la cresta, la única transición donde el
+    original de verdad necesitaba un quinto color. */
+vec3 rampaCortina(float t) {
+  t = clamp(t, 0.0, 1.0);
+  vec3 c = mezclarOklab(u_profundo, u_noche, smoothstep(0.0, 0.40, t));
+  c = mezclarOklab(c, u_violeta, smoothstep(0.35, 0.55, t) * (1.0 - smoothstep(0.55, 0.70, t)));
+  c = mezclarOklab(c, u_coral, smoothstep(0.55, 0.80, t));
+  c = mezclarOklab(c, u_sol, smoothstep(0.80, 0.95, t));
+  c = mezclarOklab(c, vec3(1.0), smoothstep(0.95, 1.0, t) * 0.5);
+  return c;
+}
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / u_res;
+  float asp = u_res.x / max(u_res.y, 1.0);
+  // s: mismo espacio que el resto del archivo (x en 0..asp, y en 0..1 de
+  // arriba a abajo), así u_cursor —que llega en este mismo espacio— se resta
+  // directo sin reconvertir nada acá.
+  vec2 s = vec2(uv.x * asp, 1.0 - uv.y);
+  vec2 centro = vec2(asp * 0.5, 0.55);
+  vec2 p = s - centro;
+
+  // Cursor: repele. El radio y la fuerza que pidió Tony (23/100 y 32/100) no
+  // se pueden calcar tal cual: acá alimentan dos FBM anidados donde el
+  // segundo lee "cortina*3.4" como coordenada, así que hasta un empuje chico
+  // en p reacomoda ese muestreo mucho más de lo que un desplazamiento visual
+  // equivalente movería una textura común — de ahí que ambos números salgan
+  // bastante más chicos que 0.23/0.32 para leerse como el mismo repel suave,
+  // no como un cambio de escena. u_cursor en (-1,-1) significa "todavía no
+  // se movió": queda fuera de cualquier radio razonable y no hace nada.
+  vec2 pCursor = u_cursor - centro;
+  vec2 dCursor = p - pCursor;
+  float distCursor = length(dCursor);
+  float radioCursor = 0.23 * 0.55;
+  float masa = 1.0 - smoothstep(0.0, radioCursor, distCursor);
+  p -= (dCursor / max(distCursor, 0.0001)) * masa * 0.32 * 0.045;
+
+  float cortina = fbmCortina(vec2(p.x * 1.6 + u_t * 0.05, p.y * 0.7 - u_t * 0.018));
+  float banda = fbmCortina(vec2(p.x * 2.6 - u_t * 0.035, cortina * 3.4));
+  float brillo = smoothstep(0.18, 0.85, banda) * (1.0 - abs(p.y) * 0.6);
+
+  vec3 col = rampaCortina(clamp(brillo, 0.0, 1.0));
+
+  // Grano: 12/100 pedido, más fuerte que el dither de acabado() porque acá es
+  // una textura a propósito, no solo anti-banding.
+  col += (hashCortina(gl_FragCoord.xy + u_t * 13.0) - 0.5) * 0.06;
+
+  gl_FragColor = vec4(acabado(col), 1.0);
+}`;
+
 const FRAGMENTOS: Record<Fondo, string> = {
   esfera: ESFERA,
   aurora: AURORA,
@@ -579,6 +726,7 @@ const FRAGMENTOS: Record<Fondo, string> = {
   trama: TRAMA,
   malla: MALLA,
   tunel: TUNEL,
+  cortina: CORTINA,
 };
 
 /** Los mismos valores que tokens.css, por si las variables no están listas. */
@@ -682,6 +830,25 @@ export function montarFondo(
   let programa: WebGLProgram | null = null;
   let uRes: WebGLUniformLocation | null = null;
   let uT: WebGLUniformLocation | null = null;
+  let uCursor: WebGLUniformLocation | null = null;
+
+  /**
+   * Posición del cursor en el mismo espacio que usan los shaders (x en
+   * 0..aspecto, y en 0..1 de arriba a abajo). (-1,-1) de arranque queda fuera
+   * de cualquier lienzo real: mientras el cursor no se mueva, ninguna
+   * variante que lo lea ve efecto. Es genérico — cualquier fondo puede
+   * declarar `uniform vec2 u_cursor;` y leerlo; hoy solo CORTINA lo hace, y
+   * `gl.uniform2f` con una location que un shader no declaró no hace nada.
+   */
+  const puntero = { x: -1, y: -1, sx: -1, sy: -1 };
+  function alMoverPuntero(e: PointerEvent) {
+    const caja = canvas.getBoundingClientRect();
+    if (!caja.width || !caja.height) return;
+    const asp = caja.width / caja.height;
+    puntero.x = ((e.clientX - caja.left) / caja.width) * asp;
+    puntero.y = (e.clientY - caja.top) / caja.height;
+  }
+  window.addEventListener('pointermove', alMoverPuntero);
 
   /** Compila y deja activo el programa de una variante. */
   function usar(fondo: Fondo): boolean {
@@ -706,6 +873,7 @@ export function montarFondo(
     const u = (n: string) => gl!.getUniformLocation(p, n);
     uRes = u('u_res');
     uT = u('u_t');
+    uCursor = u('u_cursor');
     gl!.uniform3fv(u('u_noche'), hexAVec3(colores.noche, RESPALDO.noche));
     gl!.uniform3fv(u('u_profundo'), hexAVec3(colores.nocheProfundo, RESPALDO.nocheProfundo));
     gl!.uniform3fv(u('u_violeta'), hexAVec3(colores.violeta, RESPALDO.violeta));
@@ -741,6 +909,13 @@ export function montarFondo(
 
   function pintar(ahora: number) {
     if (uT) gl!.uniform1f(uT, (ahora - inicio) / 1000);
+    if (uCursor) {
+      // Suavizado: un salto brusco de mouse no debe teletransportar el
+      // efecto, tiene que "llegar" — mismo criterio que fondo-olas.ts.
+      puntero.sx += (puntero.x - puntero.sx) * 0.12;
+      puntero.sy += (puntero.y - puntero.sy) * 0.12;
+      gl!.uniform2f(uCursor, puntero.sx, puntero.sy);
+    }
     gl!.drawArrays(gl!.TRIANGLES, 0, 3);
   }
 
@@ -803,6 +978,7 @@ export function montarFondo(
       cancelAnimationFrame(raf);
       resize.disconnect();
       io.disconnect();
+      window.removeEventListener('pointermove', alMoverPuntero);
       if (programa) gl.deleteProgram(programa);
       gl.deleteBuffer(buffer);
     },

@@ -7,82 +7,72 @@ const ruta = Astro.url.pathname.replace(/\/$/, '') || '/';
 const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
 ---
 
-<header class="sticky top-0 z-40 border-b border-linea bg-void">
-  <div class="contenedor flex h-16 items-center justify-between gap-4 md:h-20">
-    <a href="/" class="rounded-sm" aria-label="Praxia, ir al inicio">
-      <Logo />
-    </a>
+<header class="sticky top-0 z-40 px-4 pt-4 pointer-events-none md:px-6 md:pt-[18px]">
+  <div class="contenedor max-w-[68rem]! px-0!">
+    <div class="vidrio pointer-events-auto relative flex h-14 items-center justify-between gap-4 rounded-pill px-3 pr-2 md:h-16 md:px-5 md:pr-3">
+      <a href="/" class="rounded-sm py-1 pl-1" aria-label="Praxia, ir al inicio">
+        <Logo />
+      </a>
 
-    <nav class="hidden items-center gap-7 lg:flex" aria-label="Principal">
-      {
-        NAV_PRINCIPAL.map((item) => (
-          <a
-            href={item.href}
-            class:list={[
-              'nav-enlace pequeno font-medium transition-colors hover:text-brasa',
-              esActiva(item.href) ? 'text-brasa' : 'text-texto',
-            ]}
-            aria-current={esActiva(item.href) ? 'page' : undefined}
-          >
-            {item.texto}
-          </a>
-        ))
-      }
-      <a
-        href="/precios"
-        class="boton boton-secundario boton-compacto hidden xl:inline-flex"
-        aria-current={esActiva('/precios') ? 'page' : undefined}
+      <nav class="hidden items-center gap-6 lg:flex" aria-label="Principal">
+        {
+          NAV_PRINCIPAL.map((item) => (
+            <a
+              href={item.href}
+              class:list={[
+                'nav-enlace pequeno font-medium transition-colors hover:text-brasa',
+                esActiva(item.href) ? 'text-brasa' : 'text-texto',
+              ]}
+              aria-current={esActiva(item.href) ? 'page' : undefined}
+            >
+              {item.texto}
+            </a>
+          ))
+        }
+      </nav>
+
+      <a href="/validar" class="boton boton-primario boton-compacto hidden lg:inline-flex">
+        Validar mi idea
+      </a>
+
+      <button
+        type="button"
+        id="boton-menu"
+        class="-mr-1 inline-flex min-h-11 min-w-11 items-center justify-center rounded-pill p-2 text-texto lg:hidden"
+        aria-expanded="false"
+        aria-controls="menu-movil"
       >
-        Ver precios
-      </a>
-      <a href="/diagnostico" class="boton boton-primario boton-compacto">
-        Agenda tu diagnóstico
-      </a>
-    </nav>
+        <span class="sr-only">Abrir menú</span>
+        <Icon nombre="menu" tamano={24} class="[[aria-expanded=true]_&]:hidden" />
+        <Icon nombre="cerrar" tamano={24} class="hidden [[aria-expanded=true]_&]:block" />
+      </button>
 
-    <button
-      type="button"
-      id="boton-menu"
-      class="-mr-2 inline-flex min-h-11 min-w-11 items-center justify-center rounded-praxia p-2 text-texto lg:hidden"
-      aria-expanded="false"
-      aria-controls="menu-movil"
-    >
-      <span class="sr-only">Abrir menú</span>
-      <Icon nombre="menu" tamano={26} class="[[aria-expanded=true]_&]:hidden" />
-      <Icon nombre="cerrar" tamano={26} class="hidden [[aria-expanded=true]_&]:block" />
-    </button>
-  </div>
+      <!-- Veta de luz sobre el borde del pill, con un tramo transparente
+           donde no debe brillar (truco de la réplica de cosmoq). -->
+      <div class="borde-luz" aria-hidden="true"></div>
+    </div>
 
-  <div id="menu-movil" class="hidden border-t border-linea bg-void lg:hidden">
-    <nav class="contenedor flex flex-col py-3" aria-label="Principal, celular">
-      {
-        NAV_PRINCIPAL.map((item) => (
-          <a
-            href={item.href}
-            class:list={[
-              'border-b border-linea py-3.5 font-medium',
-              esActiva(item.href) ? 'text-brasa' : 'text-texto',
-            ]}
-            aria-current={esActiva(item.href) ? 'page' : undefined}
-          >
-            {item.texto}
-          </a>
-        ))
-      }
-      <a
-        href="/precios"
-        class:list={[
-          'border-b border-linea py-3.5 font-medium',
-          esActiva('/precios') ? 'text-brasa' : 'text-texto',
-        ]}
-        aria-current={esActiva('/precios') ? 'page' : undefined}
-      >
-        Precios
-      </a>
-      <a href="/diagnostico" class="boton boton-primario mt-4 mb-2 w-full">
-        Agenda tu diagnóstico
-      </a>
-    </nav>
+    <div id="menu-movil" class="vidrio pointer-events-auto mt-2 hidden rounded-[1.5rem] p-2 lg:hidden">
+      <nav class="flex flex-col" aria-label="Principal, celular">
+        {
+          NAV_PRINCIPAL.map((item) => (
+            <a
+              href={item.href}
+              class:list={[
+                'rounded-praxia px-4 py-3.5 font-medium',
+                esActiva(item.href) ? 'text-brasa' : 'text-texto',
+              ]}
+              aria-current={esActiva(item.href) ? 'page' : undefined}
+            >
+              {item.texto}
+            </a>
+          ))
+        }
+        <a href="/validar" class="boton boton-primario mx-2 mt-2 mb-1">
+          Validar mi idea
+        </a>
+      </nav>
+    </div>
   </div>
 </header>
 
@@ -103,12 +93,25 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
     background-color: var(--color-brasa);
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform 150ms ease;
+    transition: transform 400ms var(--ease-resorte);
   }
 
   .nav-enlace:hover::after,
   .nav-enlace[aria-current='page']::after {
     transform: scaleX(1);
+  }
+
+  /* Veta de luz sobre el borde del pill: un borde blanco enmascarado que deja
+     un tramo transparente en el medio, no un `border` sólido. */
+  .borde-luz {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid #fff;
+    pointer-events: none;
+    mask-image: linear-gradient(160deg, #000 0%, transparent 39%, transparent 69%, #000 100%);
+    -webkit-mask-image: linear-gradient(160deg, #000 0%, transparent 39%, transparent 69%, #000 100%);
+    opacity: 0.5;
   }
 </style>
 

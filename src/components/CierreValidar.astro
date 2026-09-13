@@ -1,0 +1,61 @@
+---
+/**
+ * Cierre de la home: la llamada a validar, con lo que se lleva el visitante.
+ * El wizard completo de 4 pasos vive en /validar (evita duplicar un
+ * formulario con estado en dos lugares de la misma página).
+ */
+import Icon from './Icon.astro';
+import Seccion from './Seccion.astro';
+import SectionLabel from './SectionLabel.astro';
+import { waLink, CONTEXTO } from '../consts';
+
+const PROMESAS = [
+  'Precio y plazo estimados',
+  'Viabilidad honesta: sí, no o aún no',
+  'Diagrama del flujo que propondríamos',
+  'Qué automatizar primero',
+] as const;
+---
+
+<Seccion id="validar" fondo="acento">
+  <div class="tarjeta panel-cierre mx-auto max-w-3xl text-center">
+    <SectionLabel texto="Validemos tu idea" class="justify-center" />
+    <h2 class="mt-4 revelar" data-retraso="1">Cuéntanos qué quieres automatizar.</h2>
+    <p class="lead mt-4 text-texto-2 revelar" data-retraso="2">
+      Cuatro pasos cortos. Te respondemos el mismo día con una hora para los 15 minutos.
+    </p>
+
+    <ul class="mt-7 grid gap-3 text-left sm:grid-cols-2">
+      {
+        PROMESAS.map((p) => (
+          <li class="flex items-start gap-2.5 text-[0.9375rem] text-texto">
+            <span class="mt-0.5 flex-none text-brasa">
+              <Icon nombre="flecha" tamano={16} />
+            </span>
+            {p}
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+      <a href="/validar" class="boton boton-primario">Validemos en 15 minutos</a>
+      <a href={waLink(CONTEXTO.cierre)} target="_blank" rel="noopener" class="boton boton-secundario">
+        <Icon nombre="whatsapp" tamano={20} />
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</Seccion>
+
+<style>
+  .panel-cierre {
+    padding: 2.5rem 1.5rem;
+  }
+
+  @media (min-width: 48rem) {
+    .panel-cierre {
+      padding: 3.5rem;
+    }
+  }
+</style>

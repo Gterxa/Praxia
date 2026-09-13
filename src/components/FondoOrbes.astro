@@ -1,0 +1,101 @@
+---
+/**
+ * Fondo global fijo: tres orbes de la rampa "atardecer" con deriva lenta,
+ * más la grilla de puntos técnica. Vive detrás de todo (`z-index: 0`),
+ * `Layout.astro` lo monta una sola vez y cada `<section>` que quiera dejarlo
+ * ver de fondo usa un fondo transparente en vez de `bg-void` sólido.
+ *
+ * Puramente decorativo (`aria-hidden`) y se detiene con
+ * `prefers-reduced-motion` — sigue visible, solo no deriva.
+ */
+---
+
+<div class="fondo-orbes" aria-hidden="true">
+  <div class="orbe orbe-1"></div>
+  <div class="orbe orbe-2"></div>
+  <div class="orbe orbe-3"></div>
+  <div class="grilla"></div>
+</div>
+
+<style>
+  .fondo-orbes {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .orbe {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+  }
+
+  /* Extremo frío de la rampa, arriba a la izquierda. */
+  .orbe-1 {
+    top: -18%;
+    left: -8%;
+    width: 46rem;
+    height: 34rem;
+    background: radial-gradient(circle, rgb(26 44 136 / 0.38), rgb(26 44 136 / 0) 68%);
+    animation: deriva-1 20s ease-in-out infinite;
+  }
+
+  /* Violeta/magenta, a media altura. */
+  .orbe-2 {
+    top: 32%;
+    left: -16%;
+    width: 38rem;
+    height: 38rem;
+    background: radial-gradient(circle, rgb(74 33 120 / 0.34), rgb(74 33 120 / 0) 68%);
+    animation: deriva-2 24s ease-in-out infinite;
+  }
+
+  /* Coral/sol, abajo a la derecha: el remate cálido. */
+  .orbe-3 {
+    bottom: -20%;
+    right: -14%;
+    width: 42rem;
+    height: 42rem;
+    background: radial-gradient(circle, rgb(250 94 69 / 0.3), rgb(250 94 69 / 0) 68%);
+    animation: deriva-1 28s ease-in-out infinite reverse;
+  }
+
+  .grilla {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgb(232 236 244 / 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(232 236 244 / 0.035) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 30%, transparent 100%);
+  }
+
+  @keyframes deriva-1 {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(2.5rem, -1.75rem) scale(1.1);
+    }
+  }
+
+  @keyframes deriva-2 {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(-3rem, 2.5rem) scale(0.94);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .orbe {
+      animation: none;
+    }
+  }
+</style>

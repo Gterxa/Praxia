@@ -1,0 +1,111 @@
+---
+import ChatMockup from './ChatMockup.astro';
+import Seccion from './Seccion.astro';
+import SectionLabel from './SectionLabel.astro';
+import { INDUSTRIAS } from '../industrias';
+---
+
+<Seccion id="industrias" fondo="surface">
+  <SectionLabel texto="Industrias" />
+  <h2 class="mt-3 max-w-xl revelar" data-retraso="1">¿Y si no funciona en mi rubro?</h2>
+  <p class="lead mt-5 max-w-xl text-texto-2 revelar" data-retraso="2">
+    Once rubros donde ya sabemos qué automatizar primero. Elige el tuyo.
+  </p>
+
+  <div class="mt-10" data-industrias>
+    <div
+      class="chips-pista -mx-5 flex gap-2 overflow-x-auto px-5 pb-2 md:mx-0 md:flex-wrap md:justify-center md:overflow-visible md:px-0"
+      role="tablist"
+      aria-label="Rubros de negocio"
+    >
+      {
+        INDUSTRIAS.map((r, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`rubro-tab-${r.id}`}
+            aria-controls={`rubro-panel-${r.id}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+            class="pestana-pill flex-none"
+          >
+            {r.nombre}
+          </button>
+        ))
+      }
+    </div>
+
+    {
+      INDUSTRIAS.map((r, i) => (
+        <div
+          role="tabpanel"
+          id={`rubro-panel-${r.id}`}
+          aria-labelledby={`rubro-tab-${r.id}`}
+          hidden={i !== 0}
+          class="panel-rubro mt-6 rounded-tarjeta border border-linea p-6 md:p-8"
+        >
+          <div class="grid gap-8 md:grid-cols-[1.1fr_1fr] md:items-start md:gap-12">
+            <div>
+              <h3 class="text-[1.1875rem] font-semibold text-texto md:text-[1.375rem]">{r.nombre}</h3>
+              <p class="mt-3 text-texto-2">{r.blurb}</p>
+              <p class="mono mt-6 text-texto-3">Lo primero que automatizaríamos</p>
+              <ol class="mt-3 space-y-2">
+                {r.lineas.map((linea, li) => (
+                  <li class="flex gap-3 text-[0.9375rem] text-texto">
+                    <span class="mono flex-none text-brasa">{String(li + 1).padStart(2, '0')}</span>
+                    {linea}
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <div>
+              <p class="mono mb-3 text-texto-3">Así se ve funcionando</p>
+              <ChatMockup negocio={r.nombre} mensajes={r.demo} class="max-w-none!" />
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</Seccion>
+
+<style>
+  .chips-pista::-webkit-scrollbar {
+    display: none;
+  }
+  .chips-pista {
+    scrollbar-width: none;
+  }
+
+  .panel-rubro {
+    background: linear-gradient(180deg, rgb(255 107 53 / 0.08), rgb(255 107 53 / 0.02));
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-industrias]').forEach((grupo) => {
+    const pestanas = Array.from(grupo.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const paneles = Array.from(grupo.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+
+    const activar = (indice: number, mover = true) => {
+      pestanas.forEach((pestana, i) => {
+        const activa = i === indice;
+        pestana.setAttribute('aria-selected', String(activa));
+        pestana.tabIndex = activa ? 0 : -1;
+        paneles[i]?.toggleAttribute('hidden', !activa);
+      });
+      if (mover) pestanas[indice]?.focus();
+      pestanas[indice]?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+    };
+
+    pestanas.forEach((pestana, i) => {
+      pestana.addEventListener('click', () => activar(i, false));
+      pestana.addEventListener('keydown', (evento) => {
+        const salto = evento.key === 'ArrowRight' ? 1 : evento.key === 'ArrowLeft' ? -1 : 0;
+        if (salto === 0) return;
+        evento.preventDefault();
+        activar((i + salto + pestanas.length) % pestanas.length);
+      });
+    });
+  });
+</script>

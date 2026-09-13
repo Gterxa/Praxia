@@ -1,57 +1,52 @@
 ---
-import { getCapacidades } from '../capacidades';
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { SITE, waLink, CONTEXTO, EMAIL, mailtoLink } from '../consts';
 
-const capacidades = await getCapacidades();
-
 const anio = new Date().getFullYear();
 ---
 
-<footer class="mt-auto border-t border-linea bg-surface">
+<footer class="relative overflow-hidden border-t border-linea bg-surface">
   <div class="contenedor py-14 md:py-16">
     <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      <div class="lg:col-span-1">
+        <Logo />
+        <p class="pequeno mt-4 max-w-[26ch] text-texto-2">{SITE.tagline}</p>
+      </div>
+
       <div>
         <h2 class="font-[family-name:var(--font-cuerpo)] text-[0.8125rem] font-semibold tracking-[0.09em] text-texto-2 uppercase">
-          Qué puedes automatizar
+          Servicios
         </h2>
         <ul class="mt-4 space-y-2.5">
-          {
-            capacidades.map((c) => (
-              <li>
-                <a
-                  href={`/que-puedes-automatizar/${c.id}`}
-                  class="pequeno text-texto-2 hover:text-brasa hover:underline"
-                >
-                  {c.data.nombreCorto}
-                </a>
-              </li>
-            ))
-          }
+          <li>
+            <a href="/que-puedes-automatizar" class="pequeno text-texto-2 hover:text-brasa hover:underline">
+              Automatización con IA
+            </a>
+          </li>
+          <li>
+            <a href="/servicios#web" class="pequeno text-texto-2 hover:text-brasa hover:underline">
+              Web, SEO y presencia local
+            </a>
+          </li>
+          <li>
+            <a href="/servicios#seguridad" class="pequeno text-texto-2 hover:text-brasa hover:underline">
+              Seguridad y mantenimiento
+            </a>
+          </li>
         </ul>
       </div>
 
       <div>
         <h2 class="font-[family-name:var(--font-cuerpo)] text-[0.8125rem] font-semibold tracking-[0.09em] text-texto-2 uppercase">
-          Empresa
+          Praxia
         </h2>
         <ul class="mt-4 space-y-2.5">
-          <li><a href="/nosotros" class="pequeno text-texto-2 hover:text-brasa hover:underline">Nosotros</a></li>
+          <li><a href="/#industrias" class="pequeno text-texto-2 hover:text-brasa hover:underline">Industrias</a></li>
           <li><a href="/como-trabajamos" class="pequeno text-texto-2 hover:text-brasa hover:underline">Cómo trabajamos</a></li>
-          <li><a href="/seguridad" class="pequeno text-texto-2 hover:text-brasa hover:underline">Seguridad</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h2 class="font-[family-name:var(--font-cuerpo)] text-[0.8125rem] font-semibold tracking-[0.09em] text-texto-2 uppercase">
-          Recursos
-        </h2>
-        <ul class="mt-4 space-y-2.5">
-          <li><a href="/precios" class="pequeno text-texto-2 hover:text-brasa hover:underline">Precios</a></li>
           <li><a href="/casos" class="pequeno text-texto-2 hover:text-brasa hover:underline">Casos</a></li>
+          <li><a href="/nosotros" class="pequeno text-texto-2 hover:text-brasa hover:underline">Nosotros</a></li>
           <li><a href="/preguntas-frecuentes" class="pequeno text-texto-2 hover:text-brasa hover:underline">Preguntas frecuentes</a></li>
-          <li><a href="/soluciones-mayores" class="pequeno text-texto-2 hover:text-brasa hover:underline">Soluciones mayores</a></li>
         </ul>
       </div>
 
@@ -80,20 +75,40 @@ const anio = new Date().getFullYear();
               {EMAIL}
             </a>
           </li>
-          <li><a href="/legal" class="pequeno text-texto-2 hover:text-brasa hover:underline">Términos legales</a></li>
-          <li><a href="/privacidad" class="pequeno text-texto-2 hover:text-brasa hover:underline">Privacidad</a></li>
         </ul>
       </div>
     </div>
 
     <div class="mt-12 flex flex-col gap-4 border-t border-linea pt-8 sm:flex-row sm:items-center sm:justify-between">
-      <div class="flex flex-col gap-1">
-        <Logo />
-        <p class="pequeno text-texto-2">{SITE.tagline}</p>
+      <p class="pequeno text-texto-2">{anio} {SITE.nombre} · Lima, Perú</p>
+      <div class="flex gap-5">
+        <a href="/legal" class="pequeno text-texto-2 hover:text-brasa hover:underline">Términos legales</a>
+        <a href="/privacidad" class="pequeno text-texto-2 hover:text-brasa hover:underline">Privacidad</a>
+        <a href="/seguridad" class="pequeno text-texto-2 hover:text-brasa hover:underline">Seguridad</a>
       </div>
-      <p class="pequeno text-texto-2">
-        {anio} {SITE.nombre}. Automatización con IA para negocios del Perú.
-      </p>
     </div>
   </div>
+
+  <!-- Wordmark fantasma en degradado cálido: puro remate decorativo. -->
+  <p class="wordmark-fantasma" aria-hidden="true">Praxia</p>
 </footer>
+
+<style>
+  .wordmark-fantasma {
+    margin: 0;
+    padding-inline: 1.25rem;
+    padding-bottom: 0.5rem;
+    text-align: center;
+    font-family: var(--font-titulos);
+    font-weight: 700;
+    line-height: 0.8;
+    font-size: clamp(4rem, 18vw, 11rem);
+    letter-spacing: -0.04em;
+    background: var(--degradado-calido);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    opacity: 0.14;
+    user-select: none;
+  }
+</style>

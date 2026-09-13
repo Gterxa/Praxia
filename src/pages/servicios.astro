@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Servicios from '../components/Servicios.astro';
+import { CONTEXTO } from '../consts';
+---
+
+<Layout
+  titulo="Servicios"
+  descripcion="Automatización con IA, web y SEO, y seguridad y mantenimiento. Un solo responsable, 2 a 4 semanas. El precio se da en la llamada de validación."
+  contextoWhatsApp={CONTEXTO.servicios('automatización con IA')}
+>
+  <Hero
+    antetitulo="Servicios"
+    titulo="El equipo técnico que tu negocio no tiene"
+    subtitulo="Automatización con IA, web y SEO, y seguridad y mantenimiento. Un solo responsable para los tres, sin coordinar cuatro proveedores."
+    compacto
+  />
+  <Servicios />
+</Layout>

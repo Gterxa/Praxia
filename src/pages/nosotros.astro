@@ -6,13 +6,13 @@ import Seccion from '../components/Seccion.astro';
 import FichaHero from '../components/FichaHero.astro';
 import CTABand from '../components/CTABand.astro';
 import Pendiente from '../components/Pendiente.astro';
-import { CONTEXTO, MOSTRAR_PENDIENTES, CHIPS_CONFIANZA } from '../consts';
+import { CONTEXTO, MOSTRAR_PENDIENTES } from '../consts';
 import equipo from '../assets/img/equipo-nosotros.png';
 ---
 
 <Layout
   titulo="Nosotros"
-  descripcion="Praxia existe para que la automatización con IA sea real y rentable para las pequeñas y medianas empresas del Perú."
+  descripcion="Un núcleo pequeño, especialistas según el proyecto. Hablas con quien construye, no con un ejecutivo de cuenta."
   contextoWhatsApp={CONTEXTO.nosotros}
 >
   <!--
@@ -23,7 +23,6 @@ import equipo from '../assets/img/equipo-nosotros.png';
     antetitulo="Nosotros"
     titulo="Praxia viene de praxis. Llevar la idea a la práctica."
     subtitulo="Es literalmente lo que hacemos: tomamos una idea de automatización que vive en la cabeza del dueño y la volvemos algo que funciona."
-    chips={CHIPS_CONFIANZA}
     contextoWhatsApp={CONTEXTO.nosotros}
     imagen={equipo}
     imagenAlt="Dos personas conversando en una oficina en Lima"
@@ -41,8 +40,9 @@ import equipo from '../assets/img/equipo-nosotros.png';
         trabajo de entender cómo funciona su negocio.
       </p>
       <p class="mt-4 text-texto-2">
-        Praxia existe para ese negocio. Nuestra misión es hacer que la automatización con IA sea
-        real y rentable para las pequeñas y medianas empresas del Perú.
+        Praxia existe para ese negocio. Hablas con quien construye, no con un ejecutivo de cuenta:
+        nadie te vende algo que no vamos a poder sostener. Somos un núcleo pequeño y traemos
+        especialistas según lo que tu proyecto necesite.
       </p>
 
       <SectionLabel numero="02" texto="Cómo somos" class="mt-14" />

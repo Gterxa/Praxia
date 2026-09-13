@@ -7,7 +7,7 @@ import CapabilityCard from '../../components/CapabilityCard.astro';
 import CTAInline from '../../components/CTAInline.astro';
 import Herramientas from '../../components/Herramientas.astro';
 import CTABand from '../../components/CTABand.astro';
-import { CONTEXTO, CHIPS_CONFIANZA } from '../../consts';
+import { CONTEXTO } from '../../consts';
 import capacidadesImg from '../../assets/img/capacidades.png';
 
 const capacidades = await getCapacidades();
@@ -22,7 +22,6 @@ const capacidades = await getCapacidades();
     antetitulo="Qué puedes automatizar"
     titulo="Esto es lo que la IA puede hacer por tu negocio hoy."
     subtitulo="Estas son las seis cosas que mejor funcionan hoy. Sirven para cualquier negocio que atienda gente, agende, cobre o archive."
-    chips={CHIPS_CONFIANZA}
     contextoWhatsApp={CONTEXTO.hub}
     imagen={capacidadesImg}
     imagenAlt="Seis nodos conectados entre sí, uno por cada capacidad"
@@ -48,7 +47,7 @@ const capacidades = await getCapacidades();
   </Seccion>
 
   <CTAInline
-    texto="¿No ves lo tuyo en la lista? Cuéntanoslo en el diagnóstico."
+    texto="¿No ves lo tuyo en la lista? Cuéntanoslo en la validación."
     contextoWhatsApp={CONTEXTO.hub}
   />
 

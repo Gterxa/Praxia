@@ -1,0 +1,111 @@
+---
+import Icon from './Icon.astro';
+import Seccion from './Seccion.astro';
+import SectionLabel from './SectionLabel.astro';
+import { SERVICIOS } from '../servicios';
+import { waLink, CONTEXTO } from '../consts';
+---
+
+<Seccion id="servicios">
+  <SectionLabel texto="El paquete" />
+  <h2 class="mt-3 max-w-xl revelar" data-retraso="1">Todo el lado técnico, en un solo lugar</h2>
+  <p class="lead mt-5 max-w-xl text-texto-2 revelar" data-retraso="2">
+    Tomas lo que necesitas. Lo dejamos funcionando junto.
+  </p>
+
+  <div class="mt-10" data-servicios>
+    <div class="mb-8 flex flex-wrap justify-center gap-2" role="tablist" aria-label="Servicios de Praxia">
+      {
+        SERVICIOS.map((s, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`servicio-tab-${s.id}`}
+            aria-controls={`servicio-panel-${s.id}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+            class="pestana-pill"
+          >
+            {s.etiqueta}
+          </button>
+        ))
+      }
+    </div>
+
+    {
+      SERVICIOS.map((s, i) => (
+        <div
+          role="tabpanel"
+          id={`servicio-panel-${s.id}`}
+          aria-labelledby={`servicio-tab-${s.id}`}
+          hidden={i !== 0}
+          class="tarjeta panel-servicio"
+        >
+          <div class="grid gap-8 md:grid-cols-[1.1fr_1fr] md:gap-12">
+            <div>
+              <h3 class="text-[1.375rem] font-semibold text-texto md:text-[1.625rem]">{s.titulo}</h3>
+              <p class="mt-3 text-texto-2">{s.blurb}</p>
+              <ul class="mt-5 flex flex-wrap gap-2">
+                {s.chips.map((c) => (
+                  <li class="chip-mono">{c}</li>
+                ))}
+              </ul>
+              <a
+                href={waLink(CONTEXTO.servicios(s.etiqueta))}
+                target="_blank"
+                rel="noopener"
+                class="boton boton-primario mt-6"
+              >
+                Validar esto para mi negocio
+                <Icon nombre="flecha" tamano={18} />
+              </a>
+            </div>
+
+            <div class="rounded-praxia border border-linea bg-void/40 p-2">
+              <table class="w-full border-collapse text-left">
+                <caption class="mono px-3 pt-2 pb-3 text-left text-texto-3">Flujos típicos</caption>
+                <tbody>
+                  {s.flujos.map((f) => (
+                    <tr class="border-t border-linea first:border-t-0">
+                      <td class="px-3 py-2.5 text-[0.9375rem] text-texto">{f.nombre}</td>
+                      <td class="px-3 py-2.5 text-right font-[family-name:var(--font-mono)] text-[0.8125rem] text-texto-3">
+                        {f.plazo}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</Seccion>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-servicios]').forEach((grupo) => {
+    const pestanas = Array.from(grupo.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const paneles = Array.from(grupo.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+
+    const activar = (indice: number, mover = true) => {
+      pestanas.forEach((pestana, i) => {
+        const activa = i === indice;
+        pestana.setAttribute('aria-selected', String(activa));
+        pestana.tabIndex = activa ? 0 : -1;
+        paneles[i]?.toggleAttribute('hidden', !activa);
+      });
+      if (mover) pestanas[indice]?.focus();
+    };
+
+    pestanas.forEach((pestana, i) => {
+      pestana.addEventListener('click', () => activar(i, false));
+      pestana.addEventListener('keydown', (evento) => {
+        const salto = evento.key === 'ArrowRight' ? 1 : evento.key === 'ArrowLeft' ? -1 : 0;
+        if (salto === 0) return;
+        evento.preventDefault();
+        activar((i + salto + pestanas.length) % pestanas.length);
+      });
+    });
+  });
+</script>

@@ -27,6 +27,12 @@ const PALETA = {
   ambar: '#F5A623',
   wa: '#134D37',
   chatMeta: '#A8B4C8',
+  // Rampa "atardecer" (identidad v2, sep 2026).
+  noche: '#1A2C88',
+  violeta: '#4A2178',
+  magenta: '#BD356C',
+  coral: '#FA5E45',
+  sol: '#FDCD39',
 };
 
 // [descripción, texto, fondo, mínimo exigido]
@@ -58,6 +64,13 @@ const PARES = [
   ['borde de campo sobre void', 'lineaViva', 'void', 3],
   ['anillo de foco sobre void', 'brasa', 'void', 3],
   ['anillo de foco sobre surface', 'brasa', 'surface', 3],
+
+  // Rampa "atardecer": solo como texto grande (kickers, H1, botones outline
+  // sobre glass) — nunca como texto de párrafo. Umbral 3:1 (texto grande).
+  ['magenta como texto grande sobre void', 'magenta', 'void', 3],
+  ['coral como texto grande sobre void', 'coral', 'void', 3],
+  ['sol como texto grande sobre void', 'sol', 'void', 3],
+  ['texto sobre superficie de vidrio (aprox. surface)', 'texto', 'surface', 4.5],
 ];
 
 const canal = (c) => {

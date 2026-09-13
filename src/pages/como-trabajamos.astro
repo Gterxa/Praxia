@@ -8,14 +8,14 @@ import FAQ from '../components/FAQ.astro';
 import FichaHero from '../components/FichaHero.astro';
 import CTAInline from '../components/CTAInline.astro';
 import CTABand from '../components/CTABand.astro';
-import { CONTEXTO, CHIPS_CONFIANZA } from '../consts';
+import { CONTEXTO } from '../consts';
 import metodo from '../assets/img/metodo.png';
 
 const preguntas = [
   {
-    pregunta: '¿Qué pasa en el diagnóstico exactamente?',
+    pregunta: '¿Qué pasa en la validación exactamente?',
     respuesta:
-      'Conversamos 45 minutos, presencial o por videollamada. Te preguntamos por tu operación, no por tu tecnología. De ahí sale si tu idea se sostiene y cuál es la mejor ruta.',
+      'Conversamos 15 minutos, por videollamada o WhatsApp. Te preguntamos por tu operación, no por tu tecnología. De ahí sale si tu idea se sostiene y cuál es la mejor ruta.',
   },
   {
     pregunta: '¿Cuánto de mi tiempo se va en esto?',
@@ -42,14 +42,13 @@ const preguntas = [
 
 <Layout
   titulo="Cómo trabajamos: de la idea a la automatización andando"
-  descripcion="Cuatro pasos: conversamos, validamos, implementamos y te enseñamos. La mayoría de proyectos toma entre una y dos semanas."
+  descripcion="Cuatro pasos: conversamos, validamos, construimos e integramos, y te enseñamos. La mayoría de proyectos toma entre 2 y 4 semanas."
   contextoWhatsApp={CONTEXTO.comoTrabajamos}
 >
   <Hero
     antetitulo="Cómo trabajamos"
     titulo="De una idea a algo que funciona. En cuatro pasos."
     subtitulo="Sabes en qué etapa estamos, qué sigue y qué se espera de ti. Sin sorpresas en el camino."
-    chips={CHIPS_CONFIANZA}
     contextoWhatsApp={CONTEXTO.comoTrabajamos}
     imagen={metodo}
     imagenAlt="Cuatro bloques conectados en fila, uno por cada paso del método"
