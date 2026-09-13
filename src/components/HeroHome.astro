@@ -1,0 +1,241 @@
+---
+/**
+ * Hero de la home. Tres capas, de atrás hacia adelante:
+ *
+ *  1. `#hero-calor`: el fondo, una esfera oscura con el filo al rojo vivo
+ *     (shader WebGL propio, ver src/scripts/fondo-calor.ts).
+ *  2. Las estrellas, con semilla fija para que no bailen entre cargas.
+ *  3. El texto.
+ *
+ * El shader se degrada solo: si el navegador no puede darle contexto, el
+ * canvas se oculta y quedan los orbes de FondoOrbes con el texto encima.
+ * Nada se rompe y no hay nada que reparar.
+ */
+import Icon from './Icon.astro';
+import { waLink, CONTEXTO } from '../consts';
+---
+
+<section class="hero" id="top">
+  <canvas id="hero-calor" class="hero__calor" aria-hidden="true"></canvas>
+  <div class="hero__estrellas" id="hero-estrellas" aria-hidden="true"></div>
+  <!-- Velo de legibilidad: el titular no depende de qué haga el fondo. -->
+  <div class="hero__velo" aria-hidden="true"></div>
+
+  <div class="contenedor hero__contenido">
+    <h1 class="hero__titulo">
+      <span data-palabras>Ya sabes qué quieres automatizar.</span>{' '}<span
+        class="hero__calido"
+        data-palabras>Nosotros lo construimos.</span
+      >
+    </h1>
+
+    <p class="lead hero__sub mx-auto max-w-2xl" data-palabras>
+      El equipo técnico que tu negocio no tiene: automatización con IA, webs, SEO y seguridad
+      básica, con un solo responsable y en 2 a 4 semanas.
+    </p>
+
+    <div class="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+      <a href="/validar" class="boton boton-primario">Validemos en 15 minutos</a>
+      <a
+        href={waLink(CONTEXTO.home)}
+        target="_blank"
+        rel="noopener"
+        class="boton boton-secundario"
+      >
+        <Icon nombre="whatsapp" tamano={20} />
+        Ver el paquete
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    /* --hero-alto (tokens.css): un piso de altura razonable, no el viewport
+       completo. El fondo (el shader, position:absolute inset:0 más abajo)
+       sigue cubriendo toda la sección igual; lo que ya no pasa es que el
+       CONTENIDO se vea obligado a repartirse dentro de una caja del alto del
+       monitor entero. Centrado, no pegado arriba: con un piso ya pensado
+       para el tamaño del contenido, centrar no deja el desbalance de antes. */
+    min-height: var(--hero-alto);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: 3rem;
+    text-align: center;
+    overflow: clip;
+  }
+
+  /* El shader se funde con lo que hay arriba (el fondo ambiental detrás del
+     header) y con la sección siguiente por abajo: sin este doble desvanecido
+     el primer píxel del canvas corta en seco contra el fondo ambiental,
+     porque el azul saturado del cielo del shader no calza con el navy
+     desaturado de FondoOrbes que se ve sobre el header. */
+  .hero__calor {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(transparent 0%, #000 7%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(transparent 0%, #000 7%, #000 86%, transparent 100%);
+  }
+
+  .hero__estrellas {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    /* Solo en el cielo de arriba: dentro de la esfera no habría estrellas. */
+    -webkit-mask-image: linear-gradient(#000 0%, #000 45%, transparent 75%);
+    mask-image: linear-gradient(#000 0%, #000 45%, transparent 75%);
+  }
+
+  .hero__estrellas :global(i) {
+    position: absolute;
+    border-radius: 50%;
+    animation: titilar 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes titilar {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.2);
+    }
+  }
+
+  .hero__velo {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(58% 46% at 50% 46%, rgb(4 8 20 / 0.66), rgb(4 8 20 / 0) 72%);
+  }
+
+  .hero__contenido {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero__titulo {
+    margin-inline: auto;
+    max-width: 46rem;
+  }
+
+  /* El titular es grande: sin este aire el párrafo se le pega debajo. */
+  .hero__sub {
+    margin-top: 1.5rem;
+  }
+
+  /* Cada palabra entra por separado: opacidad + blur + translateY. */
+  .hero__titulo :global(.w),
+  .hero__sub :global(.w) {
+    display: inline-block;
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(12px);
+    animation: entra-palabra 0.9s var(--ease-resorte) forwards;
+  }
+
+  .hero__sub :global(.w) {
+    filter: blur(4px);
+    animation-duration: 0.7s;
+    animation-timing-function: var(--ease-suave);
+  }
+
+  @keyframes entra-palabra {
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: none;
+    }
+  }
+
+  /* La segunda frase, en degradado cálido. El degradado va en cada palabra y
+     no en la frase entera: el texto se parte en spans animados, y un span con
+     `filter`/`transform` propios crea su propio contexto de apilamiento, que
+     rompe `background-clip: text` si el degradado vive en el ancestro en vez
+     de en la palabra que de verdad pinta el glifo. */
+  .hero__calido :global(.w) {
+    background: var(--degradado-calido);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__titulo :global(.w),
+    .hero__sub :global(.w) {
+      animation: none;
+      opacity: 1;
+      filter: none;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  import { montarFondo, paletaDeTokens } from '../scripts/fondos-hero';
+
+  const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // --- Estrellas. PRNG con semilla fija: mismas posiciones en cada carga. ---
+  function mulberry32(a: number) {
+    return function () {
+      a |= 0;
+      a = (a + 0x6d2b79f5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  const contenedorEstrellas = document.getElementById('hero-estrellas');
+  if (contenedorEstrellas) {
+    const azar = mulberry32(20260911);
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < 88; i++) {
+      const estrella = document.createElement('i');
+      const tam = 1 + azar() * 0.8;
+      estrella.style.left = `${azar() * 100}%`;
+      estrella.style.top = `${azar() * 100}%`;
+      estrella.style.width = `${tam}px`;
+      estrella.style.height = `${tam}px`;
+      estrella.style.background = azar() < 0.55 ? '#fff' : '#ccc';
+      estrella.style.opacity = String(0.2 + azar() * 0.28);
+      if (!reducido) {
+        estrella.style.animationDelay = `${-azar() * 4}s`;
+        estrella.style.animationDuration = `${3 + azar() * 3}s`;
+      } else {
+        estrella.style.animation = 'none';
+      }
+      frag.appendChild(estrella);
+    }
+    contenedorEstrellas.appendChild(frag);
+  }
+
+  // --- Palabra por palabra: envuelve el texto de [data-palabras] en spans. ---
+  if (!reducido) {
+    document.querySelectorAll<HTMLElement>('[data-palabras]').forEach((el) => {
+      const texto = el.textContent ?? '';
+      const palabras = texto.trim().split(/\s+/);
+      el.textContent = '';
+      palabras.forEach((palabra, i) => {
+        const span = document.createElement('span');
+        span.className = 'w';
+        span.textContent = palabra;
+        span.style.animationDelay = `${0.15 + i * 0.07}s`;
+        el.appendChild(span);
+        if (i < palabras.length - 1) el.appendChild(document.createTextNode(' '));
+      });
+    });
+  }
+
+  // --- El fondo. Los colores salen de los tokens de marca. ---
+  const lienzo = document.getElementById('hero-calor') as HTMLCanvasElement | null;
+  if (lienzo) montarFondo(lienzo, 'esfera', paletaDeTokens(), reducido);
+</script>
