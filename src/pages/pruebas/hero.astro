@@ -1,0 +1,756 @@
+---
+/**
+ * Banco de pruebas del hero. Combina tres ejes en vivo desde una barra:
+ * fondo (4), composición (3) y copy (4). No se indexa y no está enlazada
+ * desde ninguna parte del sitio: es una herramienta de decisión, no una
+ * página pública.
+ *
+ * Cuando esté elegida la combinación, se traslada a HeroHome.astro y esta
+ * página se borra.
+ */
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import { waLink, CONTEXTO } from '../../consts';
+
+const COPYS = [
+  {
+    id: 'actual',
+    nombre: 'Actual',
+    frio: 'Ya sabes qué quieres automatizar.',
+    calido: 'Nosotros lo construimos.',
+    sub: 'El equipo técnico que tu negocio no tiene: automatización con IA, webs, SEO y seguridad básica, con un solo responsable y en 2 a 4 semanas.',
+  },
+  {
+    id: 'dolor',
+    nombre: 'Dolor',
+    frio: 'Tu equipo repite el mismo trabajo todos los días.',
+    calido: 'Eso se automatiza.',
+    sub: 'Atención por WhatsApp, citas, cotizaciones y documentos que se ordenan solos. Validamos si tu caso se puede antes de cobrarte nada.',
+  },
+  {
+    id: 'plazo',
+    nombre: 'Plazo',
+    frio: 'De la idea a funcionando en',
+    calido: '2 a 4 semanas.',
+    sub: 'Automatización con IA, web, SEO y seguridad, con un solo responsable. Sobre las herramientas que ya usas, sin migrar nada.',
+  },
+  {
+    id: 'validacion',
+    nombre: 'Validación',
+    frio: 'Quince minutos para saber si tu idea',
+    calido: 'se puede y cuánto cuesta.',
+    sub: 'Sales de la llamada con precio, plazo y un veredicto honesto: sí, no o aún no. Sin costo y sin compromiso.',
+  },
+] as const;
+
+const FONDOS = [
+  { id: 'esfera', nombre: 'Esfera' },
+  { id: 'aurora', nombre: 'Aurora' },
+  { id: 'amanecer', nombre: 'Amanecer' },
+  { id: 'rayos', nombre: 'Rayos' },
+  { id: 'oceano', nombre: 'Océano' },
+  { id: 'vortice', nombre: 'Vórtice' },
+  { id: 'trama', nombre: 'Trama' },
+  { id: 'malla', nombre: 'Malla' },
+  { id: 'flujo', nombre: 'Flujo' },
+  { id: 'anillos', nombre: 'Anillos' },
+  { id: 'tunel', nombre: 'Túnel' },
+] as const;
+
+const COMPOSICIONES = [
+  { id: 'centro', nombre: 'Centrado' },
+  { id: 'partido', nombre: 'Partido' },
+  { id: 'sangre', nombre: 'A sangre' },
+  { id: 'tarjeta', nombre: 'Tarjeta' },
+] as const;
+
+/**
+ * Un hero armado por cada componente que trajo Tony. El botón aplica los tres
+ * ejes de una vez: fondo, composición y copy. Los cuatro efectos son
+ * reescrituras nativas (ver src/scripts/fondos-hero.ts y fondo-flujo.ts): los
+ * originales son React con iframe, framer-motion, shaders-react o uvcanvas, y
+ * ninguno de los cuatro pasa la CSP ni el stack de este sitio.
+ */
+const HEROS = [
+  { id: 'gateway', nombre: 'Gateway Flow', fondo: 'flujo', composicion: 'centro', copy: 'actual' },
+  { id: 'dither', nombre: 'Dithering CTA', fondo: 'trama', composicion: 'tarjeta', copy: 'validacion' },
+  { id: 'novatrix', nombre: 'Novatrix', fondo: 'malla', composicion: 'partido', copy: 'dolor' },
+  { id: 'anillos', nombre: 'Liquid Rings', fondo: 'anillos', composicion: 'centro', copy: 'validacion' },
+  { id: 'vortice', nombre: 'Shader Clock', fondo: 'vortice', composicion: 'sangre', copy: 'plazo' },
+  { id: 'tunel', nombre: 'Tunnel Hero', fondo: 'tunel', composicion: 'centro', copy: 'actual' },
+] as const;
+
+const FICHA = [
+  { clave: 'Duración', valor: '15 min' },
+  { clave: 'Costo', valor: 'S/0' },
+  { clave: 'Te damos', valor: 'Precio y plazo' },
+  { clave: 'Veredicto', valor: 'Sí, no o aún no' },
+] as const;
+---
+
+<Layout
+  titulo="Banco de pruebas del hero"
+  descripcion="Herramienta interna para elegir la combinación del hero."
+  noIndex={true}
+>
+  <section class="banco" id="banco" data-fondo="esfera" data-composicion="centro" data-copy="actual">
+    <canvas id="banco-calor" class="banco__calor" aria-hidden="true"></canvas>
+    {/* El flujo es el único fondo que no es WebGL: va en su propio canvas 2D
+        y el CSS enseña uno o el otro según el fondo activo. */}
+    <canvas id="banco-flujo" class="banco__calor banco__flujo" aria-hidden="true"></canvas>
+    {/* Los anillos son three.js y necesitan su propio contexto WebGL. */}
+    <canvas id="banco-anillos" class="banco__calor banco__anillos" aria-hidden="true"></canvas>
+    <div class="banco__estrellas" id="banco-estrellas" aria-hidden="true"></div>
+    {/* Velo: el copy tiene que leerse encima de CUALQUIER fondo, y varios son
+        claros. Va entre el fondo y el texto, y sigue a la composición. */}
+    <div class="banco__velo" aria-hidden="true"></div>
+
+    <div class="contenedor banco__contenido">
+      <div class="banco__texto">
+        <p class="banco__insignia mono">
+          <span class="banco__pulso" aria-hidden="true"></span>
+          Automatización con IA
+        </p>
+        {/* Los cuatro copys van en el HTML; el CSS muestra solo el activo.
+            Así no hace falta un script inline, que la CSP del sitio bloquea. */}
+        {
+          COPYS.map((c) => (
+            <div class="banco__copy" data-copy={c.id}>
+              <h1 class="banco__titulo">
+                <span>{c.frio}</span>{' '}<span class="banco__calido">{c.calido}</span>
+              </h1>
+              <p class="lead banco__sub">{c.sub}</p>
+            </div>
+          ))
+        }
+        <div class="banco__botones">
+          <a href="/validar" class="boton boton-primario">Validemos en 15 minutos</a>
+          <a
+            href={waLink(CONTEXTO.home)}
+            target="_blank"
+            rel="noopener"
+            class="boton boton-secundario"
+          >
+            <Icon nombre="whatsapp" tamano={20} />
+            Ver el paquete
+          </a>
+        </div>
+      </div>
+
+      <!-- Panel de la validación: solo se ve en la composición "Partido". -->
+      <aside class="banco__panel vidrio">
+        <p class="mono text-texto-3">La validación</p>
+        <dl class="mt-4 space-y-3">
+          {
+            FICHA.map((f) => (
+              <div class="flex items-center justify-between gap-4 border-t border-linea pt-3 first:border-t-0 first:pt-0">
+                <dt class="pequeno text-texto-2">{f.clave}</dt>
+                <dd class="text-[0.9375rem] font-medium text-texto">{f.valor}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <!-- La barrita -->
+  <div class="barra" id="barra">
+    <div class="barra__grupo" data-eje="hero">
+      <span class="barra__etiqueta mono">Hero</span>
+      {
+        HEROS.map((h) => (
+          <button type="button" class="barra__boton" data-valor={h.id} aria-pressed={false}>
+            {h.nombre}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="barra__grupo" data-eje="fondo">
+      <span class="barra__etiqueta mono">Fondo</span>
+      {
+        FONDOS.map((f, i) => (
+          <button type="button" class="barra__boton" data-valor={f.id} aria-pressed={i === 0}>
+            {f.nombre}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="barra__grupo" data-eje="composicion">
+      <span class="barra__etiqueta mono">Composición</span>
+      {
+        COMPOSICIONES.map((c, i) => (
+          <button type="button" class="barra__boton" data-valor={c.id} aria-pressed={i === 0}>
+            {c.nombre}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="barra__grupo" data-eje="copy">
+      <span class="barra__etiqueta mono">Copy</span>
+      {
+        COPYS.map((c, i) => (
+          <button type="button" class="barra__boton" data-valor={c.id} aria-pressed={i === 0}>
+            {c.nombre}
+          </button>
+        ))
+      }
+    </div>
+
+    <p class="barra__combo mono" id="barra-combo">esfera · centro · actual</p>
+  </div>
+</Layout>
+
+<style>
+  .banco {
+    position: relative;
+    /* Mismo token que HeroHome.astro (--hero-alto, en tokens.css): un piso
+       de altura pensado para el contenido, no el viewport completo. El
+       padding inferior queda un poco más alto que el de HeroHome porque acá
+       además flota la barra de controles (position:fixed) sobre el borde
+       inferior. */
+    min-height: var(--hero-alto);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: 3rem 5rem;
+    overflow: clip;
+  }
+
+  .banco__calor {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(transparent 0%, #000 7%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(transparent 0%, #000 7%, #000 86%, transparent 100%);
+  }
+
+  /* Los dos lienzos ocupan el mismo hueco: solo se enseña el del fondo activo.
+     Se oculta con display para que el que no se usa ni siquiera componga, y de
+     paso el 2D deja de dibujar porque su IntersectionObserver lo pausa. */
+  .banco__flujo,
+  .banco__anillos {
+    display: none;
+  }
+  [data-fondo='flujo'] .banco__flujo,
+  [data-fondo='anillos'] .banco__anillos {
+    display: block;
+  }
+  /* El :not importa: el lienzo del flujo también lleva .banco__calor para
+     heredar posición y máscara, y sin esto esta misma regla lo apagaría. */
+  [data-fondo='flujo'] .banco__calor:not(.banco__flujo),
+  [data-fondo='anillos'] .banco__calor:not(.banco__anillos) {
+    display: none;
+  }
+
+  /* Estos fondos ya tienen textura propia: las estrellas encima ensucian. */
+  [data-fondo='vortice'] .banco__estrellas,
+  [data-fondo='trama'] .banco__estrellas,
+  [data-fondo='malla'] .banco__estrellas,
+  [data-fondo='anillos'] .banco__estrellas,
+  [data-fondo='flujo'] .banco__estrellas,
+  [data-fondo='tunel'] .banco__estrellas {
+    display: none;
+  }
+
+  .banco__estrellas {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(#000 0%, #000 45%, transparent 75%);
+    mask-image: linear-gradient(#000 0%, #000 45%, transparent 75%);
+  }
+
+  .banco__estrellas :global(i) {
+    position: absolute;
+    border-radius: 50%;
+    animation: titilar 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes titilar {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.2);
+    }
+  }
+
+  .banco__velo {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Texto centrado: el velo se concentra donde está el bloque. */
+  [data-composicion='centro'] .banco__velo,
+  [data-composicion='tarjeta'] .banco__velo {
+    background: radial-gradient(58% 46% at 50% 46%, rgb(4 8 20 / 0.74), rgb(4 8 20 / 0) 72%);
+  }
+
+  /* Texto a la izquierda: el velo baja en diagonal y deja limpio el lado
+     derecho, que es donde se ve el fondo. */
+  [data-composicion='sangre'] .banco__velo,
+  [data-composicion='partido'] .banco__velo {
+    background: linear-gradient(
+      100deg,
+      rgb(4 8 20 / 0.84) 0%,
+      rgb(4 8 20 / 0.62) 34%,
+      rgb(4 8 20 / 0) 66%
+    );
+  }
+
+  .banco__contenido {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Solo se ve el copy elegido en la barra. */
+  .banco__copy {
+    display: none;
+  }
+  [data-copy='actual'] .banco__copy[data-copy='actual'],
+  [data-copy='dolor'] .banco__copy[data-copy='dolor'],
+  [data-copy='plazo'] .banco__copy[data-copy='plazo'],
+  [data-copy='validacion'] .banco__copy[data-copy='validacion'] {
+    display: block;
+  }
+
+  /* La insignia con el punto que late, del componente del CTA. Solo aparece en
+     la composición de tarjeta, que es donde ese diseño la usa. */
+  .banco__insignia {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    margin: 0 auto 2rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgb(255 107 53 / 0.28);
+    background: rgb(255 107 53 / 0.10);
+    color: var(--color-brasa);
+  }
+
+  .banco__pulso {
+    position: relative;
+    width: 0.5rem;
+    height: 0.5rem;
+    flex: none;
+    border-radius: 50%;
+    background: var(--color-brasa);
+  }
+
+  .banco__pulso::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--color-brasa);
+    animation: late 1.6s var(--ease-suave) infinite;
+  }
+
+  @keyframes late {
+    from {
+      transform: scale(1);
+      opacity: 0.75;
+    }
+    to {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+
+  .banco__titulo {
+    margin-inline: auto;
+    max-width: 46rem;
+  }
+
+  /* La segunda frase, en degradado cálido (magenta → coral → brasa → sol). */
+  .banco__calido {
+    background: var(--degradado-calido);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .banco__sub {
+    margin-top: 1.5rem;
+  }
+
+  .banco__botones {
+    margin-top: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 40rem) {
+    .banco__botones {
+      flex-direction: row;
+    }
+  }
+
+  .banco__panel {
+    display: none;
+    border-radius: var(--radius-tarjeta);
+    padding: 1.75rem;
+    /* Fondo propio además del vidrio: sobre los fondos claros (malla, trama)
+       un panel solo translúcido deja el texto ilegible. */
+    background-color: rgb(6 27 102 / 0.58);
+  }
+
+  /* ---------- Composición: centrado ---------- */
+  [data-composicion='centro'] .banco__contenido {
+    text-align: center;
+  }
+  [data-composicion='centro'] .banco__sub {
+    margin-inline: auto;
+    max-width: 42rem;
+  }
+  [data-composicion='centro'] .banco__botones {
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ---------- Composición: partido ---------- */
+  [data-composicion='partido'] .banco__contenido {
+    text-align: left;
+  }
+  [data-composicion='partido'] .banco__titulo {
+    margin-inline: 0;
+    max-width: 34rem;
+  }
+  [data-composicion='partido'] .banco__sub {
+    max-width: 34rem;
+  }
+  [data-composicion='partido'] .banco__panel {
+    display: block;
+  }
+
+  @media (min-width: 64rem) {
+    [data-composicion='partido'] .banco__contenido {
+      display: grid;
+      grid-template-columns: 1fr 20rem;
+      align-items: center;
+      gap: 4rem;
+    }
+  }
+
+  /* ---------- Composición: a sangre ---------- */
+  [data-composicion='sangre'] .banco__contenido {
+    text-align: left;
+  }
+  [data-composicion='sangre'] .banco__titulo {
+    margin-inline: 0;
+    max-width: none;
+    font-size: clamp(2.5rem, 9vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+  [data-composicion='sangre'] .banco__sub {
+    max-width: 34rem;
+  }
+
+  /* ---------- Composición: tarjeta ----------
+     Todo el hero vive dentro de una tarjeta de esquinas muy redondeadas, con
+     la insignia arriba y el titular grande centrado. Es la composición del
+     componente del CTA, con el radio de 48px que traía. */
+  [data-composicion='tarjeta'] .banco__contenido {
+    display: block;
+    text-align: center;
+    max-width: 76rem;
+    padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1.5rem, 5vw, 4rem);
+    border-radius: clamp(1.75rem, 4vw, 3rem);
+    border: 1px solid rgb(255 255 255 / 0.10);
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.05), rgb(255 255 255 / 0.015));
+    backdrop-filter: blur(14px) saturate(1.25);
+    -webkit-backdrop-filter: blur(14px) saturate(1.25);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.12),
+      0 30px 90px rgb(6 27 102 / 0.45),
+      0 8px 24px rgb(0 0 0 / 0.30);
+  }
+  [data-composicion='tarjeta'] .banco__insignia {
+    display: inline-flex;
+  }
+  [data-composicion='tarjeta'] .banco__titulo {
+    max-width: 40rem;
+    font-size: clamp(2.5rem, 6.5vw, 5rem);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+  [data-composicion='tarjeta'] .banco__sub {
+    margin-inline: auto;
+    max-width: 38rem;
+  }
+  [data-composicion='tarjeta'] .banco__botones {
+    align-items: center;
+    justify-content: center;
+  }
+  [data-composicion='tarjeta'] .banco__panel {
+    display: none;
+  }
+
+  /* ---------- La barrita ---------- */
+  .barra {
+    position: fixed;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    z-index: 60;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 1.25rem;
+    max-width: calc(100vw - 2rem);
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.03));
+    border: 1px solid rgb(255 255 255 / 0.12);
+    backdrop-filter: blur(18px) saturate(1.3);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.14),
+      0 18px 50px rgb(0 0 0 / 0.45);
+  }
+
+  .barra__grupo {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .barra__etiqueta {
+    color: var(--color-texto-3);
+    margin-right: 0.25rem;
+  }
+
+  .barra__boton {
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--color-texto-2);
+    font-family: var(--font-titulos);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+      color 200ms var(--ease-suave),
+      background-color 200ms var(--ease-suave);
+  }
+
+  .barra__boton:hover {
+    color: var(--color-texto);
+  }
+
+  .barra__boton:active {
+    transform: scale(0.96);
+  }
+
+  .barra__boton[aria-pressed='true'] {
+    background: var(--color-brasa);
+    border-color: var(--color-brasa);
+    color: var(--color-void);
+  }
+
+  .barra__combo {
+    color: var(--color-texto-3);
+    width: 100%;
+    text-align: center;
+  }
+
+  @media (min-width: 64rem) {
+    .barra__combo {
+      width: auto;
+      border-left: 1px solid var(--color-linea);
+      padding-left: 1.25rem;
+    }
+  }
+</style>
+
+<script>
+  import { montarFondo, paletaDeTokens, type Fondo } from '../../scripts/fondos-hero';
+  import { montarFlujo } from '../../scripts/fondo-flujo';
+
+  const banco = document.getElementById('banco');
+  const barra = document.getElementById('barra');
+  const combo = document.getElementById('barra-combo');
+  const lienzo = document.getElementById('banco-calor') as HTMLCanvasElement | null;
+  const lienzoFlujo = document.getElementById('banco-flujo') as HTMLCanvasElement | null;
+  const lienzoAnillos = document.getElementById('banco-anillos') as HTMLCanvasElement | null;
+  const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // --- Estrellas, con semilla fija para que no bailen entre cargas. ---
+  function mulberry32(a: number) {
+    return function () {
+      a |= 0;
+      a = (a + 0x6d2b79f5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  const cielo = document.getElementById('banco-estrellas');
+  if (cielo) {
+    const azar = mulberry32(20260911);
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < 88; i++) {
+      const e = document.createElement('i');
+      const tam = 1 + azar() * 0.8;
+      e.style.left = `${azar() * 100}%`;
+      e.style.top = `${azar() * 100}%`;
+      e.style.width = `${tam}px`;
+      e.style.height = `${tam}px`;
+      e.style.background = azar() < 0.55 ? '#fff' : '#ccc';
+      e.style.opacity = String(0.2 + azar() * 0.28);
+      if (!reducido) {
+        e.style.animationDelay = `${-azar() * 4}s`;
+        e.style.animationDuration = `${3 + azar() * 3}s`;
+      } else {
+        e.style.animation = 'none';
+      }
+      frag.appendChild(e);
+    }
+    cielo.appendChild(frag);
+  }
+
+  // --- El fondo ---
+  const paleta = paletaDeTokens();
+  const mando = lienzo ? montarFondo(lienzo, 'esfera', paleta, reducido) : null;
+
+  /**
+   * El flujo se monta perezoso: solo la primera vez que se pide ese fondo. Es
+   * canvas 2D y no comparte nada con el WebGL, así que no hay que pagarlo
+   * mientras nadie lo mire.
+   */
+  let flujo: { destruir: () => void } | null = null;
+  function pedirFlujo() {
+    if (flujo || !lienzoFlujo) return;
+    flujo = montarFlujo(
+      lienzoFlujo,
+      {
+        fondo: 'transparent',
+        camino: 'rgb(255 255 255 / 0.26)',
+        particula: paleta.brasa,
+        nucleo: paleta.brasa,
+      },
+      reducido,
+    );
+  }
+
+  /**
+   * Los anillos arrastran three.js: import dinámico, y solo la primera vez que
+   * se piden. Mientras no se elijan, ese chunk no se descarga.
+   */
+  let anillos: { destruir: () => void } | null = null;
+  let pidiendoAnillos = false;
+  function pedirAnillos() {
+    if (anillos || pidiendoAnillos || !lienzoAnillos) return;
+    pidiendoAnillos = true;
+    import('../../scripts/fondo-anillos')
+      .then(({ montarAnillos }) => {
+        anillos = montarAnillos(
+          lienzoAnillos,
+          {
+            // Estas tres no son colores de marca sino LUCES de estudio: tienen
+            // que ser claras o el metal sale apagado. Son la marca subida de
+            // luminosidad, y el violeta del original pasa a azul para que el
+            // aro lea azul y naranja, no morado.
+            frio: '#57a0ff',
+            medio: '#3f6fff',
+            calido: paleta.brasa,
+            // Casi negro, como el original: el fondo tiene que desaparecer
+            // para que el reflejo sea lo único que brilla.
+            fondo: '#05070f',
+          },
+          reducido,
+        );
+      })
+      .catch((e) => console.warn('[banco] no se pudo cargar three', e))
+      .finally(() => {
+        pidiendoAnillos = false;
+      });
+  }
+
+  /** Un fondo por eje, y el preset de cada componente aplica los tres. */
+  const HEROS: Record<string, { fondo: string; composicion: string; copy: string }> = {
+    gateway: { fondo: 'flujo', composicion: 'centro', copy: 'actual' },
+    dither: { fondo: 'trama', composicion: 'tarjeta', copy: 'validacion' },
+    novatrix: { fondo: 'malla', composicion: 'partido', copy: 'dolor' },
+    anillos: { fondo: 'anillos', composicion: 'centro', copy: 'validacion' },
+    vortice: { fondo: 'vortice', composicion: 'sangre', copy: 'plazo' },
+    tunel: { fondo: 'tunel', composicion: 'centro', copy: 'actual' },
+  };
+
+  function aplicarFondo(valor: string) {
+    if (!banco) return;
+    banco.dataset['fondo'] = valor;
+    if (valor === 'flujo') pedirFlujo();
+    else if (valor === 'anillos') pedirAnillos();
+    // El WebGL sigue con el shader anterior mientras el flujo está arriba: no
+    // se destruye para no perder el reloj ni recompilar al volver.
+    else mando?.cambiar(valor as Fondo);
+  }
+
+  /** Deja marcado el botón que corresponde en el grupo de ese eje. */
+  function marcar(eje: string, valor: string) {
+    barra
+      ?.querySelectorAll<HTMLElement>(`.barra__grupo[data-eje='${eje}'] .barra__boton`)
+      .forEach((b) => b.setAttribute('aria-pressed', String(b.dataset['valor'] === valor)));
+  }
+
+  function pintarCombo() {
+    if (combo && banco) {
+      combo.textContent = `${banco.dataset['fondo']} · ${banco.dataset['composicion']} · ${banco.dataset['copy']}`;
+    }
+  }
+
+  // --- La barrita ---
+  barra?.addEventListener('click', (evento) => {
+    const boton = (evento.target as HTMLElement).closest<HTMLButtonElement>('.barra__boton');
+    if (!boton || !banco) return;
+    const grupo = boton.closest<HTMLElement>('.barra__grupo');
+    const eje = grupo?.dataset['eje'];
+    const valor = boton.dataset['valor'];
+    if (!eje || !valor) return;
+
+    grupo
+      ?.querySelectorAll<HTMLButtonElement>('.barra__boton')
+      .forEach((b) => b.setAttribute('aria-pressed', String(b === boton)));
+
+    if (eje === 'hero') {
+      const preset = HEROS[valor];
+      if (!preset) return;
+      aplicarFondo(preset.fondo);
+      banco.dataset['composicion'] = preset.composicion;
+      banco.dataset['copy'] = preset.copy;
+      marcar('fondo', preset.fondo);
+      marcar('composicion', preset.composicion);
+      marcar('copy', preset.copy);
+      pintarCombo();
+      return;
+    }
+
+    if (eje === 'fondo') {
+      aplicarFondo(valor);
+      marcar('hero', '');
+    } else if (eje === 'composicion') {
+      banco.dataset['composicion'] = valor;
+    } else if (eje === 'copy') {
+      banco.dataset['copy'] = valor; // el CSS muestra el bloque que toca
+    }
+
+    pintarCombo();
+  });
+</script>
