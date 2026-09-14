@@ -1,31 +1,98 @@
 ---
 /**
- * Fondo global fijo: negro (--color-void) con grano fino. Reemplaza a los
- * orbes de color + grilla de puntos (pedido de Tony, sep 2026: "no me gusta,
- * ponlo en negro granular"). Vive detrás de todo (`z-index: 0`),
- * `Layout.astro` lo monta una sola vez y cada `<section>` que quiera dejarlo
- * ver de fondo usa un fondo transparente en vez de `bg-void` sólido.
+ * Fondo global fijo: negro absoluto con los tres orbes de la rampa
+ * "atardecer" (azul frío, violeta/magenta de bisagra, coral/sol cálido) más
+ * brillantes que la versión original — sin grano, sin grilla de puntos.
+ * Pedido de Tony, sep 2026, en tres pasadas: "negro granular" → "negro
+ * absoluto con matices azules" → "pero azules Y naranjas brillantes como
+ * teníamos antes". Esta es esa tercera pasada: mismo layout que el
+ * FondoOrbes original (ver historial), sobre --color-void ahora casi-negro
+ * en vez del navy de antes, y con más opacidad para que el color se note.
  *
- * El grano es un filtro SVG de ruido (feTurbulence + feColorMatrix bajando
- * el alpha a ~6%) como textura, tal como pide el guardrail de "Gradientes"
- * del CLAUDE.md del proyecto — estático, no feTurbulence animado por
- * fotograma: es una imagen de fondo tileada, no un filtro recalculado en
- * cada frame, así no cuesta nada de rendimiento aunque viva en cada página.
+ * Vive detrás de todo (`z-index: 0`), `Layout.astro` lo monta una sola vez
+ * y cada `<section>` que quiera dejarlo ver de fondo usa un fondo
+ * transparente en vez de `bg-void` sólido.
  *
- * Puramente decorativo (`aria-hidden`).
+ * Puramente decorativo (`aria-hidden`) y se detiene con
+ * `prefers-reduced-motion` — sigue visible, solo no deriva.
  */
 ---
 
-<div class="fondo-orbes" aria-hidden="true"></div>
+<div class="fondo-orbes" aria-hidden="true">
+  <div class="orbe orbe-1"></div>
+  <div class="orbe orbe-2"></div>
+  <div class="orbe orbe-3"></div>
+</div>
 
 <style>
   .fondo-orbes {
     position: fixed;
     inset: 0;
     z-index: 0;
+    overflow: hidden;
     pointer-events: none;
-    background-color: var(--color-void);
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyMDAnIGhlaWdodD0nMjAwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nMC44JyBudW1PY3RhdmVzPScyJyBzdGl0Y2hUaWxlcz0nc3RpdGNoJy8+PGZlQ29sb3JNYXRyaXggdHlwZT0nbWF0cml4JyB2YWx1ZXM9JzAgMCAwIDAgMSAgMCAwIDAgMCAxICAwIDAgMCAwIDEgIDAgMCAwIDAuMTQgMCcvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbHRlcj0ndXJsKCNuKScvPjwvc3ZnPg==');
-    background-size: 200px 200px;
+    background-color: #000;
+  }
+
+  .orbe {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+  }
+
+  /* Extremo frío de la rampa, arriba a la izquierda. */
+  .orbe-1 {
+    top: -18%;
+    left: -8%;
+    width: 46rem;
+    height: 34rem;
+    background: radial-gradient(circle, rgb(26 44 136 / 0.55), rgb(26 44 136 / 0) 68%);
+    animation: deriva-1 20s ease-in-out infinite;
+  }
+
+  /* Violeta/magenta, a media altura: la bisagra entre frío y cálido. */
+  .orbe-2 {
+    top: 32%;
+    left: -16%;
+    width: 38rem;
+    height: 38rem;
+    background: radial-gradient(circle, rgb(74 33 120 / 0.5), rgb(74 33 120 / 0) 68%);
+    animation: deriva-2 24s ease-in-out infinite;
+  }
+
+  /* Coral/sol, abajo a la derecha: el remate cálido. */
+  .orbe-3 {
+    bottom: -20%;
+    right: -14%;
+    width: 42rem;
+    height: 42rem;
+    background: radial-gradient(circle, rgb(250 94 69 / 0.48), rgb(250 94 69 / 0) 68%);
+    animation: deriva-1 28s ease-in-out infinite reverse;
+  }
+
+  @keyframes deriva-1 {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(2.5rem, -1.75rem) scale(1.1);
+    }
+  }
+
+  @keyframes deriva-2 {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(-3rem, 2.5rem) scale(0.94);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .orbe {
+      animation: none;
+    }
   }
 </style>
