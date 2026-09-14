@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import HeroHome from '../components/HeroHome.astro';
 import LogosMarqueeCosmoq from '../components/LogosMarqueeCosmoq.astro';
-import Marquee from '../components/Marquee.astro';
 import PorQue from '../components/PorQue.astro';
 import Servicios from '../components/Servicios.astro';
 import Industrias from '../components/Industrias.astro';
@@ -27,14 +26,6 @@ const preguntasCortas = PREGUNTAS_FRECUENTES.slice(0, 6);
 
   <LogosMarqueeCosmoq />
 
-  <section class="py-6" aria-hidden="true">
-    <Marquee velocidad={55}>
-      <li class="frase-loop">Validamos primero.</li>
-      <li class="frase-loop">Construimos después.</li>
-      <li class="frase-loop">Sobre lo que ya usas.</li>
-    </Marquee>
-  </section>
-
   <PorQue />
   <Servicios />
   <Industrias />
@@ -51,15 +42,3 @@ const preguntasCortas = PREGUNTAS_FRECUENTES.slice(0, 6);
 
   <CierreValidar />
 </Layout>
-
-<style>
-  .frase-loop {
-    padding-inline: 1rem;
-    font-family: var(--font-titulos);
-    font-weight: 600;
-    font-size: clamp(1.25rem, 3vw, 1.75rem);
-    letter-spacing: -0.02em;
-    color: var(--color-texto-2);
-    white-space: nowrap;
-  }
-</style>
