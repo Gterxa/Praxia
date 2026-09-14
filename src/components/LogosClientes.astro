@@ -21,10 +21,8 @@ const MUESTRA = [
 
 {
   mostrar && (
-    <section class="border-y border-linea py-10 md:py-12" aria-label="Clientes de Praxia">
-      <p class="mono text-center text-texto-3">Hemos trabajado con</p>
-
-      <div class="mt-8">
+    <section class="py-10 md:py-12" aria-label="Clientes de Praxia">
+      <div>
         <Marquee>
           {hayClientes
             ? CLIENTES.map((c) => {
@@ -35,21 +33,21 @@ const MUESTRA = [
                     width={c.ancho}
                     height={c.alto}
                     loading="lazy"
-                    class="h-8 w-auto grayscale transition-[filter] duration-300 group-hover:grayscale-0"
+                    class="logo-suelto grayscale transition-[filter] duration-300 group-hover:grayscale-0"
                   />
                 ) : (
-                  <span class="font-[family-name:var(--font-titulos)] font-semibold text-texto-2">
+                  <span class="font-[family-name:var(--font-titulos)] font-semibold text-texto-3 transition-colors duration-300 group-hover:text-texto">
                     {c.nombre}
                   </span>
                 );
                 return (
                   <li class="flex flex-col items-center gap-1.5">
                     {c.url ? (
-                      <a href={c.url} target="_blank" rel="noopener" class="logo-chip group">
+                      <a href={c.url} target="_blank" rel="noopener" class="group">
                         {contenido}
                       </a>
                     ) : (
-                      <span class="logo-chip group">{contenido}</span>
+                      <span class="group">{contenido}</span>
                     )}
                     <span class="pequeno text-texto-3 md:sr-only" aria-hidden="true">
                       {c.nombre}
@@ -59,9 +57,7 @@ const MUESTRA = [
               })
             : MUESTRA.map((rubro) => (
                 <li class="flex flex-col items-center gap-1.5">
-                  <span class="logo-chip">
-                    <span class="pendiente">{rubro}</span>
-                  </span>
+                  <span class="pendiente flex h-12 items-center">{rubro}</span>
                 </li>
               ))}
         </Marquee>
@@ -71,23 +67,11 @@ const MUESTRA = [
 }
 
 <style is:global>
-  .logo-chip {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 4rem;
-    min-width: 4rem;
-    padding-inline: 1.25rem;
-    border: 1px solid var(--color-linea);
-    border-radius: var(--radius-praxia);
-    background-color: var(--color-surface);
-    transition:
-      border-color 150ms ease,
-      background-color 150ms ease;
-  }
-
-  a.logo-chip:hover {
-    border-color: var(--color-linea-viva);
-    background-color: var(--color-surface-2);
+  .logo-suelto {
+    display: block;
+    height: 2.75rem;
+    width: auto;
+    max-width: 9rem;
+    object-fit: contain;
   }
 </style>
