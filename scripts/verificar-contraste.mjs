@@ -12,11 +12,11 @@
  */
 
 const PALETA = {
-  void: '#07091A',
-  surface: '#0E1025',
-  surface2: '#151832',
-  linea: '#202241',
-  lineaViva: '#5F62B4',
+  void: '#07070B',
+  surface: '#0D0E14',
+  surface2: '#15161E',
+  linea: '#1F202E',
+  lineaViva: '#547CFF',
   texto: '#E8ECF4',
   texto2: '#8A96AC',
   texto3: '#7B8BAB',

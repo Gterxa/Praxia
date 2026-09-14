@@ -8,17 +8,18 @@
 
    Para revertir al tema claro anterior, reemplaza este archivo. Nada más.
 
-   Superficies (sep 2026): el navy neutro anterior se retiró. Los colores del
-   shader VÓRTICE del hero (rampa "atardecer" más abajo) SON los colores de
-   Praxia, así que --void/--surface/--surface-2/--linea/--linea-viva ya no
-   son un gris-azul genérico: están tintados al mismo tono que --color-noche
-   / --color-noche-profundo (~231-238°), derivados con
-   scripts/verificar-contraste.mjs para no perder ningún par WCAG AA:
-
-   · --linea-viva a 238°/36%/54% (#5F62B4) da 3.48:1 sobre --surface y
-     3.66:1 sobre --void — el mínimo 3:1 de WCAG 1.4.11 para borde de campo.
-   · --texto-3 sigue en #7B8BAB (4.51:1 sobre el peor de sus tres fondos):
-     ese ajuste es anterior y sigue vigente sobre las superficies nuevas.
+   Superficies (sep 2026, dos pasadas): el navy neutro original se retiró.
+   Primera pasada tiñó --void/--surface/--surface-2/--linea al tono de
+   --color-noche (~231-238°) — Tony la vio y seguía leyendo "navy": una
+   superficie oscura pero saturada igual lee como azul apagado, no como
+   negro. Segunda pasada (la vigente): las superficies bajan a casi-negro
+   (saturación ~18-24%, luminosidad 3.5-15%, prácticamente sin matiz
+   perceptible) y el azul de marca se concentra donde debe verse como color
+   de verdad, no como fondo — --linea-viva, ahora #547CFF, bien saturado y
+   vívido en vez de un azul-gris. El naranja (--color-brasa) y el resto de
+   la rampa "atardecer" siguen intactos: viven en el shader del hero, los
+   botones y los degradados de texto. Re-derivado con
+   scripts/verificar-contraste.mjs, 29/29 pares WCAG AA en verde.
    ========================================================================== */
 
 @theme {
@@ -26,13 +27,13 @@
      Ojo al revertir: `<meta name="theme-color">` en Layout.astro no acepta una
      variable CSS, así que --void está repetido ahí a mano. Es el único color
      hardcodeado del proyecto, y hay que cambiarlo junto con este. */
-  --color-void: #07091a;
-  --color-surface: #0e1025;
-  --color-surface-2: #151832;
+  --color-void: #07070b;
+  --color-surface: #0d0e14;
+  --color-surface-2: #15161e;
 
   /* --- Líneas --- */
-  --color-linea: #202241;
-  --color-linea-viva: #5f62b4;
+  --color-linea: #1f202e;
+  --color-linea-viva: #547cff;
 
   /* --- Texto. Nunca blanco puro: produce halación sobre fondo oscuro. --- */
   --color-texto: #e8ecf4;
@@ -111,23 +112,15 @@
   /* --- Alto del hero. Un solo valor, consumido por HeroHome.astro y por el
      banco de pruebas (pruebas/hero.astro), para que no vuelvan a divergir.
 
-     Es un PISO (min-height), no una altura fija: en las composiciones donde
-     el texto es más alto (p. ej. "sangre" con tipografía enorme) la sección
-     crece sola para no recortar nada; acá solo se fija cuánto mide cuando el
-     contenido es corto y no hay nada que lo obligue a estirarse.
-
-     Antes esto era min-height:100svh + justify-content:center, y el error
-     estaba ahí: con un piso igual al viewport completo, cualquier contenido
-     más corto que la pantalla deja un sobrante que centrar solo reparte
-     (mitad arriba, mitad abajo), y en pantallas altas ese sobrante es
-     enorme — 250px o más de cada lado, solo fondo, nada de contenido. El
-     fondo (los shaders de fondos-hero.ts) sí debe ocupar toda la sección
-     igual: sigue siendo `inset:0` sobre este contenedor. Lo que cambia es
-     que el contenedor ya no se infla a fuerza a llenar el monitor: clamp()
-     lo ata a una franja razonable (82vh) con piso y techo, así el sobrante
-     alrededor del texto es chico en cualquier pantalla, sin dejar de ser un
-     fondo grande e inmersivo. */
-  --hero-alto: clamp(34rem, 82vh, 46rem);
+     Es la primera pantalla completa, header incluido: el hero se mete debajo
+     del header con un margin-top negativo (ver --alto-header en
+     Header.astro) y el fondo (los shaders de fondos-hero.ts) cubre esa
+     franja también, así que el header flota sobre el fondo animado en vez de
+     dejar un hueco encima. Sigue siendo un PISO (min-height): en
+     composiciones donde el texto es más alto (p. ej. "sangre") la sección
+     crece sola para no recortar nada. `svh` en vez de `vh` para que la barra
+     de direcciones del navegador móvil no la haga saltar al hacer scroll. */
+  --hero-alto: 100svh;
 
   /* --- Medida de línea --- */
   --container-medida: 38rem;
