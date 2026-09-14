@@ -7,9 +7,9 @@ const ruta = Astro.url.pathname.replace(/\/$/, '') || '/';
 const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
 ---
 
-<header class="sticky top-0 z-40 px-4 pt-4 pointer-events-none md:px-6 md:pt-[18px]">
+<header class="sticky top-0 z-40 px-4 pt-(--header-aire) pointer-events-none md:px-6">
   <div class="contenedor max-w-[68rem]! px-0!">
-    <div class="vidrio pointer-events-auto relative flex h-14 items-center justify-between gap-4 rounded-pill px-3 pr-2 md:h-16 md:px-5 md:pr-3">
+    <div class="vidrio pointer-events-auto relative flex h-(--header-pill) items-center justify-between gap-4 rounded-pill px-3 pr-2 md:px-5 md:pr-3">
       <a href="/" class="rounded-sm py-1 pl-1" aria-label="Praxia, ir al inicio">
         <Logo />
       </a>
@@ -77,6 +77,24 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
 </header>
 
 <style>
+  /* Alto real del header, expuesto como variable: HeroHome.astro y el banco
+     de pruebas lo usan para meter el hero debajo del header (margin-top
+     negativo) sin duplicar estos números a mano y arriesgarse a que
+     diverjan. --alto-header = aire por arriba + alto de la pill. */
+  :global(:root) {
+    --header-aire: 1rem; /* antes pt-4 */
+    --header-pill: 3.5rem; /* antes h-14 */
+    --alto-header: calc(var(--header-aire) + var(--header-pill));
+  }
+
+  /* md de Tailwind (48rem), sin redefinir en tokens.css. */
+  @media (min-width: 48rem) {
+    :global(:root) {
+      --header-aire: 1.125rem; /* antes md:pt-[18px] */
+      --header-pill: 4rem; /* antes md:h-16 */
+    }
+  }
+
   /* Subrayado que crece desde la izquierda: hover y página activa. */
   .nav-enlace {
     position: relative;

@@ -243,16 +243,20 @@ const FICHA = [
 <style>
   .banco {
     position: relative;
-    /* Mismo token que HeroHome.astro (--hero-alto, en tokens.css): un piso
-       de altura pensado para el contenido, no el viewport completo. El
-       padding inferior queda un poco más alto que el de HeroHome porque acá
-       además flota la barra de controles (position:fixed) sobre el borde
-       inferior. */
+    /* Mismo criterio que HeroHome.astro: se mete debajo del header
+       (margin-top negativo por --alto-header, en Header.astro) para que el
+       fondo llegue hasta el borde superior de la ventana y el header flote
+       encima. --hero-alto (tokens.css) = 100svh: la primera pantalla
+       completa, header incluido. El padding inferior queda un poco más alto
+       que el de HeroHome porque acá además flota la barra de controles
+       (position:fixed) sobre el borde inferior. */
+    margin-top: calc(-1 * var(--alto-header));
     min-height: var(--hero-alto);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-block: 3rem 5rem;
+    padding-top: calc(var(--alto-header) + 3rem);
+    padding-bottom: 5rem;
     overflow: clip;
   }
 
@@ -263,8 +267,8 @@ const FICHA = [
     height: 100%;
     display: block;
     pointer-events: none;
-    -webkit-mask-image: linear-gradient(transparent 0%, #000 7%, #000 86%, transparent 100%);
-    mask-image: linear-gradient(transparent 0%, #000 7%, #000 86%, transparent 100%);
+    -webkit-mask-image: linear-gradient(#000 0%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(#000 0%, #000 86%, transparent 100%);
   }
 
   /* Los tres lienzos ocupan el mismo hueco: solo se enseña el del fondo activo.
@@ -338,10 +342,17 @@ const FICHA = [
     pointer-events: none;
   }
 
-  /* Texto centrado: el velo se concentra donde está el bloque. */
+  /* Texto centrado: el velo se concentra donde está el bloque. El centro baja
+     media altura de header, igual que en HeroHome.astro: el contenido ya no
+     está centrado en toda la caja (el padding-top del header lo corre hacia
+     abajo). */
   [data-composicion='centro'] .banco__velo,
   [data-composicion='tarjeta'] .banco__velo {
-    background: radial-gradient(58% 46% at 50% 46%, rgb(4 8 20 / 0.74), rgb(4 8 20 / 0) 72%);
+    background: radial-gradient(
+      58% 46% at 50% calc(46% + var(--alto-header) / 2),
+      rgb(4 8 20 / 0.74),
+      rgb(4 8 20 / 0) 72%
+    );
   }
 
   /* Texto a la izquierda: el velo baja en diagonal y deja limpio el lado
