@@ -8,14 +8,17 @@
 
    Para revertir al tema claro anterior, reemplaza este archivo. Nada más.
 
-   Dos valores se apartan de la especificación original, y por una razón
-   medible — `npm run contraste` los verifica en cada build:
+   Superficies (sep 2026): el navy neutro anterior se retiró. Los colores del
+   shader VÓRTICE del hero (rampa "atardecer" más abajo) SON los colores de
+   Praxia, así que --void/--surface/--surface-2/--linea/--linea-viva ya no
+   son un gris-azul genérico: están tintados al mismo tono que --color-noche
+   / --color-noche-profundo (~231-238°), derivados con
+   scripts/verificar-contraste.mjs para no perder ningún par WCAG AA:
 
-   · --texto-3 era #5C6880 y daba 2.76:1 sobre --surface-2. Aclarado a
-     #7B8BAB llega a 4.51:1 sobre el peor de sus tres fondos.
-   · --linea-viva era #3D4A66 y daba 1.96:1. Como también dibuja el borde de
-     los campos del formulario, necesita 3:1 (WCAG 1.4.11). #54668C da 3.02:1.
-     Los divisores decorativos siguen usando --linea, que no necesita umbral.
+   · --linea-viva a 238°/36%/54% (#5F62B4) da 3.48:1 sobre --surface y
+     3.66:1 sobre --void — el mínimo 3:1 de WCAG 1.4.11 para borde de campo.
+   · --texto-3 sigue en #7B8BAB (4.51:1 sobre el peor de sus tres fondos):
+     ese ajuste es anterior y sigue vigente sobre las superficies nuevas.
    ========================================================================== */
 
 @theme {
@@ -23,13 +26,13 @@
      Ojo al revertir: `<meta name="theme-color">` en Layout.astro no acepta una
      variable CSS, así que --void está repetido ahí a mano. Es el único color
      hardcodeado del proyecto, y hay que cambiarlo junto con este. */
-  --color-void: #0a0f1c;
-  --color-surface: #131a2b;
-  --color-surface-2: #1c2438;
+  --color-void: #07091a;
+  --color-surface: #0e1025;
+  --color-surface-2: #151832;
 
   /* --- Líneas --- */
-  --color-linea: #2a3348;
-  --color-linea-viva: #54668c;
+  --color-linea: #202241;
+  --color-linea-viva: #5f62b4;
 
   /* --- Texto. Nunca blanco puro: produce halación sobre fondo oscuro. --- */
   --color-texto: #e8ecf4;
