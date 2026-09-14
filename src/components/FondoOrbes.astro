@@ -1,13 +1,9 @@
 ---
 /**
- * Fondo global fijo: negro absoluto con los tres orbes de la rampa
- * "atardecer" (azul frío, violeta/magenta de bisagra, coral/sol cálido) más
- * brillantes que la versión original — sin grano, sin grilla de puntos.
- * Pedido de Tony, sep 2026, en tres pasadas: "negro granular" → "negro
- * absoluto con matices azules" → "pero azules Y naranjas brillantes como
- * teníamos antes". Esta es esa tercera pasada: mismo layout que el
- * FondoOrbes original (ver historial), sobre --color-void ahora casi-negro
- * en vez del navy de antes, y con más opacidad para que el color se note.
+ * Fondo global fijo: negro absoluto con dos orbes — azul frío arriba a la
+ * izquierda, coral/sol cálido abajo a la derecha. Sin grano, sin grilla,
+ * sin violeta/magenta ("ojo que solo azul y naranja no morado" — el orbe-2
+ * de bisagra que traía el diseño original se sacó entero, no se recoloreó).
  *
  * Vive detrás de todo (`z-index: 0`), `Layout.astro` lo monta una sola vez
  * y cada `<section>` que quiera dejarlo ver de fondo usa un fondo
@@ -20,7 +16,6 @@
 
 <div class="fondo-orbes" aria-hidden="true">
   <div class="orbe orbe-1"></div>
-  <div class="orbe orbe-2"></div>
   <div class="orbe orbe-3"></div>
 </div>
 
@@ -40,7 +35,7 @@
     filter: blur(90px);
   }
 
-  /* Extremo frío de la rampa, arriba a la izquierda. */
+  /* Azul frío, arriba a la izquierda. */
   .orbe-1 {
     top: -18%;
     left: -8%;
@@ -50,17 +45,7 @@
     animation: deriva-1 20s ease-in-out infinite;
   }
 
-  /* Violeta/magenta, a media altura: la bisagra entre frío y cálido. */
-  .orbe-2 {
-    top: 32%;
-    left: -16%;
-    width: 38rem;
-    height: 38rem;
-    background: radial-gradient(circle, rgb(74 33 120 / 0.5), rgb(74 33 120 / 0) 68%);
-    animation: deriva-2 24s ease-in-out infinite;
-  }
-
-  /* Coral/sol, abajo a la derecha: el remate cálido. */
+  /* Coral/sol cálido, abajo a la derecha. */
   .orbe-3 {
     bottom: -20%;
     right: -14%;
@@ -77,16 +62,6 @@
     }
     50% {
       transform: translate(2.5rem, -1.75rem) scale(1.1);
-    }
-  }
-
-  @keyframes deriva-2 {
-    0%,
-    100% {
-      transform: translate(0, 0) scale(1);
-    }
-    50% {
-      transform: translate(-3rem, 2.5rem) scale(0.94);
     }
   }
 
