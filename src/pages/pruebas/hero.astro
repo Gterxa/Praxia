@@ -80,7 +80,7 @@ const HEROS = [
   { id: 'anillos', nombre: 'Liquid Rings', fondo: 'anillos', composicion: 'centro', copy: 'validacion' },
   { id: 'vortice', nombre: 'Shader Clock', fondo: 'vortice', composicion: 'sangre', copy: 'plazo' },
   { id: 'tunel', nombre: 'Tunnel Hero', fondo: 'tunel', composicion: 'centro', copy: 'actual' },
-  { id: 'olas', nombre: 'Waves', fondo: 'olas', composicion: 'centro', copy: 'actual' },
+  { id: 'olas', nombre: 'Olas', fondo: 'olas', composicion: 'centro', copy: 'actual' },
   { id: 'cortina', nombre: 'Aurora', fondo: 'cortina', composicion: 'sangre', copy: 'plazo' },
 ] as const;
 
@@ -159,50 +159,73 @@ const FICHA = [
     </div>
   </section>
 
-  <!-- La barrita -->
+  <!-- La barrita. Desde 768px son pills (.barra__pills); debajo, cada grupo
+       colapsa a un <select> nativo (.barra__select) — con 29 botones repartidos
+       en 4 grupos, un <select> es la única forma que no se desborda del
+       viewport sin importar cuántos fondos más se agreguen después. -->
   <div class="barra" id="barra">
     <div class="barra__grupo" data-eje="hero">
       <span class="barra__etiqueta mono">Hero</span>
-      {
-        HEROS.map((h) => (
-          <button type="button" class="barra__boton" data-valor={h.id} aria-pressed={false}>
-            {h.nombre}
-          </button>
-        ))
-      }
+      <div class="barra__pills">
+        {
+          HEROS.map((h) => (
+            <button type="button" class="barra__boton" data-valor={h.id} aria-pressed={false}>
+              {h.nombre}
+            </button>
+          ))
+        }
+      </div>
+      <select class="barra__select mono" data-eje="hero" aria-label="Hero">
+        {HEROS.map((h) => <option value={h.id}>{h.nombre}</option>)}
+      </select>
     </div>
 
     <div class="barra__grupo" data-eje="fondo">
       <span class="barra__etiqueta mono">Fondo</span>
-      {
-        FONDOS.map((f, i) => (
-          <button type="button" class="barra__boton" data-valor={f.id} aria-pressed={i === 0}>
-            {f.nombre}
-          </button>
-        ))
-      }
+      <div class="barra__pills">
+        {
+          FONDOS.map((f, i) => (
+            <button type="button" class="barra__boton" data-valor={f.id} aria-pressed={i === 0}>
+              {f.nombre}
+            </button>
+          ))
+        }
+      </div>
+      <select class="barra__select mono" data-eje="fondo" aria-label="Fondo">
+        {FONDOS.map((f) => <option value={f.id}>{f.nombre}</option>)}
+      </select>
     </div>
 
     <div class="barra__grupo" data-eje="composicion">
       <span class="barra__etiqueta mono">Composición</span>
-      {
-        COMPOSICIONES.map((c, i) => (
-          <button type="button" class="barra__boton" data-valor={c.id} aria-pressed={i === 0}>
-            {c.nombre}
-          </button>
-        ))
-      }
+      <div class="barra__pills">
+        {
+          COMPOSICIONES.map((c, i) => (
+            <button type="button" class="barra__boton" data-valor={c.id} aria-pressed={i === 0}>
+              {c.nombre}
+            </button>
+          ))
+        }
+      </div>
+      <select class="barra__select mono" data-eje="composicion" aria-label="Composición">
+        {COMPOSICIONES.map((c) => <option value={c.id}>{c.nombre}</option>)}
+      </select>
     </div>
 
     <div class="barra__grupo" data-eje="copy">
       <span class="barra__etiqueta mono">Copy</span>
-      {
-        COPYS.map((c, i) => (
-          <button type="button" class="barra__boton" data-valor={c.id} aria-pressed={i === 0}>
-            {c.nombre}
-          </button>
-        ))
-      }
+      <div class="barra__pills">
+        {
+          COPYS.map((c, i) => (
+            <button type="button" class="barra__boton" data-valor={c.id} aria-pressed={i === 0}>
+              {c.nombre}
+            </button>
+          ))
+        }
+      </div>
+      <select class="barra__select mono" data-eje="copy" aria-label="Copy">
+        {COPYS.map((c) => <option value={c.id}>{c.nombre}</option>)}
+      </select>
     </div>
 
     <p class="barra__combo mono" id="barra-combo">esfera · centro · actual</p>
@@ -539,6 +562,27 @@ const FICHA = [
     gap: 0.375rem;
   }
 
+  .barra__pills {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  /* Equivalente en <select> de cada grupo de pills — oculto salvo en el
+     media query de abajo, que lo cambia por las pills en pantallas chicas. */
+  .barra__select {
+    display: none;
+    width: 100%;
+    padding: 0.5rem 0.625rem;
+    border-radius: var(--radius-praxia);
+    border: 1px solid var(--color-linea-viva);
+    background-color: var(--color-surface-2);
+    color: var(--color-texto);
+    font-family: var(--font-titulos);
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
   .barra__etiqueta {
     color: var(--color-texto-3);
     margin-right: 0.25rem;
@@ -584,6 +628,45 @@ const FICHA = [
       width: auto;
       border-left: 1px solid var(--color-linea);
       padding-left: 1.25rem;
+    }
+  }
+
+  /* Debajo de 768px las pills se desbordan (el grupo Fondo por sí solo ya
+     tiene más botones que ancho tiene un teléfono, y un grupo no envuelve
+     internamente) — la barra pasa de píldora flotante a tarjeta apilada con
+     un <select> por eje, que nunca se desborda sin importar cuántos fondos
+     más se sumen. */
+  @media (max-width: 47.9375rem) {
+    .barra {
+      left: 0.75rem;
+      right: 0.75rem;
+      bottom: 0.75rem;
+      transform: none;
+      max-width: none;
+      flex-direction: column;
+      align-items: stretch;
+      border-radius: var(--radius-tarjeta);
+      padding: 1rem 1.125rem;
+    }
+
+    .barra__grupo {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .barra__pills {
+      display: none;
+    }
+
+    .barra__select {
+      display: block;
+    }
+
+    .barra__combo {
+      border-top: 1px solid var(--color-linea);
+      padding-top: 0.625rem;
     }
   }
 </style>
@@ -729,11 +812,20 @@ const FICHA = [
     else mando?.cambiar(valor as Fondo);
   }
 
-  /** Deja marcado el botón que corresponde en el grupo de ese eje. */
+  /**
+   * Deja marcado el valor que corresponde en el grupo de ese eje — tanto en
+   * las pills (aria-pressed) como en su <select> equivalente, así cambiar
+   * por un lado no deja el otro desincronizado si la pantalla cambia de
+   * ancho a mitad de sesión.
+   */
   function marcar(eje: string, valor: string) {
     barra
       ?.querySelectorAll<HTMLElement>(`.barra__grupo[data-eje='${eje}'] .barra__boton`)
       .forEach((b) => b.setAttribute('aria-pressed', String(b.dataset['valor'] === valor)));
+    const select = barra?.querySelector<HTMLSelectElement>(
+      `.barra__grupo[data-eje='${eje}'] .barra__select`,
+    );
+    if (select) select.value = valor;
   }
 
   function pintarCombo() {
@@ -742,18 +834,9 @@ const FICHA = [
     }
   }
 
-  // --- La barrita ---
-  barra?.addEventListener('click', (evento) => {
-    const boton = (evento.target as HTMLElement).closest<HTMLButtonElement>('.barra__boton');
-    if (!boton || !banco) return;
-    const grupo = boton.closest<HTMLElement>('.barra__grupo');
-    const eje = grupo?.dataset['eje'];
-    const valor = boton.dataset['valor'];
-    if (!eje || !valor) return;
-
-    grupo
-      ?.querySelectorAll<HTMLButtonElement>('.barra__boton')
-      .forEach((b) => b.setAttribute('aria-pressed', String(b === boton)));
+  /** Lo que pasa al elegir un valor en un eje — venga de una pill o de un <select>. */
+  function aplicarEje(eje: string, valor: string) {
+    if (!banco) return;
 
     if (eje === 'hero') {
       const preset = HEROS[valor];
@@ -778,5 +861,27 @@ const FICHA = [
     }
 
     pintarCombo();
+  }
+
+  // --- La barrita: pills (click) y selects (change) llevan al mismo lugar ---
+  barra?.addEventListener('click', (evento) => {
+    const boton = (evento.target as HTMLElement).closest<HTMLButtonElement>('.barra__boton');
+    if (!boton) return;
+    const grupo = boton.closest<HTMLElement>('.barra__grupo');
+    const eje = grupo?.dataset['eje'];
+    const valor = boton.dataset['valor'];
+    if (!eje || !valor) return;
+
+    marcar(eje, valor);
+    aplicarEje(eje, valor);
+  });
+
+  barra?.querySelectorAll<HTMLSelectElement>('.barra__select').forEach((select) => {
+    select.addEventListener('change', () => {
+      const eje = select.dataset['eje'];
+      if (!eje) return;
+      marcar(eje, select.value);
+      aplicarEje(eje, select.value);
+    });
   });
 </script>
