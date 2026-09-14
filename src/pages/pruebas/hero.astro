@@ -57,6 +57,8 @@ const FONDOS = [
   { id: 'tunel', nombre: 'Túnel' },
   { id: 'olas', nombre: 'Olas' },
   { id: 'cortina', nombre: 'Cortina' },
+  { id: 'silk', nombre: 'Silk' },
+  { id: 'waves', nombre: 'Waves' },
 ] as const;
 
 const COMPOSICIONES = [
@@ -82,6 +84,8 @@ const HEROS = [
   { id: 'tunel', nombre: 'Tunnel Hero', fondo: 'tunel', composicion: 'centro', copy: 'actual' },
   { id: 'olas', nombre: 'Olas', fondo: 'olas', composicion: 'centro', copy: 'actual' },
   { id: 'cortina', nombre: 'Aurora', fondo: 'cortina', composicion: 'sangre', copy: 'plazo' },
+  { id: 'silk', nombre: 'Silk', fondo: 'silk', composicion: 'centro', copy: 'actual' },
+  { id: 'waves', nombre: 'Waves', fondo: 'waves', composicion: 'partido', copy: 'validacion' },
 ] as const;
 
 const FICHA = [
@@ -105,6 +109,10 @@ const FICHA = [
     <canvas id="banco-olas" class="banco__calor banco__olas" aria-hidden="true"></canvas>
     {/* Los anillos son three.js y necesitan su propio contexto WebGL. */}
     <canvas id="banco-anillos" class="banco__calor banco__anillos" aria-hidden="true"></canvas>
+    {/* Silk y Waves (fondo-generador.ts) empaquetan sus uniformes distinto al
+        resto de este archivo — comparten un contexto WebGL propio entre los
+        dos, separado del de banco-calor. */}
+    <canvas id="banco-generador" class="banco__calor banco__generador" aria-hidden="true"></canvas>
     <div class="banco__estrellas" id="banco-estrellas" aria-hidden="true"></div>
     {/* Velo: el copy tiene que leerse encima de CUALQUIER fondo, y varios son
         claros. Va entre el fondo y el texto, y sigue a la composición. */}
@@ -264,19 +272,24 @@ const FICHA = [
      paso el 2D deja de dibujar porque su IntersectionObserver lo pausa. */
   .banco__flujo,
   .banco__olas,
-  .banco__anillos {
+  .banco__anillos,
+  .banco__generador {
     display: none;
   }
   [data-fondo='flujo'] .banco__flujo,
   [data-fondo='olas'] .banco__olas,
-  [data-fondo='anillos'] .banco__anillos {
+  [data-fondo='anillos'] .banco__anillos,
+  [data-fondo='silk'] .banco__generador,
+  [data-fondo='waves'] .banco__generador {
     display: block;
   }
   /* El :not importa: cada lienzo propio también lleva .banco__calor para
      heredar posición y máscara, y sin esto esta misma regla lo apagaría. */
   [data-fondo='flujo'] .banco__calor:not(.banco__flujo),
   [data-fondo='olas'] .banco__calor:not(.banco__olas),
-  [data-fondo='anillos'] .banco__calor:not(.banco__anillos) {
+  [data-fondo='anillos'] .banco__calor:not(.banco__anillos),
+  [data-fondo='silk'] .banco__calor:not(.banco__generador),
+  [data-fondo='waves'] .banco__calor:not(.banco__generador) {
     display: none;
   }
 
@@ -288,7 +301,9 @@ const FICHA = [
   [data-fondo='flujo'] .banco__estrellas,
   [data-fondo='tunel'] .banco__estrellas,
   [data-fondo='olas'] .banco__estrellas,
-  [data-fondo='cortina'] .banco__estrellas {
+  [data-fondo='cortina'] .banco__estrellas,
+  [data-fondo='silk'] .banco__estrellas,
+  [data-fondo='waves'] .banco__estrellas {
     display: none;
   }
 
@@ -675,6 +690,7 @@ const FICHA = [
   import { montarFondo, paletaDeTokens, type Fondo } from '../../scripts/fondos-hero';
   import { montarFlujo } from '../../scripts/fondo-flujo';
   import { montarOlas } from '../../scripts/fondo-olas';
+  import { montarGenerador, crearRecetaSilk, crearRecetaWaves, type MandoGenerador } from '../../scripts/fondo-generador';
 
   const banco = document.getElementById('banco');
   const barra = document.getElementById('barra');
@@ -683,6 +699,7 @@ const FICHA = [
   const lienzoFlujo = document.getElementById('banco-flujo') as HTMLCanvasElement | null;
   const lienzoOlas = document.getElementById('banco-olas') as HTMLCanvasElement | null;
   const lienzoAnillos = document.getElementById('banco-anillos') as HTMLCanvasElement | null;
+  const lienzoGenerador = document.getElementById('banco-generador') as HTMLCanvasElement | null;
   const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // --- Estrellas, con semilla fija para que no bailen entre cargas. ---
@@ -756,6 +773,19 @@ const FICHA = [
   }
 
   /**
+   * Silk y Waves comparten un solo mando (mismo contexto WebGL, receta
+   * distinta): cambiar entre los dos recompila el fragment shader sobre el
+   * mismo canvas, igual que hace `mando.cambiar()` para el resto de fondos.
+   */
+  let generador: MandoGenerador | null = null;
+  function pedirGenerador(cual: 'silk' | 'waves') {
+    if (!lienzoGenerador) return;
+    const receta = cual === 'silk' ? crearRecetaSilk(paleta) : crearRecetaWaves(paleta);
+    if (generador) generador.cambiar(receta);
+    else generador = montarGenerador(lienzoGenerador, receta, reducido);
+  }
+
+  /**
    * Los anillos arrastran three.js: import dinámico, y solo la primera vez que
    * se piden. Mientras no se elijan, ese chunk no se descarga.
    */
@@ -799,6 +829,8 @@ const FICHA = [
     tunel: { fondo: 'tunel', composicion: 'centro', copy: 'actual' },
     olas: { fondo: 'olas', composicion: 'centro', copy: 'actual' },
     cortina: { fondo: 'cortina', composicion: 'sangre', copy: 'plazo' },
+    silk: { fondo: 'silk', composicion: 'centro', copy: 'actual' },
+    waves: { fondo: 'waves', composicion: 'partido', copy: 'validacion' },
   };
 
   function aplicarFondo(valor: string) {
@@ -807,6 +839,7 @@ const FICHA = [
     if (valor === 'flujo') pedirFlujo();
     else if (valor === 'olas') pedirOlas();
     else if (valor === 'anillos') pedirAnillos();
+    else if (valor === 'silk' || valor === 'waves') pedirGenerador(valor);
     // El WebGL sigue con el shader anterior mientras el flujo u olas están
     // arriba: no se destruye para no perder el reloj ni recompilar al volver.
     else mando?.cambiar(valor as Fondo);

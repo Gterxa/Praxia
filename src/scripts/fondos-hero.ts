@@ -746,7 +746,7 @@ const RESPALDO: ColoresHero = {
  * antes de que esa hoja esté aplicada, `getPropertyValue` devuelve "" y los
  * uniformes quedarían en NaN, que en pantalla es un hero completamente negro.
  */
-function hexAVec3(hex: string, respaldo: string): [number, number, number] {
+export function hexAVec3(hex: string, respaldo: string): [number, number, number] {
   const limpio = (hex || '').trim().replace('#', '');
   const valido = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(limpio)
     ? limpio
