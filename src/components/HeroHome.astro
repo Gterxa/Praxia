@@ -1,18 +1,26 @@
 ---
 /**
- * Hero de la home. Tres capas, de atrás hacia adelante:
+ * Hero de la home. Cuatro capas, de atrás hacia adelante:
  *
- *  1. `#hero-calor`: el fondo, una esfera oscura con el filo al rojo vivo
- *     (shader WebGL propio, ver src/scripts/fondo-calor.ts).
+ *  1. `#hero-calor`: el fondo, el remolino VÓRTICE (shader WebGL propio,
+ *     ver src/scripts/fondos-hero.ts).
  *  2. Las estrellas, con semilla fija para que no bailen entre cargas.
  *  3. El texto.
+ *  4. El marquee de logos, réplica del que trae cosmoq.framer.website bajo
+ *     su hero: misma pista con desvanecido en los bordes y logos en
+ *     grayscale, acá con el componente Marquee que ya usa LogosClientes.
  *
  * El shader se degrada solo: si el navegador no puede darle contexto, el
  * canvas se oculta y quedan los orbes de FondoOrbes con el texto encima.
  * Nada se rompe y no hay nada que reparar.
  */
 import Icon from './Icon.astro';
+import Marquee from './Marquee.astro';
 import { waLink, CONTEXTO } from '../consts';
+
+/** Placeholder tipo "logo ipsum": no hay clientes destinados a esta franja
+    decorativa (los reales van en LogosClientes, más abajo en la página). */
+const LOGOS_DEMO = [1, 2, 3, 4, 5, 6];
 ---
 
 <section class="hero" id="top">
@@ -46,6 +54,24 @@ import { waLink, CONTEXTO } from '../consts';
         Ver el paquete
       </a>
     </div>
+  </div>
+
+  <div class="hero__logos" aria-label="Confían en nosotros">
+    <Marquee>
+      {
+        LOGOS_DEMO.map((n) => (
+          <li>
+            <img
+              src={`https://placehold.co/150x48?text=Logo+${n}`}
+              alt=""
+              width="150"
+              height="48"
+              loading="lazy"
+            />
+          </li>
+        ))
+      }
+    </Marquee>
   </div>
 </section>
 
@@ -119,6 +145,37 @@ import { waLink, CONTEXTO } from '../consts';
   .hero__contenido {
     position: relative;
     z-index: 2;
+  }
+
+  /* Réplica del marquee de cosmoq.framer.website bajo el hero: mismo tamaño
+     de logo (150x48), mismo grayscale, mismo desvanecido en los bordes (ese
+     ya lo trae Marquee). Ancho completo, no el max-width de .contenedor. */
+  .hero__logos {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    margin-top: 3rem;
+  }
+
+  .hero__logos :global(.marquee-grupo) {
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .hero__logos li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 48px;
+    overflow: hidden;
+  }
+
+  .hero__logos img {
+    width: 150px;
+    height: 48px;
+    object-fit: cover;
+    filter: grayscale(1);
   }
 
   .hero__titulo {
@@ -237,5 +294,5 @@ import { waLink, CONTEXTO } from '../consts';
 
   // --- El fondo. Los colores salen de los tokens de marca. ---
   const lienzo = document.getElementById('hero-calor') as HTMLCanvasElement | null;
-  if (lienzo) montarFondo(lienzo, 'esfera', paletaDeTokens(), reducido);
+  if (lienzo) montarFondo(lienzo, 'vortice', paletaDeTokens(), reducido);
 </script>
