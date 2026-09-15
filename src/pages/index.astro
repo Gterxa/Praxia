@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import HeroHome from '../components/HeroHome.astro';
 import LogosMarqueeCosmoq from '../components/LogosMarqueeCosmoq.astro';
+import ElHilo from '../components/ElHilo.astro';
 import PorQue from '../components/PorQue.astro';
 import Servicios from '../components/Servicios.astro';
 import Industrias from '../components/Industrias.astro';
@@ -25,6 +26,9 @@ const preguntasCortas = PREGUNTAS_FRECUENTES.slice(0, 6);
   <HeroHome />
 
   <LogosMarqueeCosmoq />
+
+  <!-- El re-hook: el nudo se desanuda con el scroll antes de entrar al argumento. -->
+  <ElHilo />
 
   <PorQue />
   <Servicios />

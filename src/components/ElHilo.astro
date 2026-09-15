@@ -1,0 +1,399 @@
+---
+/**
+ * El re-hook: "el hilo".
+ *
+ * Una sección alta con escena pegada (sticky). Al bajar, el nudo se desanuda
+ * hasta quedar recto y una sola frase acompaña cada momento. Sin botones,
+ * sin indicadores de paso, sin avance automático: el scroll es el control.
+ *
+ * El cordón es geometría real (un tubo de 320x32 caras siguiendo el
+ * recorrido del nudo), pintado con el look de "Liquid Crystal": brillo por
+ * inverso de la distancia al eje, mezcla aditiva para que los cruces se
+ * fundan, y una fase de color que deriva con el tiempo y con la posición en
+ * pantalla sobre la rampa "atardecer" de tokens.css. La forma del nudo no
+ * cambió: sigue siendo el ocho (4₁) de hilo-geometria.ts.
+ * Ver src/scripts/hilo-webgl.ts.
+ *
+ * Accesibilidad: el canvas es decorativo y el recorrido se describe en el
+ * aria-label. Sin JavaScript, sin WebGL o con prefers-reduced-motion, la
+ * sección colapsa a su alto natural y muestra el estado ordenado.
+ */
+---
+
+<section class="hilo" id="el-hilo" aria-labelledby="hilo-titulo">
+  <div class="hilo__escena">
+    <div
+      class="hilo__visual"
+      role="img"
+      aria-label="Un cordón cruza la pantalla de lado a lado. Al bajar, el nudo se abre hasta convertirse en un flujo continuo, como tus procesos al ordenarse y automatizarse."
+    >
+      <canvas id="hilo-lienzo" aria-hidden="true"></canvas>
+      <div class="hilo__luz" aria-hidden="true"></div>
+    </div>
+
+    <div class="contenedor hilo__capa">
+      <div class="hilo__copy">
+        <h2 id="hilo-titulo">
+          <span id="hilo-frase">Y tu negocio empieza a fluir.</span>
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* El alto es el recorrido: 310svh de scroll para fundir las masas. */
+  .hilo {
+    position: relative;
+    height: 310svh;
+    min-height: 1900px;
+    isolation: isolate;
+    background: var(--color-void);
+  }
+
+  .hilo__escena {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 540px;
+    overflow: clip;
+    /* Negro puro y plano. Sin degradados: cualquier velo de color hace que
+       la línea fina pierda contraste y ensucia el fondo. */
+    background: var(--color-void);
+  }
+
+  .hilo__visual {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .hilo__visual canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  /* El punto que recorre el hilo una vez ordenado. Nítido y chico: un
+     destello sobre la línea, no una lámpara. */
+  .hilo__luz {
+    position: absolute;
+    left: -1.5px;
+    top: -1.5px;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--color-sol);
+    box-shadow: 0 0 4px var(--color-brasa-alto);
+    opacity: 0;
+    will-change: transform;
+  }
+
+  .hilo__capa {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 22%;
+    z-index: 3;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .hilo__copy {
+    max-width: 700px;
+    margin-inline: auto;
+    will-change: transform, opacity;
+  }
+
+  /* min-height reserva las dos líneas: la frase cambia sin mover el bloque.
+     El velo detrás del texto lo despega del brillo del shader. */
+  .hilo__copy h2 {
+    font-family: var(--font-titulos);
+    font-size: clamp(30px, 3.2vw, 46px);
+    line-height: 1.22;
+    letter-spacing: -0.035em;
+    font-weight: 500;
+    min-height: 2.44em;
+    color: var(--color-texto);
+    text-wrap: balance;
+  }
+
+  /* Sin WebGL2 o con movimiento reducido: la sección no se estira. */
+  .hilo.hilo--quieto {
+    height: auto;
+    min-height: 0;
+  }
+
+  .hilo--quieto .hilo__escena {
+    position: relative;
+  }
+
+  @media (max-width: 760px) {
+    .hilo {
+      height: 290svh;
+      min-height: 1500px;
+    }
+    .hilo__capa {
+      top: 24%;
+    }
+    .hilo__copy {
+      max-width: 510px;
+    }
+    .hilo__copy h2 {
+      font-size: clamp(28px, 6.7vw, 38px);
+      line-height: 1.25;
+      min-height: 2.5em;
+      letter-spacing: -0.03em;
+    }
+    .hilo__luz {
+      width: 2.5px;
+      height: 2.5px;
+      left: -1.25px;
+      top: -1.25px;
+    }
+  }
+
+  @media (max-height: 600px) {
+    .hilo__escena {
+      min-height: 460px;
+    }
+    .hilo__capa {
+      top: 25%;
+    }
+    .hilo__copy h2 {
+      font-size: clamp(24px, 3.1vw, 32px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hilo {
+      height: auto !important;
+      min-height: 0 !important;
+    }
+    .hilo__escena {
+      position: relative !important;
+    }
+    .hilo__copy {
+      will-change: auto;
+    }
+  }
+</style>
+
+<noscript>
+  <style>
+    .hilo {
+      height: auto;
+      min-height: 0;
+    }
+    .hilo__escena {
+      position: relative;
+    }
+    .hilo__visual::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 60%;
+      height: 7px;
+      background: var(--degradado-atardecer);
+    }
+  </style>
+</noscript>
+
+<script>
+  import {
+    limitar,
+    suave,
+    puntoEn,
+    proyectar,
+    grosorHilo,
+    ETAPAS,
+    estadoCopy,
+  } from '../scripts/hilo-geometria';
+  import { crearRenderer, type MandoHilo } from '../scripts/hilo-webgl';
+  import { ORDEN_RAMPA, hexARgb, colorEn, PARADAS, type Rgb } from '../scripts/rampa-marca';
+  import { paletaDeTokens } from '../scripts/fondos-hero';
+
+  const seccion = document.querySelector<HTMLElement>('.hilo');
+  const lienzoInicial = document.getElementById('hilo-lienzo') as HTMLCanvasElement | null;
+
+  if (seccion && lienzoInicial) montarRehook(seccion, lienzoInicial);
+
+  function montarRehook(seccion: HTMLElement, lienzoInicial: HTMLCanvasElement) {
+    let lienzo = lienzoInicial;
+
+    // La rampa sale de tokens.css: el cordón no tiene colores propios, así
+    // que sigue al hero sin que haya que tocar el shader.
+    const paleta = paletaDeTokens();
+    const rampa: Rgb[] = ORDEN_RAMPA.map((clave) => hexARgb(paleta[clave]));
+
+    let volumen: MandoHilo | null = null;
+    let contexto2d: CanvasRenderingContext2D | null = null;
+    try {
+      volumen = crearRenderer(lienzo, rampa);
+    } catch {
+      volumen = null;
+    }
+
+    // Sin WebGL: el canvas se reemplaza (un contexto perdido no se recicla)
+    // y queda un trazado plano en Canvas 2D con la misma rampa.
+    if (!volumen) {
+      const reemplazo = lienzo.cloneNode(false) as HTMLCanvasElement;
+      lienzo.replaceWith(reemplazo);
+      lienzo = reemplazo;
+      contexto2d = lienzo.getContext('2d');
+    }
+
+    const escena = seccion.querySelector<HTMLElement>('.hilo__escena')!;
+    const visual = seccion.querySelector<HTMLElement>('.hilo__visual')!;
+    const copy = seccion.querySelector<HTMLElement>('.hilo__copy')!;
+    const frase = seccion.querySelector<HTMLElement>('#hilo-frase')!;
+    const luz = seccion.querySelector<HTMLElement>('.hilo__luz')!;
+
+    const preferencia = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let ancho = 1;
+    let alto = 1;
+    let avance = 0;
+    let destino = 0;
+    let etapaActiva = -1;
+    let pedido = 0;
+    let ultimoTiempo = 0;
+    let visible = true;
+    let quieto = preferencia.matches || !volumen;
+
+    function medir() {
+      const caja = visual.getBoundingClientRect();
+      ancho = Math.max(1, caja.width);
+      alto = Math.max(1, caja.height);
+      // Se limita el DPR: el coste está en reconstruir la malla, no en pintar.
+      const ratio = Math.min(window.devicePixelRatio || 1, ancho < 700 ? 1.75 : 1.5);
+      lienzo.width = Math.round(ancho * ratio);
+      lienzo.height = Math.round(alto * ratio);
+      if (contexto2d) contexto2d.setTransform(ratio, 0, 0, ratio, 0, 0);
+      volumen?.invalidar();
+      actualizarDestino();
+      dibujar(performance.now());
+    }
+
+    function actualizarDestino() {
+      if (quieto) {
+        avance = destino = 1;
+      } else {
+        const recorrido = Math.max(1, seccion.offsetHeight - escena.offsetHeight);
+        destino = limitar(-seccion.getBoundingClientRect().top / recorrido);
+      }
+      pedirCuadro();
+    }
+
+    function pedirCuadro() {
+      if (!pedido && visible && !document.hidden) pedido = requestAnimationFrame(cuadro);
+    }
+
+    function dibujar(tiempo: number) {
+      if (volumen) {
+        volumen.dibujar(ancho, alto, avance, tiempo / 1000);
+      } else if (contexto2d) {
+        contexto2d.clearRect(0, 0, ancho, alto);
+        const a = proyectar(puntoEn(0, 1), ancho, alto, 1);
+        const b = proyectar(puntoEn(1, 1), ancho, alto, 1);
+        const degradado = contexto2d.createLinearGradient(a.x, a.y, b.x, b.y);
+        for (const parada of PARADAS) {
+          const [r, g, bl] = colorEn(rampa, parada);
+          degradado.addColorStop(parada, `rgb(${r} ${g} ${bl})`);
+        }
+        // Tres pasadas en 'lighter': ancha y tenue, media, y el núcleo.
+        // Es la versión barata del brillo por inverso de la distancia; sin
+        // shader no hay forma de calcularlo por píxel.
+        contexto2d.save();
+        contexto2d.globalCompositeOperation = 'lighter';
+        contexto2d.strokeStyle = degradado;
+        contexto2d.lineCap = 'round';
+        const nucleo = grosorHilo(ancho);
+        for (const [factor, alfa] of [[9, 0.14], [4, 0.3], [1, 1]] as const) {
+          contexto2d.globalAlpha = alfa;
+          contexto2d.lineWidth = nucleo * factor;
+          contexto2d.beginPath();
+          contexto2d.moveTo(a.x, a.y);
+          contexto2d.lineTo(b.x, b.y);
+          contexto2d.stroke();
+        }
+        contexto2d.restore();
+      }
+
+      const estado = estadoCopy(avance);
+      if (estado.indice !== etapaActiva) {
+        etapaActiva = estado.indice;
+        frase.textContent = ETAPAS[etapaActiva];
+      }
+      copy.style.opacity = String(estado.opacidad);
+      copy.style.transform = `translate3d(0,${quieto ? 0 : estado.y}px,0)`;
+
+      const pulso = proyectar(puntoEn((tiempo / 4400) % 1, avance), ancho, alto, avance);
+      luz.style.transform = `translate3d(${pulso.x}px,${pulso.y}px,0)`;
+      luz.style.opacity = String(quieto ? 0 : suave(0.92, 0.99, avance));
+    }
+
+    function cuadro(tiempo: number) {
+      pedido = 0;
+      if (!visible || document.hidden) return;
+      const dt = Math.min(64, tiempo - (ultimoTiempo || tiempo));
+      ultimoTiempo = tiempo;
+      // Suavizado exponencial: el cordón persigue al scroll, no lo copia.
+      avance += (destino - avance) * (quieto ? 1 : 1 - Math.exp(-dt / 90));
+      if (Math.abs(destino - avance) < 0.0002) avance = destino;
+      dibujar(tiempo);
+      // Antes solo se pedía cuadro mientras el cordón se movía. Ahora el
+      // color deriva por su cuenta, así que la animación no para mientras la
+      // sección esté a la vista; el IntersectionObserver y `document.hidden`
+      // son los que la cortan. Con movimiento reducido no arranca nunca.
+      if (!quieto) pedirCuadro();
+    }
+
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        visible = entradas[0].isIntersecting;
+        if (visible) {
+          ultimoTiempo = 0;
+          actualizarDestino();
+        } else if (pedido) {
+          cancelAnimationFrame(pedido);
+          pedido = 0;
+        }
+      },
+      { threshold: 0 },
+    );
+    observador.observe(seccion);
+
+    new ResizeObserver(medir).observe(visual);
+    window.addEventListener('scroll', actualizarDestino, { passive: true });
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        ultimoTiempo = 0;
+        pedirCuadro();
+      }
+    });
+
+    const aplicarPreferencia = () => {
+      quieto = preferencia.matches || !volumen;
+      seccion.classList.toggle('hilo--quieto', quieto);
+      medir();
+    };
+    preferencia.addEventListener('change', aplicarPreferencia);
+
+    window.addEventListener('pagehide', () => {
+      if (pedido) cancelAnimationFrame(pedido);
+      pedido = 0;
+    });
+    window.addEventListener('pageshow', () => {
+      ultimoTiempo = 0;
+      medir();
+    });
+
+    aplicarPreferencia();
+  }
+</script>
