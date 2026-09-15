@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import HeroHome from '../components/HeroHome.astro';
 import LogosClientes from '../components/LogosClientes.astro';
+import CosmoqLogosDemo from '../components/CosmoqLogosDemo.astro';
 import Marquee from '../components/Marquee.astro';
 import PorQue from '../components/PorQue.astro';
 import Servicios from '../components/Servicios.astro';
@@ -24,6 +25,10 @@ const preguntasCortas = PREGUNTAS_FRECUENTES.slice(0, 6);
   contextoWhatsApp={CONTEXTO.home}
 >
   <HeroHome />
+
+  {/* TEMPORAL — copia literal del marquee de cosmoq, solo para comparar. Quitar antes de mergear a qa. */}
+  <p class="pequeno text-texto-3" style="text-align:center; padding-top:1rem;">↓ copia literal del marquee de cosmoq (referencia)</p>
+  <CosmoqLogosDemo />
 
   <LogosClientes />
 
