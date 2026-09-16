@@ -168,14 +168,14 @@ export const CLIENTES: readonly {
   url?: string;
 }[] = [
   { nombre: 'Universidad de Lima', logo: '/clientes/universidad-de-lima.jpg', ancho: 1280, alto: 720 },
-  { nombre: 'Pacífico', logo: '/clientes/pacifico.png', ancho: 1875, alto: 1277 },
-  { nombre: 'OCA Global', logo: '/clientes/oca-global.jpg', ancho: 1024, alto: 406 },
-  { nombre: 'Netprovider', logo: '/clientes/netprovider.png', ancho: 1420, alto: 251 },
+  { nombre: 'Pacífico', logo: '/clientes/procesados/pacifico.png', ancho: 1875, alto: 1277 },
+  { nombre: 'OCA Global', logo: '/clientes/procesados/oca-global.png', ancho: 756, alto: 184 },
+  { nombre: 'Netprovider', logo: '/clientes/procesados/netprovider.png', ancho: 1396, alto: 226 },
   { nombre: 'Maxiautos' },
   { nombre: 'Automotores Inka', logo: '/clientes/automotores-inka.png', ancho: 384, alto: 53 },
-  { nombre: 'Universidad César Vallejo', logo: '/clientes/ucv.jpg', ancho: 1701, alto: 995 },
-  { nombre: 'XS Peluquería', logo: '/clientes/xs-peluqueria.png', ancho: 263, alto: 185 },
-  { nombre: 'Colegio Duni', logo: '/clientes/colegio-duni.jpg', ancho: 1080, alto: 1080 },
+  { nombre: 'Universidad César Vallejo', logo: '/clientes/procesados/ucv.png', ancho: 1318, alto: 214 },
+  { nombre: 'XS Peluquería', logo: '/clientes/procesados/xs-peluqueria.png', ancho: 155, alto: 119 },
+  { nombre: 'Colegio Duni', logo: '/clientes/procesados/colegio-duni.png', ancho: 1080, alto: 1080 },
   { nombre: 'Outletcar', logo: '/clientes/outletcar.jpg', ancho: 150, alto: 150 },
 ];
 
