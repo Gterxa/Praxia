@@ -9,31 +9,47 @@
  * template de cosmoq (marcas genéricas de su banco de ejemplos), no
  * clientes reales de Praxia — ver nota en el mensaje de respuesta.
  *
- * Tamaño a 3x del original (150x48 → 450x144, gap y paso del keyframe
- * escalados igual) a pedido explícito.
+ * Los PNG originales traen cada marca centrada en un lienzo de 600x192
+ * con un padding transparente distinto por logo (de 179px a 453px de
+ * contenido real dentro del mismo canvas). Con una caja fija de 450x144 +
+ * object-fit:cover eso se traducía en gaps visuales dispares aunque el
+ * gap de CSS fuera uniforme. Se recortaron los PNG a su bbox real
+ * (public/cosmoq-demo/trimmed/, ver ancho/alto reales abajo) y ahora cada
+ * logo se muestra a una altura fija con ancho proporcional a su aspect
+ * ratio real — así el gap sí se percibe parejo.
  */
 const ARCHIVOS = [
-  'eTOvR4ZuGGQENAaE3zs5ZqZxtks.png',
-  'QvWxQDGRcrTJWGZp7OsUlI4k6w0.png',
-  'ZrGThO8Gp1y7Hoki1Dmhr0Flw6U.png',
-  'dTohPdySQSHpfv4TUIdRVoRdHBw.png',
-  'WzG2yfwdF7vdqrjvFu4j7tyJ3Gs.png',
-  'FkPCvWLJEloyx0AnJETPfPfMx4.png',
+  { f: 'eTOvR4ZuGGQENAaE3zs5ZqZxtks.png', w: 300, h: 120 },
+  { f: 'QvWxQDGRcrTJWGZp7OsUlI4k6w0.png', w: 429, h: 94 },
+  { f: 'ZrGThO8Gp1y7Hoki1Dmhr0Flw6U.png', w: 432, h: 96 },
+  { f: 'dTohPdySQSHpfv4TUIdRVoRdHBw.png', w: 228, h: 144 },
+  { f: 'WzG2yfwdF7vdqrjvFu4j7tyJ3Gs.png', w: 180, h: 138 },
+  { f: 'FkPCvWLJEloyx0AnJETPfPfMx4.png', w: 454, h: 108 },
 ];
+
+const ALTO = 144;
+const GAP = 48;
 
 // El original genera esto en cliente con JS (4 vueltas × 6 logos). Se
 // replica en build para no meter un <script> nuevo; el resultado es idéntico.
 const LOGOS = Array.from({ length: 4 }, () => ARCHIVOS).flat();
+
+// Distancia del keyframe: ancho de un set completo (6 logos escalados a
+// ALTO, manteniendo su aspect ratio real) + los 6 gaps entre ellos.
+const anchoSet = ARCHIVOS.reduce((acc, { w, h }) => acc + (w * ALTO) / h, 0) + ARCHIVOS.length * GAP;
 ---
 
-<div class="logos" aria-label="Trusted by">
+<div class="logos" aria-label="Trusted by" style={`--marquee-gap: ${GAP}px; --marquee-alto: ${ALTO}px; --marquee-distancia: ${anchoSet}px;`}>
   <div class="logos__track">
     <ul class="logos__list">
-      {LOGOS.map((f, i) => (
-        <li>
-          <img src={`/cosmoq-demo/${f}`} alt={`Logo ${(i % ARCHIVOS.length) + 1}`} width="450" height="144" loading="lazy" />
-        </li>
-      ))}
+      {LOGOS.map(({ f, w, h }, i) => {
+        const ancho = (w * ALTO) / h;
+        return (
+          <li style={`width: ${ancho}px;`}>
+            <img src={`/cosmoq-demo/trimmed/${f}`} alt={`Logo ${(i % ARCHIVOS.length) + 1}`} width={ancho} height={ALTO} loading="lazy" />
+          </li>
+        );
+      })}
     </ul>
   </div>
 </div>
@@ -63,7 +79,7 @@ const LOGOS = Array.from({ length: 4 }, () => ARCHIVOS).flat();
   .logos__list {
     display: flex;
     align-items: center;
-    gap: 96px;
+    gap: var(--marquee-gap);
     width: max-content;
     padding: 15px 0;
     animation: cosmoq-marquee 32s linear infinite;
@@ -72,18 +88,17 @@ const LOGOS = Array.from({ length: 4 }, () => ARCHIVOS).flat();
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 450px;
-    height: 144px;
-    overflow: hidden;
+    flex-shrink: 0;
+    height: var(--marquee-alto);
   }
   .logos__list img {
-    width: 450px;
-    height: 144px;
-    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
     filter: grayscale(1);
   }
   @keyframes cosmoq-marquee {
     from { transform: translateX(0); }
-    to { transform: translateX(calc(-6 * 546px)); }
+    to { transform: translateX(calc(-1 * var(--marquee-distancia))); }
   }
 </style>
