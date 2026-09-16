@@ -1,4 +1,6 @@
 ---
+import FondoShaderCanvas from './FondoShaderCanvas.astro';
+
 interface Props {
   /** Fondo de la sección. */
   fondo?: 'void' | 'surface' | 'acento';
@@ -7,21 +9,34 @@ interface Props {
 }
 const { fondo = 'void', id, class: clase = '' } = Astro.props;
 
+/**
+ * PRUEBA (sep 2026): "surface"/"acento" volvían a ser transparentes puras
+ * (ver commit de FondoOrbes) — antes eran gris, ahora Tony pidió marcarlas
+ * con el shader de gradiente naranja↔azul de cosmoq en vez de gris. "void"
+ * sigue transparente y deja ver solo el negro absoluto del fondo global.
+ */
 const fondos = {
-  // Transparente a propósito: deja ver el fondo global negro (FondoOrbes).
-  // Las tres variantes comparten el mismo negro absoluto: "surface" y
-  // "acento" solo aportaban gris antes, ahora únicamente marcan el límite
-  // de sección con una línea.
   void: '',
-  surface: 'border-y border-linea',
-  acento: '',
+  // Sin border-y: la línea divisoria cortaba el glow entre secciones
+  // consecutivas — se saca para que el color fluya de una a otra.
+  surface: 'seccion-glow',
+  acento: 'seccion-glow',
 } as const;
+
+const tieneGlow = fondo === 'surface' || fondo === 'acento';
 
 /** Con slot "aside", el contenido va en dos columnas y el aside se pega al scroll. */
 const tieneAside = Astro.slots.has('aside');
 ---
 
 <section id={id} class:list={['seccion', fondos[fondo], clase]}>
+  {
+    tieneGlow && (
+      <div class="seccion-glow-capa" aria-hidden="true">
+        <FondoShaderCanvas />
+      </div>
+    )
+  }
   <div class="contenedor">
     {
       tieneAside ? (
@@ -39,3 +54,30 @@ const tieneAside = Astro.slots.has('aside');
     }
   </div>
 </section>
+
+<style>
+  .seccion-glow {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .seccion-glow > .contenedor {
+    position: relative;
+    z-index: 1;
+  }
+
+  .seccion-glow-capa {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .seccion-glow-capa::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgb(0 0 0 / 0.5);
+  }
+</style>
