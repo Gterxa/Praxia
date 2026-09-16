@@ -1,8 +1,13 @@
 ---
 /**
  * Fondo global fijo: negro absoluto, sin orbes ni degradados (sep 2026,
- * tercera pasada — Tony pidió sacar todo brillo del fondo, incluidos los
- * orbes azul/coral de la pasada anterior).
+ * tercera pasada — Tony pidió sacar todo brillo del fondo).
+ *
+ * El shader de gradiente animado (ver `FondoShaderCanvas.astro`) NO va
+ * acá — va como fondo local de las secciones "surface"/"acento" (ver
+ * `Seccion.astro`), que es donde antes vivía el gris que se sacó. Esta
+ * capa global se queda negro puro para que esas secciones resalten por
+ * contraste.
  *
  * Vive detrás de todo (`z-index: 0`), `Layout.astro` lo monta una sola vez
  * y cada `<section>` que quiera dejarlo ver de fondo usa un fondo
