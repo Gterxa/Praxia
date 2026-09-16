@@ -5,6 +5,7 @@ import Seccion from '../components/Seccion.astro';
 import Icon from '../components/Icon.astro';
 import { CONTEXTO, waLink } from '../consts';
 import { INDUSTRIAS } from '../industrias';
+import { ruta } from '../rutas';
 
 // Endpoint del servicio de formularios. Ver .env.example y el README.
 const endpoint = import.meta.env['PUBLIC_FORM_ENDPOINT'] ?? '';
@@ -175,7 +176,7 @@ const TAMANOS = ['Solo yo', '2 a 10', '11 a 50', 'Más de 50'] as const;
               </dl>
               <p class="pequeno text-texto-2">
                 Usamos tus datos solo para contactarte por esta validación. Lee la
-                <a href="/privacidad" class="enlace">política de privacidad</a>.
+                <a href={ruta('/privacidad')} class="enlace">política de privacidad</a>.
               </p>
             </div>
 

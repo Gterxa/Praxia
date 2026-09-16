@@ -19,6 +19,7 @@
  * aspect ratio real es mucho más ancho que el de los placeholders de
  * cosmoq — con cover se veían las palabras cortadas a la mitad.
  */
+import { ruta } from '../rutas';
 const ARCHIVOS = [
   'mono/oca-global.png',
   'mono/ucv.png',
@@ -38,7 +39,7 @@ const LOGOS = Array.from({ length: 4 }, () => ARCHIVOS).flat();
     <ul class="logos__list">
       {LOGOS.map((f, i) => (
         <li>
-          <img src={`/clientes/${f}`} alt={`Logo cliente ${(i % ARCHIVOS.length) + 1}`} width="450" height="144" loading="lazy" />
+          <img src={ruta(`/clientes/${f}`)} alt={`Logo cliente ${(i % ARCHIVOS.length) + 1}`} width="450" height="144" loading="lazy" />
         </li>
       ))}
     </ul>

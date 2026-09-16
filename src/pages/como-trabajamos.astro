@@ -10,6 +10,7 @@ import CTAInline from '../components/CTAInline.astro';
 import CTABand from '../components/CTABand.astro';
 import { CONTEXTO } from '../consts';
 import metodo from '../assets/img/metodo.png';
+import { ruta } from '../rutas';
 
 const preguntas = [
   {
@@ -35,7 +36,7 @@ const preguntas = [
   {
     pregunta: '¿Y el resto de mis dudas?',
     respuesta:
-      'Están en <a class="enlace" href="/preguntas-frecuentes">preguntas frecuentes</a>: plazos, presupuesto, facturación y qué pasa si quieres dejar de trabajar con nosotros.',
+      `Están en <a class="enlace" href="${ruta('/preguntas-frecuentes')}">preguntas frecuentes</a>: plazos, presupuesto, facturación y qué pasa si quieres dejar de trabajar con nosotros.`,
   },
 ];
 ---

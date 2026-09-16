@@ -8,6 +8,7 @@ import Icon from './Icon.astro';
 import Seccion from './Seccion.astro';
 import SectionLabel from './SectionLabel.astro';
 import { waLink, CONTEXTO } from '../consts';
+import { ruta } from '../rutas';
 
 const PROMESAS = [
   'Precio y plazo estimados',
@@ -39,7 +40,7 @@ const PROMESAS = [
     </ul>
 
     <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-      <a href="/validar" class="boton boton-primario">Validemos en 15 minutos</a>
+      <a href={ruta('/validar')} class="boton boton-primario">Validemos en 15 minutos</a>
       <a href={waLink(CONTEXTO.cierre)} target="_blank" rel="noopener" class="boton boton-secundario">
         <Icon nombre="whatsapp" tamano={20} />
         WhatsApp

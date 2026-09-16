@@ -6,6 +6,7 @@
  * Las primeras 6 son las del rediseño "Praxia v2" (sep 2026). Las últimas 4
  * vienen del sitio anterior, reescritas al vocabulario de validación.
  */
+import { ruta } from './rutas';
 export const PREGUNTAS_FRECUENTES = [
   {
     pregunta: '¿Y si no funciona en mi rubro?',
@@ -53,6 +54,6 @@ export const PREGUNTAS_FRECUENTES = [
   {
     pregunta: '¿Mis datos están seguros?',
     respuesta:
-      'Te contamos dónde se guardan, quién accede y qué pasa si quieres borrarlos en <a class="enlace" href="/seguridad">la página de seguridad</a>.',
+      `Te contamos dónde se guardan, quién accede y qué pasa si quieres borrarlos en <a class="enlace" href="${ruta('/seguridad')}">la página de seguridad</a>.`,
   },
 ] as const;

@@ -2,6 +2,7 @@
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { SITE, waLink, CONTEXTO, EMAIL, mailtoLink } from '../consts';
+import { ruta } from '../rutas';
 
 const anio = new Date().getFullYear();
 ---
@@ -20,17 +21,17 @@ const anio = new Date().getFullYear();
         </h2>
         <ul class="mt-4 space-y-2.5">
           <li>
-            <a href="/que-puedes-automatizar" class="pequeno text-texto-2 hover:text-brasa hover:underline">
+            <a href={ruta('/que-puedes-automatizar')} class="pequeno text-texto-2 hover:text-brasa hover:underline">
               Automatización con IA
             </a>
           </li>
           <li>
-            <a href="/servicios#web" class="pequeno text-texto-2 hover:text-brasa hover:underline">
+            <a href={ruta('/servicios#web')} class="pequeno text-texto-2 hover:text-brasa hover:underline">
               Web, SEO y presencia local
             </a>
           </li>
           <li>
-            <a href="/servicios#seguridad" class="pequeno text-texto-2 hover:text-brasa hover:underline">
+            <a href={ruta('/servicios#seguridad')} class="pequeno text-texto-2 hover:text-brasa hover:underline">
               Seguridad y mantenimiento
             </a>
           </li>
@@ -42,11 +43,11 @@ const anio = new Date().getFullYear();
           Praxia
         </h2>
         <ul class="mt-4 space-y-2.5">
-          <li><a href="/#industrias" class="pequeno text-texto-2 hover:text-brasa hover:underline">Industrias</a></li>
-          <li><a href="/como-trabajamos" class="pequeno text-texto-2 hover:text-brasa hover:underline">Cómo trabajamos</a></li>
-          <li><a href="/casos" class="pequeno text-texto-2 hover:text-brasa hover:underline">Casos</a></li>
-          <li><a href="/nosotros" class="pequeno text-texto-2 hover:text-brasa hover:underline">Nosotros</a></li>
-          <li><a href="/preguntas-frecuentes" class="pequeno text-texto-2 hover:text-brasa hover:underline">Preguntas frecuentes</a></li>
+          <li><a href={ruta('/#industrias')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Industrias</a></li>
+          <li><a href={ruta('/como-trabajamos')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Cómo trabajamos</a></li>
+          <li><a href={ruta('/casos')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Casos</a></li>
+          <li><a href={ruta('/nosotros')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Nosotros</a></li>
+          <li><a href={ruta('/preguntas-frecuentes')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Preguntas frecuentes</a></li>
         </ul>
       </div>
 
@@ -82,9 +83,9 @@ const anio = new Date().getFullYear();
     <div class="mt-12 flex flex-col gap-4 border-t border-linea pt-8 sm:flex-row sm:items-center sm:justify-between">
       <p class="pequeno text-texto-2">{anio} {SITE.nombre} · Lima, Perú</p>
       <div class="flex gap-5">
-        <a href="/legal" class="pequeno text-texto-2 hover:text-brasa hover:underline">Términos legales</a>
-        <a href="/privacidad" class="pequeno text-texto-2 hover:text-brasa hover:underline">Privacidad</a>
-        <a href="/seguridad" class="pequeno text-texto-2 hover:text-brasa hover:underline">Seguridad</a>
+        <a href={ruta('/legal')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Términos legales</a>
+        <a href={ruta('/privacidad')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Privacidad</a>
+        <a href={ruta('/seguridad')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Seguridad</a>
       </div>
     </div>
   </div>
