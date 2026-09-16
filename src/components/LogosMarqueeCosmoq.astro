@@ -16,16 +16,7 @@
  * gap de CSS fuera uniforme. Se recortaron los PNG a su bbox real
  * (public/cosmoq-demo/trimmed/, ver ancho/alto reales abajo) y ahora cada
  * logo se muestra a una altura fija con ancho proporcional a su aspect
- * ratio real.
- *
- * El bbox recortado queda pegado a la tinta real de cada logo, y algunos
- * glifos (el "!" cursivo de LOGO!IPSUM, el TM, el apóstrofe de Loqo)
- * llegan hasta el borde mismo de ese bbox en un lado. Eso hacía que,
- * aunque el gap de CSS entre cajas fuera exactamente igual (verificado en
- * DOM), la tinta de un par de logos se sintiera pegada y la de otro par
- * no. Para no depender de la forma de cada glifo, cada <li> suma un
- * padding-inline fijo (PAD) además del gap — así el mínimo de aire real
- * entre tinta y tinta es siempre GAP + 2*PAD, sin excepción.
+ * ratio real — así el gap sí se percibe parejo.
  */
 const ARCHIVOS = [
   { f: 'eTOvR4ZuGGQENAaE3zs5ZqZxtks.png', w: 300, h: 120 },
@@ -38,26 +29,23 @@ const ARCHIVOS = [
 
 const ALTO = 144;
 const GAP = 48;
-const PAD = 16;
 
 // El original genera esto en cliente con JS (4 vueltas × 6 logos). Se
 // replica en build para no meter un <script> nuevo; el resultado es idéntico.
 const LOGOS = Array.from({ length: 4 }, () => ARCHIVOS).flat();
 
 // Distancia del keyframe: ancho de un set completo (6 logos escalados a
-// ALTO + su padding-inline, manteniendo su aspect ratio real) + los 6
-// gaps entre ellos.
-const anchoSet =
-  ARCHIVOS.reduce((acc, { w, h }) => acc + (w * ALTO) / h + 2 * PAD, 0) + ARCHIVOS.length * GAP;
+// ALTO, manteniendo su aspect ratio real) + los 6 gaps entre ellos.
+const anchoSet = ARCHIVOS.reduce((acc, { w, h }) => acc + (w * ALTO) / h, 0) + ARCHIVOS.length * GAP;
 ---
 
-<div class="logos" aria-label="Trusted by" style={`--marquee-gap: ${GAP}px; --marquee-alto: ${ALTO}px; --marquee-pad: ${PAD}px; --marquee-distancia: ${anchoSet}px;`}>
+<div class="logos" aria-label="Trusted by" style={`--marquee-gap: ${GAP}px; --marquee-alto: ${ALTO}px; --marquee-distancia: ${anchoSet}px;`}>
   <div class="logos__track">
     <ul class="logos__list">
       {LOGOS.map(({ f, w, h }, i) => {
         const ancho = (w * ALTO) / h;
         return (
-          <li style={`width: ${ancho + 2 * PAD}px;`}>
+          <li style={`width: ${ancho}px;`}>
             <img src={`/cosmoq-demo/trimmed/${f}`} alt={`Logo ${(i % ARCHIVOS.length) + 1}`} width={ancho} height={ALTO} loading="lazy" />
           </li>
         );
@@ -102,7 +90,6 @@ const anchoSet =
     justify-content: center;
     flex-shrink: 0;
     height: var(--marquee-alto);
-    padding-inline: var(--marquee-pad);
   }
   .logos__list img {
     width: 100%;
