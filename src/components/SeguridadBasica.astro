@@ -1,6 +1,6 @@
 ---
 import Seccion from './Seccion.astro';
-import SectionLabel from './SectionLabel.astro';
+import CabeceraSeccion from './CabeceraSeccion.astro';
 import Icon from './Icon.astro';
 
 const CHECKLIST = [
@@ -10,49 +10,108 @@ const CHECKLIST = [
   { item: 'Respaldos automáticos', estado: 'DIARIO' },
   { item: 'Contraseñas por defecto', estado: 'NINGUNA' },
 ] as const;
+
+// Icono por punto: no es 1:1 con el orden sugerido de referencia — se eligió
+// el más representativo de cada uno (escudo=pentesting, check=hardening
+// resuelto, documentos=lo que se respalda, personas=accesos).
+const PUNTOS = [
+  { texto: 'Pentesting básico', icono: 'escudo' },
+  { texto: 'Hardening', icono: 'check' },
+  { texto: 'Respaldos', icono: 'documentos' },
+  { texto: 'Accesos y contraseñas', icono: 'personas' },
+] as const;
 ---
 
-<Seccion id="seguridad-basica" fondo="surface">
-  <div class="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
-    <div>
-      <SectionLabel texto="Seguridad básica incluida" />
-      <h2 class="mt-3 revelar" data-retraso="1">Cerramos las puertas obvias antes de que alguien pruebe</h2>
-      <p class="lead mt-5 text-texto-2 revelar" data-retraso="2">
-        Todo lo que construimos pasa por una revisión de seguridad básica: pentesting de lo
-        esencial, accesos, respaldos y actualizaciones.
-      </p>
-      <ul class="mt-6 flex flex-wrap gap-2">
-        <li class="chip-mono">Pentesting básico</li>
-        <li class="chip-mono">Hardening</li>
-        <li class="chip-mono">Respaldos</li>
-        <li class="chip-mono">Accesos y contraseñas</li>
-      </ul>
-    </div>
+<Seccion id="seguridad-basica" class="seccion-cosmoq" fondo="surface">
+  <div class="data__content flex flex-col gap-12 lg:flex-row lg:items-center lg:justify-center lg:gap-16">
+    <div class="data__title flex flex-1 flex-col justify-center gap-8 lg:gap-10">
+      <CabeceraSeccion etiqueta="Seguridad básica incluida" icono="escudo" apilada>
+        <h2 slot="titulo" class="revelar" data-retraso="1">
+          Cerramos las puertas obvias antes de que alguien pruebe
+        </h2>
+        <p slot="subtitulo" class="lead text-texto-2 revelar" data-retraso="2">
+          Todo lo que construimos pasa por una revisión de seguridad básica: pentesting de lo
+          esencial, accesos, respaldos y actualizaciones.
+        </p>
+      </CabeceraSeccion>
 
-    <div class="tarjeta panel-revision">
-      <div class="mb-4 flex items-center justify-between">
-        <span class="mono text-texto-3">Revisión · tu-negocio.pe</span>
-        <Icon nombre="escudo" tamano={18} class="text-brasa" />
-      </div>
-      <div class="barrido" aria-hidden="true"></div>
-      <ul class="space-y-3">
+      <ul class="data__points revelar flex flex-col gap-6 lg:max-w-[70%]" data-retraso="3">
         {
-          CHECKLIST.map((c) => (
-            <li class="flex items-center justify-between border-t border-linea pt-3 first:border-t-0 first:pt-0">
-              <span class="text-[0.9375rem] text-texto">{c.item}</span>
-              <span class="mono text-[0.75rem] text-verde">{c.estado}</span>
+          PUNTOS.map((p) => (
+            <li class="chip w-full">
+              <Icon nombre={p.icono} tamano={20} class="text-texto-3" />
+              <span>{p.texto}</span>
             </li>
           ))
         }
       </ul>
     </div>
+
+    <div class="data__graphics flex flex-1 items-center justify-center">
+      <div class="panes">
+        <div class="tarjeta panel-revision panel-echo panel-echo--1" aria-hidden="true"></div>
+        <div class="tarjeta panel-revision panel-echo panel-echo--2" aria-hidden="true"></div>
+
+        <div class="tarjeta panel-revision">
+          <div class="mb-4 flex items-center justify-between">
+            <span class="mono text-texto-3">Revisión · tu-negocio.pe</span>
+            <Icon nombre="escudo" tamano={18} class="text-brasa" />
+          </div>
+          <div class="barrido" aria-hidden="true"></div>
+          <ul class="space-y-3">
+            {
+              CHECKLIST.map((c) => (
+                <li class="flex items-center justify-between border-t border-linea pt-3 first:border-t-0 first:pt-0">
+                  <span class="text-[0.9375rem] text-texto">{c.item}</span>
+                  <span class="mono text-[0.75rem] text-verde">{c.estado}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </Seccion>
 
 <style>
+  /* Pila de "capas de datos" (.panes de cosmoq): el panel real más dos ecos
+     detrás, a menor opacidad y mix-blend-mode:screen. Los ecos son puro
+     brillo (gradiente cian/brasa tenue), no duplican el checklist — texto
+     repetido detrás del real se veía sucio, ver instrucción de la tarea. */
+  .panes {
+    position: relative;
+    width: 100%;
+    max-width: 26rem;
+  }
+
   .panel-revision {
     position: relative;
     overflow: hidden;
+  }
+
+  .panel-echo {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  .panel-echo--1 {
+    opacity: 0.22;
+    transform: translate(16px, -16px) scale(0.98);
+    background: linear-gradient(135deg, rgb(53 224 212 / 0.4), rgb(255 107 53 / 0.1));
+  }
+
+  .panel-echo--2 {
+    opacity: 0.13;
+    transform: translate(30px, -30px) scale(0.96);
+    background: linear-gradient(135deg, rgb(53 224 212 / 0.35), rgb(255 107 53 / 0.08));
+  }
+
+  .panes > .panel-revision:last-child {
+    z-index: 1;
   }
 
   .barrido {
