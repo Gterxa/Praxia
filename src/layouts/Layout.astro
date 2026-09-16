@@ -6,6 +6,7 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
 import FondoOrbes from '../components/FondoOrbes.astro';
 import { SITE, EMAIL, WHATSAPP, CONTEXTO } from '../consts';
 import '../styles/global.css';
+import { ruta, sinBase } from '../rutas';
 
 interface Props {
   titulo: string;
@@ -27,7 +28,8 @@ const tituloCompleto = titulo.includes(SITE.nombre)
   ? titulo
   : `${titulo} | ${SITE.nombre}`;
 
-const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site);
+// `sinBase` quita el prefijo de dev: la canonical siempre es la URL de producción.
+const canonical = new URL(sinBase(Astro.url.pathname), Astro.site);
 const imagenOG = new URL('/og-praxia.png', Astro.site);
 
 /**
@@ -62,7 +64,7 @@ const datosEstructurados = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={ruta('/favicon.svg')} type="image/svg+xml" />
     <link rel="canonical" href={canonical} />
     <meta name="generator" content={Astro.generator} />
 

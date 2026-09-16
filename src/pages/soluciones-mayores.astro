@@ -6,6 +6,7 @@ import Seccion from '../components/Seccion.astro';
 import CTABand from '../components/CTABand.astro';
 import FichaHero from '../components/FichaHero.astro';
 import { CONTEXTO } from '../consts';
+import { ruta } from '../rutas';
 ---
 
 <Layout
@@ -41,7 +42,7 @@ import { CONTEXTO } from '../consts';
 
       <p class="pequeno mt-10 border-t border-linea pt-6 text-texto-2">
         Si lo tuyo por ahora es ordenar lo que entra cada día, empieza por{' '}
-        <a href="/que-puedes-automatizar/documentos-y-archivo" class="enlace"
+        <a href={ruta('/que-puedes-automatizar/documentos-y-archivo')} class="enlace"
           >documentos y archivo</a
         >.
       </p>

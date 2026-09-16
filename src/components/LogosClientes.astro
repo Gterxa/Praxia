@@ -5,6 +5,7 @@
  */
 import Marquee from './Marquee.astro';
 import { CLIENTES, MOSTRAR_PENDIENTES } from '../consts';
+import { ruta } from '../rutas';
 
 const hayClientes = CLIENTES.length > 0;
 const mostrar = hayClientes || MOSTRAR_PENDIENTES;
@@ -28,7 +29,7 @@ const MUESTRA = [
             ? CLIENTES.map((c) => {
                 const contenido = c.logo ? (
                   <img
-                    src={c.logo}
+                    src={ruta(c.logo)}
                     alt={c.nombre}
                     width={c.ancho}
                     height={c.alto}
