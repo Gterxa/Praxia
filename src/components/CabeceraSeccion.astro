@@ -1,0 +1,137 @@
+---
+/**
+ * Cabecera de sección al estilo cosmoq (`.sec-head`): fila de etiqueta con
+ * icono + línea horizontal a todo el ancho, y debajo título a la izquierda /
+ * subtítulo a la derecha en dos columnas (o apilados, con `apilada`, para
+ * secciones a dos columnas como Seguridad y Cierre).
+ *
+ * Reemplaza el patrón `SectionLabel + h2 + p` en las secciones migradas al
+ * banco de pruebas de cosmoq. El copy sigue viviendo en cada sección: este
+ * componente solo pone el layout, vía los slots "titulo" y "subtitulo" —
+ * cada sección sigue escribiendo su propio <h2 class="revelar" ...> con el
+ * texto y el stagger que ya tenía.
+ */
+import Icon from './Icon.astro';
+
+type NombreIcono =
+  | 'conversacion'
+  | 'calendario'
+  | 'personas'
+  | 'documentos'
+  | 'reportes'
+  | 'contenido'
+  | 'check'
+  | 'flecha'
+  | 'whatsapp'
+  | 'escudo'
+  | 'menu'
+  | 'cerrar'
+  | 'correo'
+  | 'alerta';
+
+interface Props {
+  etiqueta: string;
+  icono?: NombreIcono;
+  /** Título arriba, subtítulo debajo, ambos a la izquierda (data/seguridad, cierre). */
+  apilada?: boolean;
+  class?: string;
+}
+const { etiqueta, icono, apilada = false, class: clase = '' } = Astro.props;
+---
+
+<div class:list={['cabecera-seccion', apilada && 'cabecera-seccion--apilada', clase]}>
+  <div class="cabecera-etiqueta">
+    <span class="cabecera-etiqueta-fila">
+      {icono && <Icon nombre={icono} tamano={20} class="text-texto-3" />}
+      {etiqueta}
+    </span>
+    <span class="cabecera-linea" aria-hidden="true"></span>
+  </div>
+
+  <div class="cabecera-titulo">
+    <div class="cabecera-titulo-main">
+      <slot name="titulo" />
+    </div>
+    <div class="cabecera-titulo-sub">
+      <slot name="subtitulo" />
+    </div>
+  </div>
+</div>
+
+<style>
+  .cabecera-seccion {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .cabecera-etiqueta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    overflow: clip;
+  }
+
+  .cabecera-etiqueta-fila {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    width: max-content;
+    font-size: 1rem;
+    color: var(--color-texto-2);
+  }
+
+  .cabecera-linea {
+    display: block;
+    width: 100%;
+    height: 1px;
+    /* --color-linea-viva tenue: la línea de cosmoq nunca es gris plano. */
+    background: rgb(84 124 255 / 0.16);
+  }
+
+  .cabecera-titulo {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.25rem;
+    width: 100%;
+  }
+
+  .cabecera-titulo-main {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .cabecera-titulo-sub {
+    flex: 0 1 19rem;
+    max-width: 19rem;
+  }
+
+  .cabecera-titulo-sub :global(p) {
+    color: var(--color-texto-2);
+  }
+
+  .cabecera-seccion--apilada .cabecera-titulo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .cabecera-seccion--apilada .cabecera-titulo-sub {
+    flex: none;
+    max-width: none;
+  }
+
+  @media (max-width: 47.9375rem) {
+    .cabecera-titulo {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .cabecera-titulo-sub {
+      flex: none;
+      max-width: none;
+    }
+  }
+</style>

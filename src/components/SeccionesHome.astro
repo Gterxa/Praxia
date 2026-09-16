@@ -1,0 +1,38 @@
+---
+/**
+ * Todo lo que va debajo del hero y el marquee en la home. Vive aparte de
+ * index.astro para que la home real y el banco de pruebas de cosmoq
+ * (/pruebas/secciones) compartan el mismo árbol sin duplicarlo.
+ */
+import Destacado from './Destacado.astro';
+import PorQue from './PorQue.astro';
+import Servicios from './Servicios.astro';
+import Industrias from './Industrias.astro';
+import Proceso from './Proceso.astro';
+import SeguridadBasica from './SeguridadBasica.astro';
+import Ejemplos from './Ejemplos.astro';
+import QuienesSomos from './QuienesSomos.astro';
+import FAQ from './FAQ.astro';
+import CierreValidar from './CierreValidar.astro';
+import { PREGUNTAS_FRECUENTES } from '../faq';
+
+const preguntasCortas = PREGUNTAS_FRECUENTES.slice(0, 6);
+---
+
+<Destacado />
+
+<PorQue />
+<Servicios />
+<Industrias />
+<Proceso />
+<SeguridadBasica />
+<Ejemplos />
+<QuienesSomos />
+
+<section class="seccion">
+  <div class="contenedor max-w-3xl">
+    <FAQ preguntas={preguntasCortas} titulo="Lo que nos preguntan antes de empezar" />
+  </div>
+</section>
+
+<CierreValidar />
