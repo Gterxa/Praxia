@@ -27,7 +27,7 @@
      Ojo al revertir: `<meta name="theme-color">` en Layout.astro no acepta una
      variable CSS, así que --void está repetido ahí a mano. Es el único color
      hardcodeado del proyecto, y hay que cambiarlo junto con este. */
-  --color-void: #07070b;
+  --color-void: #000000;
   --color-surface: #0d0e14;
   --color-surface-2: #15161e;
 

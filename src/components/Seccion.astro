@@ -8,10 +8,13 @@ interface Props {
 const { fondo = 'void', id, class: clase = '' } = Astro.props;
 
 const fondos = {
-  // Transparente a propósito: deja ver el fondo global de orbes (FondoOrbes).
+  // Transparente a propósito: deja ver el fondo global negro (FondoOrbes).
+  // Las tres variantes comparten el mismo negro absoluto: "surface" y
+  // "acento" solo aportaban gris antes, ahora únicamente marcan el límite
+  // de sección con una línea.
   void: '',
-  surface: 'bg-surface border-y border-linea',
-  acento: 'bg-surface',
+  surface: 'border-y border-linea',
+  acento: '',
 } as const;
 
 /** Con slot "aside", el contenido va en dos columnas y el aside se pega al scroll. */
