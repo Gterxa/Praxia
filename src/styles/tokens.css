@@ -146,9 +146,10 @@
   }
 
   /* Tipografía.
-     --font-titulos (Space Grotesk), --font-cuerpo (Inter) y --font-mono
-     (JetBrains Mono) NO se declaran aquí: los define Astro en :root a partir
-     de `fonts` en astro.config.mjs, ya con los fallbacks ajustados por
+     --font-titulos (Manrope, sep 2026 — antes Space Grotesk, ver
+     astro.config.mjs), --font-cuerpo (Manrope) y --font-mono (IBM Plex Mono,
+     antes JetBrains Mono) NO se declaran aquí: los define Astro en :root a
+     partir de `fonts` en astro.config.mjs, ya con los fallbacks ajustados por
      métrica. Si los redefines acá, pisas los de Astro y el sitio se queda sin
      sus fuentes sin dar ningún error. */
 }
