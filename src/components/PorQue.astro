@@ -46,7 +46,7 @@ const GLOW: Record<string, string> = {
               {t.tipo === 'panel' && (
                 <>
                   <svg
-                    class="fcard-lineas"
+                    class="fcard-lineas fcard-capa"
                     viewBox="0 0 578 462"
                     preserveAspectRatio="none"
                     aria-hidden="true"
@@ -58,7 +58,7 @@ const GLOW: Record<string, string> = {
                       stroke-width="1"
                     />
                   </svg>
-                  <div class="fcard-destellos" aria-hidden="true">
+                  <div class="fcard-destellos fcard-capa" aria-hidden="true">
                     <i class="destello" /><i class="destello destello--calido" />
                     <i class="destello" /><i class="destello destello--calido" />
                     <i class="destello" /><i class="destello destello--calido" />
@@ -78,7 +78,7 @@ const GLOW: Record<string, string> = {
 
               {t.tipo === 'anillo' && (
                 <>
-                  <div class="fcard-brillos" aria-hidden="true">
+                  <div class="fcard-brillos fcard-capa" aria-hidden="true">
                     <i class="brillo" /><i class="brillo" /><i class="brillo" /><i class="brillo" />
                   </div>
                   <div class="anillo" aria-hidden="true">
@@ -116,16 +116,23 @@ const GLOW: Record<string, string> = {
             <div class="fcard-visual fcard-visual--fila2">
               <img src={ruta(`/porque/${GLOW[t.tipo]}`)} alt="" class="fcard-glow" aria-hidden="true" loading="lazy" />
               {t.tipo === 'tachado' && (
-                <div class="tachado-caja font-[family-name:var(--font-mono)] text-[0.8125rem]">
-                  <p class="tachado text-texto-3">«{t.antes}»</p>
-                  <p class="text-texto">«{t.despues}»</p>
-                </div>
+                <>
+                  <div class="radar fcard-capa" aria-hidden="true">
+                    <div class="radar-anillo" />
+                    <div class="radar-haz" />
+                    <i class="radar-contacto" /><i class="radar-contacto" /><i class="radar-contacto" />
+                  </div>
+                  <div class="tachado-caja font-[family-name:var(--font-mono)] text-[0.8125rem]">
+                    <p class="tachado text-texto-3">«{t.antes}»</p>
+                    <p class="text-texto">«{t.despues}»</p>
+                  </div>
+                </>
               )}
 
               {t.tipo === 'barras' && (
                 <>
                   <svg
-                    class="fcard-lineas"
+                    class="fcard-lineas fcard-capa"
                     viewBox="0 0 578 462"
                     preserveAspectRatio="none"
                     aria-hidden="true"
@@ -137,7 +144,7 @@ const GLOW: Record<string, string> = {
                       stroke-width="1"
                     />
                   </svg>
-                  <div class="fcard-destellos" aria-hidden="true">
+                  <div class="fcard-destellos fcard-capa" aria-hidden="true">
                     <i class="destello" /><i class="destello destello--calido" />
                     <i class="destello" /><i class="destello destello--calido" />
                   </div>
@@ -220,7 +227,17 @@ const GLOW: Record<string, string> = {
     pointer-events: none;
   }
 
-  .fcard-visual > *:not(.fcard-glow) {
+  /* Capas decorativas (líneas, destellos, brillos, radar): absolutas y
+     detrás del widget. Ojo con la especificidad: la regla del widget de
+     abajo es (0,2,0) y pisa un `position: absolute` declarado en una clase
+     sola (0,1,0) — por eso las capas se excluyen ahí explícitamente. */
+  .fcard-capa {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .fcard-visual > *:not(.fcard-glow):not(.fcard-capa) {
     position: relative;
     z-index: 1;
   }
@@ -230,7 +247,6 @@ const GLOW: Record<string, string> = {
      mini-estrellas fugaces que atraviesan la tarjeta. Geometría genérica,
      no es un asset de marca — colores sí son de tokens.css. --- */
   .fcard-lineas {
-    position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
@@ -239,7 +255,6 @@ const GLOW: Record<string, string> = {
   }
 
   .fcard-destellos {
-    position: absolute;
     inset: 0;
     overflow: hidden;
   }
@@ -324,9 +339,7 @@ const GLOW: Record<string, string> = {
   /* --- Brillos pulsantes (patrón cosmoq de "Deep capabilities"): puntos
      de luz sobre el glow del anillo. --- */
   .fcard-brillos {
-    position: absolute;
     inset: 0;
-    pointer-events: none;
   }
 
   .brillo {
@@ -411,6 +424,105 @@ const GLOW: Record<string, string> = {
     text-decoration: line-through;
     text-decoration-color: var(--color-linea-viva);
     text-decoration-thickness: 1px;
+  }
+
+  /* --- Radar de visibilidad (pieza propia, no de cosmoq — misma técnica
+     que Speed/Control: custom properties + keyframes, sin JS). Un haz
+     gira 360° y tres "contactos" destellan cuando el haz los cruza:
+     metáfora directa de "apareces cuando te buscan". Vive detrás de la
+     caja de texto, se asoma por los bordes igual que el resto de los
+     glows. --- */
+  .radar {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 6rem;
+    height: 6rem;
+  }
+
+  /* La caja de texto se va abajo-izquierda y deja libre la esquina
+     superior derecha para el radar; la zona crece un poco para que
+     quepan los dos sin pisarse. */
+  .fcard-visual:has(.radar) {
+    min-height: 14rem;
+    padding-top: 1.25rem;
+  }
+
+  .fcard-visual:has(.radar) .tachado-caja {
+    max-width: 68%;
+    padding: 1rem;
+    align-self: flex-end;
+    margin-right: auto;
+  }
+
+  .radar-anillo {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    border: 1px solid rgb(84 124 255 / 0.35);
+  }
+
+  .radar-anillo::before {
+    content: '';
+    position: absolute;
+    inset: 1rem;
+    border-radius: 999px;
+    border: 1px solid rgb(84 124 255 / 0.25);
+  }
+
+  .radar-haz {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: conic-gradient(from 0deg, rgb(255 107 53 / 0.55), transparent 30%);
+    animation: radar-girar 4s linear infinite;
+  }
+
+  @keyframes radar-girar {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .radar-contacto {
+    position: absolute;
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 999px;
+    background: var(--color-texto);
+    animation: radar-contacto 4s linear infinite;
+  }
+
+  .radar-contacto:nth-child(3) {
+    top: 18%;
+    left: 62%;
+    animation-delay: -0.33s;
+  }
+  .radar-contacto:nth-child(4) {
+    top: 68%;
+    left: 78%;
+    animation-delay: -1.67s;
+  }
+  .radar-contacto:nth-child(5) {
+    top: 74%;
+    left: 22%;
+    animation-delay: -2.67s;
+  }
+
+  @keyframes radar-contacto {
+    0%,
+    92%,
+    100% {
+      opacity: 0.25;
+      transform: scale(0.8);
+    }
+    4% {
+      opacity: 1;
+      transform: scale(1.4);
+    }
+    12% {
+      opacity: 0.3;
+      transform: scale(0.8);
+    }
   }
 
   /* --- Anillo giratorio: AUTO/PRES/IA/SEG alrededor de una P central. --- */
@@ -523,12 +635,18 @@ const GLOW: Record<string, string> = {
     .anillo-orbita,
     .anillo-nodo,
     .destello,
-    .brillo {
+    .brillo,
+    .radar-haz,
+    .radar-contacto {
       animation: none;
     }
 
     .destello {
       opacity: 0;
+    }
+
+    .radar-contacto {
+      opacity: 0.5;
     }
   }
 </style>
