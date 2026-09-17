@@ -45,6 +45,13 @@ export const PORQUE = [
     tipo: 'chips',
     titulo: 'Sobre lo que ya usas',
     texto: 'Nada de cambiar de herramientas para empezar.',
-    chips: ['WhatsApp', 'Gmail', 'Google Sheets', 'Calendar', 'Instagram', 'Tu web'],
+    chips: [
+      { nombre: 'WhatsApp', icono: 'whatsapp' },
+      { nombre: 'Gmail', icono: 'gmail' },
+      { nombre: 'Google Sheets', icono: 'googlesheets' },
+      { nombre: 'Calendar', icono: 'googlecalendar' },
+      { nombre: 'Instagram', icono: 'instagram' },
+      { nombre: 'Tu web', icono: undefined },
+    ],
   },
 ] as const;
