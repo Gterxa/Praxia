@@ -159,7 +159,7 @@ const GLOW: Record<string, string> = {
                     <i class="destello" /><i class="destello destello--calido" />
                     <i class="destello" /><i class="destello destello--calido" />
                   </div>
-                  <div class="flex w-full items-end gap-3" aria-hidden="true">
+                  <div class="vidrio flex w-full items-end gap-3" aria-hidden="true">
                     {t.semanas.map((s, si) => (
                       <div class="flex flex-1 flex-col items-center gap-2">
                         <div class="barra-pista">
@@ -660,10 +660,28 @@ const GLOW: Record<string, string> = {
     transform: scaleY(1);
   }
 
+  /* --- Panel de vidrio esmerilado (experimento pedido por Tony, inspirado
+     en un componente shadcn "glass calendar" — se replica el estilo con
+     CSS/tokens propios, sin instalar React: blur fuerte + borde blanco
+     tenue + sombra en capas, mucho más pronunciado que el resto de paneles
+     del sitio para que se sienta "vidrio" y no solo "oscuro". --- */
+  .vidrio {
+    padding: 1.25rem;
+    border-radius: var(--radius-tarjeta);
+    background: rgb(0 0 0 / 0.28);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgb(255 255 255 / 0.12);
+    box-shadow:
+      0 8px 32px rgb(0 0 0 / 0.35),
+      0 1px 0 rgb(255 255 255 / 0.06) inset;
+  }
+
   /* --- Marquee de "Sobre lo que ya usas" (patrón icon-rows de cosmoq,
      pieza reusada: mismo componente Marquee.astro + tokens de animación
-     que ya usa Herramientas.astro en /que-puedes-automatizar, no uno
-     nuevo). Una sola fila — el card es chico para dos como en cosmoq. --- */
+     que ya usa Herramientas.astro en /que-puedes-automatizar). Se probó
+     reemplazarlo por íconos orbitando (ver TODO.md): a este tamaño de
+     card los íconos se superponían, así que se queda el marquee. --- */
   .chips-marquee {
     width: 100%;
   }
