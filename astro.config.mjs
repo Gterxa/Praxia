@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 import { SITE } from './src/consts.ts';
@@ -10,6 +11,10 @@ export default defineConfig({
   site: SITE.url,
   trailingSlash: 'ignore',
   integrations: [
+    // Isla de React, solo para componentes puntuales que lo pidan
+    // explícitamente (ver src/components/ui/) — el resto del sitio sigue
+    // siendo Astro puro, esto no cambia nada de lo existente.
+    react(),
     sitemap({
       // Las legales llevan noindex mientras estén incompletas: fuera del sitemap.
       // Cuando las cierres, quita este filtro y el Disallow de public/robots.txt.
