@@ -661,20 +661,41 @@ const GLOW: Record<string, string> = {
   }
 
   /* --- Panel de vidrio esmerilado (experimento pedido por Tony, inspirado
-     en un componente shadcn "glass calendar" — se replica el estilo con
-     CSS/tokens propios, sin instalar React: blur fuerte + borde blanco
-     tenue + sombra en capas, mucho más pronunciado que el resto de paneles
-     del sitio para que se sienta "vidrio" y no solo "oscuro". --- */
+     en un componente shadcn "glass calendar"). Primera pasada (solo blur +
+     borde tenue) no se notaba: sobre un fondo ya suave, desenfocar no
+     cambia nada visible. Segunda pasada — señales que se ven SIN depender
+     del blur: degradado de luz de arriba-izquierda (como si la luz le
+     pegara al vidrio desde una esquina), un brillo diagonal (`::before`,
+     el truco clásico de "fake glass"), borde superior más claro que el
+     resto, y `saturate()` en el blur para que el naranja/azul de atrás se
+     vea más vívido a través del panel (efecto "vidrio esmerilado" real de
+     iOS, no solo un blur). --- */
   .vidrio {
+    position: relative;
     padding: 1.25rem;
     border-radius: var(--radius-tarjeta);
-    background: rgb(0 0 0 / 0.28);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgb(255 255 255 / 0.12);
+    background: linear-gradient(
+      165deg,
+      rgb(255 255 255 / 0.1),
+      rgb(255 255 255 / 0.02) 45%,
+      rgb(0 0 0 / 0.32) 100%
+    );
+    backdrop-filter: blur(16px) saturate(1.5);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+    border: 1px solid rgb(255 255 255 / 0.16);
+    border-top-color: rgb(255 255 255 / 0.4);
     box-shadow:
       0 8px 32px rgb(0 0 0 / 0.35),
-      0 1px 0 rgb(255 255 255 / 0.06) inset;
+      0 1px 0 rgb(255 255 255 / 0.14) inset;
+    overflow: hidden;
+  }
+
+  .vidrio::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(115deg, transparent 35%, rgb(255 255 255 / 0.14) 48%, transparent 62%);
   }
 
   /* --- Marquee de "Sobre lo que ya usas" (patrón icon-rows de cosmoq,
