@@ -104,13 +104,13 @@ const GLOW: Record<string, string> = {
                   </div>
                 </>
               )}
-            </div>
 
-            <div class="fcard-texto">
-              <h3 class="text-[1.0625rem] font-semibold text-texto md:text-[1.1875rem]">
-                {t.titulo}
-              </h3>
-              <p class="text-[0.9375rem] text-texto-2">{t.texto}</p>
+              <div class="fcard-texto">
+                <h3 class="text-[1.0625rem] font-semibold text-texto md:text-[1.1875rem]">
+                  {t.titulo}
+                </h3>
+                <p class="text-[0.9375rem] text-texto-2">{t.texto}</p>
+              </div>
             </div>
           </article>
         ))
@@ -189,13 +189,13 @@ const GLOW: Record<string, string> = {
                   })}
                 </Marquee>
               )}
-            </div>
 
-            <div class="fcard-texto">
-              <h3 class="text-[1.0625rem] font-semibold text-texto md:text-[1.1875rem]">
-                {t.titulo}
-              </h3>
-              <p class="text-[0.9375rem] text-texto-2">{t.texto}</p>
+              <div class="fcard-texto">
+                <h3 class="text-[1.0625rem] font-semibold text-texto md:text-[1.1875rem]">
+                  {t.titulo}
+                </h3>
+                <p class="text-[0.9375rem] text-texto-2">{t.texto}</p>
+              </div>
             </div>
           </article>
         ))
@@ -205,17 +205,17 @@ const GLOW: Record<string, string> = {
 </Seccion>
 
 <style>
-  /* --- Estructura de tarjeta "fcard" (patrón excep de cosmoq): zona de
-     visualización arriba (padding propio, sin el padding uniforme de
-     .tarjeta) + bloque de texto abajo con blur, separado por una línea.
-     Se decidió NO superponer el texto sobre la visualización (a diferencia
-     de cosmoq, que superpone sobre una foto): acá la "visualización" es un
-     widget funcional (tabla, anillo girando, barras creciendo, chips) y
-     superponer texto encima la habría tapado o se habría cruzado con la
-     animación. El texto va siempre debajo, en su propio panel. --- */
+  /* --- Estructura de tarjeta "fcard" (patrón real de cosmoq): un único
+     contenedor donde la imagen/decoración llena toda la tarjeta y el texto
+     flota encima con blur, cerca del borde inferior — no dos zonas
+     apiladas separadas por una línea (eso era una desviación mía sin
+     validar, corregida). Diferencia real con cosmoq: sus "patterns" son
+     puramente decorativos (líneas, destellos, sliders); acá el widget
+     (tabla, anillo, antes/después, barras, chips) SÍ es contenido, así que
+     se ancla arriba (`align-items: flex-start`) para no pelear con el
+     texto flotante de abajo — cosmoq no tiene ese problema porque no hay
+     nada que anclar. */
   .tarjeta-fcard {
-    display: flex;
-    flex-direction: column;
     padding: 0;
     overflow: hidden;
   }
@@ -223,10 +223,10 @@ const GLOW: Record<string, string> = {
   .fcard-visual {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     width: 100%;
-    padding: 2rem 1.5rem;
+    padding: 1.75rem 1.5rem;
   }
 
   /* --- Glow de marca (patrón cosmoq: cada card trae su propio glow de
@@ -258,7 +258,7 @@ const GLOW: Record<string, string> = {
     pointer-events: none;
   }
 
-  .fcard-visual > *:not(.fcard-glow):not(.fcard-capa) {
+  .fcard-visual > *:not(.fcard-glow):not(.fcard-capa):not(.fcard-texto) {
     position: relative;
     z-index: 1;
   }
@@ -407,27 +407,42 @@ const GLOW: Record<string, string> = {
     }
   }
 
+  /* Medidas reales de cosmoq (.excep__row, contenedor ~1200px, gap 32px):
+     fila 1 = 2 cards de 584x464px (aspect-ratio 1.26087/1), fila 2 = 3
+     cards de 378x463px (aspect-ratio 0.81733/1) — ambas filas dan ~464px
+     de alto pese a tener distinto número de columnas. */
   .fcard-visual--fila1 {
-    min-height: 13rem;
+    min-height: 29rem;
   }
 
   .fcard-visual--fila2 {
-    min-height: 10rem;
+    min-height: 29rem;
   }
 
+  /* Texto flotante sobre la imagen/widget, inset del borde, con blur —
+     el "gborder" de cosmoq (`.fcard__text`). Reserva ~90-100px abajo,
+     ver min-height de arriba y el padding-bottom del widget de datos. */
   .fcard-texto {
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     gap: 0.375rem;
-    padding: 1.25rem 1.5rem;
-    background: rgb(13 14 20 / 0.7);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border-top: 1px solid var(--color-linea);
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-praxia);
+    background: rgb(13 14 20 / 0.78);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--color-linea);
   }
 
   /* Marco alrededor del antes/después tachado: sin esto, dos líneas de mono
-     quedaban perdidas en una zona de visualización de ~10rem de alto. */
+     quedaban perdidas en una zona de visualización de ~10rem de alto.
+     Ancho acotado en el card del radar para no montarse con el haz
+     (ver `.fcard-visual:has(.radar) .tachado-caja` más abajo). */
   .tachado-caja {
     display: flex;
     flex-direction: column;
@@ -460,18 +475,11 @@ const GLOW: Record<string, string> = {
     height: 6rem;
   }
 
-  /* La caja de texto se va abajo-izquierda y deja libre la esquina
-     superior derecha para el radar; la zona crece un poco para que
-     quepan los dos sin pisarse. */
-  .fcard-visual:has(.radar) {
-    min-height: 14rem;
-    padding-top: 1.25rem;
-  }
-
+  /* La caja antes/después se acota y se va a la izquierda para dejar libre
+     la esquina superior derecha, donde vive el radar. */
   .fcard-visual:has(.radar) .tachado-caja {
-    max-width: 68%;
+    max-width: 70%;
     padding: 1rem;
-    align-self: flex-end;
     margin-right: auto;
   }
 
