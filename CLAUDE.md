@@ -11,9 +11,10 @@
   mismo). En caso de duda, preferir seguir en el worktree ya abierto.
 - Crear el worktree en `.claude/worktrees/<nombre-del-feature>` con una rama nueva a partir
   de la rama base actual (normalmente `qa`), hacer el trabajo ahí, verificar
-  (`npx astro check`, `npm run build`, y QA visual con la skill `browse` solo cuando el
-  cambio sea de layout/estructura o el usuario la pida — no como paso automático en cambios
-  chicos de copy/CSS) y recién entonces mergear de vuelta a la rama base (`git merge --no-ff`).
+  (`npx astro check`, `npm run build`, y QA visual con `npm run captura` — ver "Flujo de
+  screenshots" — solo cuando el cambio sea de layout/estructura o el usuario la pida, no
+  como paso automático en cambios chicos de copy/CSS) y recién entonces mergear de vuelta a
+  la rama base (`git merge --no-ff`).
 - Antes de mergear: si el worktree destino tiene un dev server corriendo, instalar
   dependencias nuevas ahí (`npm install`) y reiniciarlo — Vite no detecta paquetes nuevos en
   caliente.
@@ -114,10 +115,25 @@
   En producción `BASE_URL` es `/` y `ruta()` es la identidad: el build sale idéntico.
 
 ## Flujo de screenshots
-- Este repo no tiene `puppeteer`/`screenshot.mjs` propios — usar la skill **`browse`** para
-  navegar, interactuar y capturar pantallas del sitio. Es la herramienta ya configurada y
-  usada en auditorías anteriores de este proyecto. La URL sale de la convención de arriba
-  (`localhost:<puerto>/<rama>/<variante>`), no de `localhost:4321` a secas.
+- **Nunca la skill `browse` de gstack**, ni `design-review`/`qa`/`qa-only`, que la usan por
+  dentro. Deja un Chromium headless vivo 30 min renderizando el shader WebGL del hero por
+  CPU: medido el 17-sep-2026, ~12 núcleos al 100 % en reposo tras una sola captura. Regla
+  dura, sin excepciones. Si algo no se puede capturar con el script de abajo, pedirle a Tony
+  que lo mire en su navegador antes que recurrir a `browse`.
+- Capturar con el script del repo — arranca el Chrome real instalado y lo cierra en la misma
+  llamada (`puppeteer-core`, 0 procesos residuales, ~5 s):
+
+  ```bash
+  npm run captura -- http://localhost:4321/dev-alvaro "#por-que" C:/tmp/por-que.png
+  npm run captura -- <url> "article:has(.radar)" salida.png --frames 6 --cada 300
+  ```
+
+  `--frames N` saca N capturas del mismo elemento y las pega en una tira horizontal: es la
+  forma de "ver" una animación en una sola imagen. Acepta `--ancho`/`--alto` (default
+  1440×1000). El script ya fuerza `.revelar → .visible` (sin eso el scroll-reveal deja en
+  negro lo que está fuera del viewport) y esquiva el header sticky. La URL sale de la
+  convención de arriba (`localhost:<puerto>/<rama>/<variante>`), no de `localhost:4321` a
+  secas.
 - Al comparar, ser específico: "el h2 mide 32px pero la referencia muestra ~24px", "el gap de
   la carta es 16px y debería ser 24px".
 - Revisar siempre: spacing/padding, tamaño/peso/line-height de fuente, colores (hex exacto),
