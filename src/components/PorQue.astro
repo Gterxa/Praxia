@@ -42,6 +42,29 @@ const GLOW: Record<string, string> = {
           >
             <div class="fcard-visual fcard-visual--fila1">
               <img src={ruta(`/porque/${GLOW[t.tipo]}`)} alt="" class="fcard-glow" aria-hidden="true" loading="lazy" />
+
+              {t.tipo === 'panel' && (
+                <>
+                  <svg
+                    class="fcard-lineas"
+                    viewBox="0 0 578 462"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M 0 144 L 222 0 L 577.5 162.5 L 325.5 461.5 L 0 245 L 119 0 L 577.5 95.5 L 0 199 L 577.5 419 L 69.5 0 L 119 461.5 L 428 0 L 487.5 461.5"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1"
+                    />
+                  </svg>
+                  <div class="fcard-destellos" aria-hidden="true">
+                    <i class="destello" /><i class="destello destello--calido" />
+                    <i class="destello" /><i class="destello destello--calido" />
+                    <i class="destello" /><i class="destello destello--calido" />
+                  </div>
+                </>
+              )}
               {t.tipo === 'panel' && (
                 <dl class="w-full divide-y divide-linea rounded-praxia border border-linea bg-void/40">
                   {t.filas.map((f) => (
@@ -54,16 +77,21 @@ const GLOW: Record<string, string> = {
               )}
 
               {t.tipo === 'anillo' && (
-                <div class="anillo" aria-hidden="true">
-                  <div class="anillo-orbita">
-                    {t.nodos.map((n, ni) => (
-                      <span class="anillo-nodo mono" data-i={ni}>
-                        {n}
-                      </span>
-                    ))}
+                <>
+                  <div class="fcard-brillos" aria-hidden="true">
+                    <i class="brillo" /><i class="brillo" /><i class="brillo" /><i class="brillo" />
                   </div>
-                  <span class="anillo-centro mono">P</span>
-                </div>
+                  <div class="anillo" aria-hidden="true">
+                    <div class="anillo-orbita">
+                      {t.nodos.map((n, ni) => (
+                        <span class="anillo-nodo mono" data-i={ni}>
+                          {n}
+                        </span>
+                      ))}
+                    </div>
+                    <span class="anillo-centro mono">P</span>
+                  </div>
+                </>
               )}
             </div>
 
@@ -95,16 +123,35 @@ const GLOW: Record<string, string> = {
               )}
 
               {t.tipo === 'barras' && (
-                <div class="flex w-full items-end gap-3" aria-hidden="true">
-                  {t.semanas.map((s, si) => (
-                    <div class="flex flex-1 flex-col items-center gap-2">
-                      <div class="barra-pista">
-                        <div class="revelar barra-relleno" data-retraso={String(si + 1)} />
+                <>
+                  <svg
+                    class="fcard-lineas"
+                    viewBox="0 0 578 462"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M 0 144 L 222 0 L 577.5 162.5 L 325.5 461.5 L 0 245 L 119 0 L 577.5 95.5 L 0 199 L 577.5 419 L 69.5 0 L 119 461.5 L 428 0 L 487.5 461.5"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1"
+                    />
+                  </svg>
+                  <div class="fcard-destellos" aria-hidden="true">
+                    <i class="destello" /><i class="destello destello--calido" />
+                    <i class="destello" /><i class="destello destello--calido" />
+                  </div>
+                  <div class="flex w-full items-end gap-3" aria-hidden="true">
+                    {t.semanas.map((s, si) => (
+                      <div class="flex flex-1 flex-col items-center gap-2">
+                        <div class="barra-pista">
+                          <div class="revelar barra-relleno" data-retraso={String(si + 1)} />
+                        </div>
+                        <span class="mono text-[0.6875rem] text-texto-3">{s}</span>
                       </div>
-                      <span class="mono text-[0.6875rem] text-texto-3">{s}</span>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                </>
               )}
 
               {t.tipo === 'chips' && (
@@ -176,6 +223,154 @@ const GLOW: Record<string, string> = {
   .fcard-visual > *:not(.fcard-glow) {
     position: relative;
     z-index: 1;
+  }
+
+  /* --- Malla de líneas + destellos (patrón cosmoq de la card "Speed"):
+     wireframe geométrico decorativo detrás del panel de datos, más 6
+     mini-estrellas fugaces que atraviesan la tarjeta. Geometría genérica,
+     no es un asset de marca — colores sí son de tokens.css. --- */
+  .fcard-lineas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--color-texto);
+    opacity: 0.35;
+  }
+
+  .fcard-destellos {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .destello {
+    position: absolute;
+    width: 0.875rem;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-linea-viva) 0%, var(--color-texto) 100%);
+    animation: destello-cruzar 6s linear infinite;
+  }
+
+  .destello--calido {
+    background: linear-gradient(90deg, var(--color-brasa) 0%, var(--color-texto) 100%);
+  }
+
+  @keyframes destello-cruzar {
+    0% {
+      transform: translate(var(--x0, 0), var(--y0, 0)) rotate(var(--r, 0deg));
+      opacity: 0;
+    }
+    10%,
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate(var(--x1, 0), var(--y1, 0)) rotate(var(--r, 0deg));
+      opacity: 0;
+    }
+  }
+
+  .destello:nth-child(1) {
+    left: 15%;
+    top: 8%;
+    --r: 12deg;
+    --x1: 4rem;
+    --y1: 1rem;
+    animation-delay: -1s;
+  }
+  .destello:nth-child(2) {
+    left: 68%;
+    top: 10%;
+    --r: 60deg;
+    --x1: 2rem;
+    --y1: 3.6rem;
+    animation-delay: -3s;
+  }
+  .destello:nth-child(3) {
+    left: 82%;
+    top: 78%;
+    --r: -70deg;
+    --x1: -1rem;
+    --y1: -3rem;
+    animation-delay: -2s;
+  }
+  .destello:nth-child(4) {
+    left: 12%;
+    top: 60%;
+    --r: -33deg;
+    --x1: 4.6rem;
+    --y1: -3rem;
+    animation-delay: -4.5s;
+  }
+  .destello:nth-child(5) {
+    left: 48%;
+    top: 42%;
+    --r: 110deg;
+    --x1: -1.3rem;
+    --y1: 4rem;
+    animation-delay: -0.5s;
+  }
+  .destello:nth-child(6) {
+    left: 28%;
+    top: 88%;
+    --r: -52deg;
+    --x1: 3.3rem;
+    --y1: -4.2rem;
+    animation-delay: -3.7s;
+  }
+
+  /* --- Brillos pulsantes (patrón cosmoq de "Deep capabilities"): puntos
+     de luz sobre el glow del anillo. --- */
+  .fcard-brillos {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .brillo {
+    position: absolute;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 999px;
+    background: var(--color-texto);
+    box-shadow:
+      0 0 0.75rem 0.25rem rgb(255 255 255 / 0.55),
+      0 0 1.875rem 0.625rem rgb(255 107 53 / 0.25);
+    animation: brillo-pulso 3s ease-in-out infinite;
+  }
+
+  .brillo:nth-child(1) {
+    left: 22%;
+    top: 22%;
+  }
+  .brillo:nth-child(2) {
+    left: 78%;
+    top: 28%;
+    animation-delay: 0.8s;
+  }
+  .brillo:nth-child(3) {
+    left: 20%;
+    top: 76%;
+    animation-delay: 1.6s;
+  }
+  .brillo:nth-child(4) {
+    left: 80%;
+    top: 74%;
+    animation-delay: 2.2s;
+  }
+
+  @keyframes brillo-pulso {
+    0%,
+    100% {
+      transform: scale(0.85);
+      opacity: 0.75;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
   }
 
   .fcard-visual--fila1 {
@@ -326,8 +521,14 @@ const GLOW: Record<string, string> = {
 
   @media (prefers-reduced-motion: reduce) {
     .anillo-orbita,
-    .anillo-nodo {
+    .anillo-nodo,
+    .destello,
+    .brillo {
       animation: none;
+    }
+
+    .destello {
+      opacity: 0;
     }
   }
 </style>
