@@ -29,6 +29,7 @@ const filaAlta = PORQUE.filter((t) => t.span === 4);
             data-retraso={String(i + 1)}
           >
             <div class="fcard-visual fcard-visual--fila1">
+              <div class="fcard-glow" aria-hidden="true"></div>
               {t.tipo === 'panel' && (
                 <dl class="w-full divide-y divide-linea rounded-praxia border border-linea bg-void/40">
                   {t.filas.map((f) => (
@@ -73,6 +74,7 @@ const filaAlta = PORQUE.filter((t) => t.span === 4);
             data-retraso={String(i + 1)}
           >
             <div class="fcard-visual fcard-visual--fila2">
+              <div class="fcard-glow" aria-hidden="true"></div>
               {t.tipo === 'tachado' && (
                 <div class="tachado-caja font-[family-name:var(--font-mono)] text-[0.8125rem]">
                   <p class="tachado text-texto-3">«{t.antes}»</p>
@@ -132,11 +134,41 @@ const filaAlta = PORQUE.filter((t) => t.span === 4);
   }
 
   .fcard-visual {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     padding: 2rem 1.5rem;
+  }
+
+  /* --- Glow de marca (patrón cosmoq: cada card trae su propio degradado
+     radial + grano, contenido dentro del borde de la card, nunca de
+     página — FondoOrbes.astro ya sacó el brillo global, esto es una
+     aplicación acotada y distinta). Usa la rampa "atardecer" de
+     tokens.css, no el azul/naranja literal de cosmoq. --- */
+  .fcard-glow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 65% 55% at 14% 88%, rgb(255 107 53 / 0.28), transparent 68%),
+      radial-gradient(ellipse 60% 50% at 86% 12%, rgb(26 44 136 / 0.26), transparent 65%);
+  }
+
+  .fcard-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  }
+
+  .fcard-visual > *:not(.fcard-glow) {
+    position: relative;
+    z-index: 1;
   }
 
   .fcard-visual--fila1 {
@@ -168,7 +200,9 @@ const filaAlta = PORQUE.filter((t) => t.span === 4);
     padding: 1.25rem;
     border: 1px solid rgb(84 124 255 / 0.16);
     border-radius: var(--radius-praxia);
-    background: var(--color-void);
+    background: rgb(0 0 0 / 0.55);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
   }
 
   .tachado {
@@ -177,7 +211,7 @@ const filaAlta = PORQUE.filter((t) => t.span === 4);
     text-decoration-thickness: 1px;
   }
 
-  /* --- Anillo giratorio: WEB/SEO/IA/SEG alrededor de una P central. --- */
+  /* --- Anillo giratorio: AUTO/PRES/IA/SEG alrededor de una P central. --- */
   .anillo {
     position: relative;
     height: 9rem;
@@ -210,7 +244,7 @@ const filaAlta = PORQUE.filter((t) => t.span === 4);
        cada uno para que el texto no quede de cabeza. --i se fija por
        :nth-child (abajo) en vez de un `style` inline: la CSP del sitio
        bloquea `style=""` dinámico (solo permite <style> en bloque, con
-       hash). Siempre son 4 nodos (porque.ts: WEB/SEO/IA/SEG). */
+       hash). Siempre son 4 nodos (porque.ts: AUTO/PRES/IA/SEG). */
     transform: rotate(calc(var(--i) * 90deg)) translateX(3.75rem) rotate(calc(var(--i) * -90deg));
     animation: contra-girar 40s linear infinite;
   }
