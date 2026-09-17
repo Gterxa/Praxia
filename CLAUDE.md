@@ -31,17 +31,85 @@
 - Screenshot del resultado, comparar contra la referencia, corregir, volver a capturar. Mínimo
   2 rondas de comparación. Parar solo cuando no queden diferencias visibles o el usuario lo diga.
 
+## Referencias de diseño principales
+- **cosmoq.framer.website** es una de las referencias de diseño principales de este proyecto
+  (marquee de logos, shader/fondo del hero, tratamiento de imágenes). Hay una copia local
+  completa e intacta del sitio (HTML + CSS + JS + assets + fuentes + video) en
+  `C:\Users\chori\OneDrive\Documentos\personal\master webdesign\data\variantes\cosmoq-framer-website-20260911\1\index.html`,
+  más screenshots desktop/mobile en `...\master webdesign\data\images\cosmoq-framer-website-20260911-*.png`.
+  Esa carpeta vive en la galería "Mesa de luz" (fuera de este repo), no en `public/` — no
+  confundirla con `public/cosmoq-demo/` (solo 6 logos, usados en la rama `qa-marquee-cosmoq`
+  para comparar el marquee, no una copia del sitio completo).
+- **invokube.com** es otra referencia de diseño principal (layout general, tipografía,
+  paleta oscura, animaciones de scroll con framer-motion, dropdowns del nav). A diferencia
+  de cosmoq, este es un clon **navegable y funcional** del sitio real (Next.js/Turbopack) —
+  no HTML/CSS reconstruido a mano, sino el HTML SSG, el CSS y los chunks JS reales del build,
+  así que React hidrata y las animaciones corren de verdad. Vive en
+  `C:\Users\chori\OneDrive\Documentos\personal\master webdesign\data\variantes\invokube-com-20260911\1\`,
+  registrado en la galería "Mesa de luz" como `invokube-replica-1`. **No se sirve con
+  `serve.mjs` ni `file://`**: trae su propio `servir.mjs` porque el runtime de Turbopack
+  exige `/_next/` en la raíz del host (con rutas relativas la app nunca hidrata, sin lanzar
+  ningún error — detalle completo en el `README.md` de esa carpeta). Para verlo:
+  `cd .../invokube-com-20260911\1 && node servir.mjs` → `http://localhost:4455`.
+
 ## Servidor local
 - Este proyecto es **Astro** (`astro dev`), no un `index.html` servido con `serve.mjs` — ese
   script no existe en este repo, no crearlo.
-- Levantar con `npm run dev` → sirve en `http://localhost:4321`.
 - Si el servidor ya está corriendo, no levantar una segunda instancia (`git status` /
-  procesos activos antes de arrancar otro).
+  procesos activos antes de arrancar otro). El dev server de Astro 7 corre como daemon:
+  `npx astro dev status` dice si hay uno vivo, `npx astro dev stop` lo baja y
+  `npx astro dev logs` muestra su salida.
+
+### Convención de URL: siempre `localhost:<puerto>/<rama>/<variante>`
+- **Nunca servir en la raíz.** Todo dev server de este repo se levanta con un `base` que
+  identifica qué se está mirando, para poder tener varias ramas/variantes abiertas a la vez
+  sin confundirlas:
+
+  ```
+  http://localhost:<puerto>/<nombre-de-rama>/<nombre-de-variante>
+  ```
+
+- `<nombre-de-rama>`: la rama del worktree con los `/` aplanados a `-` (`dev/alvaro` →
+  `dev-alvaro`, `feat/cosmoq-shader` → `feat-cosmoq-shader`).
+- `<nombre-de-variante>`: solo si se están comparando dos versiones del mismo cambio
+  (`v1`, `v2`, `shader`, `imagenes`). Si no hay variantes, se omite ese segmento.
+- Comando:
+
+  ```bash
+  MSYS_NO_PATHCONV=1 npx astro dev --base /dev-alvaro --port 4321
+  ```
+
+  El `MSYS_NO_PATHCONV=1` es obligatorio en Git Bash sobre Windows: sin él, MSYS traduce
+  `/dev-alvaro` a `C:/Program Files/Git/dev-alvaro` y el sitio entero responde 404 sin
+  ningún error visible.
+- Un puerto por variante cuando haya varias corriendo (4321, 4322, 4323…).
+- **Si el arranque muere con "Dev server failed to start within 30s"**, no es un error del
+  proyecto: Astro 7 detecta que lo corre un agente, lo lanza en background y le da 30 s.
+  En este repo el arranque en frío tarda ~40 s (OneDrive + optimizer de Vite). Relanzar en
+  primer plano, que no tiene ese límite:
+
+  ```bash
+  MSYS_NO_PATHCONV=1 ASTRO_DEV_BACKGROUND=0 npx astro dev --base /dev-alvaro --port 4321
+  ```
+
+  Con `ASTRO_DEV_BACKGROUND` definido, Astro salta la detección de agente. El proceso queda
+  en primer plano, así que va lanzado en background del shell y se mata por PID, no con
+  `astro dev stop`.
+- **Enlaces internos y assets de `public/` pasan por [src/rutas.ts](src/rutas.ts).** Astro
+  solo prefija lo que él genera (fuentes, `/_astro/*`); un `href="/servicios"` o un
+  `src="/clientes/mono/ucv.png"` escritos a mano siguen apuntando a la raíz y dan 404 bajo
+  el `base`. Dos helpers:
+  - `ruta('/servicios')` — para todo `href`/`src` interno y toda ruta a `public/`.
+  - `sinBase(Astro.url.pathname)` — para comparar contra las rutas limpias de `consts.ts`
+    (estado activo del nav) y para la canonical, que siempre apunta a producción.
+
+  En producción `BASE_URL` es `/` y `ruta()` es la identidad: el build sale idéntico.
 
 ## Flujo de screenshots
 - Este repo no tiene `puppeteer`/`screenshot.mjs` propios — usar la skill **`browse`** para
-  navegar, interactuar y capturar pantallas del sitio en `localhost:4321`. Es la herramienta
-  ya configurada y usada en auditorías anteriores de este proyecto.
+  navegar, interactuar y capturar pantallas del sitio. Es la herramienta ya configurada y
+  usada en auditorías anteriores de este proyecto. La URL sale de la convención de arriba
+  (`localhost:<puerto>/<rama>/<variante>`), no de `localhost:4321` a secas.
 - Al comparar, ser específico: "el h2 mide 32px pero la referencia muestra ~24px", "el gap de
   la carta es 16px y debería ser 24px".
 - Revisar siempre: spacing/padding, tamaño/peso/line-height de fuente, colores (hex exacto),
