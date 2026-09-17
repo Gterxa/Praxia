@@ -1,18 +1,26 @@
 # CLAUDE.md — Reglas de frontend para Praxia webpage
 
-## Flujo de trabajo: rama aislada por cambio
-- Todo cambio que se pida en este repo (frontend o no) se hace en un worktree propio, nunca
-  directo sobre la rama en la que ya se está parado. Crear el worktree en
-  `.claude/worktrees/<nombre-del-cambio>` con una rama nueva a partir de la rama base actual
-  (normalmente `qa`), hacer el trabajo ahí, verificar (`npx astro check`, `npm run build`, y
-  QA visual con la skill `browse` cuando el cambio sea visible) y recién entonces mergear de
-  vuelta a la rama base (`git merge --no-ff`).
+## Flujo de trabajo: rama aislada por feature, no por prompt
+- El worktree se abre por **feature** (una unidad de cambio coherente: una sección, un
+  componente, un ajuste de diseño concreto), no por cada mensaje. Si el pedido es un ajuste
+  sobre algo que ya se está trabajando en un worktree abierto en la sesión (copy, un color,
+  un padding, una corrección chica, un ajuste de una regla en CLAUDE.md), se hace ahí mismo
+  — no se abre un worktree nuevo para cada prompt.
+- Se abre worktree nuevo cuando: el cambio es de layout/estructura, toca más de ~3 archivos,
+  o es un feature genuinamente distinto al que ya está en curso (no una iteración sobre el
+  mismo). En caso de duda, preferir seguir en el worktree ya abierto.
+- Crear el worktree en `.claude/worktrees/<nombre-del-feature>` con una rama nueva a partir
+  de la rama base actual (normalmente `qa`), hacer el trabajo ahí, verificar
+  (`npx astro check`, `npm run build`, y QA visual con la skill `browse` solo cuando el
+  cambio sea de layout/estructura o el usuario la pida — no como paso automático en cambios
+  chicos de copy/CSS) y recién entonces mergear de vuelta a la rama base (`git merge --no-ff`).
 - Antes de mergear: si el worktree destino tiene un dev server corriendo, instalar
   dependencias nuevas ahí (`npm install`) y reiniciarlo — Vite no detecta paquetes nuevos en
   caliente.
-- Al terminar, limpiar: borrar la rama ya mergeada (`git branch -d`) y el worktree
-  (`git worktree remove`). Si el worktree tiene cambios sin commitear que no están en ningún
-  otro lado, avisar antes de borrar — nunca `--force` por cuenta propia.
+- Al terminar, limpiar: parar el dev server del worktree (`npx astro dev stop`), borrar la
+  rama ya mergeada (`git branch -d`) y el worktree (`git worktree remove`). Si el worktree
+  tiene cambios sin commitear que no están en ningún otro lado, avisar antes de borrar —
+  nunca `--force` por cuenta propia.
 - Excepción: si el usuario pide explícitamente trabajar directo sobre la rama actual ("no
   hagas rama para esto", "trabaja acá directo"), se respeta esa instrucción puntual.
 
