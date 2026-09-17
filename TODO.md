@@ -1,26 +1,27 @@
 # TODO
 
-## Íconos orbitando en "Sobre lo que ya usas" — pendiente, necesita React/shadcn
+## React + shadcn — resuelto (17-sep-2026)
 
-Tony pidió replicar dos componentes de 21st.dev (`glass-calendar`, `orbiting-circles-02`,
-ambos React/shadcn) en la sección "Por qué Praxia". Se intentó primero sin instalar React,
-replicando el estilo con CSS/tokens propios (17-sep-2026):
+Tony pidió integrar dos componentes de 21st.dev (`glass-calendar`, `orbiting-circles-02`,
+ambos React/shadcn) en "2 a 4 semanas" y "Sobre lo que ya usas". Primer intento sin
+instalar React (replicar el estilo en CSS/tokens propios) no convenció — el panel de vidrio
+no se notaba sobre el fondo oscuro del sitio, y los íconos orbitando en CSS puro se
+superponían a los ~160px reales de la tarjeta.
 
-- **Panel de vidrio** ("2 a 4 semanas"): funcionó bien, quedó integrado
-  (`.vidrio` en `src/components/PorQue.astro`).
-- **Íconos orbitando** ("Sobre lo que ya usas"): **no funcionó**. Se armó con la misma
-  técnica del `.anillo-nodo` (custom properties + keyframes, dos anillos concéntricos), pero
-  a los ~160px de espacio real que da la tarjeta, los íconos de los dos anillos se superponen
-  — el componente original usa un lienzo de 440-720px (`w-110 h-110 md:w-180 md:h-180` y
-  más grande), casi 3-4x lo que cabe en una card del bento. Se revirtió a la versión anterior
-  (marquee de herramientas, `Marquee.astro`).
+Se instaló React (`@astrojs/react`) + estructura shadcn (`components.json`, `src/lib/utils.ts`,
+alias `@/*`) y se adaptaron los dos componentes como islas (`client:visible`) en
+`src/components/ui/`:
 
-**Para hacerlo bien** hace falta una de estas dos cosas:
-1. Instalar React + shadcn (agrega React/ReactDOM al bundle de un sitio hoy 100% Astro —
-   cambio de arquitectura real, no un componente más) y usar el componente original o una
-   versión Astro-adaptada con más espacio.
-2. O rediseñar esa tarjeta específica para que sea más grande (dedicarle más de las 12
-   columnas del bento), dejando espacio real para los anillos.
+- `glass-weeks.tsx` — el shell de vidrio real de "glass-calendar" (`bg-white/8` +
+  `backdrop-blur-xl` + `backdrop-saturate-150`, el truco de iOS que sí se nota incluso en
+  fondo oscuro) envolviendo las 3 semanas reales, con IntersectionObserver propio +
+  framer-motion. Se descartó el grid de días y los botones "Weekly/Monthly"/"Add event": no
+  tienen nada que hacer en una tarjeta de marketing.
+- `orbit-tools.tsx` — la técnica real de "orbiting-circles-02" (spoke + transform-origin:
+  bottom + contra-rotación vía `--start-angle`), con los 5 íconos reales de Praxia
+  espaciados a 360°/N exactos en un solo anillo (no dos, ni los logos de Supabase/Gemini/
+  Figma del original) — así nunca se superponen.
 
-No se instaló nada de React todavía — decisión pendiente de Tony sobre cuál de las dos
-opciones prefiere antes de gastar el esfuerzo.
+Verificado: `astro check`/`build` limpios, sin errores de consola/hidratación, y por DOM que
+las barras sí animan (framer-motion, confirmado con espera real). Nada más pendiente de este
+punto.
