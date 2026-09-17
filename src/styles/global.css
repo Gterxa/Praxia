@@ -68,6 +68,56 @@
     }
   }
 
+  /* ------------------------------------------------------------------------
+     Banco de pruebas (sep 2026): escala tipográfica de cosmoq para h2-h4.
+     Solo se activa con [data-tipo] en <html> (Layout.astro, prop `tipografia`,
+     sin valor por defecto) — así el resto del sitio no se mueve ni un píxel.
+     La escala (tamaño/line-height/tracking) es igual en las dos variantes;
+     lo que cambia es SOLO family+weight, para poder comparar peras con peras:
+       [data-tipo="a"] → Space Grotesk 500 (marca actual, más liviana)
+       [data-tipo="b"] → Manrope 400 (jugada literal de cosmoq: misma familia
+                          que el cuerpo, diferenciada por peso y escala)
+     h1 no se toca: es del hero, fuera de este alcance.
+     ------------------------------------------------------------------------ */
+  html[data-tipo] :is(h2, h3, h4) {
+    letter-spacing: -0.02em;
+  }
+
+  html[data-tipo='a'] :is(h2, h3, h4) {
+    font-family: var(--font-titulos);
+    font-weight: 500;
+  }
+
+  html[data-tipo='b'] :is(h2, h3, h4) {
+    font-family: var(--font-cuerpo);
+    font-weight: 400;
+  }
+
+  html[data-tipo] h2 {
+    font-size: 2rem; /* 32px */
+    line-height: 1.15;
+  }
+
+  html[data-tipo] h3 {
+    font-size: 1.75rem; /* 28px */
+    line-height: 1.25;
+  }
+
+  html[data-tipo] h4 {
+    font-size: 1.375rem; /* 22px */
+    line-height: 1.3;
+  }
+
+  @media (min-width: 48rem) {
+    html[data-tipo] h2 {
+      font-size: 3.5rem; /* 56px */
+      line-height: 1.2;
+    }
+    html[data-tipo] h3 {
+      font-size: 1.75rem; /* 28px, cosmoq no lo escala en tablet+ */
+    }
+  }
+
   a {
     color: inherit;
   }
@@ -129,6 +179,19 @@
   @media (min-width: 48rem) {
     .seccion {
       padding-block: 6rem;
+    }
+  }
+
+  /* Ritmo vertical de cosmoq (80px = 5rem) para las secciones migradas al
+     banco de pruebas. Se pide con una clase aparte, no reemplazando
+     `.seccion`, para no mover el padding de las páginas fuera de alcance. */
+  .seccion-cosmoq {
+    padding-block: 5rem;
+  }
+
+  @media (min-width: 48rem) {
+    .seccion-cosmoq {
+      padding-block: 5rem;
     }
   }
 
@@ -292,25 +355,70 @@
   }
 
   /* --- Tarjetas. Radio grande (identidad v2) y elevación con sombra tintada
-     de brasa al pasar el mouse, nunca shadow-md plano. --- */
+     de brasa al pasar el mouse, nunca shadow-md plano. Borde vía ::after
+     (patrón de cosmoq) en vez de `border`: no se recorta si la tarjeta trae
+     arte de fondo con `overflow: hidden`. --- */
   .tarjeta {
+    position: relative;
     background-color: var(--color-surface);
-    border: 1px solid var(--color-linea);
     border-radius: var(--radius-tarjeta);
     padding: 1.5rem;
     transition:
-      border-color 300ms var(--ease-suave),
       background-color 300ms var(--ease-suave),
       box-shadow 400ms var(--ease-suave),
       transform 400ms var(--ease-resorte);
   }
 
+  .tarjeta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--color-linea);
+    border-radius: inherit;
+    pointer-events: none;
+    transition: border-color 300ms var(--ease-suave);
+  }
+
   a.tarjeta:hover,
   .tarjeta-interactiva:hover {
-    border-color: var(--color-linea-viva);
     background-color: var(--color-surface-2);
     transform: translateY(-4px);
     box-shadow: 0 16px 40px rgb(255 107 53 / 0.16);
+  }
+
+  a.tarjeta:hover::after,
+  .tarjeta-interactiva:hover::after {
+    border-color: var(--color-linea-viva);
+  }
+
+  /* Borde blanco degradado, solo visible en dos esquinas (gborder de
+     cosmoq): se suma a `.tarjeta`/`.gicon`, no la reemplaza. */
+  .borde-degradado {
+    position: relative;
+  }
+
+  .borde-degradado::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border: 1px solid rgb(255 255 255 / 0.5);
+    border-radius: inherit;
+    pointer-events: none;
+    mask-image: linear-gradient(
+      255deg,
+      transparent 0%,
+      rgb(0 0 0 / 0.12) 18%,
+      rgb(0 0 0 / 0.23) 85%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      255deg,
+      transparent 0%,
+      rgb(0 0 0 / 0.12) 18%,
+      rgb(0 0 0 / 0.23) 85%,
+      transparent 100%
+    );
   }
 
   /* --- Chips de confianza. Afirmaciones que el sitio ya hace, en mono. --- */
@@ -334,6 +442,121 @@
     height: 0.375rem;
     border-radius: 999px;
     background-color: var(--color-cian);
+  }
+
+  /* --- Átomos del sistema cosmoq (banco de pruebas), paleta Praxia. --- */
+
+  /* Chip con icono: verticales de Servicios/Industrias, filas de la sección
+     "data". Borde tenue, sin relleno. */
+  .chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5625rem 0.75rem;
+    border-radius: 0.75rem;
+    background-color: var(--color-surface);
+    color: var(--color-texto);
+    font-size: 0.9375rem;
+  }
+
+  .chip::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--color-linea);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .chip svg,
+  .chip img {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: none;
+  }
+
+  /* Punto con check en píldora: listas de puntos de Servicios/Proceso/data. */
+  .item-check {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .item-check::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--color-linea);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .item-check-marca {
+    position: relative;
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.1);
+    box-shadow: inset 0 0 4px rgb(255 255 255 / 0.31);
+    display: grid;
+    place-items: center;
+    color: var(--color-texto);
+  }
+
+  .item-check p {
+    flex: 1 0 0;
+    font-size: 0.9375rem;
+    color: var(--color-texto);
+  }
+
+  /* Icono en caja de 71px con borde en degradado (peach→surface→blue de
+     cosmoq, traducido a sol→surface-2→linea-viva). Base de las verticales de
+     Servicios y de la grilla de integraciones del cierre. */
+  .gicon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 4.4375rem;
+    height: 4.4375rem;
+    padding: 0.125rem;
+    border-radius: 1.25rem;
+    background: linear-gradient(
+      40deg,
+      var(--color-sol) 0%,
+      var(--color-surface-2) 45%,
+      var(--color-linea-viva) 100%
+    );
+    box-shadow: 0 6px 24px rgb(255 172 8 / 0.2);
+    transition:
+      transform 400ms var(--ease-resorte),
+      box-shadow 400ms var(--ease-suave);
+  }
+
+  .gicon-adentro {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 0.75rem;
+    border-radius: 1.25rem;
+    background-color: var(--color-surface-2);
+    color: var(--color-brasa);
+  }
+
+  .gicon-adentro svg {
+    width: 60%;
+    height: 60%;
+  }
+
+  .gicon:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgb(255 172 8 / 0.32);
   }
 
   /* --- Barras de los widgets. Crecen una sola vez, cuando la sección se revela. --- */

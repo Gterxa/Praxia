@@ -15,6 +15,14 @@ interface Props {
   contextoWhatsApp?: string;
   /** Deja fuera de los buscadores páginas que no queremos indexar. */
   noIndex?: boolean;
+  /**
+   * Banco de pruebas (sep 2026): variante tipográfica de los titulares,
+   * exploración del sistema visual de cosmoq. 'a' = Space Grotesk 500 (marca
+   * actual). 'b' = Manrope 400 (misma familia que el cuerpo, jugada literal
+   * de cosmoq). Se emite como data-tipo en <html>; ver global.css.
+   * Solo la usa /pruebas/secciones — el resto del sitio no la toca.
+   */
+  tipografia?: 'a' | 'b';
 }
 
 const {
@@ -22,6 +30,7 @@ const {
   descripcion,
   contextoWhatsApp = CONTEXTO.flotante,
   noIndex = false,
+  tipografia = 'a',
 } = Astro.props;
 
 const tituloCompleto = titulo.includes(SITE.nombre)
@@ -60,7 +69,7 @@ const datosEstructurados = {
 ---
 
 <!doctype html>
-<html lang="es-PE">
+<html lang="es-PE" data-tipo={tipografia}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

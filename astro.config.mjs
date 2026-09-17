@@ -27,20 +27,44 @@ export default defineConfig({
 
   // Las fuentes se descargan en el build y se sirven desde el mismo dominio.
   // No hay pedidos a Google en tiempo de ejecución.
-  // Siete cortes en total. Se descargan en el build y se sirven desde el
-  // mismo dominio: no hay pedidos a Google en tiempo de ejecución.
+  //
+  // --font-titulos (sep 2026, banco de pruebas cosmoq): dejó de ser Space
+  // Grotesk. Tras comparar las dos variantes en /pruebas/secciones, Manrope
+  // ganó para titulares — misma familia que --font-cuerpo, jugada literal de
+  // cosmoq (una sola familia, el contraste lo da el peso, no la forma de la
+  // letra). Afecta TODO el sitio: hero, logo, y cualquier h1-h4 de páginas
+  // no migradas al banco, no solo las 9 secciones de la home.
+  // Space Grotesk queda comentada abajo por si hay que revertir.
   fonts: [
     {
       provider: fontProviders.google(),
-      name: 'Space Grotesk',
+      name: 'Manrope',
       cssVariable: '--font-titulos',
+      // 700 para el h1 del hero (global.css: h1,h2,h3,h4 parten de weight 700
+      // en la regla base); 500 para el resto de headings.
       weights: [500, 700],
       styles: ['normal'],
       subsets: ['latin'],
       fallbacks: ['system-ui', 'sans-serif'],
     },
+    // Space Grotesk — DESACTIVADA (sep 2026). Era --font-titulos antes del
+    // banco de pruebas A/B; no ganó. Comentada para revertir fácil:
+    // 1) descomentar, 2) en el bloque de arriba volver a poner
+    // name: 'Manrope' y quitar el comentario "afecta TODO el sitio".
+    // {
+    //   provider: fontProviders.google(),
+    //   name: 'Space Grotesk',
+    //   cssVariable: '--font-titulos',
+    //   weights: [500, 700],
+    //   styles: ['normal'],
+    //   subsets: ['latin'],
+    //   fallbacks: ['system-ui', 'sans-serif'],
+    // },
     {
-      // Identidad "v2": reemplaza a Inter como fuente de cuerpo.
+      // Identidad "v2": reemplaza a Inter como fuente de cuerpo. Desde
+      // sep 2026 es literalmente la misma familia que --font-titulos
+      // (arriba) — declarada aparte porque cada uno pide sus propios
+      // cortes/pesos y Astro genera una variable CSS por entrada.
       provider: fontProviders.google(),
       name: 'Manrope',
       cssVariable: '--font-cuerpo',
