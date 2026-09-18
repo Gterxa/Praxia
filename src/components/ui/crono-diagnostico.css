@@ -48,15 +48,16 @@
   justify-content: center;
   font-variant-numeric: tabular-nums;
   color: var(--color-texto);
-  /* Share Tech Mono: display face de numerales muy angostos y altos, que a
-     este tamano llenan el ancho de la card mejor que cualquier mono de texto.
-     Va en su propia variable (--font-crono) y no en --font-mono porque esa la
-     usa todo el sitio en tamanos chicos, donde esta fuente se lee mal.
-     Publica un solo peso (400), asi que no se declara font-weight. */
+  /* DSEG7 Classic: la tipografia de siete segmentos de los relojes digitales.
+     Va en su propia variable (--font-crono) y nunca en --font-mono, que la usa
+     todo el sitio: DSEG solo trae digitos y algunos simbolos, no alfabeto
+     completo. Un unico peso (400). */
   font-family: var(--font-crono), ui-monospace, monospace;
   /* Llena el ancho de la card: el minimo sube de 2.5 a 3.25rem y el maximo de
      3.75 a 6.5rem, con 16vw de por medio para que escale con el viewport. */
-  font-size: clamp(3.25rem, 16vw, 6.5rem);
+  /* Baja de 16vw/6.5rem a 11vw/4.5rem: con glifos de 0.84em (vs 0.54 de la
+     fuente anterior) los mismos 8 caracteres ocupan ~55% mas de ancho. */
+  font-size: clamp(2.25rem, 11vw, 4.5rem);
   line-height: 1;
   letter-spacing: -0.045em;
   width: 100%;
@@ -68,10 +69,10 @@
 .crono-lectura div[class*='overflow-y-clip'] {
   position: relative;
   font-size: inherit;
-  /* Medido en el DOM a 104px: el glifo de Share Tech Mono ocupa 56.2px, o sea
-     0.54em, no los 0.62em que pedia IBM Plex Mono. Con la caja mas ancha que
-     el numero quedaba aire lateral de sobra entre digitos. */
-  width: 0.54em;
+  /* Medido en el DOM: el glifo de DSEG7 ocupa 0.816em, bastante mas que los
+     0.54em de Share Tech Mono (los siete segmentos son anchos por diseno).
+     Con la caja angosta los digitos se pisaban entre si. */
+  width: 0.84em;
   /* line-height 1 daba una caja del alto exacto del glifo, asi que el numero
      entrante se veia cortado arriba y abajo a mitad del deslizamiento. El
      1.18 da el margen que necesita el recorte sin separar las filas. */
