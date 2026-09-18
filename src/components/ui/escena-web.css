@@ -284,7 +284,7 @@
 
 .escena-boton--primario {
   width: 6.875rem;
-  background: var(--color-brasa);
+  background: linear-gradient(135deg, var(--color-sol), var(--color-brasa));
 }
 
 .escena-boton--secundario {
@@ -301,8 +301,12 @@
 
 .escena-metrica {
   border-radius: 0.5rem;
-  border: 1px solid var(--color-linea);
-  background: rgb(13 14 20 / 0.5);
+  border: 1px solid color-mix(in srgb, var(--color-brasa) 18%, var(--color-linea));
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--color-brasa) 8%, transparent),
+    rgb(13 14 20 / 0.5)
+  );
   padding: 0.625rem;
 }
 

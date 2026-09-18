@@ -208,20 +208,39 @@ function VisualCrecimiento({ animar }: { animar: boolean }) {
       </div>
 
       <svg viewBox="0 0 200 100" className="bento-grafico-svg" preserveAspectRatio="none">
+        {/* Trazo y área en la rampa "atardecer" de tokens.css (los mismos hex
+            de --color-coral/--color-sol/--color-brasa): el gráfico de línea
+            es la pieza más "dato" de las ocho, y el original la deja en
+            blanco puro. Acá sube en color, de sol arriba a brasa abajo, en
+            vez de quedar monocromo. */}
+        <defs>
+          {/* Trazo y área en la rampa "atardecer" de tokens.css (los mismos
+              hex de --color-coral/--color-sol/--color-brasa): el gráfico de
+              línea es la pieza más "dato" de las ocho, y el original la deja
+              en blanco puro. Acá sube en color, de sol arriba a brasa abajo,
+              en vez de quedar monocromo. */}
+          <linearGradient id="bento-grafico-trazo" x1="0" y1="0" x2="200" y2="0">
+            <stop offset="0%" stopColor="#fa5e45" />
+            <stop offset="100%" stopColor="#fdcd39" />
+          </linearGradient>
+          <linearGradient id="bento-grafico-area" x1="0" y1="0" x2="0" y2="100">
+            <stop offset="0%" stopColor="#fdcd39" stopOpacity="0.16" />
+            <stop offset="100%" stopColor="#ff6b35" stopOpacity="0" />
+          </linearGradient>
+        </defs>
         {[20, 40, 60, 80].map((y) => (
           <line key={y} x1="0" y1={y} x2="200" y2={y} stroke="currentColor" strokeOpacity="0.06" />
         ))}
         <motion.path
           d={`${TRAZA} L200 100 L0 100 Z`}
-          fill="currentColor"
-          fillOpacity="0.07"
+          fill="url(#bento-grafico-area)"
           initial={animar ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
         />
         <motion.path
           d={TRAZA}
-          stroke="currentColor"
+          stroke="url(#bento-grafico-trazo)"
           strokeWidth="1.5"
           fill="none"
           strokeLinecap="round"
@@ -234,7 +253,7 @@ function VisualCrecimiento({ animar }: { animar: boolean }) {
           cx="200"
           cy="8"
           r="3"
-          fill="currentColor"
+          fill="#fdcd39"
           initial={animar ? { opacity: 0, scale: 0 } : false}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.5, ease: 'backOut' }}
