@@ -84,7 +84,6 @@ export default function CronoDiagnostico() {
         </span>
       </div>
 
-      <p className="crono-pie">15 minutos de diagnóstico, sin costo</p>
     </div>
   );
 }

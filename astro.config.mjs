@@ -83,7 +83,9 @@ export default defineConfig({
       provider: fontProviders.google(),
       name: 'IBM Plex Mono',
       cssVariable: '--font-mono',
-      weights: [400, 500],
+      // 600 se suma (sep 2026) para el cronometro gigante de la card de
+      // diagnostico: a 8rem el 500 se ve anemico.
+      weights: [400, 500, 600],
       styles: ['normal'],
       subsets: ['latin'],
       fallbacks: ['ui-monospace', 'SF Mono', 'Consolas', 'monospace'],

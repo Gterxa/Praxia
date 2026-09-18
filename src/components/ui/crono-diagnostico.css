@@ -20,13 +20,15 @@
    el rotate lo saca de la cuadrícula para que se lea estampado y no como un
    botón. */
 .crono-sello {
-  align-self: flex-end;
-  margin-right: -0.25rem;
+  align-self: flex-start;
+  margin-left: -0.25rem;
   padding: 0.3rem 0.85rem;
   border: 2px solid var(--color-brasa);
   border-radius: 0.25rem;
   box-shadow: inset 0 0 0 2px rgb(255 107 53 / 0.25);
-  transform: rotate(-9deg);
+  /* Rota al otro lado ahora que el sello vive a la izquierda: con -9deg se
+     inclinaba alejandose del centro de la card. */
+  transform: rotate(9deg);
   opacity: 0.92;
 }
 
@@ -45,11 +47,21 @@
   align-items: baseline;
   justify-content: center;
   font-variant-numeric: tabular-nums;
-  font-weight: 700;
-  letter-spacing: -0.03em;
   color: var(--color-texto);
-  font-size: clamp(2.5rem, 10vw, 3.75rem);
+  /* IBM Plex Mono (ya en el proyecto como --font-mono) por dos razones: sus
+     numerales son mas angostos y altos que los de Manrope, asi que la lectura
+     ocupa mas ancho de card a igual tamano; y trae la feature OpenType `zero`,
+     el cero cruzado tipo "O" tachada que pidio Tony. Sin `font-feature-settings`
+     el cero sale redondo normal. */
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-feature-settings: 'zero' 1;
+  font-weight: 600;
+  /* Llena el ancho de la card: el minimo sube de 2.5 a 3.25rem y el maximo de
+     3.75 a 6.5rem, con 16vw de por medio para que escale con el viewport. */
+  font-size: clamp(3.25rem, 16vw, 6.5rem);
   line-height: 1;
+  letter-spacing: -0.045em;
+  width: 100%;
 }
 
 /* SlidingNumber apila diez <span absolute inset-0> por dígito y los recorta con
@@ -79,14 +91,4 @@
   align-self: flex-end;
   padding-bottom: 0.14em;
   font-variant-numeric: tabular-nums;
-}
-
-.crono-pie {
-  font-size: 0.9375rem;
-  line-height: 1.4;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--color-texto);
-  text-align: center;
-  text-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
 }

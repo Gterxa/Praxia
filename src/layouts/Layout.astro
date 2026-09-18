@@ -101,6 +101,11 @@ const datosEstructurados = {
 
     <Font cssVariable="--font-titulos" preload />
     <Font cssVariable="--font-cuerpo" preload />
+    {/* IBM Plex Mono estaba declarada en astro.config.mjs pero nunca se
+        emitia acá, asi que var(--font-mono) no existia y todo lo que la usa
+        (.mono, kickers, chips) caia al fallback del sistema. Sin preload: no
+        entra en el primer render, a diferencia de titulos y cuerpo. */}
+    <Font cssVariable="--font-mono" />
 
     <script
       is:inline
