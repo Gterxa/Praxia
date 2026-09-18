@@ -2,19 +2,26 @@
 import * as si from 'simple-icons';
 import Seccion from './Seccion.astro';
 import CabeceraSeccion from './CabeceraSeccion.astro';
-import { GlassWeeks } from './ui/glass-weeks';
+import { GlassCalendar } from './ui/glass-calendar';
 import { OrbitTools } from './ui/orbit-tools';
+import CurvasCrecimiento from './CurvasCrecimiento.astro';
 import { PORQUE } from '../porque';
 import { ruta } from '../rutas';
 
 // Mismo patrón que Herramientas.astro: nombre de simple-icons -> trazo SVG.
-// Sin ícono disponible (p. ej. "Tu web", que no es una marca), el nombre va solo.
 const trazoIcono = (nombre?: string) => {
   if (!nombre) return null;
   const clave = `si${nombre[0]!.toUpperCase()}${nombre.slice(1)}` as keyof typeof si;
   const icono = si[clave] as { path: string } | undefined;
   return icono?.path ?? null;
 };
+
+// "Tu web" no es una marca, así que simple-icons no la cubre: va con un globo
+// genérico (glifo "public" de Material Symbols, 24x24). Sin él, ese chip se
+// caía de la órbita y quedaban 5 herramientas para 3 anillos — uno con una
+// sola, visible la mitad del giro y vacío la otra mitad.
+const TRAZO_WEB =
+  'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z';
 
 // Fila 1 = los 2 ítems más anchos del bento original (span 7 y 5: panel y
 // anillo), lado a lado. Fila 2 = los 3 span-4 restantes (tachado, barras,
@@ -89,28 +96,16 @@ const GLOW: Record<string, string> = {
               )}
 
               {t.tipo === 'anillo' && (
-                <>
-                  <div class="fcard-brillos fcard-capa" aria-hidden="true">
-                    <i class="brillo" /><i class="brillo" /><i class="brillo" /><i class="brillo" />
-                  </div>
-                  <div class="anillo" aria-hidden="true">
-                    <div class="anillo-orbita">
-                      {t.nodos.map((n, ni) => (
-                        <span class="anillo-nodo mono" data-i={ni}>
-                          {n}
-                        </span>
-                      ))}
-                    </div>
-                    <span class="anillo-centro mono">P</span>
-                  </div>
-                </>
+                <div class="curva-crecimiento fcard-capa">
+                  <CurvasCrecimiento />
+                </div>
               )}
 
               <div class="fcard-texto">
                 <h3 class="text-[1.0625rem] font-semibold text-texto md:text-[1.1875rem]">
                   {t.titulo}
                 </h3>
-                <p class="text-[0.9375rem] text-texto-2">{t.texto}</p>
+                <p class="text-[0.9375rem] text-texto">{t.texto}</p>
               </div>
             </div>
           </article>
@@ -133,10 +128,41 @@ const GLOW: Record<string, string> = {
                     <div class="radar-anillo" />
                     <div class="radar-haz" />
                     <i class="radar-contacto" /><i class="radar-contacto" /><i class="radar-contacto" />
-                  </div>
-                  <div class="tachado-caja font-[family-name:var(--font-mono)] text-[0.8125rem]">
-                    <p class="tachado text-texto-3">«{t.antes}»</p>
-                    <p class="text-texto">«{t.despues}»</p>
+                    <div class="gsc-logo">
+                      <svg viewBox="0 0 40 40" width="100%" height="100%">
+                        <g clip-path="url(#gsc-clip)">
+                          <path
+                            fill="#fbbc04"
+                            d="m11.081 30.527-4.72 4.721a.933.933 0 0 1-1.317 0l-.292-.292a.933.933 0 0 1 0-1.316l4.72-4.721a.933.933 0 0 1 1.318 0l.291.291a.93.93 0 0 1 0 1.317"
+                          />
+                          <path
+                            fill="#4285f4"
+                            d="M23.75 32.5h6.042a6.04 6.04 0 0 0 6.041-6.042v-16.25a6.04 6.04 0 0 0-6.041-6.041 6.04 6.04 0 0 0-6.042 6.041z"
+                          />
+                          <path
+                            fill="#fbbc04"
+                            d="M13.75 32.5a6.04 6.04 0 0 0 6.042-6.042 6.04 6.04 0 0 0-6.042-6.041 6.04 6.04 0 0 0-6.042 6.041A6.04 6.04 0 0 0 13.75 32.5"
+                          />
+                          <path
+                            fill="#34a853"
+                            d="M27.97 32.5h-5.887a6.04 6.04 0 0 1-6.041-6.042v-7.916a6.04 6.04 0 0 1 6.041-6.042 6.04 6.04 0 0 1 6.042 6.042v13.804a.154.154 0 0 1-.154.154z"
+                          />
+                          <path
+                            fill="#1967d2"
+                            d="M28.125 32.346V18.542a6.04 6.04 0 0 0-4.375-5.807V32.5h4.22a.154.154 0 0 0 .155-.154"
+                          />
+                          <path
+                            fill="#ea4335"
+                            d="M19.792 26.575a6.04 6.04 0 0 0-3.75-5.59v5.59c0 1.72.72 3.273 1.875 4.373a6.02 6.02 0 0 0 1.875-4.373"
+                          />
+                        </g>
+                        <defs>
+                          <clipPath id="gsc-clip">
+                            <path fill="#fff" d="M0 0h40v40H0z" />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </div>
                   </div>
                 </>
               )}
@@ -160,24 +186,26 @@ const GLOW: Record<string, string> = {
                     <i class="destello" /><i class="destello destello--calido" />
                     <i class="destello" /><i class="destello destello--calido" />
                   </div>
-                  <GlassWeeks semanas={t.semanas} client:visible />
+                  <GlassCalendar client:only="react" />
                 </>
               )}
 
               {t.tipo === 'chips' && (
-                <OrbitTools
-                  herramientas={t.chips
-                    .map((c) => ({ nombre: c.nombre, path: trazoIcono(c.icono) }))
-                    .filter((h): h is Omit<typeof h, 'path'> & { path: string } => h.path !== null)}
-                  client:visible
-                />
+                <div class="orbit-capa fcard-capa">
+                  <OrbitTools
+                    herramientas={t.chips.map((c) => ({
+                      nombre: c.nombre,
+                      path: trazoIcono(c.icono) ?? TRAZO_WEB,
+                    }))}
+                  />
+                </div>
               )}
 
               <div class="fcard-texto">
                 <h3 class="text-[1.0625rem] font-semibold text-texto md:text-[1.1875rem]">
                   {t.titulo}
                 </h3>
-                <p class="text-[0.9375rem] text-texto-2">{t.texto}</p>
+                <p class="text-[0.9375rem] text-texto">{t.texto}</p>
               </div>
             </div>
           </article>
@@ -210,6 +238,21 @@ const GLOW: Record<string, string> = {
     justify-content: center;
     width: 100%;
     padding: 1.75rem 1.5rem;
+
+    /* Fundido común de las cinco cards: todo lo decorativo se apaga antes de
+       llegar al panel de texto flotante, en vez de cruzar por detrás de él.
+       Nació en la card de las órbitas (los íconos quedaban como manchas
+       oscuras desenfocadas sobre el copy) y se extiende al resto para que las
+       cinco tengan el mismo remate. Los porcentajes son del alto del card, así
+       que solo sirve tal cual en capas a sangre (inset: 0); las que no lo son
+       llevan su propia versión traducida a su caja (ver .curva-crecimiento). */
+    --fcard-fundido: linear-gradient(to bottom, #000 46%, transparent 68%);
+  }
+
+  .fcard-lineas,
+  .fcard-destellos {
+    -webkit-mask-image: var(--fcard-fundido);
+    mask-image: var(--fcard-fundido);
   }
 
   /* --- Glow de marca (patrón cosmoq: cada card trae su propio glow de
@@ -340,54 +383,15 @@ const GLOW: Record<string, string> = {
     animation-delay: -3.7s;
   }
 
-  /* --- Brillos pulsantes (patrón cosmoq de "Deep capabilities"): puntos
-     de luz sobre el glow del anillo. --- */
-  .fcard-brillos {
-    inset: 0;
-  }
-
-  .brillo {
-    position: absolute;
-    width: 0.75rem;
-    height: 0.75rem;
-    border-radius: 999px;
-    background: var(--color-texto);
-    box-shadow:
-      0 0 0.75rem 0.25rem rgb(255 255 255 / 0.55),
-      0 0 1.875rem 0.625rem rgb(255 107 53 / 0.25);
-    animation: brillo-pulso 3s ease-in-out infinite;
-  }
-
-  .brillo:nth-child(1) {
-    left: 22%;
-    top: 22%;
-  }
-  .brillo:nth-child(2) {
-    left: 78%;
-    top: 28%;
-    animation-delay: 0.8s;
-  }
-  .brillo:nth-child(3) {
-    left: 20%;
-    top: 76%;
-    animation-delay: 1.6s;
-  }
-  .brillo:nth-child(4) {
-    left: 80%;
-    top: 74%;
-    animation-delay: 2.2s;
-  }
-
-  @keyframes brillo-pulso {
-    0%,
-    100% {
-      transform: scale(0.85);
-      opacity: 0.75;
-    }
-    50% {
-      transform: scale(1.1);
-      opacity: 1;
-    }
+  /* --- Constelaciones de crecimiento (SVG inline, en
+     CurvasCrecimiento.astro). Ocupa la franja entre el tope de la card y el
+     panel de texto, que en mobile envuelve una línea más y crece hacia arriba.
+     Sin ejes ni cifras a propósito — el porqué está en el componente. --- */
+  .curva-crecimiento {
+    top: 1.25rem;
+    right: 0;
+    left: 0;
+    bottom: 8.75rem;
   }
 
   /* Medidas reales de cosmoq (.excep__row, contenedor ~1200px, gap 32px):
@@ -402,9 +406,12 @@ const GLOW: Record<string, string> = {
     min-height: 29rem;
   }
 
-  /* Texto flotante sobre la imagen/widget, inset del borde, con blur —
-     el "gborder" de cosmoq (`.fcard__text`). Reserva ~90-100px abajo,
-     ver min-height de arriba y el padding-bottom del widget de datos. */
+  /* Texto flotante sobre la imagen/widget — réplica exacta de `.fcard__text`
+     + `.gborder` de cosmoq: SIN background-color propio, solo blur(5px) y un
+     borde blanco enmascarado (visible ~12-23% en el medio, se apaga en las
+     puntas) que imita el reflejo del canto del vidrio. Antes llevaba un
+     fondo casi opaco (0.78 de alpha) que lo volvía una tarjeta plana en vez
+     de vidrio — cosmoq real no tiene ningún fill, confirmado en su CSS. */
   .fcard-texto {
     position: absolute;
     left: 1rem;
@@ -414,56 +421,61 @@ const GLOW: Record<string, string> = {
     display: flex;
     flex-direction: column;
     gap: 0.375rem;
-    padding: 1rem 1.25rem;
-    border-radius: var(--radius-praxia);
-    background: rgb(13 14 20 / 0.78);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid var(--color-linea);
-  }
-
-  /* Marco alrededor del antes/después tachado: sin esto, dos líneas de mono
-     quedaban perdidas en una zona de visualización de ~10rem de alto.
-     Ancho acotado en el card del radar para no montarse con el haz
-     (ver `.fcard-visual:has(.radar) .tachado-caja` más abajo). */
-  .tachado-caja {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 100%;
     padding: 1.25rem;
-    border: 1px solid rgb(84 124 255 / 0.16);
     border-radius: var(--radius-praxia);
-    background: rgb(0 0 0 / 0.55);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
+    overflow: clip;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
   }
 
-  .tachado {
-    text-decoration: line-through;
-    text-decoration-color: var(--color-linea-viva);
-    text-decoration-thickness: 1px;
+  .fcard-texto::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid #fff;
+    border-radius: inherit;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(
+      255deg,
+      transparent 0%,
+      rgb(0 0 0 / 0.12) 18.17%,
+      rgb(0 0 0 / 0.23) 85.17%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      255deg,
+      transparent 0%,
+      rgb(0 0 0 / 0.12) 18.17%,
+      rgb(0 0 0 / 0.23) 85.17%,
+      transparent 100%
+    );
   }
 
   /* --- Radar de visibilidad (pieza propia, no de cosmoq — misma técnica
      que Speed/Control: custom properties + keyframes, sin JS). Un haz
      gira 360° y tres "contactos" destellan cuando el haz los cruza:
-     metáfora directa de "apareces cuando te buscan". Vive detrás de la
-     caja de texto, se asoma por los bordes igual que el resto de los
-     glows. --- */
+     metáfora directa de "apareces cuando te buscan". --- */
   .radar {
-    top: 0.75rem;
-    right: 0.75rem;
-    width: 6rem;
-    height: 6rem;
+    top: 34%;
+    left: 50%;
+    width: 76%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
   }
 
-  /* La caja antes/después se acota y se va a la izquierda para dejar libre
-     la esquina superior derecha, donde vive el radar. */
-  .fcard-visual:has(.radar) .tachado-caja {
-    max-width: 70%;
-    padding: 1rem;
-    margin-right: auto;
+  /* Logo de Google Search Console en el centro del radar — reemplaza el
+     antes/después de texto (dejó de hacer falta explicarlo con palabras: el
+     haz barriendo alrededor del logo ya dice "apareces cuando te buscan").
+     Colores oficiales de marca, no son la paleta de Tailwind que prohíbe el
+     guardrail. z-index para quedar por delante del haz que gira. */
+  .gsc-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    width: 30%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
   }
 
   .radar-anillo {
@@ -476,7 +488,7 @@ const GLOW: Record<string, string> = {
   .radar-anillo::before {
     content: '';
     position: absolute;
-    inset: 1rem;
+    inset: 17%;
     border-radius: 999px;
     border: 1px solid rgb(84 124 255 / 0.25);
   }
@@ -497,8 +509,8 @@ const GLOW: Record<string, string> = {
 
   .radar-contacto {
     position: absolute;
-    width: 0.375rem;
-    height: 0.375rem;
+    width: 0.5rem;
+    height: 0.5rem;
     border-radius: 999px;
     background: var(--color-texto);
     animation: radar-contacto 4s linear infinite;
@@ -537,94 +549,32 @@ const GLOW: Record<string, string> = {
     }
   }
 
-  /* --- Anillo giratorio: AUTO/PRES/IA/SEG alrededor de una P central. --- */
-  .anillo {
-    position: relative;
-    height: 9rem;
-    width: 9rem;
-    display: grid;
-    place-items: center;
-  }
-
-  .anillo-orbita {
-    position: absolute;
-    inset: 0;
-    animation: girar 40s linear infinite;
-  }
-
-  .anillo-nodo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    display: grid;
-    place-items: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    margin: -1.375rem;
-    border-radius: 999px;
-    border: 1px solid var(--color-linea-viva);
-    background: var(--color-surface-2);
-    font-size: 0.625rem;
-    color: var(--color-texto-2);
-    /* Distribuye los 4 nodos en un círculo de 3.75rem de radio y contra-gira
-       cada uno para que el texto no quede de cabeza. --i se fija por
-       :nth-child (abajo) en vez de un `style` inline: la CSP del sitio
-       bloquea `style=""` dinámico (solo permite <style> en bloque, con
-       hash). Siempre son 4 nodos (porque.ts: AUTO/PRES/IA/SEG). */
-    transform: rotate(calc(var(--i) * 90deg)) translateX(3.75rem) rotate(calc(var(--i) * -90deg));
-    animation: contra-girar 40s linear infinite;
-  }
-
-  .anillo-nodo:nth-child(1) {
-    --i: 0;
-  }
-  .anillo-nodo:nth-child(2) {
-    --i: 1;
-  }
-  .anillo-nodo:nth-child(3) {
-    --i: 2;
-  }
-  .anillo-nodo:nth-child(4) {
-    --i: 3;
-  }
-
-  .anillo-centro {
-    display: grid;
-    place-items: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 999px;
-    background: var(--color-brasa);
-    color: var(--color-void);
-    font-weight: 700;
-    font-size: 0.9375rem;
-  }
-
-  @keyframes girar {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @keyframes contra-girar {
-    from {
-      transform: rotate(calc(var(--i) * 90deg)) translateX(3.75rem) rotate(calc(var(--i) * -90deg));
-    }
-    to {
-      transform: rotate(calc(var(--i) * 90deg + 360deg)) translateX(3.75rem)
-        rotate(calc(var(--i) * -90deg - 360deg));
-    }
-  }
-
-  /* Las barras de "2 a 4 semanas" y los íconos de "Sobre lo que ya usas"
-     ahora son islas de React (GlassWeeks / OrbitTools en src/components/ui,
+  /* El calendario de "2 a 4 semanas" y los íconos de "Sobre lo que ya usas"
+     son islas de React (GlassCalendar / OrbitTools en src/components/ui,
      estilo Tailwind + shadcn) — ver TODO.md para el porqué. Sus estilos
-     viven en los .tsx, no acá. */
+     viven en los .tsx, no acá. GlassCalendar entra como `client:only`
+     porque calcula fechas reales: en un sitio estático, un render de build
+     congelaría el "próximo lunes" a la fecha del deploy.
+
+     OrbitTools va en una capa a sangre (no en el flujo, como estaba): sus
+     anillos se salen del card a propósito y el recorte lo pone el
+     `overflow: hidden` de `.tarjeta-fcard`. Los íconos que bajan cruzan por
+     detrás del panel de texto de vidrio, igual que el radar de la card
+     vecina. */
+  .orbit-capa {
+    inset: 0;
+  }
+
+  /* Los anillos son líneas de 1px: sobre el glow a plena intensidad se borran
+     (la referencia los dibuja sobre negro puro). El glow baja un punto solo en
+     esta card — lo suficiente para que el sistema orbital se lea, sin que la
+     tarjeta quede notoriamente más apagada que sus vecinas. */
+  .fcard-visual:has(.orbit-tools) .fcard-glow {
+    opacity: 0.7;
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    .anillo-orbita,
-    .anillo-nodo,
     .destello,
-    .brillo,
     .radar-haz,
     .radar-contacto {
       animation: none;

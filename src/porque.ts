@@ -23,22 +23,18 @@ export const PORQUE = [
     titulo: 'Tu AI & Automation Growth Partner',
     texto:
       'No es un proyecto que se entrega y se olvida. Seguimos optimizando lo que construimos a medida que tu negocio crece.',
-    nodos: ['AUTO', 'PRES', 'IA', 'SEG'],
   },
   {
     span: 4,
     tipo: 'tachado',
     titulo: 'Te hacemos visible, no solo eficiente',
     texto: 'Automatizamos por dentro y te ponemos presencia real por fuera: web y SEO para que te encuentren.',
-    antes: 'nadie te encuentra si te buscan en Google',
-    despues: 'apareces primero cuando alguien busca lo que ofreces',
   },
   {
     span: 4,
     tipo: 'barras',
     titulo: '2 a 4 semanas',
     texto: 'De la llamada a funcionando. Plazo real, no de folleto.',
-    semanas: ['Semana 1', 'Semana 2', 'Semana 3'],
   },
   {
     span: 4,

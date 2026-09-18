@@ -1,22 +1,29 @@
 import * as React from 'react';
 
 /**
- * Adaptado de "orbiting-circles-02" (21st.dev): se mantiene la técnica real
- * del original (un div "radio" con transform-origin:bottom que gira, y
- * dentro la cápsula del ícono contra-girando para quedar siempre derecha —
- * custom property --start-angle + @keyframes, sin JS moviendo nada cuadro
- * a cuadro). Se descartan los 3 anillos gigantes (440-1060px, pensados para
- * una landing de IA) y los logos de Supabase/Gemini/Make/Figma/Slack/
- * Claude/React/Python: no son herramientas de Praxia.
+ * Adaptado de "orbiting-circles-02" (21st.dev). Se mantiene la técnica real
+ * del original —un div "radio" con transform-origin:bottom que gira y, dentro,
+ * la cápsula del ícono contra-girando para quedar siempre derecha, todo con
+ * custom property + @keyframes, sin JS moviendo nada cuadro a cuadro— y ahora
+ * también su composición: el centro de las órbitas NO está en el medio del
+ * bloque sino cerca de su borde inferior, así que de cada anillo solo se ve el
+ * arco superior y los anillos grandes se salen del card por los costados. La
+ * versión anterior metía dos anillos completos de 160px en el centro de la
+ * tarjeta: se leían como un reloj chiquito, no como un sistema.
  *
- * Dos anillos (no tres, no entran en la tarjeta), con radios que se
- * solapan a propósito (interior 38px ± cápsula de 15px = 23-53px; exterior
- * 54px ± 15px = 39-69px → 14px de banda compartida) y sentidos/velocidades
- * opuestos: así los íconos de un anillo cruzan visualmente por delante o
- * detrás de los del otro al girar, en vez de quedar congelados en dos
- * círculos separados. El exterior pinta siempre encima (z-index) para que
- * el cruce no parpadee. Los N íconos de cada anillo van espaciados a
- * 360/N grados exactos dentro de SU anillo — nunca se pisan entre sí.
+ * Diferencias deliberadas con el original:
+ *  - Sin el globo de partículas del centro (en el original, un canvas WebGL):
+ *    acá la tarjeta ya tiene su propio glow de marca de fondo y el pedido es
+ *    solo el sistema de anillos.
+ *  - El centro de órbita se sube `--orbit-piso` sobre el borde inferior del
+ *    card para que el panel de texto de vidrio (`.fcard-texto`) no se coma la
+ *    mitad de la composición, y la capa entera se desvanece con una máscara
+ *    justo antes de ese panel: sin eso, los íconos que bajan quedaban como
+ *    manchas oscuras desenfocadas encima del texto.
+ *  - Los logos no se duplican a 180° dentro del mismo anillo como en el
+ *    original (ahí el mismo ícono aparece dos veces por anillo): las
+ *    herramientas se reparten en círculo entre los tres anillos, con más
+ *    íconos cuanto más largo el arco, y ninguna se repite dentro del mismo.
  */
 interface OrbitTool {
   nombre: string;
@@ -28,109 +35,178 @@ interface OrbitToolsProps {
   className?: string;
 }
 
-const RADIO_CAPSULA = 15;
+/** Diámetro de la cápsula y del glifo que lleva dentro. */
+const CAPSULA = 38;
+const GLIFO = 18;
+
+/**
+ * Radios pensados para el card de la fila 2 del bento (~342x464px): el interior
+ * entra completo, el del medio roza los costados y el exterior se sale — que es
+ * justo lo que da la sensación de escala de la referencia. Sentidos alternados
+ * y duraciones largas: a este radio, 20s se lee como un carrusel nervioso.
+ */
+const ANILLOS = [
+  { radio: 120, duracion: 31, sentido: 'cw', anguloBase: -66, iconos: 4 },
+  { radio: 182, duracion: 43, sentido: 'ccw', anguloBase: 38, iconos: 6 },
+  { radio: 248, duracion: 59, sentido: 'cw', anguloBase: -28, iconos: 8 },
+] as const;
 
 function Anillo({
   herramientas,
   radio,
   duracion,
   sentido,
-  zIndex,
+  anguloBase,
 }: {
   herramientas: OrbitTool[];
   radio: number;
   duracion: number;
   sentido: 'cw' | 'ccw';
-  zIndex: number;
+  anguloBase: number;
 }) {
   const n = herramientas.length;
-  const claseSpoke = `orbit-tools-spoke-${sentido}`;
-  const claseCapsula = `orbit-tools-capsule-${sentido}`;
 
   return (
-    <>
-      <div
-        className="absolute top-1/2 left-1/2 rounded-full border border-white/10"
-        style={{ width: radio * 2, height: radio * 2, marginTop: -radio, marginLeft: -radio }}
-      />
+    <div
+      className="orbit-tools-pista absolute bottom-0 left-0 rounded-full border"
+      style={{ width: radio * 2, height: radio * 2, marginLeft: -radio, marginBottom: -radio }}
+    >
       {herramientas.map((h, i) => {
-        const angulo = `${(360 / n) * i}deg`;
+        const angulo = `${anguloBase + (360 / n) * i}deg`;
         return (
           <div
             key={h.nombre}
-            className={`${claseSpoke} absolute top-1/2 left-1/2 origin-bottom`}
+            className={`orbit-tools-spoke-${sentido} absolute top-0 left-1/2 origin-bottom`}
             style={
               {
+                width: CAPSULA,
                 height: radio,
-                marginTop: -radio,
-                marginLeft: -RADIO_CAPSULA,
+                marginLeft: -CAPSULA / 2,
                 animationDuration: `${duracion}s`,
-                '--start-angle': angulo,
+                '--orbit-angulo': angulo,
               } as React.CSSProperties
             }
           >
             <div
-              className={`${claseCapsula} flex items-center justify-center rounded-full border border-white/15 bg-white/8 text-texto backdrop-blur-md backdrop-saturate-150`}
+              className={`orbit-tools-capsula orbit-tools-capsula-${sentido} flex items-center justify-center rounded-full border`}
               style={
                 {
-                  width: RADIO_CAPSULA * 2,
-                  height: RADIO_CAPSULA * 2,
-                  marginTop: -RADIO_CAPSULA,
-                  zIndex,
+                  width: CAPSULA,
+                  height: CAPSULA,
+                  marginTop: -CAPSULA / 2,
                   animationDuration: `${duracion}s`,
-                  '--start-angle': angulo,
+                  '--orbit-angulo': angulo,
                 } as React.CSSProperties
               }
               title={h.nombre}
             >
-              <svg viewBox="0 0 24 24" width={15} height={15}>
+              <svg viewBox="0 0 24 24" width={GLIFO} height={GLIFO} aria-hidden="true">
                 <path d={h.path} fill="currentColor" />
               </svg>
             </div>
           </div>
         );
       })}
-    </>
+    </div>
   );
 }
 
 export function OrbitTools({ herramientas, className }: OrbitToolsProps) {
-  const interior = herramientas.slice(0, 2);
-  const exterior = herramientas.slice(2, 5);
+  const total = herramientas.length;
+  // Más íconos cuanto más largo el arco (4/6/8), para que la densidad se vea
+  // pareja en vez de dejar el anillo exterior casi vacío. Se reparten con un
+  // cursor que recorre la lista en círculo: con 6 herramientas y 18 posiciones
+  // cada una da exactamente tres vueltas, en anillos, radios y velocidades
+  // distintos, y ninguna se repite dentro del mismo arco. Las duraciones son
+  // primas entre sí (31/43/59 s) para que las tres órbitas casi nunca vuelvan
+  // a alinearse en la misma diagonal.
+  const porAnillo = ANILLOS.map((a, k) => {
+    // Cada anillo recorre la lista con su propio arranque y su propio paso
+    // (1 o 5, ambos coprimos con 6, o sea que igual pasan por todas): sin eso
+    // los anillos quedaban en fase y el mismo logo aparecía dos veces casi
+    // sobre el mismo radio.
+    const paso = k === 1 ? 5 : 1;
+    return Array.from(
+      { length: a.iconos },
+      (_, j) => herramientas[(k * 2 + j * paso) % total]!,
+    );
+  });
 
   return (
-    <div className={`relative h-40 w-40 ${className ?? ''}`} aria-hidden="true">
+    <div className={`orbit-tools absolute inset-0 ${className ?? ''}`} aria-hidden="true">
       <style>{`
+        .orbit-tools {
+          /* Cuánto sube el centro de las órbitas sobre el borde inferior del
+             card: lo justo para que la parte baja de los arcos se meta detrás
+             del panel de texto en vez de cortarse en el aire. */
+          --orbit-piso: 5.5rem;
+          -webkit-mask-image: var(--fcard-fundido, linear-gradient(to bottom, #000 46%, transparent 68%));
+          mask-image: var(--fcard-fundido, linear-gradient(to bottom, #000 46%, transparent 68%));
+        }
+        .orbit-tools-origen {
+          position: absolute;
+          bottom: var(--orbit-piso);
+          left: 50%;
+          width: 0;
+          height: 0;
+        }
+        .orbit-tools-pista {
+          border-color: rgb(255 255 255 / 0.36);
+        }
+        .orbit-tools-capsula {
+          position: relative;
+          z-index: 2;
+          border-color: rgb(255 255 255 / 0.14);
+          background-color: rgb(13 14 20 / 0.82);
+          color: var(--color-texto);
+          box-shadow:
+            0 1px 2px rgb(0 0 0 / 0.5),
+            0 8px 20px -6px rgb(0 0 0 / 0.65),
+            inset 0 1px 0 rgb(255 255 255 / 0.08);
+          -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+        }
+
         @keyframes orbit-tools-spin-cw {
-          from { transform: rotate(var(--start-angle)); }
-          to   { transform: rotate(calc(var(--start-angle) + 360deg)); }
+          from { transform: rotate(var(--orbit-angulo)); }
+          to   { transform: rotate(calc(var(--orbit-angulo) + 360deg)); }
         }
         @keyframes orbit-tools-spin-ccw {
-          from { transform: rotate(var(--start-angle)); }
-          to   { transform: rotate(calc(var(--start-angle) - 360deg)); }
+          from { transform: rotate(var(--orbit-angulo)); }
+          to   { transform: rotate(calc(var(--orbit-angulo) - 360deg)); }
         }
         @keyframes orbit-tools-counter-cw {
-          from { transform: rotate(calc(var(--start-angle) * -1)); }
-          to   { transform: rotate(calc(var(--start-angle) * -1 - 360deg)); }
+          from { transform: rotate(calc(var(--orbit-angulo) * -1)); }
+          to   { transform: rotate(calc(var(--orbit-angulo) * -1 - 360deg)); }
         }
         @keyframes orbit-tools-counter-ccw {
-          from { transform: rotate(calc(var(--start-angle) * -1)); }
-          to   { transform: rotate(calc(var(--start-angle) * -1 + 360deg)); }
+          from { transform: rotate(calc(var(--orbit-angulo) * -1)); }
+          to   { transform: rotate(calc(var(--orbit-angulo) * -1 + 360deg)); }
         }
+
         .orbit-tools-spoke-cw { animation-name: orbit-tools-spin-cw; animation-timing-function: linear; animation-iteration-count: infinite; }
         .orbit-tools-spoke-ccw { animation-name: orbit-tools-spin-ccw; animation-timing-function: linear; animation-iteration-count: infinite; }
-        .orbit-tools-capsule-cw { animation-name: orbit-tools-counter-cw; animation-timing-function: linear; animation-iteration-count: infinite; }
-        .orbit-tools-capsule-ccw { animation-name: orbit-tools-counter-ccw; animation-timing-function: linear; animation-iteration-count: infinite; }
+        .orbit-tools-capsula-cw { animation-name: orbit-tools-counter-cw; animation-timing-function: linear; animation-iteration-count: infinite; }
+        .orbit-tools-capsula-ccw { animation-name: orbit-tools-counter-ccw; animation-timing-function: linear; animation-iteration-count: infinite; }
+
         @media (prefers-reduced-motion: reduce) {
           .orbit-tools-spoke-cw, .orbit-tools-spoke-ccw,
-          .orbit-tools-capsule-cw, .orbit-tools-capsule-ccw { animation: none; }
+          .orbit-tools-capsula-cw, .orbit-tools-capsula-ccw { animation: none; }
         }
       `}</style>
 
-      <Anillo herramientas={interior} radio={38} duracion={20} sentido="cw" zIndex={1} />
-      <Anillo herramientas={exterior} radio={54} duracion={32} sentido="ccw" zIndex={2} />
-
-      <span className="absolute top-1/2 left-1/2 z-0 h-2.5 w-2.5 -mt-[0.3125rem] -ml-[0.3125rem] rounded-full bg-[var(--color-brasa)] shadow-[0_0_12px_4px_rgb(255_107_53/0.45)]" />
+      <div className="orbit-tools-origen">
+        {ANILLOS.map((a, i) => (
+          <Anillo
+            key={a.radio}
+            herramientas={porAnillo[i]!}
+            radio={a.radio}
+            duracion={a.duracion}
+            sentido={a.sentido}
+            anguloBase={a.anguloBase}
+          />
+        ))}
+      </div>
     </div>
   );
 }

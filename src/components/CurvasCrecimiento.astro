@@ -1,0 +1,225 @@
+---
+/**
+ * Constelaciones de crecimiento de la card "Tu AI & Automation Growth Partner":
+ * tres trazos en zigzag con la rampa cálida de marca y una estrella clara en
+ * cada vértice, que se encienden de izquierda a derecha y después quedan
+ * palpitando, como un mapa estelar.
+ *
+ * Va en SVG inline y no con recharts a propósito. El build activa
+ * `experimental.csp` con `styleDirective: ["'self'"]`, así que cada página sale
+ * con una CSP de hashes y sin `unsafe-inline`; recharts se dimensiona poniendo
+ * atributos `style` en runtime, la CSP se los bloquea y termina midiendo 0px
+ * sin dibujar nada (comprobado en `astro preview`). Los atributos de
+ * presentación de SVG no son `style`, así que esto pasa limpio: además son
+ * 0 KB de JS, sin hidratación y renderizando en el servidor.
+ *
+ * Sin ejes, grilla ni cifras: es un cielo, no un reporte. Y un gráfico con
+ * números en una landing se lee como resultados reales de clientes, cosa que
+ * no hay datos para respaldar.
+ */
+
+// Tres series que arrancan a distinta altura y alternan subidas y bajadas: una
+// recta siempre ascendente, y peor con origen común, se lee a plantilla. El
+// neto de las tres sí sube — la card habla de crecimiento, y que a veces caiga
+// es lo que lo hace creíble. Las columnas se comparten y las alturas están
+// separadas para que ningún par de estrellas se pise. La última de `meta` es
+// la punta alta del conjunto: cierra arriba del todo.
+const COLUMNAS = [24, 94, 164, 234, 304, 376];
+
+const SERIES = [
+  { clase: 'via--apoyo', radio: 3.2, alturas: [120, 148, 140, 84, 154, 66] },
+  { clase: 'via--meta', radio: 3.9, alturas: [156, 100, 122, 62, 134, 10] },
+  { clase: 'via--principal', radio: 4.7, alturas: [138, 120, 80, 104, 66, 38] },
+];
+
+const aPuntos = (alturas: number[]) => alturas.map((y, i) => `${COLUMNAS[i]},${y}`).join(' ');
+---
+
+<svg class="cielo" viewBox="0 0 400 200" fill="none" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="cielo-rampa" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="var(--color-magenta)"></stop>
+      <stop offset="45%" stop-color="var(--color-coral)"></stop>
+      <stop offset="75%" stop-color="var(--color-brasa)"></stop>
+      <stop offset="100%" stop-color="var(--color-sol)"></stop>
+    </linearGradient>
+  </defs>
+
+  {
+    SERIES.map((serie) => (
+      <g class:list={['via', serie.clase]}>
+        <polyline class="via-trazo" points={aPuntos(serie.alturas)} />
+        {serie.alturas.map((y, i) => (
+          <circle class="via-halo" cx={COLUMNAS[i]} cy={y} r={serie.radio * 1.85} />
+        ))}
+        {serie.alturas.map((y, i) => (
+          <circle class="via-estrella" cx={COLUMNAS[i]} cy={y} r={serie.radio} />
+        ))}
+      </g>
+    ))
+  }
+</svg>
+
+<style>
+  .cielo {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .via-trazo {
+    fill: none;
+    stroke: url(#cielo-rampa);
+    stroke-width: 3.3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0;
+    animation: encender-trazo 0.8s ease-out forwards;
+    animation-delay: var(--retraso-via, 0s);
+  }
+
+  /* Estrella: núcleo claro. Nunca blanco puro — tokens.css lo evita porque
+     produce halación sobre fondo oscuro.
+     Dos animaciones encadenadas: entra una vez y después queda palpitando. El
+     palpitar arranca con el retraso de la entrada + su duración, así no se
+     pisan (durante el delay una animación sin fill no aplica estilos). */
+  .via-estrella {
+    fill: var(--color-texto);
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation:
+      encender-estrella 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+      palpitar var(--pulso, 2.6s) ease-in-out infinite;
+    animation-delay: var(--retraso-nodo, 0s), calc(var(--retraso-nodo, 0s) + 0.5s);
+  }
+
+  /* Halo: un segundo círculo tenue en vez de un filtro de desenfoque — un
+     feGaussianBlur acá cuesta repintado en cada scroll. Palpita en contrafase
+     con el núcleo: cuando la estrella se achica, el halo crece. */
+  .via-halo {
+    fill: url(#cielo-rampa);
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation:
+      encender-halo 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+      palpitar-halo var(--pulso, 2.6s) ease-in-out infinite;
+    animation-delay: var(--retraso-nodo, 0s), calc(var(--retraso-nodo, 0s) + 0.6s);
+  }
+
+  /* Tres planos de profundidad: la vía de arriba es la protagonista, las otras
+     dos hacen cielo de fondo. Cada una late a su propio ritmo — si todas
+     palpitaran igual se leería mecánico. */
+  .via--apoyo {
+    --retraso-via: 0s;
+    --pulso: 3.4s;
+    opacity: 0.62;
+  }
+  .via--meta {
+    --retraso-via: 0.14s;
+    --pulso: 2.9s;
+    opacity: 0.86;
+  }
+  .via--principal {
+    --retraso-via: 0.28s;
+    --pulso: 2.4s;
+    opacity: 1;
+  }
+
+  .via--principal .via-trazo {
+    stroke-width: 4.3;
+  }
+
+  /* Escalera de encendido por columna. Va por :nth-of-type y no por un `style`
+     inline porque la CSP del build bloquea el atributo. */
+  .via-estrella:nth-of-type(1),
+  .via-halo:nth-of-type(1) {
+    --retraso-nodo: calc(var(--retraso-via, 0s) + 0.18s);
+  }
+  .via-estrella:nth-of-type(2),
+  .via-halo:nth-of-type(2) {
+    --retraso-nodo: calc(var(--retraso-via, 0s) + 0.36s);
+  }
+  .via-estrella:nth-of-type(3),
+  .via-halo:nth-of-type(3) {
+    --retraso-nodo: calc(var(--retraso-via, 0s) + 0.54s);
+  }
+  .via-estrella:nth-of-type(4),
+  .via-halo:nth-of-type(4) {
+    --retraso-nodo: calc(var(--retraso-via, 0s) + 0.72s);
+  }
+  .via-estrella:nth-of-type(5),
+  .via-halo:nth-of-type(5) {
+    --retraso-nodo: calc(var(--retraso-via, 0s) + 0.9s);
+  }
+  .via-estrella:nth-of-type(6),
+  .via-halo:nth-of-type(6) {
+    --retraso-nodo: calc(var(--retraso-via, 0s) + 1.08s);
+  }
+
+  @keyframes encender-trazo {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes encender-estrella {
+    from {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes encender-halo {
+    from {
+      opacity: 0;
+      transform: scale(0.35);
+    }
+    to {
+      opacity: 0.34;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes palpitar {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(0.82);
+    }
+  }
+
+  @keyframes palpitar-halo {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.62;
+      transform: scale(1.55);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .via-trazo,
+    .via-estrella {
+      opacity: 1;
+      animation: none;
+    }
+
+    .via-halo {
+      opacity: 0.28;
+      animation: none;
+    }
+  }
+</style>
