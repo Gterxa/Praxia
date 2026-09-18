@@ -36,6 +36,11 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  /* Baja el reloj 12px respecto del centro exacto de la banda (el padding
+     desplaza la mitad de su valor). Va en padding-top y no en el inset para
+     que el centrado calculado contra --crono-banda siga siendo el punto de
+     partida y el desplazamiento quede como un unico valor explicito. */
+  padding-top: 1.5rem;
 }
 
 
