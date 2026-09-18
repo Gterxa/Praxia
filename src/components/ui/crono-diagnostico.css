@@ -36,8 +36,6 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  /* Un pixel a la izquierda del centro. */
-  transform: translateX(-1px);
 }
 
 
@@ -48,6 +46,17 @@
   justify-content: center;
   font-variant-numeric: tabular-nums;
   color: var(--color-texto);
+  /* Centrado óptico, no geométrico: DSEG7 es siete segmentos y el glifo "1"
+     solo enciende los dos trazos derechos, dejando ~0.53em de celda vacía a
+     su izquierda (medido con canvas measureText: tinta de "1" entre 0.622em
+     y 0.723em, contra 0.095em–0.723em del resto de los dígitos). Mientras el
+     minuto líder es "1" (fases 15:00→10:00, un tercio del ciclo) el centro
+     de tinta del bloque queda ~0.26em a la derecha del centro geométrico —
+     por eso el bloque se veía corrido pese a medir 24/24px de margen. Se
+     compensa solo en esa fase, vía data-lider desde crono-diagnostico.tsx. */
+  /* ease-out-quint, sin overshoot: es una corrección posicional, no un
+     momento de deleite — el rebote quedaba fuera de lugar acá. */
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
   /* DSEG7 Classic: la tipografia de siete segmentos de los relojes digitales.
      Va en su propia variable (--font-crono) y nunca en --font-mono, que la usa
      todo el sitio: DSEG solo trae digitos y algunos simbolos, no alfabeto
@@ -89,4 +98,17 @@
 .crono-sep {
   padding: 0 0.04em;
   color: var(--color-texto-3);
+}
+
+/* 0.26em ≈ la mitad de la brecha de tinta del "1" (0.2635em medido). En em
+   para que escale con el clamp() del font-size de .crono-lectura en vez de
+   quedar fijo en px. */
+.crono-lectura[data-lider='1'] {
+  transform: translateX(-0.26em);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crono-lectura {
+    transition: none;
+  }
 }
