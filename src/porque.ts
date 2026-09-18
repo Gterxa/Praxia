@@ -10,24 +10,6 @@ export const PORQUE = [
     titulo: 'Primero te escuchamos, no te cotizamos',
     texto:
       'Quince minutos, sin costo, para ver tu negocio y tus ideas: qué se repite, qué te quita tiempo, dónde te duele de verdad. El problema que sale de ahí no siempre es el que traías en mente.',
-    /* Los 15 min de la llamada, en cuatro tramos. `min` es la duración de
-       cada tramo y suma 15: el ancho de cada segmento sale de ese número,
-       no de un porcentaje escrito a mano. */
-    tramos: [
-      { min: 3, etapa: 'Contexto' },
-      { min: 7, etapa: 'Tu operación' },
-      { min: 3, etapa: 'Hallazgos' },
-      { min: 2, etapa: 'Veredicto' },
-    ],
-    /* El precio sale de las filas y sube a titular: "Costo — S/0" como cuarta
-       fila de una tabla leía igual que las otras tres, y es el dato que vende
-       la llamada. Acá es lo primero que se ve. */
-    gratis: { monto: 'Gratis', duracion: '15 minutos' },
-    filas: [
-      { clave: 'Qué revisamos', valor: 'Tu operación completa' },
-      { clave: 'Qué buscamos', valor: 'Tus puntos de dolor' },
-      { clave: 'Sales con', valor: 'Precio, plazo y veredicto' },
-    ],
   },
   {
     span: 5,

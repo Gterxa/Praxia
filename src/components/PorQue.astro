@@ -4,6 +4,7 @@ import Seccion from './Seccion.astro';
 import CabeceraSeccion from './CabeceraSeccion.astro';
 import { GlassWeeks } from './ui/glass-weeks';
 import { OrbitTools } from './ui/orbit-tools';
+import CronoDiagnostico from './ui/crono-diagnostico';
 import { PORQUE } from '../porque';
 import { ruta } from '../rutas';
 
@@ -77,28 +78,7 @@ const GLOW: Record<string, string> = {
                   </div>
                 </>
               )}
-              {t.tipo === 'panel' && (
-                <div class="crono" data-crono aria-hidden="true">
-                  <div class="crono-lectura">
-                    <span class="crono-grupo" data-crono-mm>
-                      <span class="crono-digito" data-pos="0"><span class="crono-cinta" /></span>
-                      <span class="crono-digito" data-pos="1"><span class="crono-cinta" /></span>
-                    </span>
-                    <span class="crono-sep">:</span>
-                    <span class="crono-grupo" data-crono-ss>
-                      <span class="crono-digito" data-pos="0"><span class="crono-cinta" /></span>
-                      <span class="crono-digito" data-pos="1"><span class="crono-cinta" /></span>
-                    </span>
-                    <span class="crono-sep crono-sep--punto">.</span>
-                    <span class="crono-grupo crono-grupo--ms" data-crono-ms>
-                      <span class="crono-digito" data-pos="0"><span class="crono-cinta" /></span>
-                      <span class="crono-digito" data-pos="1"><span class="crono-cinta" /></span>
-                      <span class="crono-digito" data-pos="2"><span class="crono-cinta" /></span>
-                    </span>
-                  </div>
-                  <p class="crono-pie">{t.gratis.monto} · {t.gratis.duracion} de diagnóstico</p>
-                </div>
-              )}
+              {t.tipo === 'panel' && <CronoDiagnostico client:visible />}
 
               {t.tipo === 'anillo' && (
                 <>
@@ -289,98 +269,6 @@ const GLOW: Record<string, string> = {
     flex-direction: column;
     width: 100%;
     min-width: 0;
-  }
-
-  /* --- Cronómetro deslizante de la llamada de diagnóstico. Cuenta 15:00.000
-     hacia 0 y arranca cuando la card entra en viewport. Cada dígito es una
-     cinta vertical con los diez numerales apilados que se desplaza con
-     translateY: se anima solo transform (nunca el contenido de texto), que es
-     lo único que el compositor puede mover sin relayout — con 3 dígitos de ms
-     refrescando a 60fps, escribir textContent tiraría el frame. --- */
-  .crono {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    width: 100%;
-  }
-
-  .crono-lectura {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    /* tabular-nums no alcanza: la cinta necesita una caja de ancho fijo por
-       dígito o el separador baila cuando cambian las decenas. */
-    font-variant-numeric: tabular-nums;
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    color: var(--color-texto);
-  }
-
-  .crono-grupo {
-    display: flex;
-  }
-
-  .crono-digito {
-    position: relative;
-    display: block;
-    width: 0.62em;
-    height: 1em;
-    overflow: hidden;
-  }
-
-  .crono-cinta {
-    position: absolute;
-    inset: 0;
-    display: block;
-    will-change: transform;
-  }
-
-  /* Los diez numerales de la cinta, apilados. Se generan acá y no en el HTML
-     para no repetir 70 spans en el markup de la card. */
-  .crono-cinta::before {
-    content: '0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    white-space: pre;
-    text-align: center;
-    line-height: 1;
-  }
-
-  .crono-sep {
-    padding: 0 0.04em;
-    color: var(--color-texto-3);
-  }
-
-  .crono-sep--punto {
-    color: var(--color-brasa);
-  }
-
-  /* Los milisegundos van más chicos y en brasa: son el detalle que da la
-     sensación de cronómetro vivo, pero no deben competir con mm:ss, que es
-     el dato que se lee. */
-  .crono-grupo--ms {
-    font-size: 0.46em;
-    color: var(--color-brasa);
-    align-self: flex-end;
-    padding-bottom: 0.12em;
-  }
-
-  .crono-lectura {
-    font-size: clamp(2.75rem, 11vw, 4.25rem);
-    line-height: 1;
-  }
-
-  .crono-pie {
-    font-size: 0.9375rem;
-    line-height: 1.4;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--color-texto-2, var(--color-texto));
-    text-align: center;
-    text-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
   }
 
   .fcard-visual--fila1 .fcard-lineas {
@@ -803,85 +691,5 @@ const GLOW: Record<string, string> = {
     .radar-contacto {
       opacity: 0.5;
     }
-
-    /* Sin movimiento: la cinta se queda mostrando 15:00.000 fijo. El script
-       ni siquiera arranca el rAF (ver el guard de reducido). */
-    .crono-cinta {
-      transition: none;
-    }
   }
 </style>
-
-<script>
-  /* Cronómetro de la card de diagnóstico: cuenta 15:00.000 hacia 0 y arranca
-     cuando la card entra en viewport. Mismo patrón de observer que
-     ChatMockup.astro (threshold + disconnect tras disparar una vez).
-
-     Solo se anima transform de cada cinta: con los milisegundos refrescando a
-     60fps, reescribir textContent forzaría relayout en cada frame. */
-  const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const TOTAL_MS = 15 * 60 * 1000;
-
-  document.querySelectorAll<HTMLElement>('[data-crono]').forEach((crono) => {
-    const grupos = {
-      mm: crono.querySelector<HTMLElement>('[data-crono-mm]'),
-      ss: crono.querySelector<HTMLElement>('[data-crono-ss]'),
-      ms: crono.querySelector<HTMLElement>('[data-crono-ms]'),
-    };
-    if (!grupos.mm || !grupos.ss || !grupos.ms) return;
-
-    const cintas = (g: HTMLElement) =>
-      Array.from(g.querySelectorAll<HTMLElement>('.crono-cinta'));
-    const tiras = { mm: cintas(grupos.mm), ss: cintas(grupos.ss), ms: cintas(grupos.ms) };
-
-    /* Cada cinta mide 10em de alto (diez numerales de 1em), así que el dígito
-       n queda a -n em. Fraccionar ese desplazamiento da el deslizamiento
-       continuo entre cifras en vez de un salto seco. */
-    const colocar = (tira: HTMLElement[], valor: number, digitos: number, fluido: number) => {
-      for (let i = digitos - 1; i >= 0; i--) {
-        const div = Math.pow(10, digitos - 1 - i);
-        const entero = Math.floor(valor / div) % 10;
-        // solo el dígito menos significativo se desliza entre valores
-        const desliz = i === digitos - 1 ? fluido : 0;
-        tira[i].style.transform = `translateY(${-(entero + desliz)}em)`;
-      }
-    };
-
-    const pintar = (restante: number) => {
-      const mm = Math.floor(restante / 60000);
-      const ss = Math.floor((restante % 60000) / 1000);
-      const ms = Math.floor(restante % 1000);
-      colocar(tiras.mm, mm, 2, 0);
-      colocar(tiras.ss, ss, 2, 0);
-      colocar(tiras.ms, ms, 3, 0);
-    };
-
-    pintar(TOTAL_MS);
-    if (reducido.matches) return;
-
-    let corriendo = false;
-    const arrancar = () => {
-      if (corriendo) return;
-      corriendo = true;
-      const t0 = performance.now();
-      const paso = (ahora: number) => {
-        const restante = Math.max(0, TOTAL_MS - (ahora - t0));
-        pintar(restante);
-        if (restante > 0) requestAnimationFrame(paso);
-      };
-      requestAnimationFrame(paso);
-    };
-
-    const observador = new IntersectionObserver(
-      (entradas) => {
-        entradas.forEach((entrada) => {
-          if (!entrada.isIntersecting) return;
-          observador.disconnect();
-          arrancar();
-        });
-      },
-      { threshold: 0.4 },
-    );
-    observador.observe(crono);
-  });
-</script>

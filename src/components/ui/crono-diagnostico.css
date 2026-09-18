@@ -1,0 +1,92 @@
+/* Estilos del cronómetro de diagnóstico.
+   Viven acá y no en PorQue.astro porque el CSS de un .astro se compila con un
+   atributo data-astro-cid-* que Astro inyecta solo en los elementos del propio
+   .astro. Este markup lo genera React, así que no lleva ese atributo y ninguna
+   regla scoped lo alcanzaba: .crono quedaba en display:block con el font-size
+   del body (18px medidos) en vez del clamp, y el sello sin su rotate. */
+
+.crono {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.875rem;
+  width: 100%;
+}
+
+/* Sello "Gratis": la referencia es un stamp rojo rotado. El rojo puro no está
+   en la paleta y pelearía con la brasa, así que va en --color-brasa. El borde
+   doble (border + inset shadow) imita el marco impreso sin usar una imagen, y
+   el rotate lo saca de la cuadrícula para que se lea estampado y no como un
+   botón. */
+.crono-sello {
+  align-self: flex-end;
+  margin-right: -0.25rem;
+  padding: 0.3rem 0.85rem;
+  border: 2px solid var(--color-brasa);
+  border-radius: 0.25rem;
+  box-shadow: inset 0 0 0 2px rgb(255 107 53 / 0.25);
+  transform: rotate(-9deg);
+  opacity: 0.92;
+}
+
+.crono-sello-texto {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--color-brasa);
+}
+
+.crono-lectura {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-texto);
+  font-size: clamp(2.5rem, 10vw, 3.75rem);
+  line-height: 1;
+}
+
+/* SlidingNumber apila diez <span absolute inset-0> por dígito y los recorta con
+   overflow-y-clip en su div contenedor, que trae las utilities del componente
+   pero ningún position ni font-size heredado. */
+.crono-lectura div[class*='overflow-y-clip'] {
+  position: relative;
+  font-size: inherit;
+  line-height: 1;
+  width: 0.62em;
+}
+
+.crono-sep {
+  padding: 0 0.04em;
+  color: var(--color-texto-3);
+}
+
+.crono-sep--punto {
+  color: var(--color-brasa);
+}
+
+/* Los ms más chicos y en brasa: dan la sensación de cronómetro vivo sin
+   competir con mm:ss, que es el dato que se lee. */
+.crono-ms {
+  font-size: 0.44em;
+  color: var(--color-brasa);
+  align-self: flex-end;
+  padding-bottom: 0.14em;
+  font-variant-numeric: tabular-nums;
+}
+
+.crono-pie {
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-texto);
+  text-align: center;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
+}
