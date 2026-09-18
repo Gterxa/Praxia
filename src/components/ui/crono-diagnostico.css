@@ -36,12 +36,6 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  /* Corre el reloj 16px a la izquierda del centro. Va en translate y no en el
-     padding-inline, que define el aire contra los bordes de la card: con
-     padding asimetrico cambiaria el ancho disponible y el clamp del font-size
-     podria recalcular el tamano. El tope util ronda los 18px — con 24 el
-     margen izquierdo cae a 0 y el "1" queda pegado al borde. */
-  transform: translateX(-16px);
 }
 
 
@@ -64,7 +58,11 @@
      glifos de 0.84em, 8 caracteres a 7rem llenan casi los 532px de la card. */
   /* Sin los ms sobran ~150px de ancho, asi que mm:ss puede crecer: 5 glifos
      de 0.84em a 8.5rem llenan la card sin tocar los bordes. */
-  font-size: clamp(3rem, 18vw, 8.5rem);
+  /* Sube de 8.5 a 9.25rem: en vez de correr el reloj a la izquierda para que
+     "ocupe mas", se agranda y los margenes se equilibran solos. El tope lo
+     pone el ancho de la card — a 9.25rem los 5 glifos de 0.84em llegan al
+     96% sin tocar los bordes. */
+  font-size: clamp(3rem, 19.5vw, 9.25rem);
   line-height: 1;
   letter-spacing: -0.045em;
   width: 100%;
