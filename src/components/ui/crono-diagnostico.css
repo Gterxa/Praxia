@@ -36,12 +36,12 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  /* Corre el reloj 18px a la izquierda del centro. Va en translate y no en el
+  /* Corre el reloj 17.5px a la izquierda del centro. Va en translate y no en el
      padding-inline, que define el aire contra los bordes de la card: con
      padding asimetrico cambiaria el ancho disponible y el clamp del font-size
      podria recalcular el tamano. El tope util ronda los 18px — con 24 el
      margen izquierdo cae a 0 y el "1" queda pegado al borde. */
-  transform: translateX(-18px);
+  transform: translateX(-17.5px);
 }
 
 
