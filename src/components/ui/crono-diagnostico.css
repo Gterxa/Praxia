@@ -41,13 +41,13 @@
      que el centrado calculado contra --crono-banda siga siendo el punto de
      partida y el desplazamiento quede como un unico valor explicito. */
   padding-top: 1.5rem;
-  /* Corre el reloj 18px a la izquierda del centro. Ese es el tope util: con
-     24px el margen izquierdo cae a 0 y el "1" queda pegado al borde de la
-     card, sin aire. Va en translate y no en
+  /* Corre el reloj 15px a la izquierda del centro. El tope util ronda los
+     18px: con 24 el margen izquierdo cae a 0 y el "1" queda pegado al borde
+     de la card. Va en translate y no en
      el padding-inline, que define el aire contra los bordes de la card: con
      padding asimetrico el ancho disponible cambiaria y el clamp del
      font-size podria recalcular el tamano. */
-  transform: translateX(-18px);
+  transform: translateX(-15px);
 }
 
 
