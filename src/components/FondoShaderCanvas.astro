@@ -9,6 +9,12 @@
  * en la página al cargar.
  *
  * Respeta `prefers-reduced-motion` deteniendo el rAF de cada instancia.
+ *
+ * Cada instancia además solo anima mientras su sección está en pantalla (con
+ * 200px de margen): la home llegó a tener cuatro secciones con shader y, sin
+ * eso, los cuatro contextos WebGL renderizaban a la vez aunque solo uno se
+ * viera. Se dibuja un cuadro al iniciar para que el fondo esté puesto aunque
+ * la sección nazca fuera del viewport.
  */
 ---
 
@@ -251,6 +257,16 @@ void main() {
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const start = performance.now();
+    /**
+     * Cada instancia solo dibuja mientras su sección está en pantalla. Sin
+     * esto los cuatro shaders de la home (Servicios, Seguridad, Quiénes
+     * somos, Cierre) mantienen su rAF vivo a la vez aunque no se vean: cuatro
+     * contextos WebGL renderizando en paralelo, y en equipos sin GPU decente
+     * eso se va a CPU. El observador mira la sección contenedora, no el
+     * canvas, porque el canvas siempre mide lo mismo que ella.
+     */
+    let visible = false;
+    let corriendo = false;
 
     function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -263,16 +279,52 @@ void main() {
       }
     }
 
-    function render(now: number) {
+    function dibujar(now: number) {
       resize();
       gl!.uniform4f(uni.scene, canvas.width, canvas.height, ((now - start) / 1000) * UNIFORMS.timeScale, UNIFORMS.colorCount);
       gl!.drawArrays(gl!.TRIANGLES, 0, 3);
-      if (!reduceMotion) requestAnimationFrame(render);
+    }
+
+    function render(now: number) {
+      dibujar(now);
+      if (reduceMotion || !visible) {
+        corriendo = false;
+        return;
+      }
+      requestAnimationFrame(render);
+    }
+
+    function arrancar() {
+      if (corriendo || reduceMotion) return;
+      corriendo = true;
+      requestAnimationFrame(render);
     }
 
     window.addEventListener('resize', resize);
     resize();
-    render(start);
+
+    // Un cuadro siempre, aunque la sección nazca fuera de pantalla: si no, el
+    // canvas queda transparente y la sección se ve sin su fondo hasta que el
+    // usuario llegue scrolleando.
+    dibujar(start);
+
+    const seccion = canvas.closest('section') ?? canvas;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        (entradas) => {
+          for (const entrada of entradas) {
+            visible = entrada.isIntersecting;
+            if (visible) arrancar();
+          }
+        },
+        // Un margen generoso para que el shader ya esté animando cuando la
+        // sección entra de verdad, y no arranque a la vista del usuario.
+        { rootMargin: '200px 0px' },
+      ).observe(seccion);
+    } else {
+      visible = true;
+      arrancar();
+    }
   }
 
   document.querySelectorAll<HTMLCanvasElement>('canvas.seccion-shader').forEach(iniciarShader);
