@@ -6,8 +6,9 @@
      white/65, white/45     -> --color-texto-2
      white/40, white/25     -> --color-texto-3
      border-white/[0.06]    -> --color-linea
-     el botón primario      -> --color-brasa   (es la acción)
-     las cifras de métrica  -> --color-cian    (es dato, nunca CTA)
+     el botón primario      -> --color-brasa
+     las cifras de métrica  -> --color-brasa
+   Un solo acento en toda la escena: el naranja de la marca.
    El glass-panel de invokube (blur 24px + saturate 160%) se mantiene tal cual,
    solo que sobre superficies de Praxia. */
 
@@ -320,8 +321,7 @@
   line-height: 1;
   letter-spacing: -0.015em;
   font-variant-numeric: tabular-nums;
-  /* Dato, no acción: cian. */
-  color: var(--color-cian);
+  color: var(--color-brasa);
 }
 
 .escena-metrica-unidad {
@@ -455,10 +455,12 @@
   animation: escena-latir 2s ease-in-out infinite;
 }
 
-.escena-latido--cian {
+/* El latido de la pill "En vivo": más grande que el del cronómetro y en el
+   naranja de resalte de la marca. */
+.escena-latido--acento {
   width: 0.375rem;
   height: 0.375rem;
-  background: var(--color-cian);
+  background: var(--color-brasa);
 }
 
 @keyframes escena-latir {

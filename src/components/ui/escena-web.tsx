@@ -17,9 +17,11 @@ import './escena-web.css';
  *
  * Qué cambia, y por qué: el original es monocromo (blanco con alfa sobre
  * negro). Acá el blanco puro se reemplaza por los tokens de Praxia — texto en
- * --color-texto, líneas en --color-linea, y los dos acentos reales del sitio
- * (--color-brasa para lo que es acción y --color-cian para lo que es dato).
- * Sin eso la escena entraba al sitio como un bloque gris ajeno a la marca.
+ * --color-texto, líneas en --color-linea y el resalte siempre en
+ * --color-brasa, el naranja de la marca. Hubo una versión intermedia que
+ * usaba --color-cian para lo que era dato, pero el celeste neón se leía como
+ * un color ajeno a la paleta. Sin esta traducción la escena entraba al sitio
+ * como un bloque gris ajeno a la marca.
  *
  * El delay de entrada arranca en 0 y no en 0.9s como en invokube: allá la
  * escena entra después del h1 del hero, acá entra cuando la sección ya se
@@ -299,7 +301,7 @@ export default function EscenaWeb() {
       <motion.div className="escena-pill escena-pill--live" {...entrada({ scale: 0.94 }, 0.8, 0.5)}>
         <motion.div {...flotar(-4, 5, 0)}>
           <div className="escena-panel escena-pill-caja">
-            <span className="escena-latido escena-latido--cian" />
+            <span className="escena-latido escena-latido--acento" />
             <span className="escena-pill-label">En vivo</span>
             <span className="escena-pill-valor">0.9s</span>
           </div>

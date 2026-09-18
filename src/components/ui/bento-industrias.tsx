@@ -24,10 +24,17 @@ import './bento-industrias.css';
  *
  *  1. COLOR. invokube es monocromo: blanco con alfa sobre #0F0F0F. Acá el
  *     blanco se traduce a los tokens de Praxia — texto y trazos en
- *     --color-texto, y los dos acentos del sitio según lo que representa cada
- *     cosa: --color-cian para lo que es dato (KPIs, gráficos, montos,
- *     latencia) y --color-brasa para lo que es acción o alerta. La estructura
- *     de alfas del original se conserva tal cual; solo cambia el tono base.
+ *     --color-texto— y el resalte es siempre --color-brasa, el naranja de la
+ *     marca. Hubo una versión intermedia con dos acentos (cian para lo que
+ *     era dato, brasa para lo que era acción), pero el celeste neón se leía
+ *     como un color ajeno a la paleta. La estructura de alfas del original se
+ *     conserva tal cual; solo cambia el tono base.
+ *
+ *     Ojo con dónde va el acento: en el original el blanco es ESTRUCTURA, no
+ *     color. Las barras, los trazos y la malla base quedan neutros y la brasa
+ *     entra solo donde invokube pone énfasis (cifras de KPI, el +47%, los
+ *     pods encendidos, el punto de LPM, el sello). Teñir el visual entero
+ *     vuelve la card naranja y rompe el parecido.
  *
  *  2. COPY. Las etiquetas van en español, manteniendo la misma forma y
  *     longitud para no alterar el layout: "MRR/ACTIVOS/CHURN", "72 LPM",
@@ -548,8 +555,6 @@ interface CardBento {
   bajada: string;
   ancho: 'simple' | 'doble';
   visual: React.ReactNode;
-  /** Tinte del visual: dato (cian) o acción (brasa). */
-  tono: 'cian' | 'brasa';
 }
 
 export default function BentoIndustrias() {
@@ -570,7 +575,6 @@ export default function BentoIndustrias() {
       bajada: 'Paneles, cobros recurrentes y cuentas por cliente.',
       ancho: 'doble',
       visual: <VisualPanel animar={animar} />,
-      tono: 'cian',
     },
     {
       id: 'startups',
@@ -578,7 +582,6 @@ export default function BentoIndustrias() {
       bajada: 'De la idea al lanzamiento en semanas.',
       ancho: 'simple',
       visual: <VisualCohete animar={animar} />,
-      tono: 'brasa',
     },
     {
       id: 'pymes',
@@ -586,7 +589,6 @@ export default function BentoIndustrias() {
       bajada: 'Medición que aguanta el crecimiento.',
       ancho: 'simple',
       visual: <VisualCrecimiento animar={animar} />,
-      tono: 'cian',
     },
     {
       id: 'fintech',
@@ -594,7 +596,6 @@ export default function BentoIndustrias() {
       bajada: 'Pagos, conciliación y validación de identidad.',
       ancho: 'simple',
       visual: <VisualTransacciones animar={animar} />,
-      tono: 'cian',
     },
     {
       id: 'clinicas',
@@ -602,7 +603,6 @@ export default function BentoIndustrias() {
       bajada: 'Portal del paciente y admisión automática.',
       ancho: 'simple',
       visual: <VisualPulso animar={animar} />,
-      tono: 'brasa',
     },
     {
       id: 'ecommerce',
@@ -610,7 +610,6 @@ export default function BentoIndustrias() {
       bajada: 'Tienda rápida, checkout corto y conversión real.',
       ancho: 'doble',
       visual: <VisualVentas animar={animar} />,
-      tono: 'cian',
     },
     {
       id: 'legal',
@@ -618,7 +617,6 @@ export default function BentoIndustrias() {
       bajada: 'Documentos automáticos y admisión de clientes.',
       ancho: 'doble',
       visual: <VisualDocumento animar={animar} />,
-      tono: 'cian',
     },
     {
       id: 'operaciones',
@@ -626,7 +624,6 @@ export default function BentoIndustrias() {
       bajada: 'Herramientas internas que aguantan la escala.',
       ancho: 'doble',
       visual: <VisualMalla />,
-      tono: 'cian',
     },
   ];
 
@@ -635,7 +632,7 @@ export default function BentoIndustrias() {
       {cards.map((card) => (
         <motion.div
           key={card.id}
-          className={`bento-card bento-card--${card.ancho} bento-card--${card.tono}`}
+          className={`bento-card bento-card--${card.ancho}`}
           initial={animar ? { opacity: 0, y: 14 } : false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: RESORTE }}

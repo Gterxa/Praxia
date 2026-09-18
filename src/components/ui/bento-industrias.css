@@ -9,8 +9,8 @@
 
    Traducción de color: el original usa blanco con alfa sobre #0F0F0F. Acá el
    texto sale de --color-texto, las superficies de --color-surface, y el trazo
-   de cada visual lo pone `currentColor` desde .bento-card--cian/--brasa. La
-   escala de alfas del original se conserva. */
+   de cada visual lo pone `currentColor` desde .bento-card-visual, siempre en
+   --color-brasa. La escala de alfas del original se conserva. */
 
 .bento {
   display: grid;
@@ -58,11 +58,11 @@
   border-color: var(--color-linea-viva);
 }
 
-.bento-card--cian .bento-card-visual {
-  color: var(--color-cian);
-}
-
-.bento-card--brasa .bento-card-visual {
+/* Un solo acento para toda la reja: la brasa de la marca. Antes había dos
+   tonos (cian para lo que era dato, brasa para lo que era acción), pero el
+   celeste neón se leía como un color ajeno a la paleta, así que el resalte
+   es siempre el naranja. */
+.bento-card-visual {
   color: var(--color-brasa);
 }
 
@@ -189,8 +189,7 @@
   font-size: 0.6875rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  /* Dato, no acción. */
-  color: var(--color-cian);
+  color: var(--color-brasa);
 }
 
 .bento-panel-grafico {
@@ -207,7 +206,7 @@
 
 /* Como en el original, las barras son estructura neutra (allá blanco al 12%),
    no un elemento de color: el acento del card vive en las cifras de los KPIs.
-   Teñirlas de cian volvía la card entera turquesa. */
+   Teñirlas del color de acento volvía la card entera de ese tono. */
 .bento-panel-barra {
   flex: 1;
   border-radius: 0.1875rem 0.1875rem 0 0;
@@ -271,7 +270,7 @@
   gap: 0.25rem;
   font-family: var(--font-mono);
   font-size: 0.625rem;
-  color: var(--color-cian);
+  color: var(--color-brasa);
 }
 
 /* Trazo en texto claro, como el blanco del original: el acento del card es el
@@ -692,8 +691,8 @@
 
 /* La malla es sobre todo estructura: en el original los 52 hexágonos son
    blanco con alfas muy bajas y solo unos pocos "core" destacan. Acá la malla
-   base va en gris de texto y únicamente los pods encendidos toman el cian,
-   que es lo que hace legible el patrón sin volver la card turquesa. */
+   base va en gris de texto y únicamente los pods encendidos toman la brasa,
+   que es lo que hace legible el patrón sin teñir la card entera. */
 /* `height: 100%` + `overflow: visible` hacía que el SVG se dibujara a su alto
    intrínseco (179px) dentro de un lienzo de 94px: desbordaba 86px y tapaba el
    pie con las métricas. Con `min-height: 0` y el recorte activo, el
@@ -711,15 +710,15 @@
 }
 
 /* Tres escalones, como los cuatro estados del original: los pods apagados e
-   "idle" quedan en el gris base del SVG, los "active" toman un cian a medio
-   camino y los "core" el cian pleno. Sin el escalón intermedio los activos se
-   confundían con los idle y la malla perdía su lectura de sistema vivo. */
+   "idle" quedan en el gris base del SVG, los "active" toman una brasa a medio
+   camino y los "core" la brasa plena. Sin el escalón intermedio los activos
+   se confundían con los idle y la malla perdía su lectura de sistema vivo. */
 .bento-malla-svg .ent-hex-active {
-  color: color-mix(in srgb, var(--color-cian) 55%, var(--color-texto-2));
+  color: color-mix(in srgb, var(--color-brasa) 55%, var(--color-texto-2));
 }
 
 .bento-malla-svg .ent-hex-core {
-  color: var(--color-cian);
+  color: var(--color-brasa);
 }
 
 .bento-malla-pie {
@@ -746,7 +745,7 @@
   width: 0.25rem;
   height: 0.25rem;
   border-radius: 999px;
-  background: var(--color-cian);
+  background: var(--color-brasa);
   animation: ent-pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
