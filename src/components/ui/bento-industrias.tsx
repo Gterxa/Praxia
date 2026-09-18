@@ -281,8 +281,9 @@ function VisualTransacciones({ animar }: { animar: boolean }) {
           </div>
         ))}
       </motion.div>
-      <div className="bento-txs-fade bento-txs-fade--arriba" />
-      <div className="bento-txs-fade bento-txs-fade--abajo" />
+      {/* El desvanecido de los extremos lo pone una máscara sobre .bento-txs,
+          no dos franjas de color: la card es de vidrio y una franja sólida se
+          vería como una barra gris flotando sobre el shader. */}
     </div>
   );
 }
