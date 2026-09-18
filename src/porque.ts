@@ -10,12 +10,6 @@ export const PORQUE = [
     titulo: 'Primero te escuchamos, no te cotizamos',
     texto:
       'Quince minutos, sin costo, para ver tu negocio y tus ideas: qué se repite, qué te quita tiempo, dónde te duele de verdad. El problema que sale de ahí no siempre es el que traías en mente.',
-    filas: [
-      { clave: 'Qué revisamos', valor: 'Tu operación completa' },
-      { clave: 'Qué buscamos', valor: 'Tus puntos de dolor' },
-      { clave: 'Sales con', valor: 'Precio, plazo y veredicto' },
-      { clave: 'Costo', valor: 'S/0' },
-    ],
   },
   {
     span: 5,

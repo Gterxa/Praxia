@@ -88,6 +88,34 @@ export default defineConfig({
       subsets: ['latin'],
       fallbacks: ['ui-monospace', 'SF Mono', 'Consolas', 'monospace'],
     },
+    {
+      // DSEG7 Classic: la tipografia de siete segmentos de los relojes
+      // digitales, solo para el cronometro de la card de diagnostico. No esta
+      // en Google Fonts, asi que va como fuente local desde public/fuentes/
+      // (woff2 de 5KB, v0.46 del repo oficial de keshikan, licencia SIL OFL —
+      // el texto de la licencia viaja al lado del archivo, como exige la OFL
+      // al redistribuir).
+      //
+      // Ojo: solo trae digitos y algunos simbolos, NO alfabeto completo. Por
+      // eso vive en --font-crono y nunca debe reemplazar a --font-mono.
+      provider: fontProviders.local(),
+      name: 'DSEG7 Classic',
+      cssVariable: '--font-crono',
+      // Las variantes van en `options` de la familia: el core llama al
+      // provider con `options: family.options`, no con lo que reciba
+      // fontProviders.local(). Vive en src/ y no en public/ porque Astro
+      // copia public/ tal cual al build y la fuente quedaria duplicada.
+      options: {
+        variants: [
+          {
+            weight: 400,
+            style: 'normal',
+            src: ['./src/assets/fuentes/DSEG7Classic-Regular.woff2'],
+          },
+        ],
+      },
+      fallbacks: ['ui-monospace', 'SF Mono', 'Consolas', 'monospace'],
+    },
   ],
 
   // Seguridad: ningún script inline. La CSP de vercel.json permite scripts solo

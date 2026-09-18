@@ -5,6 +5,7 @@ import CabeceraSeccion from './CabeceraSeccion.astro';
 import { GlassCalendar } from './ui/glass-calendar';
 import { OrbitTools } from './ui/orbit-tools';
 import CurvasCrecimiento from './CurvasCrecimiento.astro';
+import CronoDiagnostico from './ui/crono-diagnostico';
 import { PORQUE } from '../porque';
 import { ruta } from '../rutas';
 
@@ -84,16 +85,7 @@ const GLOW: Record<string, string> = {
                   </div>
                 </>
               )}
-              {t.tipo === 'panel' && (
-                <dl class="w-full divide-y divide-linea rounded-praxia border border-linea bg-void/40">
-                  {t.filas.map((f) => (
-                    <div class="flex items-center justify-between gap-3 px-4 py-2.5">
-                      <dt class="pequeno text-texto-3">{f.clave}</dt>
-                      <dd class="pequeno font-semibold text-texto">{f.valor}</dd>
-                    </div>
-                  ))}
-                </dl>
-              )}
+              {t.tipo === 'panel' && <CronoDiagnostico client:visible />}
 
               {t.tipo === 'anillo' && (
                 <div class="curva-crecimiento fcard-capa">
@@ -304,6 +296,68 @@ const GLOW: Record<string, string> = {
   .fcard-destellos {
     inset: 0;
     overflow: hidden;
+  }
+
+  /* --- Línea de tiempo de la llamada de diagnóstico. Vive entre el panel de
+     datos y el copy flotante: la tabla dice QUÉ sale de la llamada, esto dice
+     CÓMO se llega. Cada tramo crece según sus minutos (--lt-peso alimenta el
+     flex-grow), así que los anchos salen del dato de porque.ts y no de
+     porcentajes escritos a mano: cambiar un `min` ahí re-reparte la barra
+     sola. --- */
+  /* .fcard-visual es flex row: sin este wrapper, la tabla y el timeline se
+     ponen lado a lado y la tabla se estruja a media caja (cada fila parte en
+     dos líneas). Apilados en columna, la tabla recupera el ancho completo. */
+  .panel-pila {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .fcard-visual--fila1 .fcard-lineas {
+    opacity: 0.22;
+  }
+
+  /* Mobile (bajo el lg donde el bento pasa a fila): la tabla crece porque sus
+     filas parten en dos líneas y empujan el timeline dentro de la zona que el
+     --fcard-fundido apaga, así que las etiquetas quedaban invisibles. Se deja
+     solo la barra segmentada —que ya comunica la proporción por sí sola— y el
+     texto se mantiene accesible en el aria-label de cada tramo. */
+  @media (width < 64rem) {
+    /* .fcard-texto es absolute anclado al fondo (bottom:1rem, z-index:2) y en
+       mobile crece a cuatro líneas, así que pasaba por encima del timeline,
+       que va en flujo. El padding le reserva la banda que ocupa ese panel:
+       ~11rem de copy + su inset. No es el --fcard-fundido, que solo enmascara
+       las capas decorativas a sangre. */
+    /* El panel de texto (absolute, bottom:1rem) mide ~206px en mobile y
+       arrancaba a 0.5px del timeline, tapándolo entero. Medido en el DOM a
+       390px: tabla termina en 2196, timeline 2208-2212, panel 2208-2415.
+       El timeline sube por encima de esa banda con un margen propio; el
+       padding en .panel-pila no servía porque crece hacia abajo, no empuja
+       el contenido hacia arriba. */
+    .linea-tiempo {
+      margin-bottom: 13rem;
+    }
+
+    .lt-etapa,
+    .lt-min {
+      /* clip, no display:none: el lector de pantalla sigue llegando al
+         aria-label del tramo, que es donde vive el dato en esta versión. */
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .linea-tiempo {
+      margin-top: 0.75rem;
+    }
+
+    .lt-barra {
+      height: 4px;
+    }
   }
 
   .destello {
