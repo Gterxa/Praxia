@@ -95,10 +95,6 @@ export default function CronoDiagnostico() {
 
   return (
     <div ref={raiz} className="crono">
-      <div className="crono-sello" aria-hidden="true">
-        <span className="crono-sello-texto">Gratis</span>
-      </div>
-
       <div className="crono-lectura" role="timer" aria-label="Quince minutos de diagnóstico sin costo">
         <SlidingNumber value={mm} padStart />
         <span className="crono-sep">:</span>
