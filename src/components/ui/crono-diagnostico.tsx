@@ -57,6 +57,39 @@ export default function CronoDiagnostico() {
     };
   }, []);
 
+  /* El reloj se centra en la banda que va del tope de la card al panel de
+     texto flotante, y ese panel cambia de alto segun cuantas lineas ocupe su
+     copy — no segun el ancho de ventana, asi que un breakpoint no alcanza (a
+     768px la card es ancha y el panel vuelve a 3 lineas). Se mide el panel
+     real y se publica como --crono-banda. */
+  useEffect(() => {
+    const nodo = raiz.current;
+    // closest y no parentElement: Astro envuelve la isla en un <astro-island>,
+    // asi que el padre directo del .crono es ese wrapper y no el .fcard-visual
+    // — buscar el panel ahi devolvia null y el efecto salia sin publicar nada.
+    const visual = nodo?.closest<HTMLElement>('.fcard-visual');
+    const panel = visual?.querySelector<HTMLElement>('.fcard-texto');
+    if (!nodo || !visual || !panel) return;
+
+    const medir = () => {
+      const banda = visual.getBoundingClientRect().bottom - panel.getBoundingClientRect().top;
+      nodo.style.setProperty('--crono-banda', `${banda}px`);
+    };
+
+    medir();
+    const ro = new ResizeObserver(medir);
+    ro.observe(panel);
+    ro.observe(visual);
+
+    // El panel reflowea cuando termina de cargar la fuente de su copy, y esa
+    // pasada no siempre dispara al ResizeObserver a tiempo: sin esto la banda
+    // quedaba medida sobre el alto provisorio y el reloj se iba hasta 68px
+    // hacia abajo en los anchos donde el copy pasa a 4-5 lineas.
+    document.fonts?.ready.then(medir).catch(() => {});
+
+    return () => ro.disconnect();
+  }, []);
+
   const mm = Math.floor(restante / 60000);
   const ss = Math.floor((restante % 60000) / 1000);
 

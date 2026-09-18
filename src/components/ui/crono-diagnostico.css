@@ -6,19 +6,38 @@
    del body (18px medidos) en vez del clamp, y el sello sin su rotate. */
 
 .crono {
-  position: relative;
+  /* Posicionado contra la caja del .fcard-visual en vez de vivir en su flujo:
+     el visual alinea a flex-start, asi que cualquier alto que se le diera al
+     bloque lo dejaba pegado arriba con el sobrante cayendo debajo del reloj.
+     Anclado arriba y abajo, la banda queda definida por sus dos extremos —
+     el tope de la card y el panel de texto flotante (8.6rem con su inset) —
+     y el centrado vertical es exacto por construccion, sin constantes que
+     calibrar a mano. */
+  position: absolute;
+  /* 9.625rem abajo = los 138px que mide el panel de texto flotante mas su
+     inset de 1rem (154px medidos). Con 8.6rem la banda quedaba 16px corta y
+     el reloj bajaba esa mitad.
+     Los 1.5rem laterales reponen el padding del .fcard-visual, que un
+     inset:0 pisaba y dejaba la lectura tocando los bordes. */
+  /* --crono-banda lo mide el componente del panel real (ver el ResizeObserver
+     en crono-diagnostico.tsx). Un valor por breakpoint no sirve: el alto del
+     panel depende de cuantas lineas ocupa su copy, no del ancho de ventana —
+     a 768px la card es ancha y el panel vuelve a 3 lineas, asi que la
+     constante de mobile lo descentraba 68px. El fallback cubre el primer
+     frame, antes de que el observer mida. */
+  inset: 0 0 var(--crono-banda, 9.625rem);
+  /* El padding va en el .crono y no en el inset: como hijo absolute su caja
+     se resuelve contra el padding-box del .fcard-visual, asi que un inset
+     lateral no reponia el aire — la lectura terminaba tocando los bordes. */
+  padding-inline: 1.5rem;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
-  width: 100%;
-  /* Ocupa la banda que va del tope de la card al panel de texto flotante
-     (medido: 310px de 464) y centra la lectura dentro de ella. El sello sale
-     del flujo (position:absolute, abajo) para que no desplace ese centro:
-     como hermano en la columna, empujaba la lectura hacia abajo. */
-  min-height: 15.5rem;
   justify-content: center;
+  width: 100%;
 }
+
 
 /* Sello "Gratis": la referencia es un stamp rojo rotado. El rojo puro no está
    en la paleta y pelearía con la brasa, así que va en --color-brasa. El borde
@@ -30,8 +49,10 @@
      superior izquierda y el sello se le encimaba. Del lado derecho el ultimo
      digito deja aire porque no tiene el trazo vertical alto. */
   position: absolute;
+  /* Dentro del padding-inline del .crono: con right:0 se anclaba al borde de
+     la caja sin padding y asomaba fuera de la card. */
   top: 0;
-  right: 0;
+  right: 1.5rem;
   padding: 0.3rem 0.85rem;
   border: 2px solid var(--color-brasa);
   border-radius: 0.25rem;
@@ -96,5 +117,3 @@
   padding: 0 0.04em;
   color: var(--color-texto-3);
 }
-
-
