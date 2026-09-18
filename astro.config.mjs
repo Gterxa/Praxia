@@ -83,9 +83,20 @@ export default defineConfig({
       provider: fontProviders.google(),
       name: 'IBM Plex Mono',
       cssVariable: '--font-mono',
-      // 600 se suma (sep 2026) para el cronometro gigante de la card de
-      // diagnostico: a 8rem el 500 se ve anemico.
-      weights: [400, 500, 600],
+      weights: [400, 500],
+      styles: ['normal'],
+      subsets: ['latin'],
+      fallbacks: ['ui-monospace', 'SF Mono', 'Consolas', 'monospace'],
+    },
+    {
+      // Solo para el cronometro de la card de diagnostico. Aparte de
+      // --font-mono porque es una display face: numerales muy angostos y
+      // altos, buenos a 100px+ y malos en los 12px de un kicker. Un unico
+      // peso (400) es todo lo que publica la familia.
+      provider: fontProviders.google(),
+      name: 'Share Tech Mono',
+      cssVariable: '--font-crono',
+      weights: [400],
       styles: ['normal'],
       subsets: ['latin'],
       fallbacks: ['ui-monospace', 'SF Mono', 'Consolas', 'monospace'],

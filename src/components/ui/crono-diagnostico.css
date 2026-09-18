@@ -48,14 +48,12 @@
   justify-content: center;
   font-variant-numeric: tabular-nums;
   color: var(--color-texto);
-  /* IBM Plex Mono (ya en el proyecto como --font-mono) por dos razones: sus
-     numerales son mas angostos y altos que los de Manrope, asi que la lectura
-     ocupa mas ancho de card a igual tamano; y trae la feature OpenType `zero`,
-     el cero cruzado tipo "O" tachada que pidio Tony. Sin `font-feature-settings`
-     el cero sale redondo normal. */
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-feature-settings: 'zero' 1;
-  font-weight: 600;
+  /* Share Tech Mono: display face de numerales muy angostos y altos, que a
+     este tamano llenan el ancho de la card mejor que cualquier mono de texto.
+     Va en su propia variable (--font-crono) y no en --font-mono porque esa la
+     usa todo el sitio en tamanos chicos, donde esta fuente se lee mal.
+     Publica un solo peso (400), asi que no se declara font-weight. */
+  font-family: var(--font-crono), ui-monospace, monospace;
   /* Llena el ancho de la card: el minimo sube de 2.5 a 3.25rem y el maximo de
      3.75 a 6.5rem, con 16vw de por medio para que escale con el viewport. */
   font-size: clamp(3.25rem, 16vw, 6.5rem);
@@ -70,8 +68,14 @@
 .crono-lectura div[class*='overflow-y-clip'] {
   position: relative;
   font-size: inherit;
-  line-height: 1;
-  width: 0.62em;
+  /* Medido en el DOM a 104px: el glifo de Share Tech Mono ocupa 56.2px, o sea
+     0.54em, no los 0.62em que pedia IBM Plex Mono. Con la caja mas ancha que
+     el numero quedaba aire lateral de sobra entre digitos. */
+  width: 0.54em;
+  /* line-height 1 daba una caja del alto exacto del glifo, asi que el numero
+     entrante se veia cortado arriba y abajo a mitad del deslizamiento. El
+     1.18 da el margen que necesita el recorte sin separar las filas. */
+  line-height: 1.18;
 }
 
 .crono-sep {
