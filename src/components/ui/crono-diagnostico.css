@@ -13,8 +13,9 @@
   gap: 1.25rem;
   width: 100%;
   /* Ocupa la banda que va del tope de la card al panel de texto flotante
-     (medido: 310px de 464). Con el bloque centrado ahí, la lectura queda en
-     el medio de esa franja en vez de pegada arriba dejando 154px de hueco. */
+     (medido: 310px de 464) y centra la lectura dentro de ella. El sello sale
+     del flujo (position:absolute, abajo) para que no desplace ese centro:
+     como hermano en la columna, empujaba la lectura hacia abajo. */
   min-height: 15.5rem;
   justify-content: center;
 }
@@ -25,8 +26,12 @@
    el rotate lo saca de la cuadrícula para que se lea estampado y no como un
    botón. */
 .crono-sello {
-  align-self: flex-start;
-  margin-left: -0.25rem;
+  /* A la derecha: con la lectura a 136px el "1" inicial sube hasta la esquina
+     superior izquierda y el sello se le encimaba. Del lado derecho el ultimo
+     digito deja aire porque no tiene el trazo vertical alto. */
+  position: absolute;
+  top: 0;
+  right: 0;
   padding: 0.3rem 0.85rem;
   border: 2px solid var(--color-brasa);
   border-radius: 0.25rem;
@@ -63,7 +68,9 @@
   /* La lectura medía 85px de alto en una card de 464 (18%). Sube a ~7rem para
      que ocupe cerca de la mitad del alto util. El tope lo pone el ancho: con
      glifos de 0.84em, 8 caracteres a 7rem llenan casi los 532px de la card. */
-  font-size: clamp(2.5rem, 12vw, 6.25rem);
+  /* Sin los ms sobran ~150px de ancho, asi que mm:ss puede crecer: 5 glifos
+     de 0.84em a 8.5rem llenan la card sin tocar los bordes. */
+  font-size: clamp(3rem, 18vw, 8.5rem);
   line-height: 1;
   letter-spacing: -0.045em;
   width: 100%;
@@ -90,18 +97,4 @@
   color: var(--color-texto-3);
 }
 
-.crono-sep--punto {
-  color: var(--color-brasa);
-}
 
-/* Los ms más chicos y en brasa: dan la sensación de cronómetro vivo sin
-   competir con mm:ss, que es el dato que se lee. */
-.crono-ms {
-  /* 0.36em y no 0.44: a este tamano los tres digitos de ms se salian por el
-     borde derecho de la card. Tambien los despega del punto separador. */
-  font-size: 0.36em;
-  color: var(--color-brasa);
-  align-self: flex-end;
-  padding-bottom: 0.2em;
-  font-variant-numeric: tabular-nums;
-}

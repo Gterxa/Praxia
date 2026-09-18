@@ -7,20 +7,16 @@ const TOTAL_MS = 15 * 60 * 1000;
 
 /**
  * Cuenta regresiva de los 15 minutos de la llamada de diagnóstico. Arranca
- * cuando la card entra en viewport y se detiene en 00:00.000.
+ * cuando la card entra en viewport y se detiene en 00:00.
  *
- * Por qué mm:ss van por SlidingNumber y los ms no: el spring del componente
- * (stiffness 280 / damping 18) tarda ~250ms en asentarse. Los minutos y los
- * segundos cambian como mucho una vez por segundo, así que el deslizamiento
- * se ve completo. Los milisegundos cambian cada ~16ms — el spring nunca
- * llegaría a destino y se vería un borrón vibrando, además de 30 spans con
- * layoutId animándose a 60fps dentro de la card. Van con una cinta CSS que
- * solo mueve transform.
+ * Sin milisegundos la lectura solo cambia una vez por segundo, así que basta
+ * un setInterval: el requestAnimationFrame a 60fps que había antes existía
+ * únicamente para alimentarlos. El restante se calcula contra
+ * performance.now() en vez de acumular ticks, porque un interval deriva.
  */
 export default function CronoDiagnostico() {
   const [restante, setRestante] = useState(TOTAL_MS);
   const raiz = useRef<HTMLDivElement>(null);
-  const cintaMs = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const nodo = raiz.current;
@@ -29,22 +25,18 @@ export default function CronoDiagnostico() {
     const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (reducido.matches) return;
 
-    let rafId = 0;
-    let t0 = 0;
+    let intervalo = 0;
 
-    const paso = (ahora: number) => {
-      if (!t0) t0 = ahora;
-      const queda = Math.max(0, TOTAL_MS - (ahora - t0));
-      setRestante(queda);
-
-      // Los ms se escriben directo al DOM, fuera del estado de React: a 60fps
-      // un setState por frame para tres dígitos haría re-render de todo el
-      // árbol, incluidos los springs de mm:ss.
-      if (cintaMs.current) {
-        cintaMs.current.textContent = String(Math.floor(queda % 1000)).padStart(3, '0');
-      }
-
-      if (queda > 0) rafId = requestAnimationFrame(paso);
+    const arrancar = () => {
+      const t0 = performance.now();
+      // 250ms y no 1000: el cambio de segundo cae en un borde arbitrario
+      // respecto al arranque, y muestrear cuatro veces por segundo evita que
+      // el número salte tarde. Son 4 renders/s, no 60.
+      intervalo = window.setInterval(() => {
+        const queda = Math.max(0, TOTAL_MS - (performance.now() - t0));
+        setRestante(queda);
+        if (queda <= 0) window.clearInterval(intervalo);
+      }, 250);
     };
 
     const observador = new IntersectionObserver(
@@ -52,7 +44,7 @@ export default function CronoDiagnostico() {
         entradas.forEach((entrada) => {
           if (!entrada.isIntersecting) return;
           observador.disconnect();
-          rafId = requestAnimationFrame(paso);
+          arrancar();
         });
       },
       { threshold: 0.4 }
@@ -61,7 +53,7 @@ export default function CronoDiagnostico() {
 
     return () => {
       observador.disconnect();
-      if (rafId) cancelAnimationFrame(rafId);
+      if (intervalo) window.clearInterval(intervalo);
     };
   }, []);
 
@@ -78,12 +70,7 @@ export default function CronoDiagnostico() {
         <SlidingNumber value={mm} padStart />
         <span className="crono-sep">:</span>
         <SlidingNumber value={ss} padStart />
-        <span className="crono-sep crono-sep--punto">.</span>
-        <span className="crono-ms" ref={cintaMs}>
-          000
-        </span>
       </div>
-
     </div>
   );
 }
