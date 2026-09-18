@@ -19,11 +19,14 @@ export const PORQUE = [
       { min: 3, etapa: 'Hallazgos' },
       { min: 2, etapa: 'Veredicto' },
     ],
+    /* El precio sale de las filas y sube a titular: "Costo — S/0" como cuarta
+       fila de una tabla leía igual que las otras tres, y es el dato que vende
+       la llamada. Acá es lo primero que se ve. */
+    gratis: { monto: 'Gratis', duracion: '15 minutos' },
     filas: [
       { clave: 'Qué revisamos', valor: 'Tu operación completa' },
       { clave: 'Qué buscamos', valor: 'Tus puntos de dolor' },
       { clave: 'Sales con', valor: 'Precio, plazo y veredicto' },
-      { clave: 'Costo', valor: 'S/0' },
     ],
   },
   {
