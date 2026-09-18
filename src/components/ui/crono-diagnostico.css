@@ -10,8 +10,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.875rem;
+  gap: 1.25rem;
   width: 100%;
+  /* Ocupa la banda que va del tope de la card al panel de texto flotante
+     (medido: 310px de 464). Con el bloque centrado ahí, la lectura queda en
+     el medio de esa franja en vez de pegada arriba dejando 154px de hueco. */
+  min-height: 15.5rem;
+  justify-content: center;
 }
 
 /* Sello "Gratis": la referencia es un stamp rojo rotado. El rojo puro no está
@@ -55,9 +60,10 @@
   font-family: var(--font-crono), ui-monospace, monospace;
   /* Llena el ancho de la card: el minimo sube de 2.5 a 3.25rem y el maximo de
      3.75 a 6.5rem, con 16vw de por medio para que escale con el viewport. */
-  /* Baja de 16vw/6.5rem a 11vw/4.5rem: con glifos de 0.84em (vs 0.54 de la
-     fuente anterior) los mismos 8 caracteres ocupan ~55% mas de ancho. */
-  font-size: clamp(2.25rem, 11vw, 4.5rem);
+  /* La lectura medía 85px de alto en una card de 464 (18%). Sube a ~7rem para
+     que ocupe cerca de la mitad del alto util. El tope lo pone el ancho: con
+     glifos de 0.84em, 8 caracteres a 7rem llenan casi los 532px de la card. */
+  font-size: clamp(2.5rem, 12vw, 6.25rem);
   line-height: 1;
   letter-spacing: -0.045em;
   width: 100%;
@@ -91,9 +97,11 @@
 /* Los ms más chicos y en brasa: dan la sensación de cronómetro vivo sin
    competir con mm:ss, que es el dato que se lee. */
 .crono-ms {
-  font-size: 0.44em;
+  /* 0.36em y no 0.44: a este tamano los tres digitos de ms se salian por el
+     borde derecho de la card. Tambien los despega del punto separador. */
+  font-size: 0.36em;
   color: var(--color-brasa);
   align-self: flex-end;
-  padding-bottom: 0.14em;
+  padding-bottom: 0.2em;
   font-variant-numeric: tabular-nums;
 }
