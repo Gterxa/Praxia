@@ -36,10 +36,6 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  /* Baja el reloj ~1.5rem respecto del centro exacto de la banda. Se hace con
-     padding-top y no moviendo el inset, para que el centrado calculado contra
-     --crono-banda siga siendo el punto de partida. */
-  padding-top: 3rem;
 }
 
 
