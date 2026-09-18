@@ -7,7 +7,8 @@ const TOTAL_MS = 15 * 60 * 1000;
 
 /**
  * Cuenta regresiva de los 15 minutos de la llamada de diagnóstico. Arranca
- * cuando la card entra en viewport y se detiene en 00:00.
+ * cuando la card entra en viewport y, al llegar a 00:00, vuelve a 15:00 y
+ * sigue en bucle.
  *
  * Sin milisegundos la lectura solo cambia una vez por segundo, así que basta
  * un setInterval: el requestAnimationFrame a 60fps que había antes existía
@@ -33,9 +34,11 @@ export default function CronoDiagnostico() {
       // respecto al arranque, y muestrear cuatro veces por segundo evita que
       // el número salte tarde. Son 4 renders/s, no 60.
       intervalo = window.setInterval(() => {
-        const queda = Math.max(0, TOTAL_MS - (performance.now() - t0));
-        setRestante(queda);
-        if (queda <= 0) window.clearInterval(intervalo);
+        // El modulo hace que al llegar a 0 vuelva a 15:00 y siga: el ciclo se
+        // deriva del tiempo transcurrido en vez de reasignar t0 en cada
+        // vuelta, asi que no acumula error por muchas veces que reinicie.
+        const transcurrido = (performance.now() - t0) % TOTAL_MS;
+        setRestante(TOTAL_MS - transcurrido);
       }, 250);
     };
 
