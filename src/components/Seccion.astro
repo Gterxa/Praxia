@@ -4,10 +4,12 @@ import FondoShaderCanvas from './FondoShaderCanvas.astro';
 interface Props {
   /** Fondo de la sección. */
   fondo?: 'void' | 'surface' | 'acento';
+  /** Paleta del shader cuando `fondo` trae glow. Ver FondoShaderCanvas.astro. */
+  paletaFondo?: 'marca' | 'azul';
   id?: string;
   class?: string;
 }
-const { fondo = 'void', id, class: clase = '' } = Astro.props;
+const { fondo = 'void', paletaFondo = 'marca', id, class: clase = '' } = Astro.props;
 
 /**
  * PRUEBA (sep 2026): "surface"/"acento" volvían a ser transparentes puras
@@ -33,7 +35,7 @@ const tieneAside = Astro.slots.has('aside');
   {
     tieneGlow && (
       <div class="seccion-glow-capa" aria-hidden="true">
-        <FondoShaderCanvas />
+        <FondoShaderCanvas paleta={paletaFondo} />
       </div>
     )
   }

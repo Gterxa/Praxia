@@ -1,18 +1,35 @@
 ---
 /**
  * Canvas WebGL de gradiente animado (mesh drift, paleta naranja↔azul de
- * marca) para usar como fondo LOCAL de una sección puntual — a diferencia
- * de `FondoOrbes.astro`, que es el fondo global fijo. Se instancia una vez
- * por `<Seccion fondo="surface|acento">` (ver Seccion.astro); el script se
- * deduplica solo (Astro no repite `<script>` idéntico) e inicializa un
- * contexto WebGL independiente por cada canvas `.seccion-shader` presente
- * en la página al cargar.
+ * marca por default) para usar como fondo LOCAL de una sección puntual — a
+ * diferencia de `FondoOrbes.astro`, que es el fondo global fijo. Se instancia
+ * una vez por `<Seccion fondo="surface|acento">` (ver Seccion.astro); el
+ * script se deduplica solo (Astro no repite `<script>` idéntico) e
+ * inicializa un contexto WebGL independiente por cada canvas
+ * `.seccion-shader` presente en la página al cargar.
  *
  * Respeta `prefers-reduced-motion` deteniendo el rAF de cada instancia.
+ *
+ * Cada instancia además solo anima mientras su sección está en pantalla (con
+ * 200px de margen): la home llegó a tener cuatro secciones con shader y, sin
+ * eso, los cuatro contextos WebGL renderizaban a la vez aunque solo uno se
+ * viera. Se dibuja un cuadro al iniciar para que el fondo esté puesto aunque
+ * la sección nazca fuera del viewport.
+ *
+ * `paleta`: qué combinación de colores usa esta instancia. El script lee
+ * `data-paleta` del canvas (no puede recibir la prop de Astro directamente,
+ * es un <script> de cliente) y elige el array de PALETAS. 'marca' (default)
+ * es la naranja↔azul de siempre; 'azul' pone las dos bolitas en azul de
+ * marca — pedido puntual para Servicios, sin tocar el resto de secciones
+ * que usan esta misma instancia global.
  */
+interface Props {
+  paleta?: 'marca' | 'azul';
+}
+const { paleta = 'marca' } = Astro.props;
 ---
 
-<canvas class="seccion-shader" aria-hidden="true"></canvas>
+<canvas class="seccion-shader" aria-hidden="true" data-paleta={paleta}></canvas>
 
 <style>
   .seccion-shader {
@@ -181,15 +198,30 @@ void main() {
    * Reemplaza la paleta azul/celeste original del shader de referencia
    * (21st.dev "Mesh drift"). Se probaron bolitas acento amarillo/morado
    * (sep 2026) pero Tony se retractó — vuelve a solo naranja/azul.
+   *
+   * `PALETAS` separa el array de colores del resto de UNIFORMS para que
+   * `data-paleta` pueda elegir entre ellas sin duplicar forma/intensidad/etc.
+   * 'azul' es la variante pedida para Servicios: las dos bolitas en azul de
+   * marca (--color-linea-viva y --color-noche) en vez de naranja/azul.
    */
-  const UNIFORMS = {
-    colors: [
+  const PALETAS: Record<string, [number, number, number][]> = {
+    marca: [
       [0, 0, 0],
       [0.788, 0.459, 0.18], // #C9752E naranja
       [0, 0, 0],
       [0.102, 0.173, 0.533], // #1A2C88 azul
       [0, 0, 0],
-    ] as [number, number, number][],
+    ],
+    azul: [
+      [0, 0, 0],
+      [0.329, 0.486, 1], // #547CFF linea-viva
+      [0, 0, 0],
+      [0.102, 0.173, 0.533], // #1A2C88 noche
+      [0, 0, 0],
+    ],
+  };
+
+  const UNIFORMS = {
     colorCount: 5,
     scale: 1.3,
     intensity: 0.72,
@@ -242,7 +274,8 @@ void main() {
       transform: gl.getUniformLocation(program, 'u_transform'),
       space: gl.getUniformLocation(program, 'u_space'),
     };
-    gl.uniform3fv(uni.colors, new Float32Array(UNIFORMS.colors.flat()));
+    const paleta = PALETAS[canvas.dataset.paleta ?? 'marca'] ?? PALETAS.marca;
+    gl.uniform3fv(uni.colors, new Float32Array(paleta.flat()));
     gl.uniform4f(uni.shape, UNIFORMS.scale, UNIFORMS.intensity, 0, UNIFORMS.warp);
     gl.uniform4f(uni.surface, UNIFORMS.detail, UNIFORMS.contrast, UNIFORMS.brightness, UNIFORMS.saturation);
     gl.uniform4f(uni.finish, UNIFORMS.hue, UNIFORMS.vignette, UNIFORMS.blur, UNIFORMS.grain);
@@ -251,6 +284,16 @@ void main() {
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const start = performance.now();
+    /**
+     * Cada instancia solo dibuja mientras su sección está en pantalla. Sin
+     * esto los cuatro shaders de la home (Servicios, Seguridad, Quiénes
+     * somos, Cierre) mantienen su rAF vivo a la vez aunque no se vean: cuatro
+     * contextos WebGL renderizando en paralelo, y en equipos sin GPU decente
+     * eso se va a CPU. El observador mira la sección contenedora, no el
+     * canvas, porque el canvas siempre mide lo mismo que ella.
+     */
+    let visible = false;
+    let corriendo = false;
 
     function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -263,16 +306,52 @@ void main() {
       }
     }
 
-    function render(now: number) {
+    function dibujar(now: number) {
       resize();
       gl!.uniform4f(uni.scene, canvas.width, canvas.height, ((now - start) / 1000) * UNIFORMS.timeScale, UNIFORMS.colorCount);
       gl!.drawArrays(gl!.TRIANGLES, 0, 3);
-      if (!reduceMotion) requestAnimationFrame(render);
+    }
+
+    function render(now: number) {
+      dibujar(now);
+      if (reduceMotion || !visible) {
+        corriendo = false;
+        return;
+      }
+      requestAnimationFrame(render);
+    }
+
+    function arrancar() {
+      if (corriendo || reduceMotion) return;
+      corriendo = true;
+      requestAnimationFrame(render);
     }
 
     window.addEventListener('resize', resize);
     resize();
-    render(start);
+
+    // Un cuadro siempre, aunque la sección nazca fuera de pantalla: si no, el
+    // canvas queda transparente y la sección se ve sin su fondo hasta que el
+    // usuario llegue scrolleando.
+    dibujar(start);
+
+    const seccion = canvas.closest('section') ?? canvas;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        (entradas) => {
+          for (const entrada of entradas) {
+            visible = entrada.isIntersecting;
+            if (visible) arrancar();
+          }
+        },
+        // Un margen generoso para que el shader ya esté animando cuando la
+        // sección entra de verdad, y no arranque a la vista del usuario.
+        { rootMargin: '200px 0px' },
+      ).observe(seccion);
+    } else {
+      visible = true;
+      arrancar();
+    }
   }
 
   document.querySelectorAll<HTMLCanvasElement>('canvas.seccion-shader').forEach(iniciarShader);
