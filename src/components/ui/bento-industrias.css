@@ -1,0 +1,343 @@
+/* Reja "Who we serve" de invokube, en paleta Praxia.
+   Ver el encabezado de bento-industrias.tsx para qué se replica y qué se adapta.
+
+   Medidas calcadas del original: 4 columnas, filas de 240px (260px desde
+   768px), gap 16/20px, radio 16px, borde 1px que pasa de 6% a 18% de opacidad
+   en hover con transición de 500ms, pie con padding 20/16px separado por una
+   línea al 4%. */
+
+.bento {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 15rem;
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (min-width: 40rem) {
+  .bento {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 48rem) {
+  .bento {
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 16.25rem;
+    gap: 1.25rem;
+  }
+}
+
+/* Las cards 1, 6, 7 y 8 ocupan doble columna: es lo que hace que la reja se
+   lea como bento y no como una grilla regular. */
+@media (min-width: 40rem) {
+  .bento-card--doble {
+    grid-column: span 2;
+  }
+}
+
+.bento-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 1rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-linea);
+  transition: border-color 500ms var(--ease-suave);
+}
+
+.bento-card:hover {
+  border-color: var(--color-linea-viva);
+}
+
+/* Tinte del trazo de cada visual. `currentColor` en los SVG lo toma de acá. */
+.bento-card--cian .bento-card-visual {
+  color: var(--color-cian);
+}
+
+.bento-card--brasa .bento-card-visual {
+  color: var(--color-brasa);
+}
+
+.bento-card-visual {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.bento-card-pie {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid rgb(232 236 244 / 0.05);
+}
+
+.bento-card-titulo {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--color-texto);
+}
+
+.bento-card-bajada {
+  margin-top: 0.125rem;
+  font-size: 0.78125rem;
+  line-height: 1.45;
+  color: var(--color-texto-2);
+}
+
+/* --- Base de los visuales --- */
+
+.bento-visual {
+  width: 100%;
+  height: 100%;
+  padding: 1.25rem;
+}
+
+.bento-visual--centrado {
+  display: grid;
+  place-items: center;
+}
+
+.bento-svg-alto {
+  width: 100%;
+  height: 100%;
+}
+
+.bento-svg-pulso {
+  width: 100%;
+  height: 3rem;
+}
+
+.bento-svg-malla {
+  width: 100%;
+  max-width: 11rem;
+  height: auto;
+}
+
+.bento-linea-tenue {
+  display: block;
+  height: 0.25rem;
+  border-radius: 999px;
+  background: rgb(138 150 172 / 0.28);
+}
+
+/* --- SaaS: panel con barras --- */
+
+.bento-visual--panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bento-panel-fila {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.bento-chip {
+  height: 0.875rem;
+  width: 3rem;
+  border-radius: 999px;
+  background: rgb(138 150 172 / 0.2);
+}
+
+.bento-chip--corto {
+  width: 1.75rem;
+}
+
+.bento-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  flex: 1;
+  min-height: 0;
+  align-items: end;
+}
+
+.bento-panel-celda {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 0.375rem;
+  background: rgb(138 150 172 / 0.06);
+  overflow: hidden;
+}
+
+.bento-panel-barra {
+  width: 100%;
+  border-radius: 0.375rem 0.375rem 0 0;
+  background: linear-gradient(180deg, currentColor, transparent);
+  opacity: 0.55;
+}
+
+.bento-panel-pie {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* --- Fintech: lista de transacciones --- */
+
+.bento-visual--lista {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.625rem;
+}
+
+.bento-transaccion {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.5rem;
+  background: rgb(138 150 172 / 0.06);
+}
+
+.bento-estado {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 999px;
+  flex: none;
+}
+
+.bento-estado--ok {
+  background: var(--color-verde);
+}
+
+.bento-estado--pendiente {
+  background: var(--color-ambar);
+}
+
+.bento-transaccion-texto {
+  font-size: 0.6875rem;
+  color: var(--color-texto-2);
+  white-space: nowrap;
+}
+
+.bento-transaccion-monto {
+  margin-left: auto;
+  width: 1.75rem;
+}
+
+/* --- E-commerce: embudo --- */
+
+.bento-visual--embudo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.625rem;
+}
+
+.bento-embudo-fila {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.bento-embudo-label {
+  width: 4.25rem;
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--color-texto-3);
+}
+
+.bento-embudo-riel {
+  flex: 1;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgb(138 150 172 / 0.1);
+  overflow: hidden;
+}
+
+.bento-embudo-barra {
+  height: 100%;
+  border-radius: 999px;
+  transform-origin: left;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+/* --- Legal: documento --- */
+
+.bento-visual--doc {
+  display: grid;
+  place-items: center;
+}
+
+.bento-doc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 13rem;
+  padding: 0.875rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-linea);
+  background: rgb(13 14 20 / 0.5);
+}
+
+.bento-doc-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.125rem;
+}
+
+.bento-doc-sello {
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 0.25rem;
+  background: currentColor;
+  opacity: 0.6;
+  flex: none;
+}
+
+.bento-doc-linea {
+  height: 0.1875rem;
+}
+
+.bento-doc-etiquetas {
+  display: flex;
+  gap: 0.375rem;
+  margin-top: 0.25rem;
+}
+
+.bento-etiqueta {
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-linea);
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  color: var(--color-texto-3);
+}
+
+.bento-etiqueta--activa {
+  border-color: transparent;
+  background: rgb(61 220 151 / 0.14);
+  color: var(--color-verde);
+}
+
+/* --- Operaciones: nodo que late --- */
+
+.bento-nodo-activo {
+  animation: bento-latir 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes bento-latir {
+  0%,
+  100% {
+    fill-opacity: 0.35;
+  }
+  50% {
+    fill-opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bento-nodo-activo {
+    animation: none;
+  }
+}

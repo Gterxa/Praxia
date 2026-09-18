@@ -66,7 +66,7 @@ export const CONTEXTO = {
  */
 export const NAV_PRINCIPAL = [
   { texto: 'Servicios', href: '/servicios' },
-  { texto: 'Industrias', href: '/#industrias' },
+  { texto: 'Industrias', href: '/#servicios' },
   { texto: 'Cómo trabajamos', href: '/como-trabajamos' },
   { texto: 'Preguntas', href: '/preguntas-frecuentes' },
 ] as const;
