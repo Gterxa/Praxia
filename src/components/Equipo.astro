@@ -1,0 +1,42 @@
+---
+/**
+ * Sección de equipo: seis fotos en tres columnas escalonadas (patrón
+ * "team-showcase") + lista de nombres/roles con hover cruzado foto↔fila.
+ * Reemplaza a QuienesSomos.astro en el flujo de la home (mismo lugar,
+ * después de Ejemplos y antes de FAQ).
+ *
+ * Nombres y roles son los reales. Las fotos siguen en placehold.co hasta que
+ * lleguen las de verdad: reemplazar `imagen` en MIEMBROS, único sitio que
+ * define estos datos.
+ */
+import Seccion from './Seccion.astro';
+import CabeceraSeccion from './CabeceraSeccion.astro';
+import EquipoShowcase from './ui/equipo-showcase.tsx';
+import type { MiembroEquipo } from './ui/equipo-showcase.tsx';
+
+const MIEMBROS: MiembroEquipo[] = [
+  { id: '1', nombre: 'Álvaro Sánchez', rol: 'Founder, Soluciones e IA', imagen: 'https://placehold.co/400x500' },
+  { id: '2', nombre: 'Piero Pizarro', rol: 'Co-founder, Automatización', imagen: 'https://placehold.co/400x500' },
+  { id: '3', nombre: 'Gabriel Curay', rol: 'Co-founder, Arquitectura', imagen: 'https://placehold.co/400x500' },
+  { id: '4', nombre: 'César García', rol: 'Partner, Dirección técnica', imagen: 'https://placehold.co/400x500' },
+  { id: '5', nombre: 'Valentina Sarango', rol: 'Partner, Dirección creativa', imagen: 'https://placehold.co/400x500' },
+  { id: '6', nombre: 'Milene Garrido', rol: 'Partner, Desarrollo', imagen: 'https://placehold.co/400x500' },
+];
+---
+
+<Seccion id="equipo" class="seccion-cosmoq" fondo="surface">
+  <CabeceraSeccion etiqueta="El equipo" icono="personas" apilada>
+    <h2 slot="titulo" class="revelar" data-retraso="1">
+      Un núcleo pequeño, especialistas según el proyecto
+    </h2>
+    <div slot="subtitulo" class="flex flex-col gap-4">
+      <p class="lead text-texto-2 revelar" data-retraso="2">
+        Hablas con quien construye. Nadie te vende algo que no vamos a poder sostener.
+      </p>
+    </div>
+  </CabeceraSeccion>
+
+  <div class="mt-10">
+    <EquipoShowcase miembros={MIEMBROS} client:visible />
+  </div>
+</Seccion>
