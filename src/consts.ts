@@ -21,7 +21,7 @@ export const SITE = {
    ========================================================================== */
 
 /** Formato internacional, sin + ni espacios: así lo pide wa.me. */
-export const WHATSAPP = '51960041731';
+export const WHATSAPP = '51997872779';
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP}`;
 export const EMAIL = 'contacto.praxias@gmail.com';
 
