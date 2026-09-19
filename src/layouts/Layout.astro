@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 import FondoOrbes from '../components/FondoOrbes.astro';
+import BottomSheetValidar from '../components/BottomSheetValidar.astro';
 import { SITE, EMAIL, WHATSAPP, CONTEXTO } from '../consts';
 import '../styles/global.css';
 import { ruta, sinBase } from '../rutas';
@@ -198,9 +199,15 @@ const datosEstructurados = {
     */}
     <Footer />
     <WhatsAppButton contexto={contextoWhatsApp} />
+    <BottomSheetValidar />
 
     <script>
       import '../scripts/scroll-suave';
+    </script>
+
+    <script>
+      import { montarBottomSheetValidar } from '../scripts/bottom-sheet-validar';
+      montarBottomSheetValidar();
     </script>
 
     <script>
