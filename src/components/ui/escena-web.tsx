@@ -173,29 +173,35 @@ export default function EscenaWeb() {
             </div>
 
             <div className="escena-cuerpo">
-              {/* Fila de navegación del sitio falso. */}
+              {/* Fila de navegación del sitio falso. En invokube la fila
+                  entera es gris/blanco: chip + una barra corta + tres barras
+                  finas + una barra blanca corta a la derecha (no un botón
+                  sólido). Acá el único acento de color es el chip, que ya
+                  hace de "logo de marca". */}
               <div className="escena-nav">
                 <div className="escena-nav-marca">
                   <div className="escena-logo" />
                   <div className="escena-barra-texto escena-barra-texto--marca" />
                 </div>
                 <div className="escena-nav-links">
-                  <div className="escena-barra-fina" style={{ width: '2.25rem' }} />
                   <div className="escena-barra-fina" style={{ width: '2rem' }} />
-                  <div className="escena-barra-fina" style={{ width: '2.5rem' }} />
-                  <div className="escena-nav-cta" />
+                  <div className="escena-barra-fina" style={{ width: '1.75rem' }} />
+                  <div className="escena-barra-fina" style={{ width: '2.25rem' }} />
+                  <div className="escena-barra-texto" style={{ width: '2.25rem' }} />
                 </div>
               </div>
 
-              {/* Titular y párrafo placeholder. */}
+              {/* Titular: en invokube es una sola barra blanca ancha, no dos
+                  líneas — se deja una línea de título + una de subtítulo más
+                  corta y suave, calcada de la proporción de la referencia. */}
               <div className="escena-titular">
-                <div className="escena-linea-titular" style={{ width: '75%' }} />
+                <div className="escena-linea-titular" style={{ width: '82%' }} />
                 <div
                   className="escena-linea-titular escena-linea-titular--suave"
-                  style={{ width: '55%' }}
+                  style={{ width: '58%' }}
                 />
-                <div className="escena-barra-fina escena-barra-fina--parrafo" style={{ width: '80%' }} />
-                <div className="escena-barra-fina escena-barra-fina--parrafo" style={{ width: '65%' }} />
+                <div className="escena-barra-fina escena-barra-fina--parrafo" style={{ width: '85%' }} />
+                <div className="escena-barra-fina escena-barra-fina--parrafo" style={{ width: '70%' }} />
               </div>
 
               {/* Los dos botones crecen en scaleX, como en el original. */}
