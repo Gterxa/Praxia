@@ -9,7 +9,7 @@ const esActiva = (href: string) => rutaActual === href || rutaActual.startsWith(
 ---
 
 <header class="sticky top-0 z-40 px-4 pt-(--header-aire) pointer-events-none md:px-6">
-  <div class="contenedor max-w-[68rem]! px-0!">
+  <div class="contenedor relative max-w-[68rem]! px-0!">
     <div class="vidrio pointer-events-auto relative flex h-(--header-pill) items-center justify-between gap-4 rounded-pill px-3 pr-2 md:px-5 md:pr-3">
       <a href={ruta('/')} class="rounded-sm py-1 pl-1" aria-label="Praxia, ir al inicio">
         <Logo />
@@ -53,7 +53,16 @@ const esActiva = (href: string) => rutaActual === href || rutaActual.startsWith(
       <div class="borde-luz" aria-hidden="true"></div>
     </div>
 
-    <div id="menu-movil" class="vidrio pointer-events-auto mt-2 hidden rounded-[1.5rem] p-2 lg:hidden">
+    {/*
+      absolute, no en el flujo: el <header> es sticky y ocupa alto real, así que
+      un menú en flujo lo hacía crecer de 72px a ~326px al abrirse y empujaba el
+      hero 254px hacia abajo (el título y los botones "saltaban"). Flotando sobre
+      el contenido, abrir y cerrar no mueve nada.
+    */}
+    <div
+      id="menu-movil"
+      class="vidrio pointer-events-auto absolute inset-x-0 top-full z-50 mt-2 hidden rounded-[1.5rem] p-2 lg:hidden"
+    >
       <nav class="flex flex-col" aria-label="Principal, celular">
         {
           NAV_PRINCIPAL.map((item) => (

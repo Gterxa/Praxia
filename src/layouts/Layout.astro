@@ -129,8 +129,11 @@ const datosEstructurados = {
       nunca pasa por el pipeline de Vite). Este <style> no pasa por Tailwind,
       así que sobrevive; Astro le calcula su hash para la CSP.
 
-      Sólo declara la variante prefijada: la estándar ya la emite Tailwind, y
-      duplicarla sin prefijo rompería Firefox al colapsar la regla.
+      Cada regla declara LAS DOS variantes, prefijada y estándar. Al ser el
+      mismo selector, estas reglas ganan por orden a las que emite Tailwind y
+      las reemplazan: si acá sólo fuera la prefijada, Chrome y Firefox se
+      quedaban sin blur (pasó: los paneles se veían transparentes y el hero de
+      atrás competía con el texto del menú).
 
       Los valores tienen que coincidir con los de global.css y los .css de
       componentes. Al tocar un blur allá, actualizarlo también acá.
@@ -139,27 +142,34 @@ const datosEstructurados = {
       .vidrio,
       .bento-card {
         -webkit-backdrop-filter: blur(18px) saturate(1.3);
+        backdrop-filter: blur(18px) saturate(1.3);
       }
       .boton-secundario {
         -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
       }
       .fcard-texto {
         -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(5px);
       }
       .orbit-tools-capsula {
         -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
       }
       .escena-panel {
         -webkit-backdrop-filter: blur(24px) saturate(160%);
+        backdrop-filter: blur(24px) saturate(160%);
       }
       /* Islas React que usan las utilities de Tailwind: el calendario del bento
          (backdrop-blur-xl + backdrop-saturate-150) y el indicador de pasos del
          proceso (backdrop-blur-sm). --blur-xl = 24px, --blur-sm = 8px. */
       .backdrop-blur-xl.backdrop-saturate-150 {
         -webkit-backdrop-filter: blur(24px) saturate(150%);
+        backdrop-filter: blur(24px) saturate(150%);
       }
       .backdrop-blur-sm {
         -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
       }
     </style>
   </head>
