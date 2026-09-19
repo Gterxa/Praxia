@@ -10,11 +10,19 @@ import LineasServicio from './LineasServicio.astro';
 import Proceso from './Proceso.astro';
 import PrivacidadDatos from './PrivacidadDatos.astro';
 import Equipo from './Equipo.astro';
-import FAQ from './FAQ.astro';
+import FAQTabs from './ui/faq-tabs.tsx';
 import CierreValidar from './CierreValidar.astro';
-import { PREGUNTAS_FRECUENTES } from '../faq';
+import { PREGUNTAS_FRECUENTES, CATEGORIAS_FAQ, agruparPorCategoria } from '../faq';
 
-const preguntasCortas = PREGUNTAS_FRECUENTES.slice(0, 6);
+// FAQ de la home: 3 categorías (validación, entrega, confianza) — las que
+// más pesan para alguien que todavía no decide escribirnos.
+const preguntasHome = PREGUNTAS_FRECUENTES.filter((p) =>
+  ['validacion', 'entrega', 'confianza'].includes(p.categoria),
+);
+const faqData = agruparPorCategoria(preguntasHome);
+const categorias = Object.fromEntries(
+  Object.entries(CATEGORIAS_FAQ).filter(([clave]) => faqData[clave]?.length),
+);
 ---
 
 <Destacado />
@@ -25,9 +33,10 @@ const preguntasCortas = PREGUNTAS_FRECUENTES.slice(0, 6);
 <PrivacidadDatos />
 <Equipo />
 
-<section class="seccion">
+<section id="preguntas" class="seccion-cosmoq">
   <div class="contenedor max-w-3xl">
-    <FAQ preguntas={preguntasCortas} titulo="Lo que nos preguntan antes de empezar" />
+    <h2 class="mb-8 text-center">Lo que nos preguntan antes de empezar</h2>
+    <FAQTabs categorias={categorias} faqData={faqData} client:visible />
   </div>
 </section>
 

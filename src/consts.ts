@@ -65,10 +65,9 @@ export const CONTEXTO = {
  * está acá: el header lo pone aparte, como botón.
  */
 export const NAV_PRINCIPAL = [
-  { texto: 'Servicios', href: '/servicios' },
-  { texto: 'Industrias', href: '/#servicios' },
-  { texto: 'Cómo trabajamos', href: '/como-trabajamos' },
-  { texto: 'Preguntas', href: '/preguntas-frecuentes' },
+  { texto: 'Servicios', href: '/#servicios' },
+  { texto: 'Cómo trabajamos', href: '/#proceso' },
+  { texto: 'Preguntas', href: '/#preguntas' },
 ] as const;
 
 /**

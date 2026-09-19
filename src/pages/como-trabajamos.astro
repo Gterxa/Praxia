@@ -4,41 +4,57 @@ import SectionLabel from '../components/SectionLabel.astro';
 import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
 import StepList from '../components/StepList.astro';
-import FAQ from '../components/FAQ.astro';
+import FAQTabs from '../components/ui/faq-tabs.tsx';
 import FichaHero from '../components/FichaHero.astro';
 import CTAInline from '../components/CTAInline.astro';
 import CTABand from '../components/CTABand.astro';
 import { CONTEXTO } from '../consts';
 import metodo from '../assets/img/metodo.png';
 import { ruta } from '../rutas';
+import { CATEGORIAS_FAQ, agruparPorCategoria } from '../faq';
 
 const preguntas = [
   {
+    categoria: 'validacion',
     pregunta: '¿Qué pasa en la validación exactamente?',
     respuesta:
       'Conversamos 15 minutos, por videollamada o WhatsApp. Te preguntamos por tu operación, no por tu tecnología. De ahí sale si tu idea se sostiene y cuál es la mejor ruta.',
   },
   {
+    categoria: 'validacion',
+    pregunta: '¿Y si después de validar decido no seguir?',
+    respuesta: 'No pasa nada. La validación no compromete a nada, es gratis y no hay letra chica.',
+  },
+  {
+    categoria: 'validacion',
     pregunta: '¿Cuánto de mi tiempo se va en esto?',
     respuesta:
       'La conversación inicial, un par de revisiones mientras construimos, y la capacitación al final. El resto lo hacemos nosotros.',
   },
   {
+    categoria: 'trabajo',
     pregunta: '¿Tengo que cambiar mis herramientas?',
     respuesta:
       'No. Trabajamos sobre lo que ya usas. Si en algún momento tiene sentido cambiar algo, te lo explicamos antes y decides tú.',
   },
   {
+    categoria: 'trabajo',
     pregunta: '¿Quién queda a cargo cuando terminan?',
     respuesta:
       'Tú. Capacitamos a tu equipo durante la implementación y te dejamos documentado qué se construyó y cómo funciona.',
   },
   {
+    categoria: 'trabajo',
     pregunta: '¿Y el resto de mis dudas?',
     respuesta:
       `Están en <a class="enlace" href="${ruta('/preguntas-frecuentes')}">preguntas frecuentes</a>: plazos, presupuesto, facturación y qué pasa si quieres dejar de trabajar con nosotros.`,
   },
 ];
+
+const faqData = agruparPorCategoria(preguntas);
+const categorias = Object.fromEntries(
+  Object.entries(CATEGORIAS_FAQ).filter(([clave]) => faqData[clave]?.length),
+);
 ---
 
 <Layout
@@ -82,7 +98,8 @@ const preguntas = [
   <CTAInline contextoWhatsApp={CONTEXTO.comoTrabajamos} />
 
   <Seccion fondo="surface">
-    <FAQ titulo="Dudas sobre el proceso" preguntas={preguntas} />
+    <h2 class="mb-8 text-center">Dudas sobre el proceso</h2>
+    <FAQTabs categorias={categorias} faqData={faqData} client:visible />
   </Seccion>
 
   <CTABand contextoWhatsApp={CONTEXTO.comoTrabajamos} />
