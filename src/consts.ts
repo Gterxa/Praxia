@@ -8,8 +8,10 @@ export const SITE = {
   tagline: 'El equipo técnico que tu negocio no tiene.',
   descripcion:
     'Automatización con IA, web, SEO y seguridad para pymes del Perú. Validamos tu idea en 15 minutos, sin costo, y la construimos en 2 a 4 semanas.',
-  // [PENDIENTE] Reemplazar por el dominio real antes de desplegar.
-  url: 'https://praxia.pe',
+  // Dominio de producción en Vercel. El apex redirige 308 a www, así que la
+  // canonical, el OG, el JSON-LD y el sitemap salen con www. Ojo: praxia.pe
+  // es un sitio ajeno, no nuestro.
+  url: 'https://www.trypraxia.tech',
   idioma: 'es-PE',
   pais: 'PE',
 } as const;

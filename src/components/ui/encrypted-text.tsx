@@ -45,6 +45,26 @@ function generateGibberishPreservingSpaces(
   return result;
 }
 
+// Cifrado inicial determinista: el servidor y el primer render del cliente
+// tienen que producir exactamente el mismo texto, si no React falla la
+// hidratación (error #418) y vuelve a renderizar todo el nodo. La aleatoriedad
+// de verdad arranca recién en el useEffect, cuando el componente entra en vista.
+function generateDeterministicScramble(
+  original: string,
+  charset: string,
+): string {
+  if (!original) return "";
+  let result = "";
+  for (let i = 0; i < original.length; i += 1) {
+    const ch = original[i];
+    result +=
+      ch === " "
+        ? " "
+        : charset.charAt((ch.charCodeAt(0) * 31 + i * 7) % charset.length);
+  }
+  return result;
+}
+
 export const EncryptedText: React.FC<EncryptedTextProps> = ({
   text,
   className,
@@ -62,7 +82,7 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
   const startTimeRef = useRef<number>(0);
   const lastFlipTimeRef = useRef<number>(0);
   const scrambleCharsRef = useRef<string[]>(
-    text ? generateGibberishPreservingSpaces(text, charset).split("") : [],
+    text ? generateDeterministicScramble(text, charset).split("") : [],
   );
 
   useEffect(() => {
@@ -140,7 +160,7 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
           : char === " "
             ? " "
             : (scrambleCharsRef.current[index] ??
-              generateRandomCharacter(charset));
+              charset.charAt((char.charCodeAt(0) * 31 + index * 7) % charset.length));
 
         return (
           <span

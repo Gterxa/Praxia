@@ -3,4 +3,4 @@ Allow: /
 Disallow: /legal
 Disallow: /privacidad
 
-Sitemap: https://praxia.pe/sitemap-index.xml
+Sitemap: https://www.trypraxia.tech/sitemap-index.xml

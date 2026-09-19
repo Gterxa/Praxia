@@ -118,20 +118,53 @@ export default defineConfig({
     },
   ],
 
-  // Seguridad: ningún script inline. La CSP de vercel.json permite scripts solo
-  // desde el mismo dominio, así que todo script sale como archivo externo
-  // (/_astro/*). Las hojas de estilo chicas (< 4 KB, una por componente) sí van
-  // inline: cada una era una petición que bloqueaba el render en celular. Astro
-  // emite en el <meta> CSP el hash de cada <style> que incrusta, igual que hace
-  // con los @font-face de <Font />, así que la política de estilos sigue siendo
-  // 'self' más hashes, sin 'unsafe-inline' efectivo.
+  // Seguridad: UNA sola CSP, la <meta> que genera Astro. Hasta sep 2026
+  // convivía con un header Content-Security-Policy en vercel.json y el
+  // navegador exige que AMBAS autoricen cada recurso: el header no llevaba
+  // hashes y bloqueaba los scripts inline que Astro incrusta sí o sí (runtime
+  // de astro-island, directivas client:*, y los <script> chicos de componentes:
+  // menú del Header, reveal-on-scroll del Layout, pestañas de servicios). En
+  // producción ninguna isla hidrataba, el menú móvil no abría y todo lo que
+  // lleva `.revelar` quedaba invisible. Los hashes cambian en cada build, así
+  // que no pueden vivir en un header estático: el header se quitó y todo se
+  // declara acá. Se prueba con `astro build` + `astro preview` (en dev no
+  // aplica) y scripts/captura.mjs.
+  //
+  // - script-src: 'self' + hash de cada script inline (lo pone Astro).
+  // - style-src: 'self' + hash de cada <style> inline (Astro), y aparte
+  //   style-src-attr 'unsafe-inline' para los style="" que React, framer-motion
+  //   y las islas SSR escriben como atributo — con solo hashes el navegador los
+  //   rechazaba ("Applying inline style violates…"). Sin 'self' explícito en
+  //   resources: Astro lo pone por defecto y así no avisa de "shadowing".
+  // - font-src 'self' lo agrega Astro solo (fuentes de <Font />); repetirlo
+  //   sería una directiva duplicada que el navegador ignora con warning.
+  // - frame-ancestors no va: los navegadores lo ignoran en <meta>. Lo cubre
+  //   X-Frame-Options: DENY, que sigue en vercel.json con el resto de headers.
+  // - Las hojas de estilo chicas (< 4 KB) siguen inline: una petición menos
+  //   por componente en celular.
   build: {
     inlineStylesheets: 'auto',
   },
   security: {
     csp: {
       scriptDirective: { resources: ["'self'"] },
-      styleDirective: { resources: ["'self'"] },
+      styleDirective: {
+        resources: [{ resource: "'unsafe-inline'", kind: 'attribute' }],
+      },
+      directives: [
+        "default-src 'self'",
+        // placehold.co: fotos del equipo hasta que lleguen las reales
+        // (Equipo.astro). Quitarlo de acá cuando se reemplacen.
+        "img-src 'self' data: https://placehold.co",
+        "connect-src 'self' https://api.web3forms.com https://formspree.io",
+        "form-action 'self' https://api.web3forms.com https://formspree.io",
+        "frame-src 'none'",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "manifest-src 'self'",
+        "worker-src 'self'",
+        'upgrade-insecure-requests',
+      ],
     },
   },
 
@@ -139,7 +172,9 @@ export default defineConfig({
     plugins: [tailwindcss()],
     build: {
       // Umbral que usa `inlineStylesheets: 'auto'`: hojas de menos de 4 KB van
-      // inline. Los scripts nunca se incrustan, sin importar este valor.
+      // inline. Ojo: los <script> chicos de componentes también salen inline
+      // (el del Header, el reveal del Layout…) — Astro los hashea en la <meta>
+      // CSP, así que no hace falta hacer nada para que pasen.
       assetsInlineLimit: 4096,
     },
   },

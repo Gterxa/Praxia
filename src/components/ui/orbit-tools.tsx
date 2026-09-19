@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './orbit-tools.css';
 
 /**
  * Adaptado de "orbiting-circles-02" (21st.dev). Se mantiene la técnica real
@@ -134,67 +135,6 @@ export function OrbitTools({ herramientas, className }: OrbitToolsProps) {
 
   return (
     <div className={`orbit-tools absolute inset-0 ${className ?? ''}`} aria-hidden="true">
-      <style>{`
-        .orbit-tools {
-          /* Cuánto sube el centro de las órbitas sobre el borde inferior del
-             card: lo justo para que la parte baja de los arcos se meta detrás
-             del panel de texto en vez de cortarse en el aire. */
-          --orbit-piso: 5.5rem;
-          -webkit-mask-image: var(--fcard-fundido, linear-gradient(to bottom, #000 46%, transparent 68%));
-          mask-image: var(--fcard-fundido, linear-gradient(to bottom, #000 46%, transparent 68%));
-        }
-        .orbit-tools-origen {
-          position: absolute;
-          bottom: var(--orbit-piso);
-          left: 50%;
-          width: 0;
-          height: 0;
-        }
-        .orbit-tools-pista {
-          border-color: rgb(255 255 255 / 0.36);
-        }
-        .orbit-tools-capsula {
-          position: relative;
-          z-index: 2;
-          border-color: rgb(255 255 255 / 0.14);
-          background-color: rgb(13 14 20 / 0.82);
-          color: var(--color-texto);
-          box-shadow:
-            0 1px 2px rgb(0 0 0 / 0.5),
-            0 8px 20px -6px rgb(0 0 0 / 0.65),
-            inset 0 1px 0 rgb(255 255 255 / 0.08);
-          -webkit-backdrop-filter: blur(6px);
-          backdrop-filter: blur(6px);
-        }
-
-        @keyframes orbit-tools-spin-cw {
-          from { transform: rotate(var(--orbit-angulo)); }
-          to   { transform: rotate(calc(var(--orbit-angulo) + 360deg)); }
-        }
-        @keyframes orbit-tools-spin-ccw {
-          from { transform: rotate(var(--orbit-angulo)); }
-          to   { transform: rotate(calc(var(--orbit-angulo) - 360deg)); }
-        }
-        @keyframes orbit-tools-counter-cw {
-          from { transform: rotate(calc(var(--orbit-angulo) * -1)); }
-          to   { transform: rotate(calc(var(--orbit-angulo) * -1 - 360deg)); }
-        }
-        @keyframes orbit-tools-counter-ccw {
-          from { transform: rotate(calc(var(--orbit-angulo) * -1)); }
-          to   { transform: rotate(calc(var(--orbit-angulo) * -1 + 360deg)); }
-        }
-
-        .orbit-tools-spoke-cw { animation-name: orbit-tools-spin-cw; animation-timing-function: linear; animation-iteration-count: infinite; }
-        .orbit-tools-spoke-ccw { animation-name: orbit-tools-spin-ccw; animation-timing-function: linear; animation-iteration-count: infinite; }
-        .orbit-tools-capsula-cw { animation-name: orbit-tools-counter-cw; animation-timing-function: linear; animation-iteration-count: infinite; }
-        .orbit-tools-capsula-ccw { animation-name: orbit-tools-counter-ccw; animation-timing-function: linear; animation-iteration-count: infinite; }
-
-        @media (prefers-reduced-motion: reduce) {
-          .orbit-tools-spoke-cw, .orbit-tools-spoke-ccw,
-          .orbit-tools-capsula-cw, .orbit-tools-capsula-ccw { animation: none; }
-        }
-      `}</style>
-
       <div className="orbit-tools-origen">
         {ANILLOS.map((a, i) => (
           <Anillo
