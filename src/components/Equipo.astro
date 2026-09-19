@@ -15,7 +15,7 @@ import Marquee from './Marquee.astro';
 import { ruta } from '../rutas';
 
 const MIEMBROS: MiembroEquipo[] = [
-  { id: '1', nombre: 'Álvaro Sánchez', rol: 'Founder, Soluciones e IA', imagen: ruta('/equipo/alvaro-sanchez.png') },
+  { id: '1', nombre: 'Álvaro Sánchez', rol: 'Founder, Soluciones e IA', imagen: ruta('/equipo/alvaro-sanchez.png'), social: { linkedin: 'https://www.linkedin.com/in/aalvaroasanchez/' } },
   { id: '2', nombre: 'Piero Pizarro', rol: 'Co-founder, Automatización', imagen: ruta('/equipo/piero-pizarro.jpg') },
   { id: '3', nombre: 'Gabriel Curay', rol: 'Co-founder, Arquitectura', imagen: ruta('/equipo/gabriel-curay.jpeg') },
   { id: '4', nombre: 'César García', rol: 'Partner, Dirección técnica', imagen: ruta('/equipo/cesar-garcia.jpeg') },
@@ -61,7 +61,7 @@ const MIEMBROS: MiembroEquipo[] = [
                 >
                   {miembro.nombre}
                 </span>
-                <span class="text-[9px] font-medium uppercase tracking-[0.2em] text-texto-3">
+                <span class="text-[9px] font-medium uppercase tracking-[0.2em] text-texto/85">
                   {miembro.rol}
                 </span>
               </figcaption>
