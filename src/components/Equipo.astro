@@ -13,6 +13,7 @@ import Seccion from './Seccion.astro';
 import CabeceraSeccion from './CabeceraSeccion.astro';
 import EquipoShowcase from './ui/equipo-showcase.tsx';
 import type { MiembroEquipo } from './ui/equipo-showcase.tsx';
+import Marquee from './Marquee.astro';
 
 const MIEMBROS: MiembroEquipo[] = [
   { id: '1', nombre: 'Álvaro Sánchez', rol: 'Founder, Soluciones e IA', imagen: 'https://placehold.co/400x500' },
@@ -36,7 +37,41 @@ const MIEMBROS: MiembroEquipo[] = [
     </div>
   </CabeceraSeccion>
 
-  <div class="mt-10">
+  <div class="mt-10 hidden lg:block">
     <EquipoShowcase miembros={MIEMBROS} client:visible />
+  </div>
+
+  <div class="mt-10 lg:hidden">
+    <Marquee velocidad={55}>
+      {
+        MIEMBROS.map((miembro) => (
+          <li class="w-52 flex-none sm:w-60">
+            <figure class="tarjeta flex h-full flex-col overflow-hidden p-0">
+              <div class="aspect-[4/5] w-full overflow-hidden">
+                <img
+                  src={miembro.imagen}
+                  alt={miembro.nombre}
+                  width={400}
+                  height={500}
+                  loading="lazy"
+                  class="h-full w-full object-cover grayscale"
+                />
+              </div>
+              <figcaption class="flex flex-col gap-1 p-4">
+                <span
+                  class="text-base font-semibold leading-none tracking-tight text-texto"
+                  style={{ fontFamily: 'var(--font-titulos)' }}
+                >
+                  {miembro.nombre}
+                </span>
+                <span class="text-[9px] font-medium uppercase tracking-[0.2em] text-texto-3">
+                  {miembro.rol}
+                </span>
+              </figcaption>
+            </figure>
+          </li>
+        ))
+      }
+    </Marquee>
   </div>
 </Seccion>

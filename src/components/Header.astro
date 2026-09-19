@@ -32,21 +32,23 @@ const esActiva = (href: string) => rutaActual === href || rutaActual.startsWith(
         }
       </nav>
 
-      <a href={ruta('/validar')} class="boton boton-primario boton-compacto hidden lg:inline-flex">
-        Validar mi idea
-      </a>
+      <div class="flex items-center gap-2">
+        <a href={ruta('/validar')} class="boton boton-primario boton-compacto inline-flex">
+          Validar mi idea
+        </a>
 
-      <button
-        type="button"
-        id="boton-menu"
-        class="-mr-1 inline-flex min-h-11 min-w-11 items-center justify-center rounded-pill p-2 text-texto lg:hidden"
-        aria-expanded="false"
-        aria-controls="menu-movil"
-      >
-        <span class="sr-only">Abrir menú</span>
-        <Icon nombre="menu" tamano={24} class="[[aria-expanded=true]_&]:hidden" />
-        <Icon nombre="cerrar" tamano={24} class="hidden [[aria-expanded=true]_&]:block" />
-      </button>
+        <button
+          type="button"
+          id="boton-menu"
+          class="-mr-1 inline-flex min-h-11 min-w-11 items-center justify-center rounded-pill p-2 text-texto lg:hidden"
+          aria-expanded="false"
+          aria-controls="menu-movil"
+        >
+          <span class="sr-only">Abrir menú</span>
+          <Icon nombre="menu" tamano={24} class="[[aria-expanded=true]_&]:hidden" />
+          <Icon nombre="cerrar" tamano={24} class="hidden [[aria-expanded=true]_&]:block" />
+        </button>
+      </div>
 
       <!-- Veta de luz sobre el borde del pill, con un tramo transparente
            donde no debe brillar (truco de la réplica de cosmoq). -->
@@ -78,9 +80,6 @@ const esActiva = (href: string) => rutaActual === href || rutaActual.startsWith(
             </a>
           ))
         }
-        <a href={ruta('/validar')} class="boton boton-primario mx-2 mt-2 mb-1">
-          Validar mi idea
-        </a>
       </nav>
     </div>
   </div>
