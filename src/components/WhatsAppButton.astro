@@ -15,12 +15,14 @@ const { contexto } = Astro.props;
 <style is:global>
   /* Disparador del orbe: mismo tratamiento visual que el resto de botones
      fixed del sitio (sombra, estados). El shader SHDR-11 pinta el relleno;
-     esta capa solo da el marco y la reacción a foco/hover/click. */
+     esta capa da el marco y la reacción a foco/hover/click. El botón recorta
+     a círculo (overflow-hidden, para que el canvas cuadrado se vea redondo),
+     así que el halo que disuelve el filo del disco vive aparte, en
+     .orbe-halo — dentro del botón habría quedado cortado igual que el aro
+     que se quiere tapar. */
   .orbe-disparador {
     isolation: isolate;
-    box-shadow:
-      0 8px 24px -8px rgb(0 0 0 / 0.55),
-      0 0 0 1px rgb(255 255 255 / 0.06) inset;
+    box-shadow: 0 8px 24px -8px rgb(0 0 0 / 0.55);
     transition:
       transform 0.32s var(--ease-resorte),
       box-shadow 0.32s var(--ease-suave);
@@ -28,9 +30,7 @@ const { contexto } = Astro.props;
 
   .orbe-disparador:hover {
     transform: translateY(-3px) scale(1.04);
-    box-shadow:
-      0 14px 32px -8px rgb(255 107 53 / 0.45),
-      0 0 0 1px rgb(255 255 255 / 0.12) inset;
+    box-shadow: 0 14px 32px -8px rgb(0 0 0 / 0.6);
   }
 
   .orbe-disparador:active {
@@ -40,5 +40,23 @@ const { contexto } = Astro.props;
   .orbe-disparador:focus-visible {
     outline: 2px solid var(--color-linea-viva);
     outline-offset: 3px;
+  }
+
+  /* Halo detrás del orbe: dispersa el aro de fresnel/specular del shader
+     (SHDR-11 stock) contra el fondo, en vez de dejarlo recortado duro. */
+  .orbe-halo {
+    background: radial-gradient(
+      circle,
+      rgb(255 107 53 / 0.55) 0%,
+      rgb(250 94 69 / 0.3) 45%,
+      transparent 72%
+    );
+    filter: blur(14px);
+    transform: scale(1.55);
+    transition: transform 0.32s var(--ease-suave);
+  }
+
+  .orbe-disparador:hover ~ .orbe-halo {
+    transform: scale(1.75);
   }
 </style>

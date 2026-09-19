@@ -94,6 +94,16 @@ export default function OrbeContacto({ waHref, validarHref }: Props) {
           className="pointer-events-none absolute inset-0 m-auto text-texto drop-shadow-[0_1px_2px_rgb(0_0_0/0.55)]"
         />
       </button>
+
+      {/* Halo difuso, fuera del botón: el botón recorta a círculo
+          (overflow-hidden) para que el canvas cuadrado se vea redondo, así
+          que un glow dentro de él quedaría cortado igual. Va después en el
+          DOM (para el combinador `~` de :hover en CSS) pero -z-10 lo manda
+          detrás visualmente, del mismo tamaño que el botón para alinear. */}
+      <span
+        aria-hidden="true"
+        className="orbe-halo pointer-events-none absolute inset-0 -z-10 h-14 w-14 rounded-full md:h-15 md:w-15"
+      />
     </div>
   );
 }
