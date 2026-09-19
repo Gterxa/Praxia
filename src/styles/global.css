@@ -248,8 +248,12 @@
       transform 150ms var(--ease-resorte);
   }
 
-  .boton:hover {
-    filter: brightness(1.12);
+  /* hover: hover evita que el estado quede "pegado" en touch tras un tap
+     (iOS/Android disparan :hover sin un mouseleave que lo apague). */
+  @media (hover: hover) and (pointer: fine) {
+    .boton:hover {
+      filter: brightness(1.12);
+    }
   }
 
   .boton:active {
@@ -265,21 +269,34 @@
 
   .boton-primario {
     background-color: var(--color-brasa);
-    color: var(--color-void);
+    color: var(--color-texto);
+    font-weight: 700;
     box-shadow:
       0 1px 2px rgb(10 15 28 / 0.35),
       0 10px 24px rgb(255 107 53 / 0.3),
       inset 0 1px 0 rgb(255 255 255 / 0.22),
       inset 0 -2px 5px rgb(189 53 108 / 0.28);
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms var(--ease-suave),
+      filter 300ms var(--ease-suave),
+      box-shadow 400ms var(--ease-suave),
+      transform 150ms var(--ease-resorte);
   }
 
-  .boton-primario:hover {
-    background-color: var(--color-brasa-alto);
-    box-shadow:
-      0 2px 4px rgb(10 15 28 / 0.35),
-      0 14px 32px rgb(255 107 53 / 0.4),
-      inset 0 1px 0 rgb(255 255 255 / 0.28),
-      inset 0 -2px 5px rgb(253 205 57 / 0.28);
+  /* Como cosmoq: el hover no es brightness() ni un color de fondo distinto —
+     son los mismos inset-shadows de marca (sol arriba, magenta abajo) creciendo
+     en offset y blur hasta inundar el botón de luz. Colores de la rampa
+     "atardecer" propia, nunca el azul de cosmoq (regla anti-genérico). */
+  @media (hover: hover) and (pointer: fine) {
+    .boton-primario:hover {
+      box-shadow:
+        0 2px 4px rgb(10 15 28 / 0.35),
+        0 14px 32px rgb(255 107 53 / 0.4),
+        inset 0 -30px 24px var(--color-magenta),
+        inset 0 28px 22px var(--color-sol);
+    }
   }
 
   .boton-secundario {
@@ -290,9 +307,11 @@
     -webkit-backdrop-filter: blur(12px);
   }
 
-  .boton-secundario:hover {
-    border-color: var(--color-brasa);
-    background: var(--color-brasa-tenue);
+  @media (hover: hover) and (pointer: fine) {
+    .boton-secundario:hover {
+      border-color: var(--color-brasa);
+      background: var(--color-brasa-tenue);
+    }
   }
 
   /* --- Superficie de vidrio. Nav, chips activos, paneles del hero y del
@@ -326,8 +345,10 @@
       border-color 300ms var(--ease-suave);
   }
 
-  .pestana-pill:hover {
-    color: var(--color-texto);
+  @media (hover: hover) and (pointer: fine) {
+    .pestana-pill:hover {
+      color: var(--color-texto);
+    }
   }
 
   .pestana-pill:active {
@@ -349,9 +370,11 @@
     text-decoration-thickness: 1px;
   }
 
-  .enlace:hover {
-    color: var(--color-brasa-alto);
-    text-decoration-thickness: 2px;
+  @media (hover: hover) and (pointer: fine) {
+    .enlace:hover {
+      color: var(--color-brasa-alto);
+      text-decoration-thickness: 2px;
+    }
   }
 
   /* --- Tarjetas. Radio grande (identidad v2) y elevación con sombra tintada
@@ -379,16 +402,18 @@
     transition: border-color 300ms var(--ease-suave);
   }
 
-  a.tarjeta:hover,
-  .tarjeta-interactiva:hover {
-    background-color: var(--color-surface-2);
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgb(255 107 53 / 0.16);
-  }
+  @media (hover: hover) and (pointer: fine) {
+    a.tarjeta:hover,
+    .tarjeta-interactiva:hover {
+      background-color: var(--color-surface-2);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgb(255 107 53 / 0.16);
+    }
 
-  a.tarjeta:hover::after,
-  .tarjeta-interactiva:hover::after {
-    border-color: var(--color-linea-viva);
+    a.tarjeta:hover::after,
+    .tarjeta-interactiva:hover::after {
+      border-color: var(--color-linea-viva);
+    }
   }
 
   /* Borde blanco degradado, solo visible en dos esquinas (gborder de
@@ -554,9 +579,11 @@
     height: 60%;
   }
 
-  .gicon:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgb(255 172 8 / 0.32);
+  @media (hover: hover) and (pointer: fine) {
+    .gicon:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgb(255 172 8 / 0.32);
+    }
   }
 
   /* --- Barras de los widgets. Crecen una sola vez, cuando la sección se revela. --- */

@@ -115,9 +115,14 @@ const esActiva = (href: string) => rutaActual === href || rutaActual.startsWith(
     transition: transform 400ms var(--ease-resorte);
   }
 
-  .nav-enlace:hover::after,
   .nav-enlace[aria-current='page']::after {
     transform: scaleX(1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .nav-enlace:hover::after {
+      transform: scaleX(1);
+    }
   }
 
   /* Veta de luz sobre el borde del pill: un borde blanco enmascarado que deja

@@ -61,38 +61,38 @@ export default function EquipoShowcase({ miembros }: EquipoShowcaseProps) {
   const col3 = miembros.filter((_, i) => i % 3 === 2);
 
   return (
-    <div className="flex w-full select-none flex-col items-start gap-8 md:flex-row md:items-center md:gap-12 lg:gap-20">
-      <div className="flex flex-shrink-0 gap-2 overflow-x-auto pb-1 md:gap-4 md:pb-0">
-        <div className="flex flex-col gap-2 md:gap-3">
+    <div className="flex w-full select-none flex-col items-start gap-8 lg:flex-row lg:items-center lg:gap-20">
+      <div className="flex w-full flex-shrink-0 gap-1.5 sm:gap-2 lg:w-auto lg:gap-4">
+        <div className="flex flex-1 flex-col gap-2 lg:flex-none lg:gap-3">
           {col1.map((miembro) => (
             <Foto
               key={miembro.id}
               miembro={miembro}
-              className="h-[120px] w-[110px] sm:h-[140px] sm:w-[130px] md:h-[200px] md:w-[187px] lg:h-[228px] lg:w-[212px]"
+              className="aspect-[110/120] h-auto w-full sm:aspect-[130/140] md:aspect-[187/200] lg:aspect-auto lg:h-[228px] lg:w-[212px]"
               activoId={activoId}
               onActivo={setActivoId}
             />
           ))}
         </div>
 
-        <div className="mt-[48px] flex flex-col gap-2 sm:mt-[56px] md:mt-[82px] md:gap-4 lg:mt-[93px]">
+        <div className="mt-[38px] flex flex-1 flex-col gap-2 sm:mt-[42px] md:mt-[70px] lg:mt-[93px] lg:flex-none lg:gap-4">
           {col2.map((miembro) => (
             <Foto
               key={miembro.id}
               miembro={miembro}
-              className="h-[132px] w-[122px] sm:h-[155px] sm:w-[145px] md:h-[220px] md:w-[207px] lg:h-[252px] lg:w-[236px]"
+              className="aspect-[122/132] h-auto w-full sm:aspect-[145/155] md:aspect-[207/220] lg:aspect-auto lg:h-[252px] lg:w-[236px]"
               activoId={activoId}
               onActivo={setActivoId}
             />
           ))}
         </div>
 
-        <div className="mt-[22px] flex flex-col gap-2 sm:mt-[26px] md:mt-[39px] md:gap-4 lg:mt-[44px]">
+        <div className="mt-[18px] flex flex-1 flex-col gap-2 sm:mt-[20px] md:mt-[33px] lg:mt-[44px] lg:flex-none lg:gap-4">
           {col3.map((miembro) => (
             <Foto
               key={miembro.id}
               miembro={miembro}
-              className="h-[125px] w-[115px] sm:h-[146px] sm:w-[136px] md:h-[208px] md:w-[195px] lg:h-[238px] lg:w-[223px]"
+              className="aspect-[115/125] h-auto w-full sm:aspect-[136/146] md:aspect-[195/208] lg:aspect-auto lg:h-[238px] lg:w-[223px]"
               activoId={activoId}
               onActivo={setActivoId}
             />
@@ -100,7 +100,7 @@ export default function EquipoShowcase({ miembros }: EquipoShowcaseProps) {
         </div>
       </div>
 
-      <div className="flex w-full flex-1 flex-col gap-4 pt-0 sm:grid sm:grid-cols-2 md:flex md:min-w-[15rem] md:flex-col md:gap-5 md:pt-2">
+      <div className="flex w-full flex-1 flex-col gap-4 pt-0 sm:grid sm:grid-cols-2 md:flex md:flex-col md:gap-5 md:pt-2 lg:min-w-[15rem]">
         {miembros.map((miembro) => (
           <Fila key={miembro.id} miembro={miembro} activoId={activoId} onActivo={setActivoId} />
         ))}
@@ -142,6 +142,9 @@ function Foto({
       <img
         src={miembro.imagen}
         alt={miembro.nombre}
+        width={400}
+        height={500}
+        loading="lazy"
         className="h-full w-full object-cover transition-[filter] duration-500"
         style={{
           filter: activa ? 'grayscale(0) brightness(1)' : 'grayscale(1) brightness(0.75)',

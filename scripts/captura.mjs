@@ -20,8 +20,20 @@
  *    deja la red idle y networkidle0 espera hasta su propio timeout (18 s).
  *  - Todo `.revelar` se marca `.visible` antes de capturar: sin eso, el
  *    scroll-reveal deja las secciones fuera del viewport en negro.
+ *  - Espera fija de 2s tras el scroll: los `client:visible` (FAQTabs,
+ *    EquipoShowcase) hidratan via IntersectionObserver y con menos margen
+ *    (900ms) la captura sale a mitad de hidratar — tabs/contenido faltantes
+ *    que no son bugs reales, solo la foto tomada demasiado pronto.
  *  - El elemento se centra si cabe, o se lleva al inicio compensando el
  *    header sticky, para que no lo tape.
+ *  - El posicionamiento usa window.scrollTo({ top, behavior: 'instant' })
+ *    con un `top` calculado a mano (getBoundingClientRect + scrollY), no
+ *    scrollIntoView()/scrollBy(): `html { scroll-behavior: smooth }`
+ *    (global.css) hace que esos dos animen en vez de saltar, y el await de
+ *    Puppeteer no espera esa animación — scrollY queda en 0 y la captura
+ *    sale con el header sticky pisando contenido que en realidad está más
+ *    abajo. 'instant' se salta el smooth-scroll y deja scrollY correcto
+ *    antes del screenshot.
  */
 import { existsSync } from 'node:fs';
 import puppeteer from 'puppeteer-core';
@@ -75,11 +87,14 @@ try {
     const objetivo = document.querySelector(sel);
     const header = document.querySelector('header');
     const altoHeader = header ? header.getBoundingClientRect().height : 0;
-    const cabe = objetivo.getBoundingClientRect().height + altoHeader + 32 < window.innerHeight;
-    objetivo.scrollIntoView({ block: cabe ? 'center' : 'start' });
-    if (!cabe) window.scrollBy(0, -(altoHeader + 24));
+    const rect = objetivo.getBoundingClientRect();
+    const cabe = rect.height + altoHeader + 32 < window.innerHeight;
+    const top = cabe
+      ? window.scrollY + rect.top - (window.innerHeight - rect.height) / 2
+      : window.scrollY + rect.top - altoHeader - 24;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
   }, selector);
-  await new Promise((r) => setTimeout(r, 900));
+  await new Promise((r) => setTimeout(r, 2000));
 
   if (frames <= 1) {
     await el.screenshot({ path: salida });
