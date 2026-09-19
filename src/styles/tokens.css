@@ -95,9 +95,14 @@
     var(--color-violeta) 100%
   );
 
-  /* --- Movimiento. Los dos únicos easings del sitio (de la réplica de
-     cosmoq): --ease-suave para opacidad/color, --ease-resorte para
-     transform. Nunca mezclar un tercero. --- */
+  /* --- Movimiento. Los dos únicos easings del sitio. --ease-resorte es la
+     curva maestra: la usa el sistema de scroll-reveal completo (opacidad Y
+     transform, misma duración para ambas — antes se mezclaban las dos
+     curvas con duraciones distintas y quedaban desincronizadas) y es,
+     además, la misma que corre TODO invokube.com (cubic-bezier(.22,1,.36,1),
+     verificado sobre sus chunks). --ease-suave queda para transiciones de
+     color/estado puntuales que no son parte del reveal (Destacado, hover de
+     HeroHome). Nunca mezclar un tercero. --- */
   --ease-suave: cubic-bezier(0.44, 0, 0.56, 1);
   --ease-resorte: cubic-bezier(0.22, 1, 0.36, 1);
 
