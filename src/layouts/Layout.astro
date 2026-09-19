@@ -216,6 +216,9 @@ const datosEstructurados = {
       // .revelar). Los componentes con control más fino (tarjetas por
       // separado, con stagger vía --i/data-retraso) marcan `.revelar` /
       // `.revelar-item` / `.revelar-visual` ellos mismos.
+      // #destacado se excluye a mano: su "reveal" es el progreso de scroll
+      // que enciende cada palabra (Destacado.astro), no tiene ningún hijo
+      // .revelar que lo delate, y un fade previo taparía justo el efecto.
       // Se desactiva sola con prefers-reduced-motion (no hay nada que ocultar).
       const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
       const main = document.querySelector('main');
@@ -224,7 +227,7 @@ const datosEstructurados = {
 
       const marcarSeccionesAutomaticas = () => {
         const secciones = document.querySelectorAll<HTMLElement>(
-          'main > section:not(:first-child):not(:has(.revelar)):not(:has(.revelar-item)):not(:has(.revelar-visual))',
+          'main > section:not(:first-child):not(#destacado):not(:has(.revelar)):not(:has(.revelar-item)):not(:has(.revelar-visual))',
         );
         secciones.forEach((seccion) => seccion.classList.add('revelar'));
       };
