@@ -47,16 +47,16 @@ const { contexto } = Astro.props;
   .orbe-halo {
     background: radial-gradient(
       circle,
-      rgb(255 107 53 / 0.55) 0%,
-      rgb(250 94 69 / 0.3) 45%,
-      transparent 72%
+      rgb(255 255 255 / 0.45) 0%,
+      rgb(255 255 255 / 0.2) 45%,
+      transparent 70%
     );
-    filter: blur(14px);
-    transform: scale(1.55);
+    filter: blur(10px);
+    transform: scale(1.2);
     transition: transform 0.32s var(--ease-suave);
   }
 
   .orbe-disparador:hover ~ .orbe-halo {
-    transform: scale(1.75);
+    transform: scale(1.35);
   }
 </style>
