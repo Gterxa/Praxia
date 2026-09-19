@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "motion/react";
+import { motion, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 type EncryptedTextProps = {
