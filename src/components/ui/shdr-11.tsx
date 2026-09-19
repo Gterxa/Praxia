@@ -14,10 +14,28 @@ import {
    axis precesses so the pattern never settles into a visible loop, and a
    drifting fbm field warps the 3D domain so the wave function smears and
    migrates around the sphere instead of wobbling in place.
+
+   Color: the stock shader paints the surface with two rainbow vectors (sin()
+   per channel at different phases). Praxia swaps those for the brand's
+   "atardecer" ramp — noche -> violeta -> magenta -> coral -> brasa -> sol,
+   same ramp as fondos-hero.ts — via the six uC_* uniforms declared in
+   `shdr11Orb.colors` below. The orbital physics, easing and context-recovery
+   machinery in orbkit-core.tsx are untouched.
 ---------------------------------------------------------------------------- */
 
 const HYDROGEN_FRAG = `
 const float PI = 3.14159265359;
+
+vec3 rampa(float t) {
+  t = clamp(t, 0.0, 1.0);
+  vec3 c = mix(uC_noche, uC_violeta, smoothstep(0.0, 0.22, t));
+  c = mix(c, uC_magenta, smoothstep(0.18, 0.45, t));
+  c = mix(c, uC_coral, smoothstep(0.40, 0.65, t));
+  c = mix(c, uC_brasa, smoothstep(0.60, 0.82, t));
+  c = mix(c, uC_sol, smoothstep(0.78, 1.0, t));
+  return c;
+}
+
 void main() {
   vec2 uv = orbUV();
   float r2d = length(uv);
@@ -92,22 +110,21 @@ void main() {
 
   float fresnel = pow(1.0 - z, 1.5);
 
-  // rainbow chromatic aberration
+  // Rampa "atardecer" de marca en vez del arcoíris original: mismos dos
+  // escalares que el stock usaba para las fases de sin() (chromaOffset,
+  // bandFreq) ahora recorren una sola rampa de color de marca (noche ->
+  // violeta -> magenta -> coral -> brasa -> sol), igual que fondos-hero.ts.
   float chromaOffset = phi * 2.0 + theta * 1.5 + animTime * 0.3 + probability * 3.0;
-  vec3 rainbow;
-  rainbow.r = sin(chromaOffset) * 0.5 + 0.5;
-  rainbow.g = sin(chromaOffset + chromaSpread) * 0.5 + 0.5;
-  rainbow.b = sin(chromaOffset + chromaSpread * 2.0) * 0.5 + 0.5;
-  rainbow = normalize(rainbow + 0.01) * length(rainbow);
-
   float bandFreq = chromaOffset * 3.0 + fresnel * 2.4;
-  vec3 chromaticBands;
-  chromaticBands.r = sin(bandFreq) * 0.5 + 0.5;
-  chromaticBands.g = sin(bandFreq + 2.094) * 0.5 + 0.5;
-  chromaticBands.b = sin(bandFreq + 4.189) * 0.5 + 0.5;
+
+  float tGlow = fract((chromaOffset * (0.4 + chromaSpread)) / 6.28318530718);
+  vec3 rainbow = rampa(tGlow);
+
+  float tBand = fract(bandFreq / 6.28318530718 + 0.5);
+  vec3 chromaticBands = rampa(tBand);
 
   vec3 glowColor = mix(rainbow, chromaticBands, 0.12);
-  glowColor = pow(glowColor, vec3(0.8));
+  glowColor = pow(glowColor, vec3(0.92));
 
   vec3 darkMetal = vec3(uP_metalDark);
   vec3 lightMetal = mix(vec3(0.9, 0.92, 0.95), glowColor, 0.7);
@@ -157,7 +174,15 @@ export const shdr11Orb: OrbVariant = {
     { key: "metalDark", label: "Metal darkness", min: 0, max: 3, step: 0.015, default: 0 },
     { key: "baseVis", label: "Base visibility", min: 0, max: 1.5, step: 0.01, default: 0.12 }
   ],
-  colors: [],
+  // Praxia "atardecer" ramp — same six stops and hexes as tokens.css.
+  colors: [
+    { key: "noche", label: "Noche", default: "#1a2c88" },
+    { key: "violeta", label: "Violeta", default: "#4a2178" },
+    { key: "magenta", label: "Magenta", default: "#bd356c" },
+    { key: "coral", label: "Coral", default: "#fa5e45" },
+    { key: "brasa", label: "Brasa", default: "#ff6b35" },
+    { key: "sol", label: "Sol", default: "#fdcd39" }
+  ],
   statePresets: {
     // idle look, tuned by hand — the schema defaults mirror this set
     idle: {
