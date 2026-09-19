@@ -80,14 +80,12 @@ export default function OrbeContacto({ waHref, validarHref }: Props) {
         onClick={() => setAbierto((v) => !v)}
         aria-expanded={abierto}
         aria-label="Contáctanos"
-        className="orbe-disparador relative grid h-14 w-14 place-items-center rounded-full md:h-15 md:w-15"
+        className="orbe-disparador relative grid h-14 w-14 place-items-center overflow-hidden rounded-full md:h-15 md:w-15"
       >
         <Shdr11
           size={56}
           state={abierto ? 'thinking' : 'idle'}
-          wrapper="ring"
-          wrapperColor="var(--color-brasa)"
-          className="h-full w-full"
+          className="h-full w-full rounded-full"
           pauseOffscreen={false}
         />
         <Icono
