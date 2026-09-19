@@ -28,7 +28,7 @@ const TAMANOS = ['Solo yo', '2 a 10', '11 a 50', 'Más de 50'] as const;
 >
   <Seccion>
     <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
-      <div>
+      <div class="order-1 lg:order-none">
         <SectionLabel texto="Validemos tu idea" />
         <h1 class="mt-4">Cuéntanos qué quieres automatizar.</h1>
         <p class="lead mt-6">
@@ -48,7 +48,7 @@ const TAMANOS = ['Solo yo', '2 a 10', '11 a 50', 'Más de 50'] as const;
           }
         </ul>
 
-        <div class="mt-12 border-t border-linea pt-8">
+        <div class="mt-12 hidden border-t border-linea pt-8 lg:block">
           <p class="text-texto-2">
             ¿Prefieres no llenar formularios? Escríbenos directo. Es el mismo camino y suele ser
             más rápido.
@@ -65,7 +65,7 @@ const TAMANOS = ['Solo yo', '2 a 10', '11 a 50', 'Más de 50'] as const;
         </div>
       </div>
 
-      <div>
+      <div class="order-2 lg:order-none">
         <div class="tarjeta">
           <div class="mb-6 flex items-center justify-between gap-4">
             <span class="mono text-texto-3" id="paso-etiqueta">Paso 1 de 4</span>
@@ -212,6 +212,22 @@ const TAMANOS = ['Solo yo', '2 a 10', '11 a 50', 'Más de 50'] as const;
             </a>
           </div>
         </div>
+      </div>
+
+      <div class="order-3 border-t border-linea pt-8 lg:hidden">
+        <p class="text-texto-2">
+          ¿Prefieres no llenar formularios? Escríbenos directo. Es el mismo camino y suele ser más
+          rápido.
+        </p>
+        <a
+          href={waLink(CONTEXTO.validar)}
+          target="_blank"
+          rel="noopener"
+          class="boton boton-primario mt-5"
+        >
+          <Icon nombre="whatsapp" tamano={20} />
+          Escríbenos por WhatsApp
+        </a>
       </div>
     </div>
   </Seccion>

@@ -23,7 +23,7 @@ const PUNTOS = [
   <div class="data__content flex flex-col gap-12 lg:flex-row lg:items-center lg:justify-center lg:gap-16">
     <div class="data__title flex flex-1 flex-col justify-center gap-8 lg:gap-10">
       <CabeceraSeccion etiqueta="Privacidad y confidencialidad" icono="candado" apilada>
-        <h2 slot="titulo" class="revelar" data-retraso="1">
+        <h2 slot="titulo" class="revelar" style="--i:0">
           <EncryptedText
             client:visible
             text="Tus datos no se tocan"
@@ -33,16 +33,16 @@ const PUNTOS = [
             revealedClassName="text-texto"
           />
         </h2>
-        <p slot="subtitulo" class="lead text-texto-2 revelar" data-retraso="2">
+        <p slot="subtitulo" class="lead text-texto-2 revelar" style="--i:1">
           No vendemos tu información ni la usamos para nada distinto a lo que construimos
           contigo. Punto.
         </p>
       </CabeceraSeccion>
 
-      <ul class="data__points revelar flex flex-col gap-4" data-retraso="3">
+      <ul class="data__points flex flex-col gap-4">
         {
-          PUNTOS.map((texto) => (
-            <li class="privacidad-punto">
+          PUNTOS.map((texto, i) => (
+            <li class="privacidad-punto revelar-item" style={`--i:${i}`}>
               <Icon nombre="check" tamano={18} class="text-brasa" />
               <p>{texto}</p>
             </li>
@@ -51,7 +51,7 @@ const PUNTOS = [
       </ul>
     </div>
 
-    <div class="data__graphics revelar flex flex-1 items-center justify-center" data-retraso="1" aria-hidden="true">
+    <div class="data__graphics revelar-visual flex flex-1 items-center justify-center" style="--i:0" aria-hidden="true">
       <div class="panes">
         <div class="panes__row">
           <div class="pane pane--1"><figure><img src={ruta('/cosmoq-demo/panes/pane-1.png')} alt="" width="294" height="485" loading="lazy" /></figure></div>

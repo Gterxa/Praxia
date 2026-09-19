@@ -35,8 +35,10 @@ const categorias = Object.fromEntries(
 
 <section id="preguntas" class="seccion-cosmoq">
   <div class="contenedor max-w-3xl">
-    <h2 class="mb-8 text-center">Lo que nos preguntan antes de empezar</h2>
-    <FAQTabs categorias={categorias} faqData={faqData} client:visible />
+    <h2 class="mb-8 text-center revelar" style="--i:0">Lo que nos preguntan antes de empezar</h2>
+    <div class="revelar-item" style="--i:1">
+      <FAQTabs categorias={categorias} faqData={faqData} client:visible />
+    </div>
   </div>
 </section>
 

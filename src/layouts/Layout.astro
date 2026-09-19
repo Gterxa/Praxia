@@ -175,12 +175,27 @@ const datosEstructurados = {
   </head>
 
   <body>
+    {/*
+      Barra de progreso de scroll, SOLO móvil (ver global.css .progreso-scroll
+      y src/scripts/progreso-scroll.ts). aria-hidden: es puramente decorativa,
+      un lector de pantalla ya sabe dónde está en el documento.
+    */}
+    <div class="progreso-scroll md:hidden" aria-hidden="true">
+      <div class="progreso-scroll__barra"></div>
+    </div>
+
     <FondoOrbes />
     <a class="skip-link" href="#contenido">Ir al contenido</a>
     <Header />
     <main id="contenido" class="relative z-1">
       <slot />
     </main>
+    {/*
+      Footer sin `.revelar` a propósito, no es un olvido: es una animación
+      que nadie ve completarse (llegas al final del scroll ya mirando otra
+      cosa) y que solo retrasaría los enlaces de navegación. invokube
+      tampoco anima su footer.
+    */}
     <Footer />
     <WhatsAppButton contexto={contextoWhatsApp} />
 
@@ -189,19 +204,37 @@ const datosEstructurados = {
     </script>
 
     <script>
-      // Aparición al hacer scroll, una sola vez. Por defecto se marca cada
-      // sección directa de <main> (salvo la primera, sobre el pliegue); los
-      // componentes que necesitan control más fino (encabezado y tarjetas
-      // por separado, con stagger vía data-retraso) marcan `.revelar` ellos
-      // mismos en su propio markup, así que también se observan acá.
+      import { montarProgresoScroll } from '../scripts/progreso-scroll';
+      montarProgresoScroll();
+    </script>
+
+    <script>
+      // Aparición al hacer scroll, una sola vez por elemento. Por defecto se
+      // marca cada sección directa de <main> (salvo la primera, sobre el
+      // pliegue, y salvo las que ya gestionan su propio reveal — :has(.revelar)
+      // evita el fade-sobre-fade de una sección .revelar que contiene hijos
+      // .revelar). Los componentes con control más fino (tarjetas por
+      // separado, con stagger vía --i/data-retraso) marcan `.revelar` /
+      // `.revelar-item` / `.revelar-visual` ellos mismos.
+      // #destacado se excluye a mano: su "reveal" es el progreso de scroll
+      // que enciende cada palabra (Destacado.astro), no tiene ningún hijo
+      // .revelar que lo delate, y un fade previo taparía justo el efecto.
       // Se desactiva sola con prefers-reduced-motion (no hay nada que ocultar).
       const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const secciones = document.querySelectorAll<HTMLElement>('main > section:not(:first-child)');
-      secciones.forEach((seccion) => seccion.classList.add('revelar'));
+      const main = document.querySelector('main');
 
-      const elementos = document.querySelectorAll<HTMLElement>('.revelar');
+      const SELECTOR_REVELAR = '.revelar, .revelar-item, .revelar-visual';
 
-      if (!reducido.matches && 'IntersectionObserver' in window) {
+      const marcarSeccionesAutomaticas = () => {
+        const secciones = document.querySelectorAll<HTMLElement>(
+          'main > section:not(:first-child):not(#destacado):not(:has(.revelar)):not(:has(.revelar-item)):not(:has(.revelar-visual))',
+        );
+        secciones.forEach((seccion) => seccion.classList.add('revelar'));
+      };
+
+      marcarSeccionesAutomaticas();
+
+      if (!reducido.matches && main && 'IntersectionObserver' in window) {
         const observador = new IntersectionObserver(
           (entradas) => {
             entradas.forEach((entrada) => {
@@ -210,12 +243,37 @@ const datosEstructurados = {
               observador.unobserve(entrada.target);
             });
           },
-          { rootMargin: '0px 0px -10% 0px', threshold: 0.05 },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0 },
         );
 
-        elementos.forEach((el) => observador.observe(el));
+        const observar = (el: Element) => {
+          if (el.classList.contains('visible')) return;
+          observador.observe(el);
+        };
+
+        document.querySelectorAll<HTMLElement>(SELECTOR_REVELAR).forEach(observar);
+
+        // Re-escaneo para las islas React (client:visible) que hidratan
+        // después del primer barrido: FAQTabs, StackingSteps, bento, etc.
+        // Un querySelectorAll único al cargar nunca las vería. Solo escucha
+        // childList/subtree (nodos añadidos), no atributos — las mutaciones
+        // de `style` que escribe framer-motion no lo despiertan, así que el
+        // coste en régimen es prácticamente cero. No se desconecta: FAQTabs
+        // monta/desmonta contenido con AnimatePresence durante toda la vida
+        // de la página.
+        const reescaneo = new MutationObserver((mutaciones) => {
+          for (const mutacion of mutaciones) {
+            mutacion.addedNodes.forEach((nodo) => {
+              if (nodo.nodeType !== Node.ELEMENT_NODE) return;
+              const el = nodo as Element;
+              if (el.matches(SELECTOR_REVELAR)) observar(el);
+              el.querySelectorAll<HTMLElement>(SELECTOR_REVELAR).forEach(observar);
+            });
+          }
+        });
+        reescaneo.observe(main, { childList: true, subtree: true });
       } else {
-        elementos.forEach((el) => el.classList.add('visible'));
+        document.querySelectorAll<HTMLElement>(SELECTOR_REVELAR).forEach((el) => el.classList.add('visible'));
       }
     </script>
   </body>

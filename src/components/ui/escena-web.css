@@ -220,13 +220,6 @@
   gap: 0.5rem;
 }
 
-.escena-nav-cta {
-  width: 3.5rem;
-  height: 1.25rem;
-  border-radius: 0.375rem;
-  background: var(--color-brasa);
-}
-
 .escena-barra-texto {
   height: 0.375rem;
   border-radius: 999px;

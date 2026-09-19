@@ -45,8 +45,8 @@ const GLOW: Record<string, string> = {
 
 <Seccion id="por-que" class="seccion-cosmoq">
   <CabeceraSeccion etiqueta="Por qué Praxia" icono="check">
-    <h2 slot="titulo" class="revelar" data-retraso="1">Alcanzable para un negocio como el tuyo</h2>
-    <p slot="subtitulo" class="lead revelar" data-retraso="2">
+    <h2 slot="titulo" class="revelar" style="--i:0">Alcanzable para un negocio como el tuyo</h2>
+    <p slot="subtitulo" class="lead revelar" style="--i:1">
       No hace falta un área de tecnología ni un presupuesto de corporación. Hace falta saber qué
       quieres, y eso ya lo tienes.
     </p>
@@ -57,8 +57,8 @@ const GLOW: Record<string, string> = {
       {
         filaAncha.map((t, i) => (
           <article
-            class:list={['tarjeta tarjeta-fcard min-w-0 flex-1 revelar']}
-            data-retraso={String(i + 1)}
+            class:list={['tarjeta tarjeta-fcard min-w-0 flex-1 revelar-visual']}
+            style={`--i:${i}`}
           >
             <div class="fcard-visual fcard-visual--fila1">
               <img src={ruta(`/porque/${GLOW[t.tipo]}`)} alt="" class="fcard-glow" aria-hidden="true" loading="lazy" />
@@ -109,8 +109,8 @@ const GLOW: Record<string, string> = {
       {
         filaAlta.map((t, i) => (
           <article
-            class:list={['tarjeta tarjeta-fcard min-w-0 flex-1 revelar']}
-            data-retraso={String(i + 1)}
+            class:list={['tarjeta tarjeta-fcard min-w-0 flex-1 revelar-visual']}
+            style={`--i:${i}`}
           >
             <div class="fcard-visual fcard-visual--fila2">
               <img src={ruta(`/porque/${GLOW[t.tipo]}`)} alt="" class="fcard-glow" aria-hidden="true" loading="lazy" />

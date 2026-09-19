@@ -33,8 +33,8 @@ import { waLink, CONTEXTO } from '../consts';
 
 <Seccion id="servicios" class="seccion-cosmoq" fondo="surface" paletaFondo="azul">
   <CabeceraSeccion etiqueta="Servicios" icono="reportes">
-    <h2 slot="titulo" class="revelar" data-retraso="1">Dos formas de trabajar con nosotros</h2>
-    <p slot="subtitulo" class="lead text-texto-2 revelar" data-retraso="2">
+    <h2 slot="titulo" class="revelar" style="--i:0">Dos formas de trabajar con nosotros</h2>
+    <p slot="subtitulo" class="lead text-texto-2 revelar" style="--i:1">
       Puedes tomar una o las dos. Si van juntas, se potencian.
     </p>
   </CabeceraSeccion>
@@ -65,7 +65,8 @@ import { waLink, CONTEXTO } from '../consts';
           id={`linea-panel-${linea.id}`}
           aria-labelledby={`linea-tab-${linea.id}`}
           hidden={i !== 0}
-          class:list={['panel-linea', 'revelar', linea.visual === 'bento' && 'panel-linea--ancho']}
+          class:list={['panel-linea', 'revelar-visual', linea.visual === 'bento' && 'panel-linea--ancho']}
+          style={`--i:${i}`}
         >
           <div class="panel-linea-texto">
             <div class="flex flex-col gap-4">

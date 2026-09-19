@@ -5,33 +5,32 @@
  * Reemplaza a QuienesSomos.astro en el flujo de la home (mismo lugar,
  * después de Ejemplos y antes de FAQ).
  *
- * Nombres y roles son los reales. Las fotos siguen en placehold.co hasta que
- * lleguen las de verdad: reemplazar `imagen` en MIEMBROS, único sitio que
- * define estos datos.
+ * Nombres, roles y fotos son los reales. Fotos en public/equipo/.
  */
 import Seccion from './Seccion.astro';
 import CabeceraSeccion from './CabeceraSeccion.astro';
 import EquipoShowcase from './ui/equipo-showcase.tsx';
 import type { MiembroEquipo } from './ui/equipo-showcase.tsx';
 import Marquee from './Marquee.astro';
+import { ruta } from '../rutas';
 
 const MIEMBROS: MiembroEquipo[] = [
-  { id: '1', nombre: 'Álvaro Sánchez', rol: 'Founder, Soluciones e IA', imagen: 'https://placehold.co/400x500' },
-  { id: '2', nombre: 'Piero Pizarro', rol: 'Co-founder, Automatización', imagen: 'https://placehold.co/400x500' },
-  { id: '3', nombre: 'Gabriel Curay', rol: 'Co-founder, Arquitectura', imagen: 'https://placehold.co/400x500' },
-  { id: '4', nombre: 'César García', rol: 'Partner, Dirección técnica', imagen: 'https://placehold.co/400x500' },
-  { id: '5', nombre: 'Valentina Sarango', rol: 'Partner, Dirección creativa', imagen: 'https://placehold.co/400x500' },
-  { id: '6', nombre: 'Milene Garrido', rol: 'Partner, Desarrollo', imagen: 'https://placehold.co/400x500' },
+  { id: '1', nombre: 'Álvaro Sánchez', rol: 'Founder, Soluciones e IA', imagen: ruta('/equipo/alvaro-sanchez.png'), social: { linkedin: 'https://www.linkedin.com/in/aalvaroasanchez/' } },
+  { id: '2', nombre: 'Piero Pizarro', rol: 'Co-founder, Automatización', imagen: ruta('/equipo/piero-pizarro.jpg') },
+  { id: '3', nombre: 'Gabriel Curay', rol: 'Co-founder, Arquitectura', imagen: ruta('/equipo/gabriel-curay.jpeg') },
+  { id: '4', nombre: 'César García', rol: 'Partner, Dirección técnica', imagen: ruta('/equipo/cesar-garcia.jpeg') },
+  { id: '5', nombre: 'Valentina Sarango', rol: 'Partner, Dirección creativa', imagen: ruta('/equipo/valentina-sarango.jpg') },
+  { id: '6', nombre: 'Milene Garrido', rol: 'Partner, Desarrollo', imagen: ruta('/equipo/milene-garrido.jpg') },
 ];
 ---
 
 <Seccion id="equipo" class="seccion-cosmoq" fondo="surface">
   <CabeceraSeccion etiqueta="El equipo" icono="personas" apilada>
-    <h2 slot="titulo" class="revelar" data-retraso="1">
+    <h2 slot="titulo" class="revelar" style="--i:0">
       Un núcleo pequeño, especialistas según el proyecto
     </h2>
     <div slot="subtitulo" class="flex flex-col gap-4">
-      <p class="lead text-texto-2 revelar" data-retraso="2">
+      <p class="lead text-texto-2 revelar" style="--i:1">
         Hablas con quien construye. Nadie te vende algo que no vamos a poder sostener.
       </p>
     </div>
@@ -46,25 +45,23 @@ const MIEMBROS: MiembroEquipo[] = [
       {
         MIEMBROS.map((miembro) => (
           <li class="w-52 flex-none sm:w-60">
-            <figure class="tarjeta flex h-full flex-col overflow-hidden p-0">
-              <div class="aspect-[4/5] w-full overflow-hidden">
-                <img
-                  src={miembro.imagen}
-                  alt={miembro.nombre}
-                  width={400}
-                  height={500}
-                  loading="lazy"
-                  class="h-full w-full object-cover grayscale"
-                />
-              </div>
-              <figcaption class="flex flex-col gap-1 p-4">
+            <figure class="tarjeta relative aspect-[4/5] w-full overflow-hidden p-0">
+              <img
+                src={miembro.imagen}
+                alt={miembro.nombre}
+                width={400}
+                height={500}
+                loading="lazy"
+                class="h-full w-full object-cover grayscale"
+              />
+              <figcaption class="vidrio absolute inset-x-2 bottom-2 flex flex-col gap-1 rounded-praxia px-3.5 py-3">
                 <span
                   class="text-base font-semibold leading-none tracking-tight text-texto"
                   style={{ fontFamily: 'var(--font-titulos)' }}
                 >
                   {miembro.nombre}
                 </span>
-                <span class="text-[9px] font-medium uppercase tracking-[0.2em] text-texto-3">
+                <span class="text-[9px] font-medium uppercase tracking-[0.2em] text-texto/85">
                   {miembro.rol}
                 </span>
               </figcaption>
