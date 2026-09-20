@@ -1,0 +1,576 @@
+/* Escena de mockups flotantes — réplica del hero de invokube en paleta Praxia.
+   Ver el encabezado de escena-web.tsx para qué se replica y qué se adapta.
+
+   Traducción de color respecto del original (que es blanco puro con alfa):
+     white/90, white        -> --color-texto
+     white/65, white/45     -> --color-texto-2
+     white/40, white/25     -> --color-texto-3
+     border-white/[0.06]    -> --color-linea
+     el botón primario      -> --color-brasa
+     las cifras de métrica  -> --color-brasa
+   Un solo acento en toda la escena: el naranja de la marca.
+   El glass-panel de invokube (blur 24px + saturate 160%) se mantiene tal cual,
+   solo que sobre superficies de Praxia. */
+
+.escena {
+  position: relative;
+  width: 100%;
+  height: 20rem;
+  /* En móvil se recorta: no hay piezas laterales que deban asomar y sin esto
+     el browser se sale de la tarjeta. Desde `sm` vuelve a ser visible para
+     que el editor y el cronómetro puedan sobresalir, como en invokube. */
+  overflow: hidden;
+}
+
+@media (min-width: 40rem) {
+  .escena {
+    height: 30rem;
+    overflow: visible;
+  }
+}
+
+@media (min-width: 48rem) {
+  .escena {
+    height: 33rem;
+  }
+}
+
+/* --- Capas de fondo --- */
+
+.escena-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 34rem;
+  height: 22rem;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  /* En invokube es blanco al 5%. Acá, brasa muy tenue: la escena queda
+     asentada en la marca sin que el naranja se lea como un fondo. */
+  background: radial-gradient(ellipse, rgb(255 107 53 / 0.1) 0%, transparent 65%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.escena-reticula {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  pointer-events: none;
+  background-image: radial-gradient(rgb(138 150 172 / 0.28) 1px, transparent 1px);
+  background-size: 16px 16px;
+  mask-image: radial-gradient(80% 75%, #000 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(80% 75%, #000 40%, transparent 100%);
+}
+
+.escena-horizonte {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 120%;
+  height: 1px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgb(84 124 255 / 0.22) 50%,
+    transparent 100%
+  );
+}
+
+/* --- Panel de vidrio: el `.glass-panel` de invokube sobre superficies Praxia --- */
+
+.escena-panel {
+  position: relative;
+  border-radius: 0.625rem;
+  overflow: hidden;
+  background: linear-gradient(rgb(232 236 244 / 0.05) 0%, rgb(232 236 244 / 0.02) 100%);
+  border: 1px solid rgb(232 236 244 / 0.09);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgb(232 236 244 / 0.06),
+    0 30px 80px -30px rgb(0 0 0 / 0.8);
+}
+
+.escena-panel--browser {
+  border-radius: 0.75rem;
+}
+
+/* --- Browser mock --- */
+
+/* En invokube el browser mide 620px dentro de un lienzo de 1080px (57%). Acá
+   el lienzo es la columna derecha del panel (~540px en desktop), así que se
+   fija en porcentaje para conservar esa proporción: si se dejara en 620px
+   fijos, el browser ocuparía el 100% del ancho y las piezas laterales le
+   quedarían encima en vez de flotar a los costados.
+
+   Ojo con el centrado: NO se usa `left: 50%` + `translate(-50%, -50%)`.
+   framer-motion escribe su propio `transform` en el elemento para animarlo y
+   pisa esa traslación, así que el browser quedaba corrido media caja a la
+   derecha (medido: desbordaba 86px del lienzo). El centrado va por
+   `inset` + `margin: auto`, que framer no toca. */
+/* En móvil el browser es la única pieza visible (las otras cuatro están
+   ocultas, igual que en invokube), así que va centrado y contenido dentro del
+   lienzo. El desplazamiento a 52% es solo de desktop, donde tiene que dejar
+   sitio al editor y al cronómetro en los costados. */
+.escena-browser {
+  position: absolute;
+  inset: 0;
+  width: 96%;
+  height: max-content;
+  margin: auto;
+  z-index: 2;
+}
+
+@media (min-width: 40rem) {
+  .escena-browser {
+    width: 66%;
+    max-width: 38.75rem;
+  }
+}
+
+.escena-barra {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid var(--color-linea);
+}
+
+.escena-barra--chica {
+  padding: 0.5rem 0.75rem;
+}
+
+.escena-punto {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 999px;
+  background: rgb(138 150 172 / 0.3);
+  flex: none;
+}
+
+.escena-punto--chico {
+  width: 0.375rem;
+  height: 0.375rem;
+}
+
+.escena-url {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin: 0 auto;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--color-linea);
+  background: rgb(13 14 20 / 0.6);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-texto-2);
+}
+
+.escena-estado {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  /* "publicado" es un estado bueno: verde, no gris. */
+  color: var(--color-verde);
+}
+
+.escena-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+@media (min-width: 48rem) {
+  .escena-cuerpo {
+    padding: 1.75rem;
+  }
+}
+
+.escena-nav {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.escena-nav-marca {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: none;
+}
+
+.escena-logo {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.3125rem;
+  /* El cuadrado blanco del original pasa a ser el punto de marca de Praxia. */
+  background: var(--degradado-punto);
+}
+
+.escena-nav-links {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.escena-barra-texto {
+  height: 0.375rem;
+  border-radius: 999px;
+  background: rgb(232 236 244 / 0.55);
+}
+
+.escena-barra-texto--marca {
+  width: 3.5rem;
+}
+
+.escena-barra-fina {
+  height: 0.25rem;
+  border-radius: 999px;
+  background: rgb(138 150 172 / 0.35);
+}
+
+.escena-barra-fina--parrafo {
+  margin-top: 0.125rem;
+}
+
+.escena-titular {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.escena-linea-titular {
+  height: 0.75rem;
+  border-radius: 0.375rem;
+  background: var(--color-texto);
+}
+
+.escena-linea-titular--suave {
+  background: rgb(232 236 244 / 0.7);
+}
+
+@media (min-width: 48rem) {
+  .escena-linea-titular {
+    height: 1rem;
+  }
+}
+
+.escena-botones {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.escena-boton {
+  height: 1.75rem;
+  border-radius: 0.375rem;
+  transform-origin: left;
+}
+
+.escena-boton--primario {
+  width: 6.875rem;
+  background: linear-gradient(135deg, var(--color-sol), var(--color-brasa));
+}
+
+.escena-boton--secundario {
+  width: 5.875rem;
+  border: 1px solid rgb(232 236 244 / 0.2);
+}
+
+.escena-metricas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.625rem;
+  margin-top: 0.75rem;
+}
+
+.escena-metrica {
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--color-brasa) 18%, var(--color-linea));
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--color-brasa) 8%, transparent),
+    rgb(13 14 20 / 0.5)
+  );
+  padding: 0.625rem;
+}
+
+.escena-metrica-etiqueta {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-texto-3);
+  margin-bottom: 0.25rem;
+}
+
+.escena-metrica-valor {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-brasa);
+}
+
+.escena-metrica-unidad {
+  font-size: 0.5625rem;
+  font-weight: 400;
+  color: var(--color-texto-3);
+  margin-left: 0.125rem;
+  vertical-align: top;
+}
+
+/* --- Editor de código --- */
+
+/* Pegado al borde izquierdo del lienzo y más angosto que en invokube (allá
+   220px sobre 1080; acá el lienzo es la mitad de ancho), para que asome por
+   fuera del browser en vez de quedarle encima. */
+.escena-editor {
+  position: absolute;
+  left: -5%;
+  top: 4%;
+  width: 10rem;
+  display: none;
+  z-index: 3;
+}
+
+@media (min-width: 40rem) {
+  .escena-editor {
+    display: block;
+  }
+}
+
+.escena-archivo {
+  margin-left: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  color: var(--color-texto-3);
+}
+
+.escena-codigo {
+  padding: 0.625rem;
+  font-family: var(--font-mono);
+  font-size: 0.59375rem;
+  line-height: 1.6;
+}
+
+.escena-codigo-fila {
+  display: flex;
+  gap: 0.5rem;
+  min-height: 0.9375rem;
+}
+
+.escena-codigo-num {
+  width: 0.75rem;
+  text-align: right;
+  color: rgb(138 150 172 / 0.45);
+  flex: none;
+}
+
+.escena-codigo-texto {
+  color: var(--color-texto-2);
+  white-space: pre;
+}
+
+.escena-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.5625rem;
+  margin-left: 1px;
+  vertical-align: middle;
+  background: var(--color-brasa);
+  animation: escena-parpadeo 1s steps(2, start) infinite;
+}
+
+@keyframes escena-parpadeo {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* --- Cronómetro de entrega --- */
+
+/* Abajo a la derecha, no arriba: en el lienzo angosto de esta columna el
+   cronómetro arriba se montaba sobre la barra de URL del browser. */
+.escena-crono {
+  position: absolute;
+  right: -5%;
+  bottom: -2%;
+  width: 11rem;
+  display: none;
+  z-index: 3;
+}
+
+@media (min-width: 40rem) {
+  .escena-crono {
+    display: block;
+  }
+}
+
+.escena-panel--crono {
+  padding: 0.75rem;
+}
+
+.escena-crono-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.625rem;
+}
+
+.escena-crono-label {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-texto-3);
+}
+
+.escena-crono-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  color: var(--color-texto-2);
+}
+
+.escena-latido {
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 999px;
+  background: var(--color-verde);
+  animation: escena-latir 2s ease-in-out infinite;
+}
+
+/* El latido de la pill "En vivo": más grande que el del cronómetro y en el
+   naranja de resalte de la marca. */
+.escena-latido--acento {
+  width: 0.375rem;
+  height: 0.375rem;
+  background: var(--color-brasa);
+}
+
+@keyframes escena-latir {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.escena-crono-cifra {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.escena-crono-numero {
+  font-size: 1.625rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-texto);
+}
+
+.escena-crono-unidad {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-texto-3);
+}
+
+.escena-crono-riel {
+  height: 0.25rem;
+  border-radius: 999px;
+  background: rgb(138 150 172 / 0.16);
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.escena-crono-avance {
+  height: 100%;
+  border-radius: 999px;
+  transform-origin: left;
+  /* La barra de progreso es el único lugar donde entra la rampa cálida. */
+  background: var(--degradado-calido);
+}
+
+.escena-crono-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.59375rem;
+  color: var(--color-texto-3);
+}
+
+.escena-crono-pct {
+  color: var(--color-texto-2);
+}
+
+/* --- Pills --- */
+
+.escena-pill {
+  position: absolute;
+  display: none;
+  z-index: 3;
+}
+
+@media (min-width: 40rem) {
+  .escena-pill {
+    display: block;
+  }
+}
+
+.escena-pill--live {
+  left: 0;
+  bottom: 8%;
+}
+
+.escena-pill--sprint {
+  right: 2%;
+  top: 0;
+}
+
+.escena-pill-caja {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2rem;
+  padding: 0 0.75rem;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+}
+
+.escena-pill-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.625rem;
+  color: var(--color-texto-3);
+}
+
+.escena-pill-valor {
+  color: var(--color-texto);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .escena-cursor,
+  .escena-latido {
+    animation: none;
+  }
+}

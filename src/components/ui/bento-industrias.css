@@ -1,0 +1,926 @@
+/* "Who we serve" de invokube, replicada en paleta Praxia.
+   Ver el encabezado de bento-industrias.tsx para qué se calca y qué cambia.
+
+   Medidas del original, respetadas: reja de 4 columnas con filas de 240px
+   (260px desde 768px), gap 16/20px, radio 16px, borde 1px que pasa de 6% a
+   18% en hover con transición de 500ms, pie con padding 20/16px separado por
+   una línea al 4%, título 14px semibold tracking -0.012em y bajada 12.5px
+   con line-height 1.45.
+
+   Traducción de color: el original usa blanco con alfa sobre #0F0F0F. Acá el
+   texto sale de --color-texto, las superficies de --color-surface, y el trazo
+   de cada visual lo pone `currentColor` desde .bento-card-visual, siempre en
+   --color-brasa. La escala de alfas del original se conserva. */
+
+.bento {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 15rem;
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (min-width: 40rem) {
+  .bento {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 48rem) {
+  .bento {
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 16.25rem;
+    gap: 1.25rem;
+  }
+}
+
+/* Las cards 1, 6, 7 y 8 a doble ancho: es lo que hace que la reja se lea como
+   bento asimétrico y no como una grilla regular. */
+@media (min-width: 40rem) {
+  .bento-card--doble {
+    grid-column: span 2;
+  }
+}
+
+/* Tarjetas de vidrio, mismo tratamiento que `.fcard-texto` de PorQue (que a
+   su vez replica `.fcard__text` + `.gborder` de cosmoq): NO llevan un fondo
+   opaco, solo un velo translúcido en degradado + blur, para que el shader de
+   la sección se vea a través de ellas. El borde propio se reemplaza por un
+   `::before` con borde blanco enmascarado, que se lee como el reflejo del
+   canto del vidrio en vez de como una línea plana.
+
+   El fondo era `--color-surface` sólido: sobre la sección con shader las
+   ocho cards tapaban el gradiente y la reja entera se leía como un bloque
+   gris pegado encima del fondo, no como vidrio apoyado sobre él. */
+.bento-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-texto) 7%, transparent),
+    color-mix(in srgb, var(--color-texto) 2.5%, transparent)
+  );
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-texto) 10%, transparent),
+    0 24px 70px rgb(0 0 0 / 0.35);
+  transition:
+    background 500ms var(--ease-suave),
+    box-shadow 500ms var(--ease-suave);
+}
+
+/* El reflejo del canto: borde blanco visible ~12-23% en el medio y apagado en
+   las puntas, con la misma máscara diagonal que `.borde-degradado` y
+   `.fcard-texto`. Va en ::before para que no lo recorte el `overflow: hidden`
+   de la card ni se lo coman los visuales a sangre. */
+.bento-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border: 1px solid var(--color-texto);
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.55;
+  transition: opacity 500ms var(--ease-suave);
+  -webkit-mask-image: linear-gradient(
+    255deg,
+    transparent 0%,
+    rgb(0 0 0 / 0.12) 18.17%,
+    rgb(0 0 0 / 0.23) 85.17%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    255deg,
+    transparent 0%,
+    rgb(0 0 0 / 0.12) 18.17%,
+    rgb(0 0 0 / 0.23) 85.17%,
+    transparent 100%
+  );
+}
+
+/* Al pasar el mouse el vidrio se aclara y el canto brilla más, en vez de
+   cambiar un color de borde plano. hover:hover evita que quede pegado tras
+   un tap en touch. */
+@media (hover: hover) and (pointer: fine) {
+  .bento-card:hover {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-texto) 10%, transparent),
+      color-mix(in srgb, var(--color-texto) 4%, transparent)
+    );
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--color-texto) 16%, transparent),
+      0 28px 80px rgb(0 0 0 / 0.42);
+  }
+
+  .bento-card:hover::before {
+    opacity: 0.85;
+  }
+}
+
+/* Un solo acento para toda la reja: la brasa de la marca. Antes había dos
+   tonos (cian para lo que era dato, brasa para lo que era acción), pero el
+   celeste neón se leía como un color ajeno a la paleta, así que el resalte
+   es siempre el naranja. */
+.bento-card-visual {
+  color: var(--color-brasa);
+}
+
+.bento-card-visual {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.bento-card-pie {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-texto) 5%, transparent);
+}
+
+.bento-card-titulo {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--color-texto);
+}
+
+.bento-card-bajada {
+  margin-top: 0.125rem;
+  font-size: 0.78125rem;
+  line-height: 1.45;
+  color: var(--color-texto-2);
+}
+
+/* Etiqueta mono en versalita: repetida en varios visuales. */
+.bento-mono-tenue {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-texto-3);
+}
+
+/* ================= 1. SaaS — dashboard ================= */
+
+.bento-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 0.875rem;
+  padding: 1.25rem;
+  transition: transform 700ms var(--ease-suave);
+  transform-origin: center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bento-card:hover .bento-panel {
+    transform: scale(1.015);
+  }
+}
+
+.bento-panel-lateral {
+  width: 2.75rem;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* El logo cuadrado del sidebar toma el punto de marca de Praxia
+   (--degradado-punto, el mismo del favicon y el logotipo), en vez de un
+   gris genérico: es el único elemento del visual que puede leerse
+   literalmente como "el logo de una marca", así que es donde más rinde el
+   color de identidad. */
+.bento-panel-logo {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.375rem;
+  background: var(--degradado-punto);
+}
+
+.bento-panel-logo-in {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 0.125rem;
+  background: var(--color-texto);
+  opacity: 0.9;
+}
+
+.bento-panel-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+}
+
+.bento-panel-menu-item {
+  height: 0.375rem;
+  border-radius: 999px;
+  background: var(--color-texto);
+}
+
+.bento-panel-cuerpo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.bento-panel-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.bento-kpi {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--color-brasa) 10%, transparent),
+    color-mix(in srgb, var(--color-texto-2) 5%, transparent)
+  );
+  border: 1px solid color-mix(in srgb, var(--color-brasa) 20%, var(--color-linea));
+}
+
+.bento-kpi-etiqueta {
+  font-family: var(--font-mono);
+  font-size: 0.46875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-texto-3);
+}
+
+.bento-kpi-valor {
+  margin-top: 0.125rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-brasa);
+}
+
+.bento-panel-grafico {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.375rem;
+  padding: 0.625rem;
+  border-radius: 0.375rem;
+  background: color-mix(in srgb, var(--color-texto-2) 4%, transparent);
+  border: 1px solid var(--color-linea);
+}
+
+/* En el original las barras son estructura neutra (blanco al 12%). Acá se
+   pintan con la rampa "atardecer" de tokens.css (magenta→coral→brasa→sol),
+   la misma que usa la línea de progreso y el degradado de texto en el resto
+   del sitio: da la sazón de color que pedía Tony sin salirse de la paleta,
+   y cada barra queda con un remate más cálido arriba (sol/coral) que abajo
+   (magenta), como si el color subiera desde el valor. */
+.bento-panel-barra {
+  flex: 1;
+  border-radius: 0.1875rem 0.1875rem 0 0;
+  background: linear-gradient(
+    180deg,
+    var(--color-sol) 0%,
+    var(--color-coral) 45%,
+    var(--color-magenta) 100%
+  );
+  opacity: 0.82;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-texto) 30%, transparent);
+}
+
+/* ================= 2. Startups — cohete ================= */
+
+.bento-cosmos {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.bento-estrella {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  border-radius: 999px;
+  background: var(--color-texto);
+  opacity: 0.15;
+}
+
+.bento-estela {
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(to top, transparent, color-mix(in srgb, var(--color-brasa) 50%, transparent));
+}
+
+/* El cohete es blanco en el original; el brasa queda para la estela, que es
+   lo que de verdad lee como fuego. */
+.bento-cohete {
+  position: relative;
+  z-index: 1;
+  color: var(--color-texto);
+}
+
+/* ================= 3. Pymes — gráfico de línea ================= */
+
+.bento-grafico {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+}
+
+.bento-grafico-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.bento-grafico-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--color-brasa);
+}
+
+/* Trazo en texto claro, como el blanco del original: el acento del card es el
+   "+47%" de la cabecera. */
+.bento-grafico-svg {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  color: var(--color-texto);
+}
+
+/* ================= 4. Fintech — transacciones ================= */
+
+.bento-txs {
+  position: absolute;
+  inset: 0;
+  padding: 1rem;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 22%,
+    #000 78%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
+}
+
+.bento-txs-pista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.bento-tx {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.375rem 0.625rem;
+  border-radius: 0.375rem;
+  background: color-mix(in srgb, var(--color-texto-2) 5%, transparent);
+  border: 1px solid var(--color-linea);
+}
+
+.bento-tx-id {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.bento-tx-punto {
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 999px;
+  background: var(--color-verde);
+  flex: none;
+}
+
+/* Salidas de dinero: en el original es el mismo blanco al 40%; acá el ámbar
+   del sistema, que es el token de "ojo con esto". */
+.bento-tx-punto--baja {
+  background: var(--color-ambar);
+}
+
+.bento-tx-codigo {
+  font-family: var(--font-mono);
+  font-size: 0.53125rem;
+  color: var(--color-texto-3);
+}
+
+.bento-tx-monto {
+  font-family: var(--font-mono);
+  font-size: 0.65625rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-texto);
+}
+
+
+/* ================= 5. Clínicas — ECG ================= */
+
+.bento-ecg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* El trazo del ECG es la línea de vida del card: va en texto claro como en el
+   original (blanco), no en brasa — el acento queda en el punto que late. */
+.bento-ecg-svg {
+  width: 100%;
+  height: 3rem;
+  color: var(--color-texto);
+}
+
+.bento-ecg-bpm {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--color-texto-2);
+}
+
+.bento-ecg-punto {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 999px;
+  background: var(--color-brasa);
+}
+
+/* ================= 6. E-commerce — barras de ventas ================= */
+
+.bento-ventas {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  overflow: hidden;
+}
+
+.bento-venta {
+  position: relative;
+  flex: none;
+}
+
+.bento-venta-caja {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 0.5rem;
+  border-radius: 0.375rem 0.375rem 0 0;
+  border: 1px solid color-mix(in srgb, var(--color-sol) 25%, transparent);
+  border-bottom: 0;
+  /* Mismo espíritu que las barras del dashboard SaaS: la rampa "atardecer"
+     en vez del blanco neutro del original, para que las siete barras de
+     ventas se lean como color de marca subiendo, no como columnas grises. */
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-sol) 55%, transparent),
+    color-mix(in srgb, var(--color-coral) 45%, transparent) 55%,
+    color-mix(in srgb, var(--color-brasa) 30%, transparent)
+  );
+  overflow: hidden;
+}
+
+.bento-venta-burbuja {
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  translate: -50% 0;
+  width: 50%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: var(--color-sol);
+  box-shadow: 0 0 0.5rem color-mix(in srgb, var(--color-sol) 60%, transparent);
+}
+
+.bento-venta-precio {
+  font-family: var(--font-mono);
+  font-size: 0.53125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-texto-2);
+  white-space: nowrap;
+}
+
+.bento-ventas-base {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-texto) 15%, transparent);
+}
+
+/* ================= 7. Legal — contrato ================= */
+
+.bento-doc-marco {
+  position: absolute;
+  inset: 0;
+  padding: 1rem 1.25rem;
+  overflow: hidden;
+}
+
+/* Grid de tres filas en vez de flex: cabecera y pie toman lo que necesitan y
+   el cuerpo se queda con el resto exacto. Con flex, el `flex: 1` del cuerpo
+   se comía la franja del pie y la firma terminaba encima de las líneas. */
+.bento-doc {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  /* El contrato sí es una hoja apoyada sobre la card, así que conserva
+     superficie propia — pero translúcida, para que el shader se insinúe por
+     debajo en vez de quedar tapado por un rectángulo opaco. */
+  background: color-mix(in srgb, var(--color-surface-2) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-texto) 10%, transparent);
+  box-shadow: 0 12px 30px -15px rgb(0 0 0 / 0.8);
+}
+
+@media (min-width: 48rem) {
+  .bento-doc {
+    padding: 1.125rem 1.25rem;
+  }
+}
+
+.bento-doc-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.bento-doc-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bento-doc-punto {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 999px;
+  background: var(--color-texto-2);
+  flex: none;
+}
+
+.bento-doc-ref {
+  font-family: var(--font-mono);
+  font-size: 0.53125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-texto-2);
+}
+
+.bento-doc-pagina {
+  font-family: var(--font-mono);
+  font-size: 0.53125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-texto-3);
+}
+
+/* Las 12 líneas se reparten el alto disponible en dos columnas de 6. Sin
+   `align-content: space-between` el grid las apilaba arriba y, con el
+   `overflow: hidden` que hacía falta para no empujar al sello, se veía una
+   sola línea. Repartirlas llena la caja y no necesita recorte. */
+/* Dos columnas de 6 líneas, como el original. Las filas son `auto` y no 3px
+   fijos: con altura fija el grid pedía 48px, más de lo que deja el pie de
+   esta card (el documento mide 150px contra ~190px en invokube), la fila
+   colapsaba a 0 y las líneas se desbordaban sobre la firma. Con `auto` +
+   `space-evenly` el cuerpo usa exactamente el alto disponible. */
+.bento-doc-cuerpo {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(6, auto);
+  grid-auto-flow: column;
+  column-gap: 1.25rem;
+  row-gap: 0;
+  min-height: 0;
+  align-content: space-evenly;
+  overflow: hidden;
+}
+
+@media (min-width: 48rem) {
+  .bento-doc-cuerpo {
+    row-gap: 0.4375rem;
+  }
+}
+
+.bento-doc-linea {
+  height: 3px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-texto-2) 26%, transparent);
+}
+
+.bento-doc-pie {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed color-mix(in srgb, var(--color-texto) 15%, transparent);
+  flex: none;
+}
+
+.bento-doc-firma {
+  flex: 1;
+  max-width: 11.25rem;
+}
+
+/* La firma se escribe en texto claro (blanco en el original); el único acento
+   del card es el sello de notaría. */
+.bento-doc-firma-svg {
+  width: 100%;
+  height: 1.125rem;
+  overflow: visible;
+  color: var(--color-texto);
+}
+
+.bento-doc-firma-linea {
+  width: 100%;
+  height: 1px;
+  margin-top: 0.125rem;
+  background: color-mix(in srgb, var(--color-texto) 30%, transparent);
+}
+
+/* La etiqueta "Firma autorizada" del original no se muestra: el documento de
+   esta card mide 150px contra los ~190px de invokube (su pie de card es más
+   bajo), y esos 12px extra de etiqueta dejaban al cuerpo sin alto para sus
+   12 líneas. Se conserva la línea de firma, que es lo que se lee. */
+.bento-doc-firma-label {
+  display: none;
+}
+
+/* Más chico que el original (56px). El card de Praxia tiene menos alto útil
+   que el de invokube porque su pie ocupa 76px contra ~50px, y el documento
+   se queda con 150px: a 56px el sello no dejaba sitio para las 12 líneas del
+   cuerpo, que colapsaban a 0 y se desbordaban sobre la firma. */
+.bento-doc-sello {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, var(--color-brasa) 45%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.4375rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-brasa);
+}
+
+.bento-doc-sello-texto {
+  line-height: 1.15;
+  text-align: center;
+}
+
+/* ================= 8. Operaciones — malla hexagonal ================= */
+
+.bento-malla {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.bento-malla-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.625rem;
+}
+
+.bento-malla-label {
+  font-family: var(--font-mono);
+  font-size: 0.53125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-texto-2);
+}
+
+.bento-malla-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.53125rem;
+  color: var(--color-texto-3);
+}
+
+.bento-malla-ping {
+  position: relative;
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 999px;
+  background: var(--color-verde);
+}
+
+.bento-malla-ping::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border: 1px solid color-mix(in srgb, var(--color-verde) 60%, transparent);
+  border-radius: 999px;
+  animation: ent-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.bento-malla-lienzo {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* La malla es sobre todo estructura: en el original los 52 hexágonos son
+   blanco con alfas muy bajas y solo unos pocos "core" destacan. Acá la malla
+   base va en gris de texto y únicamente los pods encendidos toman la brasa,
+   que es lo que hace legible el patrón sin teñir la card entera. */
+/* `height: 100%` + `overflow: visible` hacía que el SVG se dibujara a su alto
+   intrínseco (179px) dentro de un lienzo de 94px: desbordaba 86px y tapaba el
+   pie con las métricas. Con `min-height: 0` y el recorte activo, el
+   `preserveAspectRatio="xMidYMid meet"` del SVG escala la malla para que
+   entre en la caja, que es lo que hace el original. */
+.bento-malla-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  /* Los pods apagados e "idle" son estructura: van en texto claro con alfas
+     bajas, que es lo que da la gradación de grises del original. */
+  color: var(--color-texto);
+}
+
+/* Tres escalones, como los cuatro estados del original: los pods apagados e
+   "idle" quedan en el gris base del SVG, los "active" toman una brasa a medio
+   camino y los "core" la brasa plena. Sin el escalón intermedio los activos
+   se confundían con los idle y la malla perdía su lectura de sistema vivo. */
+.bento-malla-svg .ent-hex-active {
+  color: color-mix(in srgb, var(--color-brasa) 55%, var(--color-texto-2));
+}
+
+.bento-malla-svg .ent-hex-core {
+  color: var(--color-brasa);
+}
+
+.bento-malla-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.625rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-texto) 6%, transparent);
+}
+
+.bento-malla-latencia {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-texto-3);
+}
+
+.bento-malla-pulso {
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 999px;
+  background: var(--color-brasa);
+  animation: ent-pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.bento-malla-uptime {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-texto-3);
+}
+
+/* Keyframes del original (styled-jsx en invokube), con los mismos tiempos. */
+.ent-fade {
+  opacity: 0;
+  animation: ent-fade 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.ent-fade-late {
+  opacity: 0;
+  animation: ent-fade 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+}
+
+.ent-hex-active {
+  transform-box: fill-box;
+  transform-origin: 50%;
+  animation: ent-hex-active 3.4s ease-in-out infinite;
+}
+
+.ent-hex-core {
+  transform-box: fill-box;
+  transform-origin: 50%;
+  animation: ent-hex-core 2.6s ease-in-out infinite;
+}
+
+@keyframes ent-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ent-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes ent-ping {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  80%,
+  100% {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+}
+
+@keyframes ent-hex-active {
+  0%,
+  100% {
+    fill-opacity: 0.08;
+  }
+  50% {
+    fill-opacity: 0.5;
+  }
+}
+
+@keyframes ent-hex-core {
+  0%,
+  100% {
+    fill-opacity: 0.55;
+  }
+  50% {
+    fill-opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ent-hex-active,
+  .ent-hex-core,
+  .bento-malla-pulso,
+  .bento-malla-ping::before {
+    animation: none;
+  }
+
+  .ent-fade,
+  .ent-fade-late {
+    opacity: 1;
+    animation: none;
+  }
+}

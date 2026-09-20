@@ -4,8 +4,10 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 import FondoOrbes from '../components/FondoOrbes.astro';
+import BottomSheetValidar from '../components/BottomSheetValidar.astro';
 import { SITE, EMAIL, WHATSAPP, CONTEXTO } from '../consts';
 import '../styles/global.css';
+import { ruta, sinBase } from '../rutas';
 
 interface Props {
   titulo: string;
@@ -14,6 +16,14 @@ interface Props {
   contextoWhatsApp?: string;
   /** Deja fuera de los buscadores páginas que no queremos indexar. */
   noIndex?: boolean;
+  /**
+   * Banco de pruebas (sep 2026): variante tipográfica de los titulares,
+   * exploración del sistema visual de cosmoq. 'a' = Space Grotesk 500 (marca
+   * actual). 'b' = Manrope 400 (misma familia que el cuerpo, jugada literal
+   * de cosmoq). Se emite como data-tipo en <html>; ver global.css.
+   * Solo la usa /pruebas/secciones — el resto del sitio no la toca.
+   */
+  tipografia?: 'a' | 'b';
 }
 
 const {
@@ -21,13 +31,15 @@ const {
   descripcion,
   contextoWhatsApp = CONTEXTO.flotante,
   noIndex = false,
+  tipografia = 'a',
 } = Astro.props;
 
 const tituloCompleto = titulo.includes(SITE.nombre)
   ? titulo
   : `${titulo} | ${SITE.nombre}`;
 
-const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site);
+// `sinBase` quita el prefijo de dev: la canonical siempre es la URL de producción.
+const canonical = new URL(sinBase(Astro.url.pathname), Astro.site);
 const imagenOG = new URL('/og-praxia.png', Astro.site);
 
 /**
@@ -58,11 +70,11 @@ const datosEstructurados = {
 ---
 
 <!doctype html>
-<html lang="es-PE">
+<html lang="es-PE" data-tipo={tipografia}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={ruta('/favicon.svg')} type="image/svg+xml" />
     <link rel="canonical" href={canonical} />
     <meta name="generator" content={Astro.generator} />
 
@@ -86,46 +98,150 @@ const datosEstructurados = {
     <meta name="twitter:description" content={descripcion} />
     <meta name="twitter:image" content={imagenOG} />
 
-    <meta name="theme-color" content="#07070B" />
+    <meta name="theme-color" content="#000000" />
 
     <Font cssVariable="--font-titulos" preload />
     <Font cssVariable="--font-cuerpo" preload />
+    {/* IBM Plex Mono estaba declarada en astro.config.mjs pero nunca se
+        emitia acá, asi que var(--font-mono) no existia y todo lo que la usa
+        (.mono, kickers, chips) caia al fallback del sistema. Sin preload: no
+        entra en el primer render, a diferencia de titulos y cuerpo. */}
+    <Font cssVariable="--font-mono" />
+    <Font cssVariable="--font-crono" />
 
     <script
       is:inline
       type="application/ld+json"
       set:html={JSON.stringify(datosEstructurados)}
     />
+
+    {/*
+      Blur de fondo para Safari e iOS 15.4–17.x, que sólo entienden
+      `-webkit-backdrop-filter`. Desde iOS 18 ya no hace falta.
+
+      Por qué vive acá suelto y no junto a cada regla: TODO el CSS del proyecto
+      (global.css, los .css de componentes y las utilities) lo compila Tailwind
+      v4 con targets hardcodeados en @tailwindcss/node (`safari: 16<<16|1024`,
+      o sea 16.4). Con ese piso decide que no hace falta prefijar, ignora el
+      `browserslist` del proyecto —y no se puede configurar—, y además borra
+      cualquier `-webkit-backdrop-filter` que uno escriba al lado de la
+      propiedad estándar, en cualquiera de los dos órdenes (comprobado con
+      `vite.css.transformer` + `lightningcss.targets`: no cambia nada, el CSS
+      nunca pasa por el pipeline de Vite). Este <style> no pasa por Tailwind,
+      así que sobrevive; Astro le calcula su hash para la CSP.
+
+      Cada regla declara LAS DOS variantes, prefijada y estándar. Al ser el
+      mismo selector, estas reglas ganan por orden a las que emite Tailwind y
+      las reemplazan: si acá sólo fuera la prefijada, Chrome y Firefox se
+      quedaban sin blur (pasó: los paneles se veían transparentes y el hero de
+      atrás competía con el texto del menú).
+
+      Los valores tienen que coincidir con los de global.css y los .css de
+      componentes. Al tocar un blur allá, actualizarlo también acá.
+    */}
+    <style is:global>
+      .vidrio,
+      .bento-card {
+        -webkit-backdrop-filter: blur(18px) saturate(1.3);
+        backdrop-filter: blur(18px) saturate(1.3);
+      }
+      .boton-secundario {
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+      }
+      .fcard-texto {
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(5px);
+      }
+      .orbit-tools-capsula {
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+      }
+      .escena-panel {
+        -webkit-backdrop-filter: blur(24px) saturate(160%);
+        backdrop-filter: blur(24px) saturate(160%);
+      }
+      /* Islas React que usan las utilities de Tailwind: el calendario del bento
+         (backdrop-blur-xl + backdrop-saturate-150) y el indicador de pasos del
+         proceso (backdrop-blur-sm). --blur-xl = 24px, --blur-sm = 8px. */
+      .backdrop-blur-xl.backdrop-saturate-150 {
+        -webkit-backdrop-filter: blur(24px) saturate(150%);
+        backdrop-filter: blur(24px) saturate(150%);
+      }
+      .backdrop-blur-sm {
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+      }
+    </style>
   </head>
 
   <body>
+    {/*
+      Barra de progreso de scroll, SOLO móvil (ver global.css .progreso-scroll
+      y src/scripts/progreso-scroll.ts). aria-hidden: es puramente decorativa,
+      un lector de pantalla ya sabe dónde está en el documento.
+    */}
+    <div class="progreso-scroll md:hidden" aria-hidden="true">
+      <div class="progreso-scroll__barra"></div>
+    </div>
+
     <FondoOrbes />
     <a class="skip-link" href="#contenido">Ir al contenido</a>
     <Header />
     <main id="contenido" class="relative z-1">
       <slot />
     </main>
+    {/*
+      Footer sin `.revelar` a propósito, no es un olvido: es una animación
+      que nadie ve completarse (llegas al final del scroll ya mirando otra
+      cosa) y que solo retrasaría los enlaces de navegación. invokube
+      tampoco anima su footer.
+    */}
     <Footer />
     <WhatsAppButton contexto={contextoWhatsApp} />
+    <BottomSheetValidar />
 
     <script>
       import '../scripts/scroll-suave';
     </script>
 
     <script>
-      // Aparición al hacer scroll, una sola vez. Por defecto se marca cada
-      // sección directa de <main> (salvo la primera, sobre el pliegue); los
-      // componentes que necesitan control más fino (encabezado y tarjetas
-      // por separado, con stagger vía data-retraso) marcan `.revelar` ellos
-      // mismos en su propio markup, así que también se observan acá.
+      import { montarBottomSheetValidar } from '../scripts/bottom-sheet-validar';
+      montarBottomSheetValidar();
+    </script>
+
+    <script>
+      import { montarProgresoScroll } from '../scripts/progreso-scroll';
+      montarProgresoScroll();
+    </script>
+
+    <script>
+      // Aparición al hacer scroll, una sola vez por elemento. Por defecto se
+      // marca cada sección directa de <main> (salvo la primera, sobre el
+      // pliegue, y salvo las que ya gestionan su propio reveal — :has(.revelar)
+      // evita el fade-sobre-fade de una sección .revelar que contiene hijos
+      // .revelar). Los componentes con control más fino (tarjetas por
+      // separado, con stagger vía --i/data-retraso) marcan `.revelar` /
+      // `.revelar-item` / `.revelar-visual` ellos mismos.
+      // #destacado se excluye a mano: su "reveal" es el progreso de scroll
+      // que enciende cada palabra (Destacado.astro), no tiene ningún hijo
+      // .revelar que lo delate, y un fade previo taparía justo el efecto.
       // Se desactiva sola con prefers-reduced-motion (no hay nada que ocultar).
       const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const secciones = document.querySelectorAll<HTMLElement>('main > section:not(:first-child)');
-      secciones.forEach((seccion) => seccion.classList.add('revelar'));
+      const main = document.querySelector('main');
 
-      const elementos = document.querySelectorAll<HTMLElement>('.revelar');
+      const SELECTOR_REVELAR = '.revelar, .revelar-item, .revelar-visual';
 
-      if (!reducido.matches && 'IntersectionObserver' in window) {
+      const marcarSeccionesAutomaticas = () => {
+        const secciones = document.querySelectorAll<HTMLElement>(
+          'main > section:not(:first-child):not(#destacado):not(:has(.revelar)):not(:has(.revelar-item)):not(:has(.revelar-visual))',
+        );
+        secciones.forEach((seccion) => seccion.classList.add('revelar'));
+      };
+
+      marcarSeccionesAutomaticas();
+
+      if (!reducido.matches && main && 'IntersectionObserver' in window) {
         const observador = new IntersectionObserver(
           (entradas) => {
             entradas.forEach((entrada) => {
@@ -134,12 +250,37 @@ const datosEstructurados = {
               observador.unobserve(entrada.target);
             });
           },
-          { rootMargin: '0px 0px -10% 0px', threshold: 0.05 },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0 },
         );
 
-        elementos.forEach((el) => observador.observe(el));
+        const observar = (el: Element) => {
+          if (el.classList.contains('visible')) return;
+          observador.observe(el);
+        };
+
+        document.querySelectorAll<HTMLElement>(SELECTOR_REVELAR).forEach(observar);
+
+        // Re-escaneo para las islas React (client:visible) que hidratan
+        // después del primer barrido: FAQTabs, StackingSteps, bento, etc.
+        // Un querySelectorAll único al cargar nunca las vería. Solo escucha
+        // childList/subtree (nodos añadidos), no atributos — las mutaciones
+        // de `style` que escribe framer-motion no lo despiertan, así que el
+        // coste en régimen es prácticamente cero. No se desconecta: FAQTabs
+        // monta/desmonta contenido con AnimatePresence durante toda la vida
+        // de la página.
+        const reescaneo = new MutationObserver((mutaciones) => {
+          for (const mutacion of mutaciones) {
+            mutacion.addedNodes.forEach((nodo) => {
+              if (nodo.nodeType !== Node.ELEMENT_NODE) return;
+              const el = nodo as Element;
+              if (el.matches(SELECTOR_REVELAR)) observar(el);
+              el.querySelectorAll<HTMLElement>(SELECTOR_REVELAR).forEach(observar);
+            });
+          }
+        });
+        reescaneo.observe(main, { childList: true, subtree: true });
       } else {
-        elementos.forEach((el) => el.classList.add('visible'));
+        document.querySelectorAll<HTMLElement>(SELECTOR_REVELAR).forEach((el) => el.classList.add('visible'));
       }
     </script>
   </body>

@@ -2,15 +2,16 @@
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { NAV_PRINCIPAL } from '../consts';
+import { ruta, sinBase } from '../rutas';
 
-const ruta = Astro.url.pathname.replace(/\/$/, '') || '/';
-const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
+const rutaActual = sinBase(Astro.url.pathname);
+const esActiva = (href: string) => rutaActual === href || rutaActual.startsWith(`${href}/`);
 ---
 
 <header class="sticky top-0 z-40 px-4 pt-(--header-aire) pointer-events-none md:px-6">
-  <div class="contenedor max-w-[68rem]! px-0!">
+  <div class="contenedor relative max-w-[68rem]! px-0!">
     <div class="vidrio pointer-events-auto relative flex h-(--header-pill) items-center justify-between gap-4 rounded-pill px-3 pr-2 md:px-5 md:pr-3">
-      <a href="/" class="rounded-sm py-1 pl-1" aria-label="Praxia, ir al inicio">
+      <a href={ruta('/')} class="rounded-sm py-1 pl-1" aria-label="Praxia, ir al inicio">
         <Logo />
       </a>
 
@@ -18,7 +19,7 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
         {
           NAV_PRINCIPAL.map((item) => (
             <a
-              href={item.href}
+              href={ruta(item.href)}
               class:list={[
                 'nav-enlace pequeno font-medium transition-colors hover:text-brasa',
                 esActiva(item.href) ? 'text-brasa' : 'text-texto',
@@ -31,33 +32,44 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
         }
       </nav>
 
-      <a href="/validar" class="boton boton-primario boton-compacto hidden lg:inline-flex">
-        Validar mi idea
-      </a>
+      <div class="flex items-center gap-2">
+        <a href={ruta('/validar')} class="boton boton-primario boton-compacto inline-flex">
+          Validar mi idea
+        </a>
 
-      <button
-        type="button"
-        id="boton-menu"
-        class="-mr-1 inline-flex min-h-11 min-w-11 items-center justify-center rounded-pill p-2 text-texto lg:hidden"
-        aria-expanded="false"
-        aria-controls="menu-movil"
-      >
-        <span class="sr-only">Abrir menú</span>
-        <Icon nombre="menu" tamano={24} class="[[aria-expanded=true]_&]:hidden" />
-        <Icon nombre="cerrar" tamano={24} class="hidden [[aria-expanded=true]_&]:block" />
-      </button>
+        <button
+          type="button"
+          id="boton-menu"
+          class="-mr-1 inline-flex min-h-11 min-w-11 items-center justify-center rounded-pill p-2 text-texto lg:hidden"
+          aria-expanded="false"
+          aria-controls="menu-movil"
+        >
+          <span class="sr-only">Abrir menú</span>
+          <Icon nombre="menu" tamano={24} class="[[aria-expanded=true]_&]:hidden" />
+          <Icon nombre="cerrar" tamano={24} class="hidden [[aria-expanded=true]_&]:block" />
+        </button>
+      </div>
 
       <!-- Veta de luz sobre el borde del pill, con un tramo transparente
            donde no debe brillar (truco de la réplica de cosmoq). -->
       <div class="borde-luz" aria-hidden="true"></div>
     </div>
 
-    <div id="menu-movil" class="vidrio pointer-events-auto mt-2 hidden rounded-[1.5rem] p-2 lg:hidden">
+    {/*
+      absolute, no en el flujo: el <header> es sticky y ocupa alto real, así que
+      un menú en flujo lo hacía crecer de 72px a ~326px al abrirse y empujaba el
+      hero 254px hacia abajo (el título y los botones "saltaban"). Flotando sobre
+      el contenido, abrir y cerrar no mueve nada.
+    */}
+    <div
+      id="menu-movil"
+      class="vidrio pointer-events-auto absolute inset-x-0 top-full z-50 mt-2 hidden rounded-[1.5rem] p-2 lg:hidden"
+    >
       <nav class="flex flex-col" aria-label="Principal, celular">
         {
           NAV_PRINCIPAL.map((item) => (
             <a
-              href={item.href}
+              href={ruta(item.href)}
               class:list={[
                 'rounded-praxia px-4 py-3.5 font-medium',
                 esActiva(item.href) ? 'text-brasa' : 'text-texto',
@@ -68,9 +80,6 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
             </a>
           ))
         }
-        <a href="/validar" class="boton boton-primario mx-2 mt-2 mb-1">
-          Validar mi idea
-        </a>
       </nav>
     </div>
   </div>
@@ -114,9 +123,14 @@ const esActiva = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
     transition: transform 400ms var(--ease-resorte);
   }
 
-  .nav-enlace:hover::after,
   .nav-enlace[aria-current='page']::after {
     transform: scaleX(1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .nav-enlace:hover::after {
+      transform: scaleX(1);
+    }
   }
 
   /* Veta de luz sobre el borde del pill: un borde blanco enmascarado que deja

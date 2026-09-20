@@ -5,6 +5,7 @@
  */
 import Icon from './Icon.astro';
 import { waLink, CONTEXTO } from '../consts';
+import { ruta } from '../rutas';
 
 interface Props {
   texto?: string;
@@ -23,7 +24,7 @@ const {
         {texto}
       </p>
       <div class="flex flex-none flex-col gap-3 sm:flex-row">
-        <a href="/validar" class="boton boton-primario">Validemos en 15 minutos</a>
+        <a href={ruta('/validar')} class="boton boton-primario">Validemos en 15 minutos</a>
         <a
           href={waLink(contextoWhatsApp)}
           target="_blank"

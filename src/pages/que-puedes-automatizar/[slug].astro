@@ -13,6 +13,7 @@ import CTABand from '../../components/CTABand.astro';
 import CTAInline from '../../components/CTAInline.astro';
 import Widget from '../../components/Widget.astro';
 import { CONTEXTO } from '../../consts';
+import { ruta } from '../../rutas';
 
 const widgets = {
   conversacion: 'chat',
@@ -108,7 +109,7 @@ const mensaje = CONTEXTO.capacidad(d.nombreCorto);
       <div class="max-w-2xl">
         <ListaCheck items={d.queNecesitas} />
         <p class="pequeno mt-8 text-texto-2">
-          ¿Dudas sobre tus datos? Lee <a href="/seguridad" class="enlace">cómo los cuidamos</a>.
+          ¿Dudas sobre tus datos? Lee <a href={ruta('/seguridad')} class="enlace">cómo los cuidamos</a>.
         </p>
       </div>
     </div>
@@ -129,7 +130,7 @@ const mensaje = CONTEXTO.capacidad(d.nombreCorto);
             enorme que nadie puede consultar de forma rápida y confiable, hace falta algo más
             grande.
           </p>
-          <a href="/soluciones-mayores" class="boton boton-primario mt-8">
+          <a href={ruta('/soluciones-mayores')} class="boton boton-primario mt-8">
             Ver de qué se trata
           </a>
         </div>

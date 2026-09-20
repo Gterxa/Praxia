@@ -11,6 +11,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import { waLink, CONTEXTO } from '../../consts';
+import { ruta } from '../../rutas';
 
 const COPYS = [
   {
@@ -137,7 +138,7 @@ const FICHA = [
           ))
         }
         <div class="banco__botones">
-          <a href="/validar" class="boton boton-primario">Validemos en 15 minutos</a>
+          <a href={ruta('/validar')} class="boton boton-primario">Validemos en 15 minutos</a>
           <a
             href={waLink(CONTEXTO.home)}
             target="_blank"

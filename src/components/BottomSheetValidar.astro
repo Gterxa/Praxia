@@ -1,0 +1,168 @@
+---
+/**
+ * Bottom sheet de "Validar mi idea", patrón invokube.com (ver CLAUDE.md,
+ * referencia de diseño principal): sube desde abajo con un handle, fondo
+ * oscuro difuminado detrás, un solo formulario scrolleable sin pasos.
+ *
+ * Se monta una única vez en Layout.astro. Todos los CTAs que apuntan a
+ * /validar (Header, Hero, HeroHome, CTABand, CTAInline, CierreValidar,
+ * OrbeContacto…) lo abren en mobile vía el listener global de
+ * src/scripts/bottom-sheet-validar.ts, que intercepta el click y hace
+ * preventDefault(); en desktop esos mismos enlaces siguen navegando normal
+ * a /validar — el listener solo actúa bajo el breakpoint `lg` (mismo punto
+ * de corte que el resto del sitio, ver tokens.css / Tailwind).
+ *
+ * Sin JS, o si algo falla, el <a href="/validar"> de cada CTA sigue siendo
+ * un enlace real: degrada a la página completa, que trae el mismo
+ * formulario (ver FormularioValidar.astro) en vez de quedarse muda.
+ */
+import Icon from './Icon.astro';
+import FormularioValidar from './FormularioValidar.astro';
+---
+
+<div id="hoja-validar" class="hoja-validar" data-hoja-validar hidden>
+  <button
+    type="button"
+    class="hoja-validar__fondo"
+    data-hoja-validar-cerrar
+    aria-label="Cerrar"
+    tabindex="-1"
+  ></button>
+
+  <div
+    class="hoja-validar__panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="hoja-validar-titulo"
+  >
+    <div class="hoja-validar__manija" aria-hidden="true"></div>
+
+    <button
+      type="button"
+      class="hoja-validar__cerrar"
+      data-hoja-validar-cerrar
+      aria-label="Cerrar"
+    >
+      <Icon nombre="cerrar" tamano={18} />
+    </button>
+
+    <div class="hoja-validar__scroll">
+      <h2 id="hoja-validar-titulo" class="text-[1.5rem]">Cuéntanos qué quieres automatizar.</h2>
+      <p class="lead mt-3 text-texto-2">
+        Un formulario corto. Te respondemos el mismo día con una hora para los 15 minutos.
+      </p>
+
+      <div class="mt-8">
+        <FormularioValidar idPrefix="hoja" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .hoja-validar {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .hoja-validar[hidden] {
+    display: none;
+  }
+
+  .hoja-validar__fondo {
+    position: absolute;
+    inset: 0;
+    border: none;
+    padding: 0;
+    background: rgb(0 0 0 / 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    cursor: default;
+    opacity: 0;
+    transition: opacity 320ms var(--ease-resorte);
+  }
+
+  .hoja-validar__panel {
+    position: relative;
+    width: 100%;
+    max-height: min(88svh, 46rem);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-linea);
+    border-bottom: none;
+    border-radius: var(--radius-tarjeta) var(--radius-tarjeta) 0 0;
+    box-shadow: 0 -24px 70px rgb(0 0 0 / 0.45);
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 380ms var(--ease-resorte);
+  }
+
+  .hoja-validar--abierta .hoja-validar__fondo {
+    opacity: 1;
+  }
+
+  .hoja-validar--abierta .hoja-validar__panel {
+    transform: translateY(0);
+  }
+
+  .hoja-validar__manija {
+    flex: none;
+    width: 2.75rem;
+    height: 0.25rem;
+    margin: 0.75rem auto 0;
+    border-radius: var(--radius-pill);
+    background: var(--color-linea);
+  }
+
+  .hoja-validar__cerrar {
+    position: absolute;
+    top: 0.875rem;
+    right: 0.875rem;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    background: var(--color-surface-2);
+    color: var(--color-texto-2);
+    transition:
+      color 200ms var(--ease-suave),
+      background-color 200ms var(--ease-suave);
+  }
+
+  .hoja-validar__cerrar:hover {
+    color: var(--color-texto);
+    background-color: var(--color-linea);
+  }
+
+  .hoja-validar__cerrar:focus-visible,
+  .hoja-validar__fondo:focus-visible {
+    outline: 2px solid var(--color-linea-viva);
+    outline-offset: 2px;
+  }
+
+  .hoja-validar__scroll {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1.75rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
+    -webkit-overflow-scrolling: touch;
+  }
+
+  @media (min-width: 64rem) {
+    .hoja-validar {
+      display: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hoja-validar__fondo,
+    .hoja-validar__panel {
+      transition: none;
+    }
+  }
+</style>

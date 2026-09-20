@@ -1,73 +1,30 @@
 ---
 /**
- * Fondo global fijo: negro absoluto con dos orbes — azul frío arriba a la
- * izquierda, coral/sol cálido abajo a la derecha. Sin grano, sin grilla,
- * sin violeta/magenta ("ojo que solo azul y naranja no morado" — el orbe-2
- * de bisagra que traía el diseño original se sacó entero, no se recoloreó).
+ * Fondo global fijo: negro absoluto, sin orbes ni degradados (sep 2026,
+ * tercera pasada — Tony pidió sacar todo brillo del fondo).
+ *
+ * El shader de gradiente animado (ver `FondoShaderCanvas.astro`) NO va
+ * acá — va como fondo local de las secciones "surface"/"acento" (ver
+ * `Seccion.astro`), que es donde antes vivía el gris que se sacó. Esta
+ * capa global se queda negro puro para que esas secciones resalten por
+ * contraste.
  *
  * Vive detrás de todo (`z-index: 0`), `Layout.astro` lo monta una sola vez
  * y cada `<section>` que quiera dejarlo ver de fondo usa un fondo
  * transparente en vez de `bg-void` sólido.
  *
- * Puramente decorativo (`aria-hidden`) y se detiene con
- * `prefers-reduced-motion` — sigue visible, solo no deriva.
+ * Puramente decorativo (`aria-hidden`).
  */
 ---
 
-<div class="fondo-orbes" aria-hidden="true">
-  <div class="orbe orbe-1"></div>
-  <div class="orbe orbe-3"></div>
-</div>
+<div class="fondo-orbes" aria-hidden="true"></div>
 
 <style>
   .fondo-orbes {
     position: fixed;
     inset: 0;
     z-index: 0;
-    overflow: hidden;
     pointer-events: none;
     background-color: #000;
-  }
-
-  .orbe {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(90px);
-  }
-
-  /* Azul frío, arriba a la izquierda. */
-  .orbe-1 {
-    top: -18%;
-    left: -8%;
-    width: 46rem;
-    height: 34rem;
-    background: radial-gradient(circle, rgb(26 44 136 / 0.55), rgb(26 44 136 / 0) 68%);
-    animation: deriva-1 20s ease-in-out infinite;
-  }
-
-  /* Coral/sol cálido, abajo a la derecha. */
-  .orbe-3 {
-    bottom: -20%;
-    right: -14%;
-    width: 42rem;
-    height: 42rem;
-    background: radial-gradient(circle, rgb(250 94 69 / 0.48), rgb(250 94 69 / 0) 68%);
-    animation: deriva-1 28s ease-in-out infinite reverse;
-  }
-
-  @keyframes deriva-1 {
-    0%,
-    100% {
-      transform: translate(0, 0) scale(1);
-    }
-    50% {
-      transform: translate(2.5rem, -1.75rem) scale(1.1);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .orbe {
-      animation: none;
-    }
   }
 </style>

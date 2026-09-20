@@ -68,6 +68,56 @@
     }
   }
 
+  /* ------------------------------------------------------------------------
+     Banco de pruebas (sep 2026): escala tipográfica de cosmoq para h2-h4.
+     Solo se activa con [data-tipo] en <html> (Layout.astro, prop `tipografia`,
+     sin valor por defecto) — así el resto del sitio no se mueve ni un píxel.
+     La escala (tamaño/line-height/tracking) es igual en las dos variantes;
+     lo que cambia es SOLO family+weight, para poder comparar peras con peras:
+       [data-tipo="a"] → Space Grotesk 500 (marca actual, más liviana)
+       [data-tipo="b"] → Manrope 400 (jugada literal de cosmoq: misma familia
+                          que el cuerpo, diferenciada por peso y escala)
+     h1 no se toca: es del hero, fuera de este alcance.
+     ------------------------------------------------------------------------ */
+  html[data-tipo] :is(h2, h3, h4) {
+    letter-spacing: -0.02em;
+  }
+
+  html[data-tipo='a'] :is(h2, h3, h4) {
+    font-family: var(--font-titulos);
+    font-weight: 500;
+  }
+
+  html[data-tipo='b'] :is(h2, h3, h4) {
+    font-family: var(--font-cuerpo);
+    font-weight: 400;
+  }
+
+  html[data-tipo] h2 {
+    font-size: 2rem; /* 32px */
+    line-height: 1.15;
+  }
+
+  html[data-tipo] h3 {
+    font-size: 1.75rem; /* 28px */
+    line-height: 1.25;
+  }
+
+  html[data-tipo] h4 {
+    font-size: 1.375rem; /* 22px */
+    line-height: 1.3;
+  }
+
+  @media (min-width: 48rem) {
+    html[data-tipo] h2 {
+      font-size: 3.5rem; /* 56px */
+      line-height: 1.2;
+    }
+    html[data-tipo] h3 {
+      font-size: 1.75rem; /* 28px, cosmoq no lo escala en tablet+ */
+    }
+  }
+
   a {
     color: inherit;
   }
@@ -132,6 +182,19 @@
     }
   }
 
+  /* Ritmo vertical de cosmoq (80px = 5rem) para las secciones migradas al
+     banco de pruebas. Se pide con una clase aparte, no reemplazando
+     `.seccion`, para no mover el padding de las páginas fuera de alcance. */
+  .seccion-cosmoq {
+    padding-block: 5rem;
+  }
+
+  @media (min-width: 48rem) {
+    .seccion-cosmoq {
+      padding-block: 5rem;
+    }
+  }
+
   /* --- Texto --- */
   .lead {
     font-size: 1.1875rem; /* 19px */
@@ -185,8 +248,12 @@
       transform 150ms var(--ease-resorte);
   }
 
-  .boton:hover {
-    filter: brightness(1.12);
+  /* hover: hover evita que el estado quede "pegado" en touch tras un tap
+     (iOS/Android disparan :hover sin un mouseleave que lo apague). */
+  @media (hover: hover) and (pointer: fine) {
+    .boton:hover {
+      filter: brightness(1.12);
+    }
   }
 
   .boton:active {
@@ -202,21 +269,34 @@
 
   .boton-primario {
     background-color: var(--color-brasa);
-    color: var(--color-void);
+    color: var(--color-texto);
+    font-weight: 700;
     box-shadow:
       0 1px 2px rgb(10 15 28 / 0.35),
       0 10px 24px rgb(255 107 53 / 0.3),
       inset 0 1px 0 rgb(255 255 255 / 0.22),
       inset 0 -2px 5px rgb(189 53 108 / 0.28);
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms var(--ease-suave),
+      filter 300ms var(--ease-suave),
+      box-shadow 400ms var(--ease-suave),
+      transform 150ms var(--ease-resorte);
   }
 
-  .boton-primario:hover {
-    background-color: var(--color-brasa-alto);
-    box-shadow:
-      0 2px 4px rgb(10 15 28 / 0.35),
-      0 14px 32px rgb(255 107 53 / 0.4),
-      inset 0 1px 0 rgb(255 255 255 / 0.28),
-      inset 0 -2px 5px rgb(253 205 57 / 0.28);
+  /* Como cosmoq: el hover no es brightness() ni un color de fondo distinto —
+     son los mismos inset-shadows de marca (sol arriba, magenta abajo) creciendo
+     en offset y blur hasta inundar el botón de luz. Colores de la rampa
+     "atardecer" propia, nunca el azul de cosmoq (regla anti-genérico). */
+  @media (hover: hover) and (pointer: fine) {
+    .boton-primario:hover {
+      box-shadow:
+        0 2px 4px rgb(10 15 28 / 0.35),
+        0 14px 32px rgb(255 107 53 / 0.4),
+        inset 0 -30px 24px var(--color-magenta),
+        inset 0 28px 22px var(--color-sol);
+    }
   }
 
   .boton-secundario {
@@ -227,9 +307,11 @@
     -webkit-backdrop-filter: blur(12px);
   }
 
-  .boton-secundario:hover {
-    border-color: var(--color-brasa);
-    background: var(--color-brasa-tenue);
+  @media (hover: hover) and (pointer: fine) {
+    .boton-secundario:hover {
+      border-color: var(--color-brasa);
+      background: var(--color-brasa-tenue);
+    }
   }
 
   /* --- Superficie de vidrio. Nav, chips activos, paneles del hero y del
@@ -263,8 +345,10 @@
       border-color 300ms var(--ease-suave);
   }
 
-  .pestana-pill:hover {
-    color: var(--color-texto);
+  @media (hover: hover) and (pointer: fine) {
+    .pestana-pill:hover {
+      color: var(--color-texto);
+    }
   }
 
   .pestana-pill:active {
@@ -286,31 +370,80 @@
     text-decoration-thickness: 1px;
   }
 
-  .enlace:hover {
-    color: var(--color-brasa-alto);
-    text-decoration-thickness: 2px;
+  @media (hover: hover) and (pointer: fine) {
+    .enlace:hover {
+      color: var(--color-brasa-alto);
+      text-decoration-thickness: 2px;
+    }
   }
 
   /* --- Tarjetas. Radio grande (identidad v2) y elevación con sombra tintada
-     de brasa al pasar el mouse, nunca shadow-md plano. --- */
+     de brasa al pasar el mouse, nunca shadow-md plano. Borde vía ::after
+     (patrón de cosmoq) en vez de `border`: no se recorta si la tarjeta trae
+     arte de fondo con `overflow: hidden`. --- */
   .tarjeta {
+    position: relative;
     background-color: var(--color-surface);
-    border: 1px solid var(--color-linea);
     border-radius: var(--radius-tarjeta);
     padding: 1.5rem;
     transition:
-      border-color 300ms var(--ease-suave),
       background-color 300ms var(--ease-suave),
       box-shadow 400ms var(--ease-suave),
       transform 400ms var(--ease-resorte);
   }
 
-  a.tarjeta:hover,
-  .tarjeta-interactiva:hover {
-    border-color: var(--color-linea-viva);
-    background-color: var(--color-surface-2);
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgb(255 107 53 / 0.16);
+  .tarjeta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--color-linea);
+    border-radius: inherit;
+    pointer-events: none;
+    transition: border-color 300ms var(--ease-suave);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    a.tarjeta:hover,
+    .tarjeta-interactiva:hover {
+      background-color: var(--color-surface-2);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgb(255 107 53 / 0.16);
+    }
+
+    a.tarjeta:hover::after,
+    .tarjeta-interactiva:hover::after {
+      border-color: var(--color-linea-viva);
+    }
+  }
+
+  /* Borde blanco degradado, solo visible en dos esquinas (gborder de
+     cosmoq): se suma a `.tarjeta`/`.gicon`, no la reemplaza. */
+  .borde-degradado {
+    position: relative;
+  }
+
+  .borde-degradado::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border: 1px solid rgb(255 255 255 / 0.5);
+    border-radius: inherit;
+    pointer-events: none;
+    mask-image: linear-gradient(
+      255deg,
+      transparent 0%,
+      rgb(0 0 0 / 0.12) 18%,
+      rgb(0 0 0 / 0.23) 85%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      255deg,
+      transparent 0%,
+      rgb(0 0 0 / 0.12) 18%,
+      rgb(0 0 0 / 0.23) 85%,
+      transparent 100%
+    );
   }
 
   /* --- Chips de confianza. Afirmaciones que el sitio ya hace, en mono. --- */
@@ -334,6 +467,123 @@
     height: 0.375rem;
     border-radius: 999px;
     background-color: var(--color-cian);
+  }
+
+  /* --- Átomos del sistema cosmoq (banco de pruebas), paleta Praxia. --- */
+
+  /* Chip con icono: verticales de Servicios/Industrias, filas de la sección
+     "data". Borde tenue, sin relleno. */
+  .chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5625rem 0.75rem;
+    border-radius: 0.75rem;
+    background-color: var(--color-surface);
+    color: var(--color-texto);
+    font-size: 0.9375rem;
+  }
+
+  .chip::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--color-linea);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .chip svg,
+  .chip img {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: none;
+  }
+
+  /* Punto con check en píldora: listas de puntos de Servicios/Proceso/data. */
+  .item-check {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .item-check::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--color-linea);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .item-check-marca {
+    position: relative;
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.1);
+    box-shadow: inset 0 0 4px rgb(255 255 255 / 0.31);
+    display: grid;
+    place-items: center;
+    color: var(--color-texto);
+  }
+
+  .item-check p {
+    flex: 1 0 0;
+    font-size: 0.9375rem;
+    color: var(--color-texto);
+  }
+
+  /* Icono en caja de 71px con borde en degradado (peach→surface→blue de
+     cosmoq, traducido a sol→surface-2→linea-viva). Base de las verticales de
+     Servicios y de la grilla de integraciones del cierre. */
+  .gicon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 4.4375rem;
+    height: 4.4375rem;
+    padding: 0.125rem;
+    border-radius: 1.25rem;
+    background: linear-gradient(
+      40deg,
+      var(--color-sol) 0%,
+      var(--color-surface-2) 45%,
+      var(--color-linea-viva) 100%
+    );
+    box-shadow: 0 6px 24px rgb(255 172 8 / 0.2);
+    transition:
+      transform 400ms var(--ease-resorte),
+      box-shadow 400ms var(--ease-suave);
+  }
+
+  .gicon-adentro {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 0.75rem;
+    border-radius: 1.25rem;
+    background-color: var(--color-surface-2);
+    color: var(--color-brasa);
+  }
+
+  .gicon-adentro svg {
+    width: 60%;
+    height: 60%;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .gicon:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgb(255 172 8 / 0.32);
+    }
   }
 
   /* --- Barras de los widgets. Crecen una sola vez, cuando la sección se revela. --- */
@@ -468,55 +718,197 @@
     top: 0.75rem;
   }
 
-  /* --- Aparición al hacer scroll. Una vez, al entrar al viewport (patrón de
-     la réplica de cosmoq: 24px, dos duraciones distintas para opacidad y
-     transform). Layout.astro marca `main > section` automáticamente; los
-     componentes que necesitan control más fino (encabezado y tarjetas por
-     separado) marcan `.revelar` ellos mismos y usan `data-retraso="1|2|3"`
-     para escalonar hermanos. `.revelar-x` entra desde la derecha en vez de
-     abajo (Features de cosmoq). --- */
-  .revelar {
+  /* --- Aparición al hacer scroll. Una vez, al entrar al viewport (patrón
+     invokube: una sola curva —var(--ease-resorte), la misma que usa
+     invokube.com— y la misma duración para opacidad y transform; antes eran
+     dos curvas y dos duraciones desincronizadas). Layout.astro marca
+     `main > section` automáticamente cuando la sección no gestiona su propio
+     reveal; los componentes que necesitan control más fino marcan `.revelar`
+     ellos mismos.
+
+     Tres variantes semánticas, mobile-first (sep 2026, rediseño de motion):
+     - `.revelar` (default): texto de sección — títulos, párrafos.
+     - `.revelar-item`: tarjetas/items individuales de una lista.
+     - `.revelar-visual`: mockups/paneles grandes — además hace scale.
+     `.revelar-x` entra desde la derecha en vez de abajo (Features de
+     cosmoq), pero solo en desktop: en móvil un recorrido lateral de 60-80px
+     en una pantalla de 390px de ancho puede disparar overflow horizontal
+     fantasma, así que ahí colapsa a un translateY como las demás.
+
+     Escalonado: `--i` (custom property vía `style="--i:N"`, permitido por la
+     CSP — style-src-attr 'unsafe-inline', ver astro.config.mjs) multiplica
+     `--reveal-paso`. `data-retraso="1|2|3"` se conserva como alias de --i
+     para los componentes fuera de la home que no se tocaron en este cambio.
+
+     Móvil más expresivo que desktop a propósito: más recorrido (~+45%) en
+     menos tiempo (~-15%), nunca más *lento*. En móvil el scroll es nativo
+     (Lenis no gobierna touch, ver scroll-suave.ts) y una animación larga
+     sigue moviéndose cuando el dedo ya se fue — eso se lee como lag, no
+     como expresividad. Por eso los valores base (sin media query) son los
+     de móvil y desktop entra después, como corresponde a mobile-first.
+
+     Deliberadamente sin blur: el blur ya es la firma de HeroHome (entrada
+     por palabra) y estas tarjetas ya cargan backdrop-filter propio
+     (.fcard-texto, .vidrio) — sumarle filter:blur() sería la combinación
+     más cara para el compositor, justo en el hardware más débil. --- */
+  .revelar,
+  .revelar-item,
+  .revelar-visual {
+    --reveal-paso: 60ms;
     opacity: 0;
-    transform: translateY(24px);
-    transition:
-      opacity 800ms var(--ease-suave),
-      transform 900ms var(--ease-resorte);
+    transition-delay: calc(var(--i, 0) * var(--reveal-paso));
     will-change: opacity, transform;
   }
 
-  .revelar-x {
-    transform: translateX(80px);
+  .revelar {
+    transform: translateY(26px);
+    transition:
+      opacity 600ms var(--ease-resorte),
+      transform 600ms var(--ease-resorte);
   }
 
-  .revelar.visible {
+  .revelar-item {
+    transform: translateY(32px);
+    transition:
+      opacity 520ms var(--ease-resorte),
+      transform 520ms var(--ease-resorte);
+  }
+
+  .revelar-visual {
+    transform: scale(0.94) translateY(24px);
+    transition:
+      opacity 700ms var(--ease-resorte),
+      transform 700ms var(--ease-resorte);
+  }
+
+  .revelar-x {
+    transform: translateY(30px);
+  }
+
+  .revelar.visible,
+  .revelar-item.visible,
+  .revelar-visual.visible {
     opacity: 1;
     transform: none;
+    will-change: auto;
   }
 
-  .revelar[data-retraso='1'] {
-    transition-delay: 0.1s;
+  /* Alias legacy: los 11 componentes fuera de la home que ya usaban
+     data-retraso siguen funcionando sin tocar su markup. */
+  .revelar[data-retraso='1'],
+  .revelar-item[data-retraso='1'],
+  .revelar-visual[data-retraso='1'] {
+    --i: 1;
   }
-  .revelar[data-retraso='2'] {
-    transition-delay: 0.2s;
+  .revelar[data-retraso='2'],
+  .revelar-item[data-retraso='2'],
+  .revelar-visual[data-retraso='2'] {
+    --i: 2;
   }
-  .revelar[data-retraso='3'] {
-    transition-delay: 0.3s;
+  .revelar[data-retraso='3'],
+  .revelar-item[data-retraso='3'],
+  .revelar-visual[data-retraso='3'] {
+    --i: 3;
+  }
+
+  @media (min-width: 48rem) {
+    .revelar,
+    .revelar-item,
+    .revelar-visual {
+      --reveal-paso: 50ms;
+    }
+
+    .revelar {
+      transform: translateY(18px);
+      transition-duration: 700ms;
+    }
+
+    .revelar-item {
+      transform: translateY(22px);
+      transition-duration: 560ms;
+    }
+
+    .revelar-visual {
+      transform: scale(0.965) translateY(16px);
+      transition-duration: 820ms;
+    }
+
+    .revelar-x {
+      transform: translateX(60px);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .revelar {
+    .revelar,
+    .revelar-item,
+    .revelar-visual {
       opacity: 1;
       transform: none;
       transition: none;
+      will-change: auto;
     }
   }
 
   /* Al imprimir no hay scroll que dispare el observador: sin esto, media
      página sale en blanco. */
   @media print {
-    .revelar {
+    .revelar,
+    .revelar-item,
+    .revelar-visual {
       opacity: 1 !important;
       transform: none !important;
+    }
+  }
+
+  /* --- Barra de progreso de scroll, SOLO móvil (sep 2026, patrón invokube).
+     invokube la monta en desktop con framer-motion + spring sobre Lenis; acá
+     va sin isla React (evitaría hidratar React en páginas que hoy no la
+     necesitan) y sin spring: en móvil el scroll es nativo —Lenis no
+     intercepta touch, ver scroll-suave.ts— y ya trae la inercia del sistema
+     operativo; un spring encima solo consigue que la barra vaya visiblemente
+     detrás del dedo. Va 1:1 con el scroll, escrita por
+     src/scripts/progreso-scroll.ts vía --p en .progreso-scroll__barra (nunca
+     en :root, para no invalidar el estilo del documento entero en cada
+     frame).
+
+     transform:scaleX en vez de width: scaleX es puro compositor, width
+     dispara layout en cada frame de scroll.
+
+     z-index:45 — a propósito entre el header (z-40) y el menú móvil
+     (z-50): con más de 50 la barra taparía el menú abierto, que además no
+     tiene scroll de página detrás para moverla. --- */
+  .progreso-scroll {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    height: 2px;
+    z-index: 45;
+    pointer-events: none;
+    contain: strict;
+  }
+
+  .progreso-scroll__barra {
+    height: 100%;
+    transform: scaleX(var(--p, 0));
+    transform-origin: left center;
+    background: var(--degradado-calido);
+  }
+
+  @media (min-width: 48rem) {
+    .progreso-scroll {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .progreso-scroll {
+      display: none;
+    }
+  }
+
+  @media print {
+    .progreso-scroll {
+      display: none;
     }
   }
 }

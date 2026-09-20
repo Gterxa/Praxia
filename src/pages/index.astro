@@ -2,43 +2,19 @@
 import Layout from '../layouts/Layout.astro';
 import HeroHome from '../components/HeroHome.astro';
 import LogosMarqueeCosmoq from '../components/LogosMarqueeCosmoq.astro';
-import PorQue from '../components/PorQue.astro';
-import Servicios from '../components/Servicios.astro';
-import Industrias from '../components/Industrias.astro';
-import Proceso from '../components/Proceso.astro';
-import SeguridadBasica from '../components/SeguridadBasica.astro';
-import Ejemplos from '../components/Ejemplos.astro';
-import QuienesSomos from '../components/QuienesSomos.astro';
-import FAQ from '../components/FAQ.astro';
-import CierreValidar from '../components/CierreValidar.astro';
+import SeccionesHome from '../components/SeccionesHome.astro';
 import { CONTEXTO } from '../consts';
-import { PREGUNTAS_FRECUENTES } from '../faq';
-
-const preguntasCortas = PREGUNTAS_FRECUENTES.slice(0, 6);
 ---
 
 <Layout
   titulo="Automatización con IA, web, SEO y seguridad para pymes en Perú"
   descripcion="El equipo técnico que tu negocio no tiene. Validamos tu idea en 15 minutos, sin costo, y la construimos en 2 a 4 semanas: automatización con IA, web, SEO y seguridad."
   contextoWhatsApp={CONTEXTO.home}
+  tipografia="a"
 >
   <HeroHome />
 
   <LogosMarqueeCosmoq />
 
-  <PorQue />
-  <Servicios />
-  <Industrias />
-  <Proceso />
-  <SeguridadBasica />
-  <Ejemplos />
-  <QuienesSomos />
-
-  <section class="seccion">
-    <div class="contenedor max-w-3xl">
-      <FAQ preguntas={preguntasCortas} titulo="Lo que nos preguntan antes de empezar" />
-    </div>
-  </section>
-
-  <CierreValidar />
+  <SeccionesHome />
 </Layout>

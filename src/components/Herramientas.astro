@@ -75,8 +75,10 @@ const filas: { items: readonly Herramienta[]; direccion: 'izquierda' | 'derecha'
       border-color 150ms ease;
   }
 
-  .herramienta:hover {
-    color: var(--color-texto);
-    border-color: var(--color-linea-viva);
+  @media (hover: hover) and (pointer: fine) {
+    .herramienta:hover {
+      color: var(--color-texto);
+      border-color: var(--color-linea-viva);
+    }
   }
 </style>

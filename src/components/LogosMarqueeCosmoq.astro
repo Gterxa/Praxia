@@ -5,20 +5,28 @@
  * a pedido de Tony (sep 2026), en vez del marquee anterior armado sobre
  * LogosClientes/Marquee.astro con los logos reales de Praxia.
  *
- * OJO: los seis logos de public/cosmoq-demo/ son el asset original del
- * template de cosmoq (marcas genéricas de su banco de ejemplos), no
- * clientes reales de Praxia — ver nota en el mensaje de respuesta.
+ * Fotos de public/cosmoq-demo/ (placeholders genéricos) reemplazadas por
+ * los 6 logos reales de clientes pedidos, versión estilizada (mono
+ * morado sobre negro, 2172x724 parejo) que Tony generó con Codex en
+ * dist/clientes/ — copiada a public/clientes/mono/ para que viva en el
+ * árbol fuente y no en un build output efímero. Automotores Inka quedó
+ * fuera a pedido de Tony (no estaba en la lista original).
  *
- * Tamaño a 3x del original (150x48 → 450x144, gap y paso del keyframe
- * escalados igual) a pedido explícito.
+ * Mismo marquee, mismo gap, misma animación — solo cambian las fotos.
+ *
+ * object-fit pasó de cover a contain: con cover, la caja fija de 450x144
+ * recortaba los logos anchos (netprovider, ucv, oca-global) porque su
+ * aspect ratio real es mucho más ancho que el de los placeholders de
+ * cosmoq — con cover se veían las palabras cortadas a la mitad.
  */
+import { ruta } from '../rutas';
 const ARCHIVOS = [
-  'eTOvR4ZuGGQENAaE3zs5ZqZxtks.png',
-  'QvWxQDGRcrTJWGZp7OsUlI4k6w0.png',
-  'ZrGThO8Gp1y7Hoki1Dmhr0Flw6U.png',
-  'dTohPdySQSHpfv4TUIdRVoRdHBw.png',
-  'WzG2yfwdF7vdqrjvFu4j7tyJ3Gs.png',
-  'FkPCvWLJEloyx0AnJETPfPfMx4.png',
+  'mono/oca-global.png',
+  'mono/ucv.png',
+  'mono/pacifico.png',
+  'mono/netprovider.png',
+  'mono/xs-peluqueria.png',
+  'mono/colegio-duni.png',
 ];
 
 // El original genera esto en cliente con JS (4 vueltas × 6 logos). Se
@@ -31,7 +39,7 @@ const LOGOS = Array.from({ length: 4 }, () => ARCHIVOS).flat();
     <ul class="logos__list">
       {LOGOS.map((f, i) => (
         <li>
-          <img src={`/cosmoq-demo/${f}`} alt={`Logo ${(i % ARCHIVOS.length) + 1}`} width="450" height="144" loading="lazy" />
+          <img src={ruta(`/clientes/${f}`)} alt={`Logo cliente ${(i % ARCHIVOS.length) + 1}`} width="450" height="144" loading="lazy" />
         </li>
       ))}
     </ul>
@@ -79,7 +87,7 @@ const LOGOS = Array.from({ length: 4 }, () => ARCHIVOS).flat();
   .logos__list img {
     width: 450px;
     height: 144px;
-    object-fit: cover;
+    object-fit: contain;
     filter: grayscale(1);
   }
   @keyframes cosmoq-marquee {

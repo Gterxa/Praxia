@@ -1,0 +1,191 @@
+---
+import Seccion from './Seccion.astro';
+import CabeceraSeccion from './CabeceraSeccion.astro';
+import Icon from './Icon.astro';
+import { EncryptedText } from './ui/encrypted-text';
+import { ruta } from '../rutas';
+
+// Réplica exacta del patrón "DATA AND PRIVACY" de cosmoq (.panes/.pane--1..4,
+// ver styles.css:391-400 en la copia local): 4 fotos de vidrio con textura,
+// más anchas que su columna, centradas y superpuestas — el ancho de sobra
+// es lo que crea el abanico en perspectiva. Mismos 4 PNG que cosmoq (copiados
+// a public/cosmoq-demo/panes/, igual que los otros assets de referencia del
+// proyecto en esa carpeta), mismas proporciones y blends, solo convertido de
+// px a rem.
+const PUNTOS = [
+  'Ya pasamos por esto antes: sabemos qué exige la Ley de Protección de Datos Personales.',
+  'Aunque no estamos certificados todavía, seguimos esos marcos igual.',
+  'Tu información es tuya. Solo la usamos para construir y mejorar lo que te entregamos.',
+] as const;
+---
+
+<Seccion id="privacidad-datos" class="seccion-cosmoq" fondo="void">
+  <div class="data__content flex flex-col gap-12 lg:flex-row lg:items-center lg:justify-center lg:gap-16">
+    <div class="data__title flex flex-1 flex-col justify-center gap-8 lg:gap-10">
+      <CabeceraSeccion etiqueta="Privacidad y confidencialidad" icono="candado" apilada>
+        <h2 slot="titulo" class="revelar" style="--i:0">
+          <EncryptedText
+            client:visible
+            text="Tus datos no se tocan"
+            revealDelayMs={45}
+            flipDelayMs={45}
+            encryptedClassName="text-texto-3"
+            revealedClassName="text-texto"
+          />
+        </h2>
+        <p slot="subtitulo" class="lead text-texto-2 revelar" style="--i:1">
+          No vendemos tu información ni la usamos para nada distinto a lo que construimos
+          contigo. Punto.
+        </p>
+      </CabeceraSeccion>
+
+      <ul class="data__points flex flex-col gap-4">
+        {
+          PUNTOS.map((texto, i) => (
+            <li class="privacidad-punto revelar-item" style={`--i:${i}`}>
+              <Icon nombre="check" tamano={18} class="text-brasa" />
+              <p>{texto}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="data__graphics revelar-visual flex flex-1 items-center justify-center" style="--i:0" aria-hidden="true">
+      <div class="panes">
+        <div class="panes__row">
+          <div class="pane pane--1"><figure><img src={ruta('/cosmoq-demo/panes/pane-1.png')} alt="" width="294" height="485" loading="lazy" /></figure></div>
+          <div class="pane pane--2"><figure><img src={ruta('/cosmoq-demo/panes/pane-2.png')} alt="" width="294" height="473" loading="lazy" /></figure></div>
+          <div class="pane pane--3"><figure><img src={ruta('/cosmoq-demo/panes/pane-3.png')} alt="" width="294" height="492" loading="lazy" /></figure></div>
+          <div class="pane pane--4"><figure><img src={ruta('/cosmoq-demo/panes/pane-4.png')} alt="" width="294" height="486" loading="lazy" /></figure></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Seccion>
+
+<style>
+  .privacidad-punto {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .privacidad-punto :global(svg) {
+    margin-top: 0.1875rem;
+    flex: none;
+  }
+
+  .privacidad-punto p {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    color: var(--color-texto-2);
+  }
+
+  /* Copia literal de .panes/.pane--1..4 de cosmoq, styles.css:391-400 y
+     690-693 (conversión px→rem, ÷16). Cada figure es más ancha que su .pane
+     (261-272px vs 71px = ~3.7x) y se centra con translateX(-50%): esa
+     sobre-extensión más el mask-image vertical es lo que crea el abanico en
+     perspectiva, no una transformación 3D en vivo. */
+  .data__graphics {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.625rem;
+    overflow: clip;
+  }
+
+  .panes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.75rem;
+    width: 100%;
+    padding: 1.375rem 0 0;
+    overflow: hidden;
+  }
+
+  .panes__row {
+    display: flex;
+    justify-content: center;
+    width: 17.75rem;
+    height: 27.7125rem;
+  }
+
+  .pane {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 0 0%;
+    width: 4.4375rem;
+  }
+
+  .pane figure {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 100%;
+    transform: translateX(-50%);
+    filter: brightness(1.70025);
+    -webkit-mask-image: linear-gradient(0deg, rgb(0 0 0 / 0.37) 6%, #000 17%, #000 100%);
+    mask-image: linear-gradient(0deg, rgb(0 0 0 / 0.37) 6%, #000 17%, #000 100%);
+  }
+
+  .pane figure img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .pane--1 {
+    z-index: 3;
+  }
+  .pane--1 figure {
+    width: 16.33rem;
+  }
+
+  .pane--2 {
+    z-index: 2;
+  }
+  .pane--2 figure {
+    width: 16.99rem;
+    opacity: 0.5;
+    mix-blend-mode: screen;
+  }
+
+  .pane--3 figure {
+    width: 16.33rem;
+    opacity: 0.5;
+  }
+
+  .pane--4 figure {
+    width: 16.42rem;
+    opacity: 0.5;
+  }
+
+  @media (max-width: 47.9375rem) {
+    .data__graphics {
+      height: 17.71875rem;
+    }
+    .panes__row {
+      width: 10.625rem;
+      height: 16.34375rem;
+    }
+    .pane {
+      width: 2.65625rem;
+    }
+    .pane--1 figure {
+      width: 9.63125rem;
+    }
+    .pane--2 figure {
+      width: 10.025rem;
+    }
+    .pane--3 figure {
+      width: 9.63125rem;
+    }
+    .pane--4 figure {
+      width: 9.68125rem;
+    }
+  }
+</style>

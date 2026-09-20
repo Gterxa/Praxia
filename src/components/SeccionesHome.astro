@@ -1,0 +1,45 @@
+---
+/**
+ * Todo lo que va debajo del hero y el marquee en la home. Vive aparte de
+ * index.astro para que la home real y el banco de pruebas de cosmoq
+ * (/pruebas/secciones) compartan el mismo árbol sin duplicarlo.
+ */
+import Destacado from './Destacado.astro';
+import PorQue from './PorQue.astro';
+import LineasServicio from './LineasServicio.astro';
+import Proceso from './Proceso.astro';
+import PrivacidadDatos from './PrivacidadDatos.astro';
+import Equipo from './Equipo.astro';
+import FAQTabs from './ui/faq-tabs.tsx';
+import CierreValidar from './CierreValidar.astro';
+import { PREGUNTAS_FRECUENTES, CATEGORIAS_FAQ, agruparPorCategoria } from '../faq';
+
+// FAQ de la home: 3 categorías (validación, entrega, confianza) — las que
+// más pesan para alguien que todavía no decide escribirnos.
+const preguntasHome = PREGUNTAS_FRECUENTES.filter((p) =>
+  ['validacion', 'entrega', 'confianza'].includes(p.categoria),
+);
+const faqData = agruparPorCategoria(preguntasHome);
+const categorias = Object.fromEntries(
+  Object.entries(CATEGORIAS_FAQ).filter(([clave]) => faqData[clave]?.length),
+);
+---
+
+<Destacado />
+
+<PorQue />
+<LineasServicio />
+<Proceso />
+<PrivacidadDatos />
+<Equipo />
+
+<section id="preguntas" class="seccion-cosmoq">
+  <div class="contenedor max-w-3xl">
+    <h2 class="mb-8 text-center revelar" style="--i:0">Lo que nos preguntan antes de empezar</h2>
+    <div class="revelar-item" style="--i:1">
+      <FAQTabs categorias={categorias} faqData={faqData} client:visible />
+    </div>
+  </div>
+</section>
+
+<CierreValidar />

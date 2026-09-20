@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Seccion from '../components/Seccion.astro';
 import Pendiente from '../components/Pendiente.astro';
 import { MOSTRAR_PENDIENTES, EMAIL, mailtoLink } from '../consts';
+import { ruta } from '../rutas';
 ---
 
 <Layout
@@ -77,7 +78,7 @@ import { MOSTRAR_PENDIENTES, EMAIL, mailtoLink } from '../consts';
           <p class="mt-3 text-texto-2">
             Cuando implementamos una automatización, los datos de tus clientes siguen siendo tuyos
             y los tratamos solo para operar lo que nos encargaste. Lo detallamos en{' '}
-            <a href="/seguridad" class="enlace">la página de seguridad</a>.
+            <a href={ruta('/seguridad')} class="enlace">la página de seguridad</a>.
           </p>
         </div>
       </div>
