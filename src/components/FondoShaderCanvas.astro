@@ -246,6 +246,15 @@ void main() {
     const gl = canvas.getContext('webgl', { antialias: false });
     if (!gl) return;
 
+    // Si el navegador mata el contexto (iOS castiga con varios WebGL vivos
+    // a la vez: la home llega a tener 5-6 entre el hero, las secciones con
+    // shader y el orbe), no queda un canvas negro parpadeante: se oculta y
+    // la sección se apoya en su color de fondo CSS de siempre.
+    canvas.addEventListener('webglcontextlost', (e) => {
+      e.preventDefault();
+      canvas.style.display = 'none';
+    });
+
     const compile = (type: number, src: string) => {
       const s = gl.createShader(type)!;
       gl.shaderSource(s, src);
@@ -295,8 +304,16 @@ void main() {
     let visible = false;
     let corriendo = false;
 
+    // La home llega a abrir 5-6 contextos WebGL a la vez (hero + hasta 4
+    // secciones con shader + orbe). En touch (mayormente móvil, donde la
+    // GPU es más floja y el límite de contextos de iOS es más bajo) el tope
+    // de DPR baja de 2 a 1: la mitad de fragmentos por sección, cuatro veces
+    // menos en total por el cuadrado del DPR.
+    const tocable = window.matchMedia('(pointer: coarse)').matches;
+    const dprMax = tocable ? 1 : 2;
+
     function resize() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, dprMax);
       const width = Math.max(1, Math.round(canvas.clientWidth * dpr));
       const height = Math.max(1, Math.round(canvas.clientHeight * dpr));
       if (canvas.width !== width || canvas.height !== height) {
@@ -314,7 +331,7 @@ void main() {
 
     function render(now: number) {
       dibujar(now);
-      if (reduceMotion || !visible) {
+      if (reduceMotion || !visible || document.hidden) {
         corriendo = false;
         return;
       }
@@ -322,7 +339,7 @@ void main() {
     }
 
     function arrancar() {
-      if (corriendo || reduceMotion) return;
+      if (corriendo || reduceMotion || document.hidden) return;
       corriendo = true;
       requestAnimationFrame(render);
     }
@@ -352,6 +369,14 @@ void main() {
       visible = true;
       arrancar();
     }
+
+    // Chrome/Edge no matan el rAF de una pestaña oculta, solo lo bajan a
+    // ~1Hz — el contexto WebGL sigue vivo y consumiendo GPU sin que se vea
+    // nada. `render()` ya corta el bucle solo al revisar document.hidden;
+    // acá solo hace falta retomarlo al volver, si la sección sigue visible.
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && visible) arrancar();
+    });
   }
 
   document.querySelectorAll<HTMLCanvasElement>('canvas.seccion-shader').forEach(iniciarShader);
