@@ -1,0 +1,94 @@
+---
+/**
+ * "Texto destacado" de cosmoq (`.highlight`): una frase donde cada palabra
+ * pasa de --color-texto-3 (apagada) a --color-texto (encendida) a medida
+ * que el bloque sube por el viewport — no es un reveal de una sola vez, es
+ * progresivo, atado al scroll.
+ *
+ * Mecanismo idéntico al original (medido en app.js de la réplica local):
+ * progreso 0→1 mientras el bloque sube del 85% al ~35% del viewport, y ese
+ * progreso decide cuántas palabras (de izquierda a derecha) están "on".
+ * cosmoq además suma una ilustración (círculo girando + logos) a la derecha;
+ * acá no se copia ningún asset de cosmoq, así que la sección queda a una
+ * columna centrada, como el resto de Praxia.
+ *
+ * Copy: reciclado de SITE.descripcion (consts.ts) — no se inventa nada.
+ */
+import { SITE } from '../consts';
+---
+
+<section class="seccion-cosmoq" id="destacado">
+  <div class="contenedor">
+    <p id="destacado-texto" class="destacado-texto">
+      {SITE.descripcion}
+    </p>
+  </div>
+</section>
+
+<style>
+  .destacado-texto {
+    max-width: 48rem;
+    margin-inline: auto;
+    text-align: center;
+    font-family: var(--font-titulos);
+    font-size: 1.625rem; /* 26px */
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+    color: var(--color-texto-3);
+  }
+
+  @media (min-width: 48rem) {
+    .destacado-texto {
+      font-size: 2.25rem; /* 36px */
+      line-height: 1.25;
+    }
+  }
+
+  .destacado-texto :global(.palabra) {
+    display: inline;
+    transition: color 0.35s var(--ease-suave);
+  }
+
+  .destacado-texto :global(.palabra.encendida) {
+    color: var(--color-texto);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .destacado-texto :global(.palabra) {
+      color: var(--color-texto);
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const nodo = document.getElementById('destacado-texto');
+  const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (nodo && !reducido) {
+    const palabras = nodo.textContent?.trim().split(/\s+/) ?? [];
+    nodo.textContent = '';
+    const spans = palabras.map((palabra, i) => {
+      const span = document.createElement('span');
+      span.className = 'palabra';
+      span.textContent = palabra;
+      nodo.appendChild(span);
+      if (i < palabras.length - 1) nodo.appendChild(document.createTextNode(' '));
+      return span;
+    });
+
+    const actualizar = () => {
+      const r = nodo.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // Progreso 0→1 mientras el bloque sube desde el 85% hasta ~35% del
+      // viewport (misma curva que la réplica de cosmoq).
+      const p = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (vh * 0.5 + r.height * 0.4)));
+      const n = Math.round(p * spans.length);
+      spans.forEach((s, i) => s.classList.toggle('encendida', i < n));
+    };
+
+    actualizar();
+    window.addEventListener('scroll', actualizar, { passive: true });
+    window.addEventListener('resize', actualizar);
+  }
+</script>

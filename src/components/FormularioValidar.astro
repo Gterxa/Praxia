@@ -1,0 +1,243 @@
+---
+/**
+ * El formulario de validación, en una sola vista scrolleable (sin pasos).
+ * Vive en dos sitios: la página /validar (desktop y fallback sin JS) y
+ * dentro de BottomSheetValidar (overlay que abren los CTAs en mobile).
+ * Por eso todo id lleva `idPrefix`: dos copias del mismo formulario en la
+ * misma página necesitan ids distintos o el segundo `document.getElementById`
+ * se queda con el primero.
+ */
+import { INDUSTRIAS } from '../industrias';
+import { ruta } from '../rutas';
+import { CONTEXTO, waLink } from '../consts';
+
+interface Props {
+  idPrefix: string;
+}
+
+const { idPrefix } = Astro.props;
+
+const endpoint = import.meta.env['PUBLIC_FORM_ENDPOINT'] ?? '';
+const accessKey = import.meta.env['PUBLIC_FORM_ACCESS_KEY'] ?? '';
+
+const TAMANOS = ['Solo yo', '2 a 10', '11 a 50', 'Más de 50'] as const;
+---
+
+<form
+  id={`${idPrefix}-form`}
+  data-form-validar
+  method="post"
+  action={endpoint || undefined}
+  data-endpoint={endpoint}
+  novalidate
+>
+  {accessKey && <input type="hidden" name="access_key" value={accessKey} />}
+  <input type="hidden" name="origen" value="web-validar" />
+  <input
+    type="text"
+    name="empresa_web"
+    tabindex="-1"
+    autocomplete="off"
+    class="hidden"
+    aria-hidden="true"
+  />
+
+  <div class="space-y-5">
+    <div>
+      <label for={`${idPrefix}-nombre`} class="mono block text-texto-3">Tu nombre</label>
+      <input id={`${idPrefix}-nombre`} name="nombre" type="text" class="campo mt-2" autocomplete="name" />
+      <p class="pequeno mt-1.5 hidden text-ambar" data-error-de="nombre"></p>
+    </div>
+    <div>
+      <label for={`${idPrefix}-whatsapp`} class="mono block text-texto-3">Tu WhatsApp</label>
+      <input
+        id={`${idPrefix}-whatsapp`}
+        name="whatsapp"
+        type="tel"
+        inputmode="tel"
+        class="campo mt-2"
+        autocomplete="tel"
+        placeholder="+51 9XX XXX XXX"
+      />
+      <p class="pequeno mt-1.5 hidden text-ambar" data-error-de="whatsapp"></p>
+    </div>
+    <div>
+      <label for={`${idPrefix}-correo`} class="mono block text-texto-3">Tu correo</label>
+      <input id={`${idPrefix}-correo`} name="correo" type="email" class="campo mt-2" autocomplete="email" />
+      <p class="pequeno mt-1.5 hidden text-ambar" data-error-de="correo"></p>
+    </div>
+
+    <div class="border-t border-linea pt-5">
+      <label for={`${idPrefix}-negocio`} class="mono block text-texto-3">Nombre del negocio</label>
+      <input id={`${idPrefix}-negocio`} name="negocio" type="text" class="campo mt-2" />
+      <p class="pequeno mt-1.5 hidden text-ambar" data-error-de="negocio"></p>
+    </div>
+    <div>
+      <label for={`${idPrefix}-rubro`} class="mono block text-texto-3">Rubro</label>
+      <select id={`${idPrefix}-rubro`} name="rubro" class="campo mt-2">
+        <option value="">Elige uno</option>
+        {INDUSTRIAS.map((r) => <option value={r.nombre}>{r.nombre}</option>)}
+        <option value="Otro">Otro</option>
+      </select>
+      <p class="pequeno mt-1.5 hidden text-ambar" data-error-de="rubro"></p>
+    </div>
+    <div>
+      <label for={`${idPrefix}-equipo`} class="mono block text-texto-3">Tamaño de equipo</label>
+      <select id={`${idPrefix}-equipo`} name="equipo" class="campo mt-2">
+        {TAMANOS.map((t) => <option value={t}>{t}</option>)}
+      </select>
+    </div>
+
+    <div class="border-t border-linea pt-5">
+      <label for={`${idPrefix}-idea`} class="mono block text-texto-3">¿Qué quieres automatizar?</label>
+      <textarea
+        id={`${idPrefix}-idea`}
+        name="idea"
+        rows="4"
+        class="campo mt-2"
+        placeholder="Escríbelo como se lo contarías a un amigo. Ej: quiero que alguien conteste los WhatsApp de noche y agende las citas."
+      ></textarea>
+      <p class="pequeno mt-1.5 hidden text-ambar" data-error-de="idea"></p>
+    </div>
+    <div>
+      <label for={`${idPrefix}-web`} class="mono block text-texto-3">Tu web actual (si tienes)</label>
+      <input id={`${idPrefix}-web`} name="web" type="text" class="campo mt-2" placeholder="tunegocio.pe" />
+    </div>
+
+    <p class="pequeno text-texto-2">
+      Usamos tus datos solo para contactarte por esta validación. Lee la
+      <a href={ruta('/privacidad')} class="enlace">política de privacidad</a>.
+    </p>
+  </div>
+
+  <button type="submit" class="boton boton-primario mt-7 w-full" data-boton-enviar>
+    Enviar y agendar los 15 min
+  </button>
+</form>
+
+<div id={`${idPrefix}-exito`} class="hidden rounded-praxia border border-verde/40 bg-verde/5 p-6" role="status">
+  <h2 class="text-[1.25rem] text-verde" data-exito-titulo>Recibido.</h2>
+  <p class="mt-3 text-texto-2">
+    Te escribimos hoy mismo por WhatsApp con una hora para los 15 minutos.
+  </p>
+  <a href={waLink(CONTEXTO.validar)} target="_blank" rel="noopener" class="boton boton-primario mt-5">
+    Abrir WhatsApp
+  </a>
+</div>
+
+<div id={`${idPrefix}-error`} class="mt-5 hidden rounded-praxia border border-brasa/50 bg-brasa-tenue p-5" role="alert">
+  <p class="text-texto">
+    No pudimos enviar el formulario desde aquí. Escríbenos por WhatsApp y lo resolvemos en el momento.
+  </p>
+  <a href={waLink(CONTEXTO.validar)} target="_blank" rel="noopener" class="enlace mt-3 inline-block">
+    Escribir por WhatsApp
+  </a>
+</div>
+
+<script>
+  const REQUERIDOS = ['nombre', 'whatsapp', 'correo', 'negocio', 'rubro', 'idea'];
+
+  const MENSAJES: Record<string, string> = {
+    nombre: 'Escribe tu nombre para saber cómo llamarte.',
+    whatsapp: 'Necesitamos un número de WhatsApp de 9 dígitos.',
+    correo: 'Escribe un correo válido.',
+    negocio: 'Cuéntanos cómo se llama tu negocio.',
+    rubro: 'Elige el rubro que más se parece al tuyo.',
+    idea: 'Escríbenos aunque sea una línea de lo que te gustaría automatizar.',
+  };
+
+  function inicializarFormularioValidar(form: HTMLFormElement) {
+    if (form.dataset['inicializado'] === 'true') return;
+    form.dataset['inicializado'] = 'true';
+
+    const raiz = form.closest('[data-hoja-validar]') ?? form.parentElement ?? document;
+    const exito = raiz.querySelector<HTMLElement>('[id$="-exito"]');
+    const error = raiz.querySelector<HTMLElement>('[id$="-error"]');
+    const botonEnviar = form.querySelector<HTMLButtonElement>('[data-boton-enviar]');
+
+    function campo(nombreCampo: string) {
+      return form.elements.namedItem(nombreCampo) as
+        | HTMLInputElement
+        | HTMLTextAreaElement
+        | HTMLSelectElement
+        | null;
+    }
+
+    function mostrarError(nombreCampo: string, mensaje: string | null) {
+      const c = campo(nombreCampo);
+      const aviso = form.querySelector<HTMLElement>(`[data-error-de="${nombreCampo}"]`);
+      if (!c || !aviso) return;
+      if (mensaje) {
+        aviso.textContent = mensaje;
+        aviso.classList.remove('hidden');
+        c.setAttribute('aria-invalid', 'true');
+      } else {
+        aviso.textContent = '';
+        aviso.classList.add('hidden');
+        c.removeAttribute('aria-invalid');
+      }
+    }
+
+    function validarCampo(nombreCampo: string): boolean {
+      const c = campo(nombreCampo);
+      if (!c) return true;
+      const valor = c.value.trim();
+      let ok = valor.length > 1;
+      if (nombreCampo === 'whatsapp') ok = valor.replace(/\D/g, '').length >= 9;
+      if (nombreCampo === 'correo') ok = /.+@.+\..+/.test(valor);
+      mostrarError(nombreCampo, ok ? null : (MENSAJES[nombreCampo] ?? 'Completa este campo.'));
+      return ok;
+    }
+
+    form.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      const resultados = REQUERIDOS.map(validarCampo);
+      if (resultados.includes(false)) {
+        const primerInvalido = REQUERIDOS.find((n) => campo(n)?.getAttribute('aria-invalid') === 'true');
+        if (primerInvalido) campo(primerInvalido)?.focus();
+        return;
+      }
+
+      const endpoint = form.dataset['endpoint'];
+      if (!endpoint) {
+        error?.classList.remove('hidden');
+        error?.scrollIntoView({ block: 'center' });
+        return;
+      }
+
+      if (botonEnviar) {
+        botonEnviar.disabled = true;
+        botonEnviar.textContent = 'Enviando…';
+      }
+      error?.classList.add('hidden');
+
+      try {
+        const respuesta = await fetch(endpoint, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(form),
+        });
+        if (!respuesta.ok) throw new Error(String(respuesta.status));
+        const titulo = exito?.querySelector('[data-exito-titulo]');
+        const nombre = campo('nombre')?.value.trim();
+        if (titulo) titulo.textContent = nombre ? `Recibido, ${nombre}.` : 'Recibido.';
+        form.classList.add('hidden');
+        exito?.classList.remove('hidden');
+        exito?.scrollIntoView({ block: 'center' });
+      } catch {
+        error?.classList.remove('hidden');
+        if (botonEnviar) {
+          botonEnviar.disabled = false;
+          botonEnviar.textContent = 'Enviar y agendar los 15 min';
+        }
+      }
+    });
+  }
+
+  document.querySelectorAll<HTMLFormElement>('[data-form-validar]').forEach(inicializarFormularioValidar);
+
+  document.addEventListener('formulario-validar:montado', (evento) => {
+    const form = (evento as CustomEvent<{ form: HTMLFormElement }>).detail?.form;
+    if (form) inicializarFormularioValidar(form);
+  });
+</script>

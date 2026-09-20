@@ -1,0 +1,261 @@
+---
+/**
+ * Área de productos, réplica de `#products` de cosmoq con alternancia real.
+ *
+ * Reemplaza en la home a `Servicios.astro` + `Industrias.astro` (decisión de
+ * Tony, 17-sep-2026). Ambos componentes siguen existiendo porque /servicios y
+ * el banco de pruebas los usan; lo que cambió es qué monta la home.
+ *
+ * De cosmoq se replica el layout del área: cabecera con eyebrow + línea y
+ * título partido izquierda/derecha (eso ya lo hace `CabeceraSeccion`), pills
+ * centradas arriba, y debajo un panel de 24px de radio con borde azulado
+ * tenue, texto y tres puntos con check a la izquierda y el visual a la
+ * derecha.
+ *
+ * Diferencia deliberada con la referencia: en cosmoq la alternancia está solo
+ * pintada — la pill activa cambia pero el panel nunca cambia de contenido (su
+ * propio JS solo hace toggle de la clase). Acá la alternancia es real, que es
+ * lo que se pidió; el markup de cosmoq ya venía con los hooks puestos para
+ * eso (`#ptitle`, `#pdesc`, `#ppoints`, `.pcontent__pane[hidden]`).
+ *
+ * El script de tabs es el mismo patrón que ya usaban Servicios e Industrias
+ * (roles ARIA, flechas para navegar, `hidden` en los paneles), para no meter
+ * un tercer mecanismo distinto en el mismo sitio.
+ */
+import Icon from './Icon.astro';
+import Seccion from './Seccion.astro';
+import CabeceraSeccion from './CabeceraSeccion.astro';
+import EscenaWeb from './ui/escena-web.tsx';
+import BentoIndustrias from './ui/bento-industrias.tsx';
+import { LINEAS_SERVICIO } from '../lineas';
+import { waLink, CONTEXTO } from '../consts';
+---
+
+<Seccion id="servicios" class="seccion-cosmoq" fondo="surface" paletaFondo="azul">
+  <CabeceraSeccion etiqueta="Servicios" icono="reportes">
+    <h2 slot="titulo" class="revelar" style="--i:0">Dos formas de trabajar con nosotros</h2>
+    <p slot="subtitulo" class="lead text-texto-2 revelar" style="--i:1">
+      Puedes tomar una o las dos. Si van juntas, se potencian.
+    </p>
+  </CabeceraSeccion>
+
+  <div class="mt-10 flex flex-col items-center gap-6" data-lineas>
+    <div class="flex flex-wrap justify-center gap-3" role="tablist" aria-label="Líneas de servicio">
+      {
+        LINEAS_SERVICIO.map((linea, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`linea-tab-${linea.id}`}
+            aria-controls={`linea-panel-${linea.id}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+            class="pestana-pill"
+          >
+            {linea.etiqueta}
+          </button>
+        ))
+      }
+    </div>
+
+    {
+      LINEAS_SERVICIO.map((linea, i) => (
+        <div
+          role="tabpanel"
+          id={`linea-panel-${linea.id}`}
+          aria-labelledby={`linea-tab-${linea.id}`}
+          hidden={i !== 0}
+          class:list={['panel-linea', 'revelar-visual', linea.visual === 'bento' && 'panel-linea--ancho']}
+          style={`--i:${i}`}
+        >
+          <div class="panel-linea-texto">
+            <div class="flex flex-col gap-4">
+              <h3 class="panel-linea-titulo">{linea.titulo}</h3>
+              <p class="text-texto-2">{linea.descripcion}</p>
+            </div>
+
+            <div class="flex flex-col gap-5">
+              {linea.puntos.map((punto) => (
+                <div class="punto-check">
+                  <span class="punto-check-marca">
+                    <Icon nombre="check" tamano={13} />
+                  </span>
+                  <p>{punto}</p>
+                </div>
+              ))}
+            </div>
+
+            <a
+              href={waLink(CONTEXTO.servicios(linea.contexto))}
+              target="_blank"
+              rel="noopener"
+              class="boton boton-primario w-fit"
+            >
+              Validar esto para mi negocio
+              <Icon nombre="flecha" tamano={18} />
+            </a>
+          </div>
+
+          <div class="panel-linea-visual">
+            {linea.visual === 'escena' ? <EscenaWeb client:visible /> : <BentoIndustrias client:visible />}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</Seccion>
+
+<style>
+  /* `.pcontent` de cosmoq: transparente, radio 24px, borde azulado tenue vía
+     ::after, y un min-height generoso en desktop para que el panel no se
+     encoja al cambiar de pestaña (las dos líneas tienen visuales de alto
+     distinto y si no el salto se nota). */
+  .panel-linea {
+    position: relative;
+    display: grid;
+    gap: 2rem;
+    width: 100%;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+  }
+
+  .panel-linea::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgb(84 124 255 / 0.16);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .panel-linea-texto {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .panel-linea-titulo {
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-texto);
+  }
+
+  .panel-linea-visual {
+    min-width: 0;
+  }
+
+  @media (min-width: 64rem) {
+    .panel-linea {
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      gap: 4.5rem;
+      padding: 2.5rem;
+      min-height: 32rem;
+      align-items: center;
+    }
+
+    .panel-linea-titulo {
+      font-size: 1.75rem;
+      line-height: 1.2;
+    }
+
+    /* La reja de industrias es la pieza que en invokube ocupa el ancho
+       completo del contenedor (1280px, 4 columnas). Metida en la columna
+       derecha del panel se aplastaba: las cards de una columna quedaban tan
+       angostas que el título se partía en tres líneas y el bento asimétrico
+       dejaba de leerse. Así que en esta línea el panel no va a dos columnas:
+       el texto arriba en fila y la reja abajo, a todo el ancho. */
+    .panel-linea--ancho {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: start;
+      /* La reja ya da altura de sobra: el piso de 32rem del panel a dos
+         columnas acá solo abre un hueco bajo el texto. */
+      min-height: 0;
+    }
+
+    .panel-linea--ancho .panel-linea-texto {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: start;
+      gap: 1.5rem 4.5rem;
+    }
+
+    /* El CTA cierra la fila del texto, alineado al final de la segunda
+       columna, para que no quede flotando solo debajo del título. */
+    .panel-linea--ancho .panel-linea-texto > a {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+
+  /* `.point` de cosmoq: caja con borde tenue y la píldora del check con su
+     brillo interior. */
+  .punto-check {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .punto-check::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgb(84 124 255 / 0.16);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .punto-check p {
+    flex: 1;
+    color: var(--color-texto);
+  }
+
+  .punto-check-marca {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 999px;
+    background: rgb(232 236 244 / 0.1);
+    box-shadow: inset 0 0 4px 0 rgb(232 236 244 / 0.31);
+    color: var(--color-brasa);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-lineas]').forEach((grupo) => {
+    const pestanas = Array.from(grupo.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const paneles = Array.from(grupo.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+
+    const activar = (indice: number, mover = true) => {
+      pestanas.forEach((pestana, i) => {
+        const activa = i === indice;
+        pestana.setAttribute('aria-selected', String(activa));
+        pestana.tabIndex = activa ? 0 : -1;
+        paneles[i]?.toggleAttribute('hidden', !activa);
+      });
+      // El panel que se muestra puede no haber pasado nunca por el observador
+      // de scroll-reveal (estaba `hidden` cuando la sección entró), así que
+      // se marca visible a mano: sin esto queda en opacity 0.
+      paneles[indice]?.classList.add('visible');
+      if (mover) pestanas[indice]?.focus();
+    };
+
+    pestanas.forEach((pestana, i) => {
+      pestana.addEventListener('click', () => activar(i, false));
+      pestana.addEventListener('keydown', (evento) => {
+        const salto = evento.key === 'ArrowRight' ? 1 : evento.key === 'ArrowLeft' ? -1 : 0;
+        if (salto === 0) return;
+        evento.preventDefault();
+        activar((i + salto + pestanas.length) % pestanas.length);
+      });
+    });
+  });
+</script>

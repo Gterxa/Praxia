@@ -8,8 +8,10 @@ export const SITE = {
   tagline: 'El equipo técnico que tu negocio no tiene.',
   descripcion:
     'Automatización con IA, web, SEO y seguridad para pymes del Perú. Validamos tu idea en 15 minutos, sin costo, y la construimos en 2 a 4 semanas.',
-  // [PENDIENTE] Reemplazar por el dominio real antes de desplegar.
-  url: 'https://praxia.pe',
+  // Dominio de producción en Vercel. El apex redirige 308 a www, así que la
+  // canonical, el OG, el JSON-LD y el sitemap salen con www. Ojo: praxia.pe
+  // es un sitio ajeno, no nuestro.
+  url: 'https://www.trypraxia.tech',
   idioma: 'es-PE',
   pais: 'PE',
 } as const;
@@ -19,7 +21,7 @@ export const SITE = {
    ========================================================================== */
 
 /** Formato internacional, sin + ni espacios: así lo pide wa.me. */
-export const WHATSAPP = '51960041731';
+export const WHATSAPP = '51997872779';
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP}`;
 export const EMAIL = 'contacto.praxias@gmail.com';
 
@@ -65,10 +67,9 @@ export const CONTEXTO = {
  * está acá: el header lo pone aparte, como botón.
  */
 export const NAV_PRINCIPAL = [
-  { texto: 'Servicios', href: '/servicios' },
-  { texto: 'Industrias', href: '/#industrias' },
-  { texto: 'Cómo trabajamos', href: '/como-trabajamos' },
-  { texto: 'Preguntas', href: '/preguntas-frecuentes' },
+  { texto: 'Servicios', href: '/#servicios' },
+  { texto: 'Cómo trabajamos', href: '/#proceso' },
+  { texto: 'Preguntas', href: '/#preguntas' },
 ] as const;
 
 /**
@@ -168,14 +169,14 @@ export const CLIENTES: readonly {
   url?: string;
 }[] = [
   { nombre: 'Universidad de Lima', logo: '/clientes/universidad-de-lima.jpg', ancho: 1280, alto: 720 },
-  { nombre: 'Pacífico', logo: '/clientes/pacifico.png', ancho: 1875, alto: 1277 },
-  { nombre: 'OCA Global', logo: '/clientes/oca-global.jpg', ancho: 1024, alto: 406 },
-  { nombre: 'Netprovider', logo: '/clientes/netprovider.png', ancho: 1420, alto: 251 },
+  { nombre: 'Pacífico', logo: '/clientes/procesados/pacifico.png', ancho: 1875, alto: 1277 },
+  { nombre: 'OCA Global', logo: '/clientes/procesados/oca-global.png', ancho: 756, alto: 184 },
+  { nombre: 'Netprovider', logo: '/clientes/procesados/netprovider.png', ancho: 1396, alto: 226 },
   { nombre: 'Maxiautos' },
   { nombre: 'Automotores Inka', logo: '/clientes/automotores-inka.png', ancho: 384, alto: 53 },
-  { nombre: 'Universidad César Vallejo', logo: '/clientes/ucv.jpg', ancho: 1701, alto: 995 },
-  { nombre: 'XS Peluquería', logo: '/clientes/xs-peluqueria.png', ancho: 263, alto: 185 },
-  { nombre: 'Colegio Duni', logo: '/clientes/colegio-duni.jpg', ancho: 1080, alto: 1080 },
+  { nombre: 'Universidad César Vallejo', logo: '/clientes/procesados/ucv.png', ancho: 1318, alto: 214 },
+  { nombre: 'XS Peluquería', logo: '/clientes/procesados/xs-peluqueria.png', ancho: 155, alto: 119 },
+  { nombre: 'Colegio Duni', logo: '/clientes/procesados/colegio-duni.png', ancho: 1080, alto: 1080 },
   { nombre: 'Outletcar', logo: '/clientes/outletcar.jpg', ancho: 150, alto: 150 },
 ];
 

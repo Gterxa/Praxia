@@ -3,12 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import Seccion from '../components/Seccion.astro';
 import Icon from '../components/Icon.astro';
+import FormularioValidar from '../components/FormularioValidar.astro';
 import { CONTEXTO, waLink } from '../consts';
-import { INDUSTRIAS } from '../industrias';
-
-// Endpoint del servicio de formularios. Ver .env.example y el README.
-const endpoint = import.meta.env['PUBLIC_FORM_ENDPOINT'] ?? '';
-const accessKey = import.meta.env['PUBLIC_FORM_ACCESS_KEY'] ?? '';
 
 const PROMESAS = [
   'Precio y plazo estimados',
@@ -16,22 +12,20 @@ const PROMESAS = [
   'Diagrama del flujo que propondríamos',
   'Qué automatizar primero',
 ] as const;
-
-const TAMANOS = ['Solo yo', '2 a 10', '11 a 50', 'Más de 50'] as const;
 ---
 
 <Layout
   titulo="Validar mi idea"
-  descripcion="Validación de tu idea en 15 minutos, sin costo. Cuatro pasos cortos y te respondemos el mismo día."
+  descripcion="Validación de tu idea en 15 minutos, sin costo. Un formulario corto y te respondemos el mismo día."
   contextoWhatsApp={CONTEXTO.validar}
 >
   <Seccion>
     <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
-      <div>
+      <div class="order-1 lg:order-none">
         <SectionLabel texto="Validemos tu idea" />
         <h1 class="mt-4">Cuéntanos qué quieres automatizar.</h1>
         <p class="lead mt-6">
-          Cuatro pasos cortos. Te respondemos el mismo día con una hora para los 15 minutos.
+          Un formulario corto. Te respondemos el mismo día con una hora para los 15 minutos.
         </p>
 
         <ul class="mt-8 space-y-3">
@@ -47,7 +41,7 @@ const TAMANOS = ['Solo yo', '2 a 10', '11 a 50', 'Más de 50'] as const;
           }
         </ul>
 
-        <div class="mt-12 border-t border-linea pt-8">
+        <div class="mt-12 hidden border-t border-linea pt-8 lg:block">
           <p class="text-texto-2">
             ¿Prefieres no llenar formularios? Escríbenos directo. Es el mismo camino y suele ser
             más rápido.
@@ -64,337 +58,30 @@ const TAMANOS = ['Solo yo', '2 a 10', '11 a 50', 'Más de 50'] as const;
         </div>
       </div>
 
-      <div>
+      <div class="order-2 lg:order-none">
         <div class="tarjeta">
-          <div class="mb-6 flex items-center justify-between gap-4">
-            <span class="mono text-texto-3" id="paso-etiqueta">Paso 1 de 4</span>
-            <div class="barra-progreso" aria-hidden="true">
-              <div class="barra-progreso-relleno" id="barra-progreso-relleno"></div>
-            </div>
-          </div>
-
-          <form
-            id="form-validar"
-            method="post"
-            action={endpoint || undefined}
-            data-endpoint={endpoint}
-            novalidate
-          >
-            {accessKey && <input type="hidden" name="access_key" value={accessKey} />}
-            <input type="hidden" name="origen" value="web-validar" />
-            <input
-              type="text"
-              name="empresa_web"
-              tabindex="-1"
-              autocomplete="off"
-              class="hidden"
-              aria-hidden="true"
-            />
-
-            <!-- Paso 1: contacto -->
-            <div class="paso space-y-5" data-paso="0">
-              <h2 class="text-[1.25rem] md:text-[1.5rem]">¿Cómo te contactamos?</h2>
-              <div>
-                <label for="nombre" class="mono block text-texto-3">Tu nombre</label>
-                <input id="nombre" name="nombre" type="text" class="campo mt-2" autocomplete="name" />
-                <p class="pequeno mt-1.5 hidden text-ambar" data-error-de="nombre"></p>
-              </div>
-              <div>
-                <label for="whatsapp" class="mono block text-texto-3">Tu WhatsApp</label>
-                <input
-                  id="whatsapp"
-                  name="whatsapp"
-                  type="tel"
-                  inputmode="tel"
-                  class="campo mt-2"
-                  autocomplete="tel"
-                  placeholder="+51 9XX XXX XXX"
-                />
-                <p class="pequeno mt-1.5 hidden text-ambar" data-error-de="whatsapp"></p>
-              </div>
-              <div>
-                <label for="correo" class="mono block text-texto-3">Tu correo</label>
-                <input id="correo" name="correo" type="email" class="campo mt-2" autocomplete="email" />
-                <p class="pequeno mt-1.5 hidden text-ambar" data-error-de="correo"></p>
-              </div>
-            </div>
-
-            <!-- Paso 2: negocio -->
-            <div class="paso hidden space-y-5" data-paso="1">
-              <h2 class="text-[1.25rem] md:text-[1.5rem]">Tu negocio</h2>
-              <div>
-                <label for="negocio" class="mono block text-texto-3">Nombre del negocio</label>
-                <input id="negocio" name="negocio" type="text" class="campo mt-2" />
-                <p class="pequeno mt-1.5 hidden text-ambar" data-error-de="negocio"></p>
-              </div>
-              <div>
-                <label for="rubro" class="mono block text-texto-3">Rubro</label>
-                <select id="rubro" name="rubro" class="campo mt-2">
-                  <option value="">Elige uno</option>
-                  {INDUSTRIAS.map((r) => <option value={r.nombre}>{r.nombre}</option>)}
-                  <option value="Otro">Otro</option>
-                </select>
-                <p class="pequeno mt-1.5 hidden text-ambar" data-error-de="rubro"></p>
-              </div>
-              <div>
-                <label for="equipo" class="mono block text-texto-3">Tamaño de equipo</label>
-                <select id="equipo" name="equipo" class="campo mt-2">
-                  {TAMANOS.map((t) => <option value={t}>{t}</option>)}
-                </select>
-              </div>
-            </div>
-
-            <!-- Paso 3: la idea -->
-            <div class="paso hidden space-y-5" data-paso="2">
-              <h2 class="text-[1.25rem] md:text-[1.5rem]">¿Qué quieres automatizar?</h2>
-              <div>
-                <label for="idea" class="mono block text-texto-3">Cuéntanoslo</label>
-                <textarea
-                  id="idea"
-                  name="idea"
-                  rows="4"
-                  class="campo mt-2"
-                  placeholder="Escríbelo como se lo contarías a un amigo. Ej: quiero que alguien conteste los WhatsApp de noche y agende las citas."
-                ></textarea>
-                <p class="pequeno mt-1.5 hidden text-ambar" data-error-de="idea"></p>
-              </div>
-              <div>
-                <label for="web" class="mono block text-texto-3">Tu web actual (si tienes)</label>
-                <input id="web" name="web" type="text" class="campo mt-2" placeholder="tunegocio.pe" />
-              </div>
-            </div>
-
-            <!-- Paso 4: revisar y enviar -->
-            <div class="paso hidden space-y-4" data-paso="3">
-              <h2 class="text-[1.25rem] md:text-[1.5rem]">Revisa y envía</h2>
-              <dl class="resumen space-y-2 rounded-praxia border border-linea bg-void/40 p-4">
-                <div class="flex justify-between gap-3"><dt class="text-texto-2">Nombre</dt><dd class="text-texto" id="resumen-nombre">—</dd></div>
-                <div class="flex justify-between gap-3"><dt class="text-texto-2">WhatsApp</dt><dd class="text-texto" id="resumen-whatsapp">—</dd></div>
-                <div class="flex justify-between gap-3"><dt class="text-texto-2">Negocio</dt><dd class="text-texto" id="resumen-negocio">—</dd></div>
-                <div class="flex justify-between gap-3"><dt class="text-texto-2">Rubro</dt><dd class="text-texto" id="resumen-rubro">—</dd></div>
-              </dl>
-              <p class="pequeno text-texto-2">
-                Usamos tus datos solo para contactarte por esta validación. Lee la
-                <a href="/privacidad" class="enlace">política de privacidad</a>.
-              </p>
-            </div>
-
-            <div class="mt-7 flex gap-3">
-              <button type="button" class="boton boton-secundario hidden" id="boton-anterior">
-                Anterior
-              </button>
-              <button type="button" class="boton boton-primario flex-1" id="boton-continuar">
-                Continuar
-              </button>
-              <button type="submit" class="boton boton-primario hidden flex-1" id="boton-enviar">
-                Enviar y agendar los 15 min
-              </button>
-            </div>
-          </form>
-
-          <div id="form-exito" class="hidden rounded-praxia border border-verde/40 bg-verde/5 p-6" role="status">
-            <h2 class="text-[1.25rem] text-verde" id="exito-titulo">Recibido.</h2>
-            <p class="mt-3 text-texto-2">
-              Te escribimos hoy mismo por WhatsApp con una hora para los 15 minutos.
-            </p>
-            <a href={waLink(CONTEXTO.validar)} target="_blank" rel="noopener" class="boton boton-primario mt-5">
-              Abrir WhatsApp
-            </a>
-          </div>
-
-          <div id="form-error" class="mt-5 hidden rounded-praxia border border-brasa/50 bg-brasa-tenue p-5" role="alert">
-            <p class="text-texto">
-              No pudimos enviar el formulario desde aquí. Escríbenos por WhatsApp y lo resolvemos en el momento.
-            </p>
-            <a href={waLink(CONTEXTO.validar)} target="_blank" rel="noopener" class="enlace mt-3 inline-block">
-              Escribir por WhatsApp
-            </a>
+          <h2 class="text-[1.25rem] md:text-[1.5rem]">Cuéntanos en un formulario</h2>
+          <div class="mt-6">
+            <FormularioValidar idPrefix="pagina" />
           </div>
         </div>
+      </div>
+
+      <div class="order-3 border-t border-linea pt-8 lg:hidden">
+        <p class="text-texto-2">
+          ¿Prefieres no llenar formularios? Escríbenos directo. Es el mismo camino y suele ser más
+          rápido.
+        </p>
+        <a
+          href={waLink(CONTEXTO.validar)}
+          target="_blank"
+          rel="noopener"
+          class="boton boton-primario mt-5"
+        >
+          <Icon nombre="whatsapp" tamano={20} />
+          Escríbenos por WhatsApp
+        </a>
       </div>
     </div>
   </Seccion>
 </Layout>
-
-<style>
-  .barra-progreso {
-    flex: 1;
-    max-width: 10rem;
-    height: 4px;
-    border-radius: 999px;
-    background: var(--color-linea);
-    overflow: hidden;
-  }
-
-  .barra-progreso-relleno {
-    height: 100%;
-    width: 25%;
-    background: var(--degradado-calido);
-    transition: width 400ms var(--ease-resorte);
-  }
-
-  .paso {
-    animation: entra-paso 400ms var(--ease-resorte);
-  }
-
-  @keyframes entra-paso {
-    from {
-      opacity: 0;
-      transform: translateX(12px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .paso {
-      animation: none;
-    }
-  }
-</style>
-
-<script>
-  const form = document.getElementById('form-validar') as HTMLFormElement | null;
-  const pasos = Array.from(document.querySelectorAll<HTMLElement>('[data-paso]'));
-  const etiqueta = document.getElementById('paso-etiqueta');
-  const relleno = document.getElementById('barra-progreso-relleno');
-  const botonAnterior = document.getElementById('boton-anterior') as HTMLButtonElement | null;
-  const botonContinuar = document.getElementById('boton-continuar') as HTMLButtonElement | null;
-  const botonEnviar = document.getElementById('boton-enviar') as HTMLButtonElement | null;
-  const exito = document.getElementById('form-exito');
-  const error = document.getElementById('form-error');
-
-  let actual = 0;
-
-  const REQUERIDOS: Record<number, string[]> = {
-    0: ['nombre', 'whatsapp', 'correo'],
-    1: ['negocio', 'rubro'],
-    2: ['idea'],
-  };
-
-  const MENSAJES: Record<string, string> = {
-    nombre: 'Escribe tu nombre para saber cómo llamarte.',
-    whatsapp: 'Necesitamos un número de WhatsApp de 9 dígitos.',
-    correo: 'Escribe un correo válido.',
-    negocio: 'Cuéntanos cómo se llama tu negocio.',
-    rubro: 'Elige el rubro que más se parece al tuyo.',
-    idea: 'Escríbenos aunque sea una línea de lo que te gustaría automatizar.',
-  };
-
-  function campo(nombre: string): HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null {
-    return form?.elements.namedItem(nombre) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null;
-  }
-
-  function mostrarError(nombreCampo: string, mensaje: string | null) {
-    const c = campo(nombreCampo);
-    const aviso = document.querySelector<HTMLElement>(`[data-error-de="${nombreCampo}"]`);
-    if (!c || !aviso) return;
-    if (mensaje) {
-      aviso.textContent = mensaje;
-      aviso.classList.remove('hidden');
-      c.setAttribute('aria-invalid', 'true');
-    } else {
-      aviso.textContent = '';
-      aviso.classList.add('hidden');
-      c.removeAttribute('aria-invalid');
-    }
-  }
-
-  function validarCampo(nombreCampo: string): boolean {
-    const c = campo(nombreCampo);
-    if (!c) return true;
-    const valor = c.value.trim();
-    let ok = valor.length > 1;
-    if (nombreCampo === 'whatsapp') ok = valor.replace(/\D/g, '').length >= 9;
-    if (nombreCampo === 'correo') ok = /.+@.+\..+/.test(valor);
-    mostrarError(nombreCampo, ok ? null : (MENSAJES[nombreCampo] ?? 'Completa este campo.'));
-    return ok;
-  }
-
-  function validarPaso(indice: number): boolean {
-    const nombres = REQUERIDOS[indice] ?? [];
-    const resultados = nombres.map(validarCampo);
-    return !resultados.includes(false);
-  }
-
-  function llenarResumen() {
-    const set = (id: string, valor: string) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = valor || '—';
-    };
-    set('resumen-nombre', campo('nombre')?.value ?? '');
-    set('resumen-whatsapp', campo('whatsapp')?.value ?? '');
-    set('resumen-negocio', campo('negocio')?.value ?? '');
-    set('resumen-rubro', campo('rubro')?.value ?? '');
-  }
-
-  function mostrarPaso(indice: number) {
-    pasos.forEach((p) => p.classList.toggle('hidden', Number(p.dataset['paso']) !== indice));
-    if (etiqueta) etiqueta.textContent = `Paso ${indice + 1} de ${pasos.length}`;
-    if (relleno) relleno.style.width = `${((indice + 1) / pasos.length) * 100}%`;
-    botonAnterior?.classList.toggle('hidden', indice === 0);
-    const esUltimo = indice === pasos.length - 1;
-    botonContinuar?.classList.toggle('hidden', esUltimo);
-    botonEnviar?.classList.toggle('hidden', !esUltimo);
-    if (esUltimo) llenarResumen();
-  }
-
-  botonContinuar?.addEventListener('click', () => {
-    if (!validarPaso(actual)) {
-      const nombres = REQUERIDOS[actual] ?? [];
-      const primerInvalido = nombres.find((n) => campo(n)?.getAttribute('aria-invalid') === 'true');
-      if (primerInvalido) campo(primerInvalido)?.focus();
-      return;
-    }
-    actual = Math.min(pasos.length - 1, actual + 1);
-    mostrarPaso(actual);
-  });
-
-  botonAnterior?.addEventListener('click', () => {
-    actual = Math.max(0, actual - 1);
-    mostrarPaso(actual);
-  });
-
-  form?.addEventListener('submit', async (evento) => {
-    evento.preventDefault();
-    if (!validarPaso(0) || !validarPaso(1) || !validarPaso(2)) return;
-
-    const endpoint = form.dataset['endpoint'];
-    if (!endpoint) {
-      error?.classList.remove('hidden');
-      error?.scrollIntoView({ block: 'center' });
-      return;
-    }
-
-    if (botonEnviar) {
-      botonEnviar.disabled = true;
-      botonEnviar.textContent = 'Enviando…';
-    }
-    error?.classList.add('hidden');
-
-    try {
-      const respuesta = await fetch(endpoint, {
-        method: 'POST',
-        headers: { Accept: 'application/json' },
-        body: new FormData(form),
-      });
-      if (!respuesta.ok) throw new Error(String(respuesta.status));
-      const titulo = document.getElementById('exito-titulo');
-      const nombre = campo('nombre')?.value.trim();
-      if (titulo) titulo.textContent = nombre ? `Recibido, ${nombre}.` : 'Recibido.';
-      form.classList.add('hidden');
-      exito?.classList.remove('hidden');
-      exito?.scrollIntoView({ block: 'center' });
-    } catch {
-      error?.classList.remove('hidden');
-      if (botonEnviar) {
-        botonEnviar.disabled = false;
-        botonEnviar.textContent = 'Enviar y agendar los 15 min';
-      }
-    }
-  });
-
-  mostrarPaso(0);
-</script>

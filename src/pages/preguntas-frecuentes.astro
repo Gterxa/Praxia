@@ -2,11 +2,13 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Seccion from '../components/Seccion.astro';
-import FAQ from '../components/FAQ.astro';
+import FAQTabs from '../components/ui/faq-tabs.tsx';
 import FichaHero from '../components/FichaHero.astro';
 import CTABand from '../components/CTABand.astro';
 import { CONTEXTO } from '../consts';
-import { PREGUNTAS_FRECUENTES } from '../faq';
+import { PREGUNTAS_FRECUENTES, CATEGORIAS_FAQ, agruparPorCategoria } from '../faq';
+
+const faqData = agruparPorCategoria(PREGUNTAS_FRECUENTES);
 ---
 
 <Layout
@@ -25,9 +27,7 @@ import { PREGUNTAS_FRECUENTES } from '../faq';
   </Hero>
 
   <Seccion fondo="surface">
-    <div class="max-w-3xl">
-      <FAQ preguntas={PREGUNTAS_FRECUENTES} abrirPrimera />
-    </div>
+    <FAQTabs categorias={CATEGORIAS_FAQ} faqData={faqData} client:visible />
   </Seccion>
 
   <CTABand contextoWhatsApp={CONTEXTO.preguntas} />

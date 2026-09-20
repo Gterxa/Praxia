@@ -27,7 +27,7 @@
      Ojo al revertir: `<meta name="theme-color">` en Layout.astro no acepta una
      variable CSS, así que --void está repetido ahí a mano. Es el único color
      hardcodeado del proyecto, y hay que cambiarlo junto con este. */
-  --color-void: #07070b;
+  --color-void: #000000;
   --color-surface: #0d0e14;
   --color-surface-2: #15161e;
 
@@ -95,9 +95,14 @@
     var(--color-violeta) 100%
   );
 
-  /* --- Movimiento. Los dos únicos easings del sitio (de la réplica de
-     cosmoq): --ease-suave para opacidad/color, --ease-resorte para
-     transform. Nunca mezclar un tercero. --- */
+  /* --- Movimiento. Los dos únicos easings del sitio. --ease-resorte es la
+     curva maestra: la usa el sistema de scroll-reveal completo (opacidad Y
+     transform, misma duración para ambas — antes se mezclaban las dos
+     curvas con duraciones distintas y quedaban desincronizadas) y es,
+     además, la misma que corre TODO invokube.com (cubic-bezier(.22,1,.36,1),
+     verificado sobre sus chunks). --ease-suave queda para transiciones de
+     color/estado puntuales que no son parte del reveal (Destacado, hover de
+     HeroHome). Nunca mezclar un tercero. --- */
   --ease-suave: cubic-bezier(0.44, 0, 0.56, 1);
   --ease-resorte: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -146,9 +151,10 @@
   }
 
   /* Tipografía.
-     --font-titulos (Space Grotesk), --font-cuerpo (Inter) y --font-mono
-     (JetBrains Mono) NO se declaran aquí: los define Astro en :root a partir
-     de `fonts` en astro.config.mjs, ya con los fallbacks ajustados por
+     --font-titulos (Manrope, sep 2026 — antes Space Grotesk, ver
+     astro.config.mjs), --font-cuerpo (Manrope) y --font-mono (IBM Plex Mono,
+     antes JetBrains Mono) NO se declaran aquí: los define Astro en :root a
+     partir de `fonts` en astro.config.mjs, ya con los fallbacks ajustados por
      métrica. Si los redefines acá, pisas los de Astro y el sitio se queda sin
      sus fuentes sin dar ningún error. */
 }
