@@ -156,8 +156,8 @@ export default defineConfig({
         // placehold.co: fotos del equipo hasta que lleguen las reales
         // (Equipo.astro). Quitarlo de acá cuando se reemplacen.
         "img-src 'self' data: https://placehold.co",
-        "connect-src 'self' https://api.web3forms.com https://formspree.io",
-        "form-action 'self' https://api.web3forms.com https://formspree.io",
+        "connect-src 'self' https://fjlaouynjbdczmyodxde.supabase.co",
+        "form-action 'self'",
         "frame-src 'none'",
         "object-src 'none'",
         "base-uri 'self'",
