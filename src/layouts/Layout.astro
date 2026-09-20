@@ -45,27 +45,41 @@ const imagenOG = new URL('/og-praxia.png', Astro.site);
 /**
  * Organization + LocalBusiness, con `areaServed: "PE"` y sin ciudad.
  * Praxia opera de forma remota: segmentar por ciudad no aporta y compite en
- * keywords carísimas.
+ * keywords carísimas. WebSite es un nodo aparte enlazado por `publisher`:
+ * es lo que le permite a Google (y a un LLM leyendo el JSON-LD) resolver
+ * "qué sitio es este" sin tener que inferirlo de la Organization.
  */
 const datosEstructurados = {
   '@context': 'https://schema.org',
-  '@type': ['Organization', 'LocalBusiness'],
-  '@id': `${SITE.url}/#praxia`,
-  name: SITE.nombre,
-  description: SITE.descripcion,
-  url: SITE.url,
-  slogan: SITE.tagline,
-  email: EMAIL,
-  telephone: `+${WHATSAPP}`,
-  image: imagenOG.toString(),
-  logo: imagenOG.toString(),
-  areaServed: SITE.pais,
-  knowsLanguage: 'es-PE',
-  makesOffer: [
-    'Automatización con IA: atención, citas, seguimiento, documentos y reportes',
-    'Web, SEO y presencia local',
-    'Seguridad y mantenimiento',
-  ].map((nombre) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: nombre } })),
+  '@graph': [
+    {
+      '@type': ['Organization', 'LocalBusiness'],
+      '@id': `${SITE.url}/#praxia`,
+      name: SITE.nombre,
+      description: SITE.descripcion,
+      url: SITE.url,
+      slogan: SITE.tagline,
+      email: EMAIL,
+      telephone: `+${WHATSAPP}`,
+      image: imagenOG.toString(),
+      logo: imagenOG.toString(),
+      areaServed: SITE.pais,
+      knowsLanguage: 'es-PE',
+      makesOffer: [
+        'Automatización con IA: atención, citas, seguimiento, documentos y reportes',
+        'Web, SEO y presencia local',
+        'Seguridad y mantenimiento',
+      ].map((nombre) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: nombre } })),
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE.url}/#website`,
+      name: SITE.nombre,
+      url: SITE.url,
+      inLanguage: 'es-PE',
+      publisher: { '@id': `${SITE.url}/#praxia` },
+    },
+  ],
 };
 ---
 
@@ -74,7 +88,29 @@ const datosEstructurados = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/*
+      Evita el flash del titular del hero: HeroHome.astro envuelve
+      [data-palabras] en spans animados vía JS (necesita medir/generar el
+      texto, no se puede hacer solo en CSS). Sin esto, en conexiones lentas
+      el texto se ve completo un instante, el script lo vacía para
+      reconstruirlo en spans, y recién ahí entra animado — un parpadeo
+      visible. Este script bloqueante (antes de <body>) marca <html class=
+      "js"> ya con el primer byte; el CSS de abajo oculta [data-palabras]
+      solo bajo esa clase, así que sin JS el texto queda visible siempre
+      (SEO y accesibilidad intactos) y con JS no hay nada que parpadee.
+    */}
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    <style is:global>
+      .js [data-palabras] {
+        opacity: 0;
+      }
+    </style>
     <link rel="icon" href={ruta('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={ruta('/favicon.ico')} sizes="32x32" />
+    <link rel="apple-touch-icon" href={ruta('/apple-touch-icon.png')} />
+    <link rel="manifest" href={ruta('/site.webmanifest')} />
     <link rel="canonical" href={canonical} />
     <meta name="generator" content={Astro.generator} />
 
@@ -232,10 +268,24 @@ const datosEstructurados = {
 
       const SELECTOR_REVELAR = '.revelar, .revelar-item, .revelar-visual';
 
+      // Safari < 15.4 y Firefox < 121 lanzan SyntaxError al ver `:has()`
+      // dentro de un selector — no es "no encuentra nada", es que
+      // querySelectorAll entero revienta, y con eso muere el resto del
+      // script: todo lo marcado a mano con `.revelar` en el markup se queda
+      // en opacity:0 para siempre. Se intenta la vía rápida (:has) y, si el
+      // navegador no la entiende, se cae a un filtrado manual equivalente.
       const marcarSeccionesAutomaticas = () => {
-        const secciones = document.querySelectorAll<HTMLElement>(
-          'main > section:not(:first-child):not(#destacado):not(:has(.revelar)):not(:has(.revelar-item)):not(:has(.revelar-visual))',
-        );
+        let secciones: NodeListOf<HTMLElement>;
+        try {
+          secciones = document.querySelectorAll<HTMLElement>(
+            'main > section:not(:first-child):not(#destacado):not(:has(.revelar)):not(:has(.revelar-item)):not(:has(.revelar-visual))',
+          );
+        } catch {
+          secciones = document.querySelectorAll<HTMLElement>('main > section:not(:first-child):not(#destacado)');
+          secciones = Array.from(secciones).filter(
+            (seccion) => !seccion.querySelector(SELECTOR_REVELAR),
+          ) as unknown as NodeListOf<HTMLElement>;
+        }
         secciones.forEach((seccion) => seccion.classList.add('revelar'));
       };
 

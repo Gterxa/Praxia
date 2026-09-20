@@ -15,6 +15,15 @@
  * del radar en N posiciones, los destellos a mitad de trayecto) en una sola
  * imagen.
  *
+ * QA cross-browser: --navegador chrome|edge|firefox (default: chrome, o Edge
+ * si Chrome no está). Chrome y Edge son el mismo puppeteer-core con otro
+ * executablePath; Firefox usa `product: 'firefox'` (WebDriver BiDi, soportado
+ * en puppeteer-core desde la v22). Safari no tiene automatización headless en
+ * Windows — para eso, `npx playwright install webkit` y comparar a mano, o
+ * pedirle a Tony que abra el preview de Vercel en su iPhone.
+ *
+ *   npm run captura -- <url> <selector> <salida.png> --navegador firefox
+ *
  * Detalles que importan en este sitio:
  *  - `domcontentloaded`, no `networkidle0`: el websocket de HMR de Vite nunca
  *    deja la red idle y networkidle0 espera hasta su propio timeout (18 s).
@@ -47,7 +56,7 @@ const posicionales = args.filter((a, i) => !a.startsWith('--') && !args[i - 1]?.
 const [url, selector, salida] = posicionales;
 
 if (!url || !selector || !salida) {
-  console.error('Uso: node scripts/captura.mjs <url> <selector> <salida.png> [--ancho N] [--alto N] [--frames N] [--cada ms]');
+  console.error('Uso: node scripts/captura.mjs <url> <selector> <salida.png> [--ancho N] [--alto N] [--frames N] [--cada ms] [--navegador chrome|edge|firefox]');
   process.exit(1);
 }
 
@@ -55,26 +64,59 @@ const ancho = Number(flag('ancho', 1440));
 const alto = Number(flag('alto', 1000));
 const frames = Number(flag('frames', 1));
 const cada = Number(flag('cada', 300));
+const navegador = flag('navegador', 'chrome');
 
-const candidatos = [
-  process.env.CHROME_PATH,
-  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-  'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
-  `${process.env.LOCALAPPDATA}\\Google\\Chrome\\Application\\chrome.exe`,
-  'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
-].filter(Boolean);
-const executablePath = candidatos.find((p) => existsSync(p));
-if (!executablePath) {
-  console.error('No encontré Chrome ni Edge. Define CHROME_PATH con la ruta al ejecutable.');
+if (!['chrome', 'edge', 'firefox'].includes(navegador)) {
+  console.error(`--navegador debe ser chrome, edge o firefox (recibí "${navegador}")`);
   process.exit(1);
 }
 
 const t0 = Date.now();
-const browser = await puppeteer.launch({
-  executablePath,
-  headless: true,
-  args: ['--hide-scrollbars', '--disable-gpu', '--mute-audio'],
-});
+let browser;
+
+if (navegador === 'firefox') {
+  const candidatosFirefox = [
+    process.env.FIREFOX_PATH,
+    'C:\\Program Files\\Mozilla Firefox\\firefox.exe',
+    `${process.env.LOCALAPPDATA}\\Mozilla Firefox\\firefox.exe`,
+  ].filter(Boolean);
+  const executablePath = candidatosFirefox.find((p) => existsSync(p));
+  if (!executablePath) {
+    console.error('No encontré Firefox. Define FIREFOX_PATH con la ruta al ejecutable.');
+    process.exit(1);
+  }
+  browser = await puppeteer.launch({
+    browser: 'firefox',
+    executablePath,
+    headless: true,
+    args: ['--width', String(ancho), '--height', String(alto)],
+  });
+} else {
+  const candidatos =
+    navegador === 'edge'
+      ? [
+          process.env.EDGE_PATH,
+          'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+          'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+        ]
+      : [
+          process.env.CHROME_PATH,
+          'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+          'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+          `${process.env.LOCALAPPDATA}\\Google\\Chrome\\Application\\chrome.exe`,
+          'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+        ];
+  const executablePath = candidatos.filter(Boolean).find((p) => existsSync(p));
+  if (!executablePath) {
+    console.error(`No encontré ${navegador === 'edge' ? 'Edge' : 'Chrome ni Edge'}. Define ${navegador === 'edge' ? 'EDGE_PATH' : 'CHROME_PATH'} con la ruta al ejecutable.`);
+    process.exit(1);
+  }
+  browser = await puppeteer.launch({
+    executablePath,
+    headless: true,
+    args: ['--hide-scrollbars', '--disable-gpu', '--mute-audio'],
+  });
+}
 
 try {
   const page = await browser.newPage();
