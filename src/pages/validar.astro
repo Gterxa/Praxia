@@ -7,10 +7,6 @@ import { CONTEXTO, waLink } from '../consts';
 import { INDUSTRIAS } from '../industrias';
 import { ruta } from '../rutas';
 
-// Endpoint del servicio de formularios. Ver .env.example y el README.
-const endpoint = import.meta.env['PUBLIC_FORM_ENDPOINT'] ?? '';
-const accessKey = import.meta.env['PUBLIC_FORM_ACCESS_KEY'] ?? '';
-
 const PROMESAS = [
   'Precio y plazo estimados',
   'Viabilidad honesta: sí, no o aún no',
@@ -74,14 +70,7 @@ const TAMANOS = ['Solo yo', '2 a 10', '11 a 50', 'Más de 50'] as const;
             </div>
           </div>
 
-          <form
-            id="form-validar"
-            method="post"
-            action={endpoint || undefined}
-            data-endpoint={endpoint}
-            novalidate
-          >
-            {accessKey && <input type="hidden" name="access_key" value={accessKey} />}
+          <form id="form-validar" novalidate>
             <input type="hidden" name="origen" value="web-validar" />
             <input
               type="text"
@@ -273,6 +262,8 @@ const TAMANOS = ['Solo yo', '2 a 10', '11 a 50', 'Más de 50'] as const;
 </style>
 
 <script>
+  import { supabase } from '../lib/supabase';
+
   const form = document.getElementById('form-validar') as HTMLFormElement | null;
   const pasos = Array.from(document.querySelectorAll<HTMLElement>('[data-paso]'));
   const etiqueta = document.getElementById('paso-etiqueta');
@@ -378,12 +369,8 @@ const TAMANOS = ['Solo yo', '2 a 10', '11 a 50', 'Más de 50'] as const;
     evento.preventDefault();
     if (!validarPaso(0) || !validarPaso(1) || !validarPaso(2)) return;
 
-    const endpoint = form.dataset['endpoint'];
-    if (!endpoint) {
-      error?.classList.remove('hidden');
-      error?.scrollIntoView({ block: 'center' });
-      return;
-    }
+    // Honeypot: si un bot llenó este campo oculto, simulamos éxito sin insertar.
+    const honeypot = campo('empresa_web')?.value.trim();
 
     if (botonEnviar) {
       botonEnviar.disabled = true;
@@ -392,12 +379,21 @@ const TAMANOS = ['Solo yo', '2 a 10', '11 a 50', 'Más de 50'] as const;
     error?.classList.add('hidden');
 
     try {
-      const respuesta = await fetch(endpoint, {
-        method: 'POST',
-        headers: { Accept: 'application/json' },
-        body: new FormData(form),
-      });
-      if (!respuesta.ok) throw new Error(String(respuesta.status));
+      if (!honeypot) {
+        const { error: errorSupabase } = await supabase.from('leads').insert({
+          nombre: campo('nombre')?.value.trim(),
+          whatsapp: campo('whatsapp')?.value.trim(),
+          correo: campo('correo')?.value.trim(),
+          negocio: campo('negocio')?.value.trim(),
+          rubro: campo('rubro')?.value.trim(),
+          equipo: campo('equipo')?.value.trim() || null,
+          idea: campo('idea')?.value.trim(),
+          web: campo('web')?.value.trim() || null,
+          origen: campo('origen')?.value.trim() || 'web-validar',
+        });
+        if (errorSupabase) throw errorSupabase;
+      }
+
       const titulo = document.getElementById('exito-titulo');
       const nombre = campo('nombre')?.value.trim();
       if (titulo) titulo.textContent = nombre ? `Recibido, ${nombre}.` : 'Recibido.';
