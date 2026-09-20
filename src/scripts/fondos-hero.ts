@@ -920,7 +920,7 @@ export function montarFondo(
   }
 
   function frame(ahora: number) {
-    if (!vivo || !visible) return;
+    if (!vivo || !visible || document.hidden) return;
     if (ahora - ultimo >= MS_POR_CUADRO) {
       ultimo = ahora;
       pintar(ahora);
@@ -929,7 +929,7 @@ export function montarFondo(
   }
 
   function arrancar() {
-    if (!vivo || reducido) return;
+    if (!vivo || reducido || document.hidden) return;
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(frame);
   }
@@ -960,6 +960,13 @@ export function montarFondo(
     { threshold: 0 },
   );
   io.observe(canvas);
+
+  // Mismo motivo que en FondoShaderCanvas.astro: Chrome/Edge no matan el
+  // rAF de una pestaña oculta, solo lo bajan a ~1Hz. frame() ya corta el
+  // bucle al revisar document.hidden; acá solo hace falta retomarlo.
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && visible) arrancar();
+  });
 
   ajustar();
   pintar(performance.now()); // primer cuadro ya, sin esperar al rAF

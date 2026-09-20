@@ -912,3 +912,35 @@
     }
   }
 }
+
+/* ==========================================================================
+   Fallback sin backdrop-filter (Firefox ~100-102, Safari muy viejo)
+   ========================================================================== */
+
+/* Fuera de @layer a propósito: fuera de cualquier @layer nombrado siempre
+   gana a lo que hay dentro, sin necesitar !important. Sube la opacidad del
+   fondo de las superficies "de vidrio" que dependen del blur para separarse
+   de lo que hay detrás — sin esto el texto queda casi ilegible sobre un
+   fondo prácticamente transparente. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .vidrio,
+  .bento-card {
+    background: var(--color-surface-2);
+  }
+
+  .boton-secundario {
+    background: var(--color-surface-2);
+  }
+
+  .escena-panel {
+    background: var(--color-surface-2);
+  }
+
+  /* .fcard-texto no lleva fondo propio (a propósito: es vidrio puro sobre
+     la imagen). Sin blur, el texto queda sobre la foto sin nada que lo
+     separe — acá sí hace falta un fondo de emergencia que normalmente no
+     tiene. */
+  .fcard-texto {
+    background: rgb(10 15 28 / 0.82);
+  }
+}

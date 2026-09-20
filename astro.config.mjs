@@ -18,9 +18,19 @@ export default defineConfig({
     sitemap({
       // Las legales llevan noindex mientras estén incompletas: fuera del sitemap.
       // Cuando las cierres, quita este filtro y el Disallow de public/robots.txt.
-      filter: (pagina) => !/\/(legal|privacidad)\/?$/.test(pagina),
+      // /pruebas/* son bancos de prueba internos (tipografía, fondos del hero):
+      // se buildean porque viven en src/pages, pero no son contenido del sitio.
+      filter: (pagina) => !/\/(legal|privacidad|pruebas)\/?/.test(pagina),
     }),
   ],
+
+  // Precarga en idle los <a> que entran en viewport (nav, CTAs) para que el
+  // click a /validar, /servicios, etc. sea instantáneo — ya vienen del cache
+  // del navegador en vez de esperar la respuesta.
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'viewport',
+  },
 
   // Rediseño "v2" (sep 2026): el diagnóstico pasó a llamarse "validación" y la
   // página de precios se retiró (el precio se da en la llamada, no en la web).
@@ -153,9 +163,7 @@ export default defineConfig({
       },
       directives: [
         "default-src 'self'",
-        // placehold.co: fotos del equipo hasta que lleguen las reales
-        // (Equipo.astro). Quitarlo de acá cuando se reemplacen.
-        "img-src 'self' data: https://placehold.co",
+        "img-src 'self' data:",
         "connect-src 'self' https://api.web3forms.com https://formspree.io",
         "form-action 'self' https://api.web3forms.com https://formspree.io",
         "frame-src 'none'",

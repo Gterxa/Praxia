@@ -41,6 +41,15 @@ const GLOW: Record<string, string> = {
   barras: 'glow-1.webp',
   chips: 'glow-3.webp',
 };
+
+// Dimensiones reales de cada glow (public/porque/) para width/height —
+// evita CLS al cargar: sin esto el navegador no reserva espacio hasta que
+// baja la imagen.
+const GLOW_DIMENSIONES: Record<string, { w: number; h: number }> = {
+  'glow-1.webp': { w: 1000, h: 1667 },
+  'glow-2.webp': { w: 1000, h: 1667 },
+  'glow-3.webp': { w: 1600, h: 1143 },
+};
 ---
 
 <Seccion id="por-que" class="seccion-cosmoq">
@@ -61,7 +70,16 @@ const GLOW: Record<string, string> = {
             style={`--i:${i}`}
           >
             <div class="fcard-visual fcard-visual--fila1">
-              <img src={ruta(`/porque/${GLOW[t.tipo]}`)} alt="" class="fcard-glow" aria-hidden="true" loading="lazy" />
+              <img
+                src={ruta(`/porque/${GLOW[t.tipo]}`)}
+                alt=""
+                class="fcard-glow"
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
+                width={GLOW_DIMENSIONES[GLOW[t.tipo]!]!.w}
+                height={GLOW_DIMENSIONES[GLOW[t.tipo]!]!.h}
+              />
 
               {t.tipo === 'panel' && (
                 <>
@@ -113,7 +131,16 @@ const GLOW: Record<string, string> = {
             style={`--i:${i}`}
           >
             <div class="fcard-visual fcard-visual--fila2">
-              <img src={ruta(`/porque/${GLOW[t.tipo]}`)} alt="" class="fcard-glow" aria-hidden="true" loading="lazy" />
+              <img
+                src={ruta(`/porque/${GLOW[t.tipo]}`)}
+                alt=""
+                class="fcard-glow"
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
+                width={GLOW_DIMENSIONES[GLOW[t.tipo]!]!.w}
+                height={GLOW_DIMENSIONES[GLOW[t.tipo]!]!.h}
+              />
               {t.tipo === 'tachado' && (
                 <>
                   <div class="radar fcard-capa" aria-hidden="true">
@@ -178,7 +205,13 @@ const GLOW: Record<string, string> = {
                     <i class="destello" /><i class="destello destello--calido" />
                     <i class="destello" /><i class="destello destello--calido" />
                   </div>
-                  <GlassCalendar client:only="react" />
+                  {/*
+                    client:visible, no client:only: ahora el componente
+                    renderiza en servidor (esqueleto sin fechas, ver
+                    glass-calendar.tsx) en vez de dejar un hueco vacío hasta
+                    hidratar. Las fechas reales siguen siendo client-side.
+                  */}
+                  <GlassCalendar client:visible />
                 </>
               )}
 

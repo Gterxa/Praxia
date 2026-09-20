@@ -5,23 +5,44 @@
  * Reemplaza a QuienesSomos.astro en el flujo de la home (mismo lugar,
  * después de Ejemplos y antes de FAQ).
  *
- * Nombres, roles y fotos son los reales. Fotos en public/equipo/.
+ * Nombres, roles y fotos son los reales. Fotos en src/assets/equipo/,
+ * optimizadas acá con getImage (webp, 800px = 2x el tamaño mostrado de
+ * 400px) y pasadas ya resueltas tanto a la isla React (EquipoShowcase)
+ * como al <img> del marquee móvil, para no duplicar el pipeline.
  */
+import { getImage } from 'astro:assets';
 import Seccion from './Seccion.astro';
 import CabeceraSeccion from './CabeceraSeccion.astro';
 import EquipoShowcase from './ui/equipo-showcase.tsx';
 import type { MiembroEquipo } from './ui/equipo-showcase.tsx';
 import Marquee from './Marquee.astro';
-import { ruta } from '../rutas';
+import alvaro from '../assets/equipo/alvaro-sanchez.png';
+import piero from '../assets/equipo/piero-pizarro.jpg';
+import gabriel from '../assets/equipo/gabriel-curay.jpeg';
+import cesar from '../assets/equipo/cesar-garcia.jpeg';
+import valentina from '../assets/equipo/valentina-sarango.jpg';
+import milene from '../assets/equipo/milene-garrido.jpg';
 
-const MIEMBROS: MiembroEquipo[] = [
-  { id: '1', nombre: 'Álvaro Sánchez', rol: 'Founder, Soluciones e IA', imagen: ruta('/equipo/alvaro-sanchez.png'), social: { linkedin: 'https://www.linkedin.com/in/aalvaroasanchez/' } },
-  { id: '2', nombre: 'Piero Pizarro', rol: 'Co-founder, Automatización', imagen: ruta('/equipo/piero-pizarro.jpg'), social: { linkedin: 'https://www.linkedin.com/in/piero-andr%C3%A9-pizarro-basile/' } },
-  { id: '3', nombre: 'Gabriel Curay', rol: 'Co-founder, Arquitectura', imagen: ruta('/equipo/gabriel-curay.jpeg'), social: { linkedin: 'https://www.linkedin.com/in/gabriel-curay-b11973262/' } },
-  { id: '4', nombre: 'César García', rol: 'Partner, Dirección técnica', imagen: ruta('/equipo/cesar-garcia.jpeg'), social: { linkedin: 'https://www.linkedin.com/in/cesarandresd04/' } },
-  { id: '5', nombre: 'Valentina Sarango', rol: 'Partner, Dirección creativa', imagen: ruta('/equipo/valentina-sarango.jpg'), social: { linkedin: 'https://www.linkedin.com/in/valentinasarango/' } },
-  { id: '6', nombre: 'Milene Garrido', rol: 'Partner, Desarrollo', imagen: ruta('/equipo/milene-garrido.jpg'), social: { linkedin: 'https://www.linkedin.com/in/mile-garridop/' } },
-];
+const FUENTES = [
+  { id: '1', nombre: 'Álvaro Sánchez', rol: 'Founder, Soluciones e IA', src: alvaro, social: { linkedin: 'https://www.linkedin.com/in/aalvaroasanchez/' } },
+  { id: '2', nombre: 'Piero Pizarro', rol: 'Co-founder, Automatización', src: piero, social: { linkedin: 'https://www.linkedin.com/in/piero-andr%C3%A9-pizarro-basile/' } },
+  { id: '3', nombre: 'Gabriel Curay', rol: 'Co-founder, Arquitectura', src: gabriel, social: { linkedin: 'https://www.linkedin.com/in/gabriel-curay-b11973262/' } },
+  { id: '4', nombre: 'César García', rol: 'Partner, Dirección técnica', src: cesar, social: { linkedin: 'https://www.linkedin.com/in/cesarandresd04/' } },
+  { id: '5', nombre: 'Valentina Sarango', rol: 'Partner, Dirección creativa', src: valentina, social: { linkedin: 'https://www.linkedin.com/in/valentinasarango/' } },
+  { id: '6', nombre: 'Milene Garrido', rol: 'Partner, Desarrollo', src: milene, social: { linkedin: 'https://www.linkedin.com/in/mile-garridop/' } },
+] as const;
+
+// 800px = 2x el ancho mostrado (400px): nítido en retina sin servir el
+// original (hasta 2 MB en el caso de alvaro-sanchez.png).
+const MIEMBROS: MiembroEquipo[] = await Promise.all(
+  FUENTES.map(async (m) => ({
+    id: m.id,
+    nombre: m.nombre,
+    rol: m.rol,
+    imagen: (await getImage({ src: m.src, width: 800, format: 'webp' })).src,
+    social: m.social,
+  })),
+);
 ---
 
 <Seccion id="equipo" class="seccion-cosmoq" fondo="surface">
@@ -52,6 +73,7 @@ const MIEMBROS: MiembroEquipo[] = [
                 width={400}
                 height={500}
                 loading="lazy"
+                decoding="async"
                 class="h-full w-full object-cover grayscale"
               />
               <figcaption class="vidrio absolute inset-x-2 bottom-2 flex flex-col gap-1 rounded-praxia px-3.5 py-3">
