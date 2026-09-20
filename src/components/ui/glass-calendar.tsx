@@ -44,21 +44,29 @@ export function GlassCalendar({ className }: GlassCalendarProps) {
   const [reducir, setReducir] = React.useState(false);
   const rootRef = React.useRef<HTMLDivElement>(null);
 
-  // El sitio es estático: si las fechas se calcularan en el render del build,
-  // el "próximo lunes" sería el de la fecha de deploy. Por eso el widget entra
-  // como client:only y se calcula una vez en el cliente.
-  const dias = React.useMemo(() => {
+  // El sitio es estático: si las fechas se calcularan en el render del
+  // build, el "próximo lunes" sería el de la fecha de deploy, no el del
+  // visitante. Antes esto forzaba client:only (sin SSR, hueco vacío hasta
+  // hidratar); ahora el componente SÍ renderiza en servidor (client:visible
+  // más abajo), pero `dias` arranca en null y solo se calcula en un
+  // useEffect — así el HTML servido no lleva ninguna fecha "de build" que
+  // luego tenga que corregirse (evita el hydration mismatch).
+  const [dias, setDias] = React.useState<Date[] | null>(null);
+
+  React.useEffect(() => {
     const inicio = startOfWeek(addDays(new Date(), 7), { weekStartsOn: 1 });
-    return Array.from({ length: DIAS }, (_, i) => addDays(inicio, i));
+    setDias(Array.from({ length: DIAS }, (_, i) => addDays(inicio, i)));
   }, []);
 
-  const primero = dias[0]!;
-  const ultimo = dias[DIAS - 1]!;
-  const entregaEl = dias[ENTREGA]!;
+  const primero = dias?.[0];
+  const ultimo = dias?.[DIAS - 1];
+  const entregaEl = dias?.[ENTREGA];
 
-  const mes = isSameMonth(primero, ultimo)
-    ? capitalizar(format(primero, 'LLLL', { locale: es }))
-    : `${capitalizar(format(primero, 'LLL', { locale: es }))}–${capitalizar(format(ultimo, 'LLL', { locale: es }))}`;
+  const mes = primero && ultimo
+    ? isSameMonth(primero, ultimo)
+      ? capitalizar(format(primero, 'LLLL', { locale: es }))
+      : `${capitalizar(format(primero, 'LLL', { locale: es }))}–${capitalizar(format(ultimo, 'LLL', { locale: es }))}`
+    : '';
 
   React.useEffect(() => {
     const el = rootRef.current;
@@ -111,36 +119,48 @@ export function GlassCalendar({ className }: GlassCalendarProps) {
           </span>
         ))}
 
-        {dias.map((dia, i) => {
-          const finde = dia.getDay() === 0 || dia.getDay() === 6;
-          const arranque = i === 0;
-          const entrega = i === ENTREGA;
-          const retraso = reducir ? 0 : 0.12 + i * 0.022;
+        {dias
+          ? dias.map((dia, i) => {
+              const finde = dia.getDay() === 0 || dia.getDay() === 6;
+              const arranque = i === 0;
+              const entrega = i === ENTREGA;
+              const retraso = reducir ? 0 : 0.12 + i * 0.022;
 
-          return (
-            <motion.span
-              key={dia.toISOString()}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={visible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-              transition={
-                entrega
-                  ? { type: 'spring', stiffness: 420, damping: 14, delay: retraso }
-                  : { duration: reducir ? 0 : 0.32, delay: retraso, ease: [0.22, 1, 0.36, 1] }
-              }
-              className={cn(
-                'flex aspect-square items-center justify-center rounded-[0.5rem]',
-                'border border-white/8 bg-white/5 text-[0.75rem] tabular-nums text-texto-2',
-                finde && 'border-transparent bg-transparent text-texto-3/50',
-                arranque && 'border-white/45 bg-white/12 font-semibold text-texto',
-                entrega &&
-                  'border-transparent font-bold text-void shadow-[0_0_18px_rgb(255_107_53/0.45)]',
-              )}
-              style={entrega ? { background: 'var(--degradado-calido)' } : undefined}
-            >
-              {format(dia, 'd')}
-            </motion.span>
-          );
-        })}
+              return (
+                <motion.span
+                  key={dia.toISOString()}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={visible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+                  transition={
+                    entrega
+                      ? { type: 'spring', stiffness: 420, damping: 14, delay: retraso }
+                      : { duration: reducir ? 0 : 0.32, delay: retraso, ease: [0.22, 1, 0.36, 1] }
+                  }
+                  className={cn(
+                    'flex aspect-square items-center justify-center rounded-[0.5rem]',
+                    'border border-white/8 bg-white/5 text-[0.75rem] tabular-nums text-texto-2',
+                    finde && 'border-transparent bg-transparent text-texto-3/50',
+                    arranque && 'border-white/45 bg-white/12 font-semibold text-texto',
+                    entrega &&
+                      'border-transparent font-bold text-void shadow-[0_0_18px_rgb(255_107_53/0.45)]',
+                  )}
+                  style={entrega ? { background: 'var(--degradado-calido)' } : undefined}
+                >
+                  {format(dia, 'd')}
+                </motion.span>
+              );
+            })
+          : // Esqueleto SSR: mismas 28 celdas, mismo tamaño, sin fechas — se
+            // reemplaza por las fechas reales apenas el useEffect corre en
+            // cliente. Sin esto, o bien el servidor mentiría con la fecha
+            // del build, o el hueco haría saltar el layout al hidratar.
+            Array.from({ length: DIAS }, (_, i) => (
+              <span
+                key={i}
+                aria-hidden="true"
+                className="aspect-square rounded-[0.5rem] border border-white/8 bg-white/5"
+              />
+            ))}
       </div>
 
       <div className="mt-4 h-px bg-white/12" />
@@ -148,11 +168,11 @@ export function GlassCalendar({ className }: GlassCalendarProps) {
       <div className="mt-3 flex items-center justify-between gap-2">
         <span className="flex items-center gap-2 text-[0.75rem] text-texto-2">
           <i className="h-1.5 w-1.5 rounded-full bg-texto/60" />
-          Llamada {format(primero, 'd MMM', { locale: es })}
+          Llamada {primero ? format(primero, 'd MMM', { locale: es }) : ' '}
         </span>
         <span className="flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-brasa/35 bg-brasa-tenue px-2.5 py-1 text-[0.75rem] font-semibold text-texto">
           <Check className="h-3 w-3 text-brasa-alto" strokeWidth={3} />
-          Funcionando {format(entregaEl, 'd MMM', { locale: es })}
+          Funcionando {entregaEl ? format(entregaEl, 'd MMM', { locale: es }) : ' '}
         </span>
       </div>
     </div>
