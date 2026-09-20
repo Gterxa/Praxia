@@ -229,6 +229,9 @@ import { ruta } from '../rutas';
   }
 
   // --- Palabra por palabra: envuelve el texto de [data-palabras] en spans. ---
+  // El <html class="js"> del Layout oculta [data-palabras] (opacity:0) para
+  // que no haya flash de texto-completo-luego-vaciado; acá se revela apenas
+  // el contenido queda listo, envuelto o no.
   if (!reducido) {
     document.querySelectorAll<HTMLElement>('[data-palabras]').forEach((el) => {
       const texto = el.textContent ?? '';
@@ -242,6 +245,11 @@ import { ruta } from '../rutas';
         el.appendChild(span);
         if (i < palabras.length - 1) el.appendChild(document.createTextNode(' '));
       });
+      el.style.opacity = '1';
+    });
+  } else {
+    document.querySelectorAll<HTMLElement>('[data-palabras]').forEach((el) => {
+      el.style.opacity = '1';
     });
   }
 
