@@ -144,6 +144,7 @@ function Foto({
         width={400}
         height={500}
         loading="lazy"
+        decoding="async"
         className="h-full w-full object-cover transition-[filter] duration-500"
         style={{
           filter: activa ? 'grayscale(0) brightness(1)' : 'grayscale(1) brightness(0.75)',
