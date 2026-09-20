@@ -10,7 +10,14 @@ interface Props {
 const { contexto } = Astro.props;
 ---
 
-<OrbeContacto waHref={waLink(contexto)} validarHref={ruta('/validar')} client:load />
+{/*
+  client:idle, no client:load: el orbe vive en TODAS las páginas (montado
+  desde Layout.astro), así que client:load metía react-dom + framer-motion
+  en el camino crítico de cada carga del sitio, no solo de la home. El
+  marco del botón se ve igual desde el primer render (SSR); el shader del
+  relleno hidrata ~0.5-1s después, cuando el navegador ya respiró.
+*/}
+<OrbeContacto waHref={waLink(contexto)} validarHref={ruta('/validar')} client:idle />
 
 <style is:global>
   /* Disparador del orbe: mismo tratamiento visual que el resto de botones

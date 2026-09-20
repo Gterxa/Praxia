@@ -96,7 +96,35 @@ function recortar(mostrados: number) {
 
 export default function EscenaWeb() {
   const sinMovimiento = useReducedMotion();
-  const mostrados = useTypewriter(!sinMovimiento);
+
+  // El typewriter corría con un rAF permanente aunque la escena estuviera
+  // fuera de pantalla (scrolleada, o en una pestaña oculta detrás de otra
+  // sección). Mismo patrón que crono-diagnostico.tsx / glass-calendar.tsx:
+  // se pausa el rAF (ver useTypewriter) hasta que el contenedor entra en
+  // viewport, y no se reanuda al salir — el efecto ya se vio una vez.
+  const raizRef = React.useRef<HTMLDivElement>(null);
+  const [enViewport, setEnViewport] = React.useState(false);
+
+  React.useEffect(() => {
+    const el = raizRef.current;
+    if (!el || !('IntersectionObserver' in window)) {
+      setEnViewport(true);
+      return;
+    }
+    const obs = new IntersectionObserver(
+      ([entrada]) => {
+        if (entrada?.isIntersecting) {
+          setEnViewport(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.1 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const mostrados = useTypewriter(!sinMovimiento && enViewport);
   const lineas = recortar(mostrados);
 
   /**
@@ -133,7 +161,7 @@ export default function EscenaWeb() {
   });
 
   return (
-    <div className="escena" aria-hidden="true">
+    <div className="escena" aria-hidden="true" ref={raizRef}>
       {/* Glow radial detrás de la escena (en invokube es blanco; acá, brasa). */}
       <div className="escena-glow" />
       {/* Retícula de puntos con viñeta: 16px de celda, igual que el original. */}

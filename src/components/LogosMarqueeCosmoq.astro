@@ -8,9 +8,14 @@
  * Fotos de public/cosmoq-demo/ (placeholders genéricos) reemplazadas por
  * los 6 logos reales de clientes pedidos, versión estilizada (mono
  * morado sobre negro, 2172x724 parejo) que Tony generó con Codex en
- * dist/clientes/ — copiada a public/clientes/mono/ para que viva en el
- * árbol fuente y no en un build output efímero. Automotores Inka quedó
- * fuera a pedido de Tony (no estaba en la lista original).
+ * dist/clientes/ — copiada a src/assets/clientes-mono/ para que Astro los
+ * optimice (getImage: webp, 900px de ancho, 2x del tamaño mostrado) y para
+ * que vivan en el árbol fuente y no en un build output efímero. El gris ya
+ * viene horneado en el PNG (scripts/procesar-logos.mjs) en vez de
+ * `filter: grayscale(1)` en CSS: con las 24 <img> del marquee (4 vueltas ×
+ * 6 logos) moviéndose por transform, Firefox y Safari repintan el filtro
+ * cada frame. Automotores Inka quedó fuera a pedido de Tony (no estaba en
+ * la lista original).
  *
  * Mismo marquee, mismo gap, misma animación — solo cambian las fotos.
  *
@@ -19,27 +24,42 @@
  * aspect ratio real es mucho más ancho que el de los placeholders de
  * cosmoq — con cover se veían las palabras cortadas a la mitad.
  */
-import { ruta } from '../rutas';
+import { getImage } from 'astro:assets';
+import oca from '../assets/clientes-mono/oca-global.png';
+import ucv from '../assets/clientes-mono/ucv.png';
+import pacifico from '../assets/clientes-mono/pacifico.png';
+import netprovider from '../assets/clientes-mono/netprovider.png';
+import xsPeluqueria from '../assets/clientes-mono/xs-peluqueria.png';
+import colegioDuni from '../assets/clientes-mono/colegio-duni.png';
+
 const ARCHIVOS = [
-  'mono/oca-global.png',
-  'mono/ucv.png',
-  'mono/pacifico.png',
-  'mono/netprovider.png',
-  'mono/xs-peluqueria.png',
-  'mono/colegio-duni.png',
+  { src: oca, nombre: 'OCA Global' },
+  { src: ucv, nombre: 'Universidad César Vallejo' },
+  { src: pacifico, nombre: 'Pacífico' },
+  { src: netprovider, nombre: 'Netprovider' },
+  { src: xsPeluqueria, nombre: 'XS Peluquería' },
+  { src: colegioDuni, nombre: 'Colegio Duni' },
 ];
+
+// 900px = 2x el ancho mostrado (450px): nítido en pantallas retina sin
+// servir el PNG original de hasta 2172px.
+const OPTIMIZADOS = await Promise.all(
+  ARCHIVOS.map(({ src, nombre }) =>
+    getImage({ src, width: 900, format: 'webp' }).then((img) => ({ img, nombre })),
+  ),
+);
 
 // El original genera esto en cliente con JS (4 vueltas × 6 logos). Se
 // replica en build para no meter un <script> nuevo; el resultado es idéntico.
-const LOGOS = Array.from({ length: 4 }, () => ARCHIVOS).flat();
+const LOGOS = Array.from({ length: 4 }, () => OPTIMIZADOS).flat();
 ---
 
 <div class="logos" aria-label="Trusted by">
   <div class="logos__track">
     <ul class="logos__list">
-      {LOGOS.map((f, i) => (
+      {LOGOS.map(({ img, nombre }) => (
         <li>
-          <img src={ruta(`/clientes/${f}`)} alt={`Logo cliente ${(i % ARCHIVOS.length) + 1}`} width="450" height="144" loading="lazy" />
+          <img src={img.src} alt={`Logo de ${nombre}`} width="450" height="144" loading="lazy" decoding="async" />
         </li>
       ))}
     </ul>
@@ -75,6 +95,9 @@ const LOGOS = Array.from({ length: 4 }, () => ARCHIVOS).flat();
     width: max-content;
     padding: 15px 0;
     animation: cosmoq-marquee 32s linear infinite;
+    /* Capa de compositor propia: sin esto, Firefox y Safari repintan (no
+       solo repositionan) la tira completa en cada frame del transform. */
+    will-change: transform;
   }
   .logos__list li {
     display: flex;
@@ -88,7 +111,6 @@ const LOGOS = Array.from({ length: 4 }, () => ARCHIVOS).flat();
     width: 450px;
     height: 144px;
     object-fit: contain;
-    filter: grayscale(1);
   }
   @keyframes cosmoq-marquee {
     from { transform: translateX(0); }
