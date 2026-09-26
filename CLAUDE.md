@@ -22,6 +22,12 @@
   rama ya mergeada (`git branch -d`) y el worktree (`git worktree remove`). Si el worktree
   tiene cambios sin commitear que no están en ningún otro lado, avisar antes de borrar —
   nunca `--force` por cuenta propia.
+- **Nunca borrar los worktrees troncales de la cadena de merge** (`qa`, `dev-base`, `alvaro`
+  — la cadena `alvaro → dev-base → qa → master`). No son worktrees de feature descartables:
+  son la estructura fija por la que fluye todo merge hacia producción. La regla de limpieza
+  de arriba aplica solo a worktrees de feature abiertos dentro de esa cadena (por ejemplo
+  `.claude/worktrees/qa/.claude/worktrees/dev-base/.claude/worktrees/alvaro/.claude/worktrees/<feature>`),
+  nunca a los niveles troncales mismos.
 - Excepción: si el usuario pide explícitamente trabajar directo sobre la rama actual ("no
   hagas rama para esto", "trabaja acá directo"), se respeta esa instrucción puntual.
 
