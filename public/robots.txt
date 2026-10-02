@@ -1,7 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /legal
-Disallow: /privacidad
 Disallow: /pruebas
 
 Sitemap: https://www.trypraxia.tech/sitemap-index.xml
