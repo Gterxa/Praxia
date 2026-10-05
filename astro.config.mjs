@@ -164,7 +164,10 @@ export default defineConfig({
       directives: [
         "default-src 'self'",
         "img-src 'self' data:",
-        "connect-src 'self' https://fjlaouynjbdczmyodxde.supabase.co",
+        // Supabase del formulario /validar. Ambos dominios mientras dura la migración del CRM
+        // al proyecto praxia-generals (org Praxia); retirar el viejo (fjlaouynjbdczmyodxde)
+        // cuando el env de Vercel apunte al nuevo y se haya comprobado un lead real.
+        "connect-src 'self' https://jsqysebvhthnffmbjyzh.supabase.co https://fjlaouynjbdczmyodxde.supabase.co",
         "form-action 'self'",
         "frame-src 'none'",
         "object-src 'none'",
