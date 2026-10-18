@@ -1,19 +1,19 @@
 ---
 /**
- * Sección de equipo: cinco fotos en tres columnas escalonadas (patrón
- * "team-showcase") + lista de nombres/roles con hover cruzado foto↔fila.
+ * Sección de equipo: carrusel infinito de tarjetas (foto + nombre + rol)
+ * en todos los tamaños. Antes, en escritorio, iba el showcase de tres
+ * columnas escalonadas (EquipoShowcase); con cinco personas quedaba 2/2/1
+ * y se pasó al mismo carrusel del móvil.
  * Reemplaza a QuienesSomos.astro en el flujo de la home (mismo lugar,
  * después de Ejemplos y antes de FAQ).
  *
  * Nombres, roles y fotos son los reales. Fotos en src/assets/equipo/,
- * optimizadas acá con getImage (webp, 800px = 2x el tamaño mostrado de
- * 400px) y pasadas ya resueltas tanto a la isla React (EquipoShowcase)
- * como al <img> del marquee móvil, para no duplicar el pipeline.
+ * optimizadas acá con getImage (webp, 512px = 2x la tarjeta
+ * más ancha) y pasadas ya resueltas al <img> del carrusel.
  */
 import { getImage } from 'astro:assets';
 import Seccion from './Seccion.astro';
 import CabeceraSeccion from './CabeceraSeccion.astro';
-import EquipoShowcase from './ui/equipo-showcase.tsx';
 import type { MiembroEquipo } from './ui/equipo-showcase.tsx';
 import Marquee from './Marquee.astro';
 import alvaro from '../assets/equipo/alvaro-sanchez.png';
@@ -30,14 +30,14 @@ const FUENTES = [
   { id: '5', nombre: 'Carlos Malca', rol: 'Líder Comercial, Partner', src: carlos, social: undefined },
 ] as const;
 
-// 800px = 2x el ancho mostrado (400px): nítido en retina sin servir el
-// original (hasta 2 MB en el caso de alvaro-sanchez.png).
+// 512px = 2x la tarjeta más ancha (256px, lg:w-64): nítido en retina sin
+// servir el original (hasta 2 MB en el caso de alvaro-sanchez.png).
 const MIEMBROS: MiembroEquipo[] = await Promise.all(
   FUENTES.map(async (m) => ({
     id: m.id,
     nombre: m.nombre,
     rol: m.rol,
-    imagen: (await getImage({ src: m.src, width: 800, format: 'webp' })).src,
+    imagen: (await getImage({ src: m.src, width: 512, format: 'webp' })).src,
     social: m.social,
   })),
 );
@@ -55,15 +55,11 @@ const MIEMBROS: MiembroEquipo[] = await Promise.all(
     </div>
   </CabeceraSeccion>
 
-  <div class="mt-10 hidden lg:block">
-    <EquipoShowcase miembros={MIEMBROS} client:visible />
-  </div>
-
-  <div class="mt-10 lg:hidden">
+  <div class="mt-10">
     <Marquee velocidad={55}>
       {
         MIEMBROS.map((miembro) => (
-          <li class="w-52 flex-none sm:w-60">
+          <li class="w-52 flex-none sm:w-60 lg:w-64">
             <figure class="tarjeta relative aspect-[4/5] w-full overflow-hidden p-0">
               <img
                 src={miembro.imagen}
