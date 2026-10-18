@@ -1,6 +1,6 @@
 ---
 /**
- * Sección de equipo: seis fotos en tres columnas escalonadas (patrón
+ * Sección de equipo: cinco fotos en tres columnas escalonadas (patrón
  * "team-showcase") + lista de nombres/roles con hover cruzado foto↔fila.
  * Reemplaza a QuienesSomos.astro en el flujo de la home (mismo lugar,
  * después de Ejemplos y antes de FAQ).
@@ -21,7 +21,6 @@ import piero from '../assets/equipo/piero-pizarro.jpg';
 import gabriel from '../assets/equipo/gabriel-curay.jpeg';
 import cesar from '../assets/equipo/cesar-garcia.jpeg';
 import carlos from '../assets/equipo/carlos-malca.jpg';
-import milene from '../assets/equipo/milene-garrido.jpg';
 
 const FUENTES = [
   { id: '1', nombre: 'Álvaro Sánchez', rol: 'Founder, Soluciones e IA', src: alvaro, social: { linkedin: 'https://www.linkedin.com/in/aalvaroasanchez/' } },
@@ -29,7 +28,6 @@ const FUENTES = [
   { id: '3', nombre: 'Gabriel Curay', rol: 'Co-founder, Arquitectura', src: gabriel, social: { linkedin: 'https://www.linkedin.com/in/gabriel-curay-b11973262/' } },
   { id: '4', nombre: 'César García', rol: 'Partner, Dirección técnica', src: cesar, social: { linkedin: 'https://www.linkedin.com/in/cesarandresd04/' } },
   { id: '5', nombre: 'Carlos Malca', rol: 'Líder Comercial, Partner', src: carlos, social: undefined },
-  { id: '6', nombre: 'Milene Garrido', rol: 'Partner, Desarrollo', src: milene, social: { linkedin: 'https://www.linkedin.com/in/mile-garridop/' } },
 ] as const;
 
 // 800px = 2x el ancho mostrado (400px): nítido en retina sin servir el
