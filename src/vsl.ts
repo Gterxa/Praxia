@@ -42,27 +42,37 @@ export const PARA_QUIEN = {
   ],
 } as const;
 
-/** Lo que el visitante se lleva de los 15 minutos. No es una secuencia. */
+/**
+ * Lo que el visitante se lleva. No es una secuencia. Estructura tomada del
+ * funnel de rankhive.co (auditoría con entregables concretos y medibles), con
+ * copy propio. El mapa de Google Maps sale de la skill auditoria-seo-geo; la
+ * prueba de respuesta la hace el equipo a mano. Si alguna deja de hacerse,
+ * se saca de acá.
+ */
 export const ENTREGABLES = [
   {
-    titulo: 'Un veredicto claro',
-    texto: 'Sí, no o aún no. Con el motivo, para que no te quedes con la duda.',
+    titulo: 'Tu posición en Google Maps',
+    texto: 'Un mapa de tu zona, punto por punto: dónde apareces cuando te buscan y dónde aparece tu competencia en tu lugar.',
+  },
+  {
+    titulo: 'Una prueba de respuesta',
+    texto: 'Te escribimos como si fuéramos un cliente y medimos cuánto tardas en contestar. Es el número que más clientes explica.',
+  },
+  {
+    titulo: 'Tu perfil de Google y tu web',
+    texto: 'Lo que ve alguien que te busca por primera vez: horarios, fotos, reseñas, si la web carga en el celular y si lleva a escribirte.',
   },
   {
     titulo: 'Qué resolver primero',
-    texto: 'Lo que más tiempo o clientes te está costando hoy, y por qué empezar por ahí.',
-  },
-  {
-    titulo: 'El flujo dibujado',
-    texto: 'Un diagrama simple de cómo quedaría: quién escribe, qué responde el sistema, dónde entras tú.',
+    texto: 'Ordenado por lo que más clientes te está costando hoy, y por qué empezar por ahí.',
   },
   {
     titulo: 'Cuánto tomaría',
     texto: 'El plazo realista para tenerlo funcionando sobre lo que ya usas.',
   },
   {
-    titulo: 'Qué tipo de solución es',
-    texto: 'Si lo tuyo pide un chatbot, presencia digital o software a medida.',
+    titulo: 'Un veredicto claro',
+    texto: 'Sí, no o aún no, y si lo tuyo pide un chatbot, presencia digital o software a medida.',
   },
 ] as const;
 
@@ -70,16 +80,52 @@ export const ENTREGABLES = [
 export const PASOS_VSL = [
   {
     titulo: 'Llenas la solicitud',
-    texto: 'Dos minutos. Preguntas sobre tu negocio, para llegar a la llamada con tu caso revisado.',
+    texto: 'Dos minutos. Qué necesitas y cómo es tu negocio.',
   },
   {
     titulo: 'Te escribimos por WhatsApp',
     texto: 'El mismo día, para acordar la hora que te acomode.',
   },
   {
-    titulo: 'Conversamos 15 minutos',
-    texto: 'Por videollamada o WhatsApp. Sales con el diagnóstico, decidas lo que decidas.',
+    titulo: 'Revisamos antes de hablar',
+    texto: 'Tu Google, tu web y cuánto tardas en responder, vistos como los ve un cliente.',
   },
+  {
+    titulo: 'Conversamos 15 minutos',
+    texto: 'Por videollamada o WhatsApp. El diagnóstico te lo quedas, trabajes o no con nosotros.',
+  },
+] as const;
+
+/**
+ * La tarjeta "Ejemplo de diagnóstico": muestra el formato del entregable con
+ * un negocio ficticio, como los chats de ejemplo del sitio (CONTENIDO.md).
+ * Los datos son ilustrativos y la tarjeta lo dice. `mapa` es la grilla de
+ * 5x5 del mapa de calor: 1 = apareces en el top 3 en ese punto, 0 = no.
+ */
+export const MUESTRA_DIAGNOSTICO = {
+  negocio: 'Negocio de ejemplo',
+  mapa: [
+    0, 0, 0, 0, 0,
+    0, 1, 1, 0, 0,
+    0, 1, 1, 0, 0,
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+  ],
+  areas: [
+    { area: 'Respuesta por WhatsApp', dato: 'Primera respuesta en 3 h 40 min', estado: 'resolver' },
+    { area: 'Google Maps', dato: 'Apareces en 4 de 25 puntos de tu zona', estado: 'resolver' },
+    { area: 'Perfil de Google', dato: 'Horario y fotos al día', estado: 'bien' },
+    { area: 'Web', dato: 'Carga rápido en el celular', estado: 'bien' },
+    { area: 'Seguimiento', dato: 'Nadie vuelve a escribir a quien preguntó y no compró', estado: 'resolver' },
+  ],
+  primero: 'Respuesta automática por WhatsApp, de día y de noche.',
+} as const;
+
+/** Lo que se lee junto al formulario. Cosas que el sitio cumple, no promesas de resultado. */
+export const CONFIANZA = [
+  'Sin costo y sin contrato',
+  'Te quedas con el diagnóstico aunque no trabajes con nosotros',
+  'Sin secuencias de venta: te escribe una persona del equipo',
 ] as const;
 
 /**
@@ -89,6 +135,13 @@ export const PASOS_VSL = [
  * que Tony los ajuste.
  */
 export const OPCIONES_SOLICITUD = {
+  /** Paso 0, selección múltiple. Las tres líneas de Praxia (19-oct-2026). */
+  necesidades: [
+    { valor: 'chatbot', texto: 'Un chatbot que atienda y agende' },
+    { valor: 'presencia-digital', texto: 'Que me encuentren en Google y en redes' },
+    { valor: 'software-a-medida', texto: 'Un sistema a medida para mi operación' },
+    { valor: 'no-se', texto: 'No sé, diagnostícame' },
+  ],
   facturacion: [
     { valor: 'menos-10k', texto: 'Menos de S/ 10 mil' },
     { valor: '10k-30k', texto: 'S/ 10 mil a 30 mil' },
@@ -123,6 +176,16 @@ export const PREGUNTAS_VSL = [
     pregunta: '¿Me van a querer vender algo en la llamada?',
     respuesta:
       'Revisamos tu caso. Si hay algo que podamos construir, te explicamos qué, en cuánto tiempo y cómo funcionaría. La decisión es tuya y no se toma en la llamada.',
+  },
+  {
+    pregunta: '¿Qué necesitan de mí para el diagnóstico?',
+    respuesta:
+      'Solo lo de la solicitud. Tu Google, tu web y tu WhatsApp los revisamos desde afuera, como los ve un cliente. No te pedimos accesos ni contraseñas.',
+  },
+  {
+    pregunta: 'Ya trabajo con otra agencia o con alguien que me ayuda. ¿Igual sirve?',
+    respuesta:
+      'Sí. El diagnóstico te muestra qué está funcionando y qué no, trabajes con quien trabajes. Te lo quedas igual.',
   },
   {
     pregunta: '¿Necesito saber de tecnología?',

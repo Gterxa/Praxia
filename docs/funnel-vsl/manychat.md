@@ -20,14 +20,17 @@ en un lado, se cambia en el otro.
 
 | # | Pregunta | Tipo | Campo del CRM | Valores que se guardan |
 |---|---|---|---|---|
-| 1 | ¿Cómo se llama tu negocio? | texto | `negocio` | libre |
-| 2 | ¿De qué rubro es? | texto o botones | `rubro` | los nombres de `src/industrias.ts` u "Otro" |
-| 3 | ¿Cuántas personas trabajan contigo? | botones | `equipo` | `Solo yo`, `2 a 10`, `11 a 50`, `Más de 50` |
-| 4 | ¿Cuánto factura tu negocio al mes, aproximadamente? | botones | `facturacion_mensual` | `menos-10k`, `10k-30k`, `30k-100k`, `mas-100k`, `reservado` |
-| 5 | ¿Qué te quita más tiempo hoy? | texto | `idea` | libre |
-| 6 | ¿Para cuándo quieres tenerlo resuelto? | botones | `urgencia` | `este-mes`, `1-3-meses`, `explorando` |
-| 7 | ¿Quién toma la decisión? | botones | `decisor` | `yo`, `con-socio`, `otra-persona` |
-| 8 | ¿Cómo te llamas? | texto | `nombre` | libre |
+| 1 | ¿Qué necesitas? (puede marcar varias) | botones | `necesidades` (arreglo) | `chatbot`, `presencia-digital`, `software-a-medida`, `no-se` |
+| 2 | ¿Cómo se llama tu negocio? | texto | `negocio` | libre |
+| 3 | ¿De qué rubro es? | texto o botones | `rubro` | los nombres de `src/industrias.ts` u "Otro" |
+| 4 | ¿Cuántas personas trabajan contigo? | botones | `equipo` | `Solo yo`, `2 a 10`, `11 a 50`, `Más de 50` |
+| 5 | ¿Cuánto factura tu negocio al mes, aproximadamente? | botones | `facturacion_mensual` | `menos-10k`, `10k-30k`, `30k-100k`, `mas-100k`, `reservado` |
+| 6 | ¿Cómo apareces en Google Maps? (opcional) | texto | `maps_negocio` | libre |
+| 7 | ¿En qué zona atiendes? (opcional) | texto | `zona` | libre |
+| 8 | ¿Qué te quita más tiempo hoy? | texto | `idea` | libre |
+| 9 | ¿Para cuándo quieres tenerlo resuelto? | botones | `urgencia` | `este-mes`, `1-3-meses`, `explorando` |
+| 10 | ¿Quién toma la decisión? | botones | `decisor` | `yo`, `con-socio`, `otra-persona` |
+| 11 | ¿Cómo te llamas? | texto | `nombre` | libre |
 
 El WhatsApp no se pregunta: ManyChat ya lo tiene. Textos visibles de los botones de
 facturación: Menos de S/ 10 mil · S/ 10 mil a 30 mil · S/ 30 mil a 100 mil · Más de S/ 100 mil

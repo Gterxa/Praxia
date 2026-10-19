@@ -2,6 +2,10 @@
 /**
  * Funnel VSL: la página de anuncios. Video arriba, una sola oferta (el
  * diagnóstico gratis de 15 minutos) y una solicitud que califica al lead.
+ * La solicitud es la vía principal de entrada (Tony, 19-oct-2026): con ella
+ * se contacta al lead por WhatsApp. Mecánica tomada de rankhive.co (muestra
+ * del entregable, entregables medibles, paso 0 de necesidades); textos y
+ * diseño propios, sin su "ROI garantizado".
  * Sin menú ni salidas (Layout en modo funnel) y fuera de los buscadores:
  * el tráfico llega pagado o desde el video, no desde Google.
  *
@@ -12,8 +16,10 @@ import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import VideoVSL from '../components/funnel/VideoVSL.astro';
 import SolicitudVSL from '../components/funnel/SolicitudVSL.astro';
+import MuestraDiagnostico from '../components/funnel/MuestraDiagnostico.astro';
+import LogosMarqueeCosmoq from '../components/LogosMarqueeCosmoq.astro';
 import { CONTEXTO, waLink } from '../consts';
-import { ENTREGABLES, PARA_QUIEN, PASOS_VSL, PREGUNTAS_VSL } from '../vsl';
+import { CONFIANZA, ENTREGABLES, PARA_QUIEN, PASOS_VSL, PREGUNTAS_VSL } from '../vsl';
 ---
 
 <Layout
@@ -46,6 +52,74 @@ import { ENTREGABLES, PARA_QUIEN, PASOS_VSL, PREGUNTAS_VSL } from '../vsl';
           Quiero mi diagnóstico gratis
         </a>
         <p class="pequeno text-texto-3">Sin costo. Te respondemos por WhatsApp el mismo día.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prueba: logos reales (autorizados, ver HAY_PRUEBA_SOCIAL en consts.ts) -->
+  <section class="pt-2 pb-6" aria-label="Clientes de Praxia">
+    <p class="pequeno text-center text-texto-3">Equipos con los que ya trabajamos</p>
+    <div class="mt-4"><LogosMarqueeCosmoq /></div>
+  </section>
+
+  <!-- Lo que revisamos: la muestra del entregable y la lista -->
+  <section class="seccion">
+    <div class="contenedor">
+      <h2 class="max-w-[16ch]">Lo que revisamos en tu negocio.</h2>
+      <p class="lead mt-6 max-w-[40ch]">
+        Te lo quedas aunque no trabajes con nosotros. Si no podemos ayudarte, te lo decimos en la
+        misma llamada.
+      </p>
+      <div class="mt-12 grid gap-10 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-16">
+        <div class="lg:sticky lg:top-28 lg:self-start">
+          <MuestraDiagnostico />
+        </div>
+        <dl class="divide-y divide-linea border-y border-linea">
+          {
+            ENTREGABLES.map((e) => (
+              <div class="grid gap-2 py-6 sm:grid-cols-[13rem_1fr] sm:gap-8">
+                <dt class="font-[family-name:var(--font-titulos)] text-[1.125rem] font-semibold text-texto">
+                  {e.titulo}
+                </dt>
+                <dd class="text-texto-2">{e.texto}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- La solicitud -->
+  <section class="seccion" id="solicitud">
+    <div class="contenedor solicitud-grilla">
+      <div class="solicitud-titulo">
+        <h2 class="max-w-[12ch]">Solicita tu diagnóstico.</h2>
+        <p class="lead mt-6 max-w-[34ch]">
+          Preguntamos esto para llegar a la llamada con tu caso leído, no para venderte un paquete.
+        </p>
+      </div>
+      <div class="solicitud-extras">
+        <ul class="space-y-3">
+          {
+            CONFIANZA.map((c) => (
+              <li class="flex gap-3 text-texto">
+                <span class="mt-1 flex-none text-brasa"><Icon nombre="check" tamano={18} /></span>
+                {c}
+              </li>
+            ))
+          }
+        </ul>
+        <div class="mt-10 border-t border-linea pt-8">
+          <p class="text-texto-2">¿Prefieres contarlo por WhatsApp? Es el mismo camino.</p>
+          <a href={waLink(CONTEXTO.vsl)} target="_blank" rel="noopener" class="boton boton-secundario mt-5">
+            <Icon nombre="whatsapp" tamano={20} />
+            Escribir por WhatsApp
+          </a>
+        </div>
+      </div>
+      <div class="solicitud-form" data-solicitud-zona>
+        <SolicitudVSL />
       </div>
     </div>
   </section>
@@ -85,36 +159,11 @@ import { ENTREGABLES, PARA_QUIEN, PASOS_VSL, PREGUNTAS_VSL } from '../vsl';
     </div>
   </section>
 
-  <!-- Lo que se lleva -->
-  <section class="seccion">
-    <div class="contenedor grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
-      <div class="lg:sticky lg:top-28 lg:self-start">
-        <h2 class="max-w-[14ch]">Lo que te llevas de los 15 minutos.</h2>
-        <p class="lead mt-6 max-w-[34ch]">
-          Si no podemos ayudarte, te lo decimos en la misma llamada y te dejamos el camino que
-          seguiríamos nosotros.
-        </p>
-      </div>
-      <dl class="divide-y divide-linea border-y border-linea">
-        {
-          ENTREGABLES.map((e) => (
-            <div class="grid gap-2 py-6 sm:grid-cols-[13rem_1fr] sm:gap-8">
-              <dt class="font-[family-name:var(--font-titulos)] text-[1.125rem] font-semibold text-texto">
-                {e.titulo}
-              </dt>
-              <dd class="text-texto-2">{e.texto}</dd>
-            </div>
-          ))
-        }
-      </dl>
-    </div>
-  </section>
-
   <!-- Qué pasa después de enviar -->
   <section class="seccion">
     <div class="contenedor">
       <h2 class="max-w-[16ch]">Cómo funciona.</h2>
-      <ol class="vsl-pasos mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
+      <ol class="vsl-pasos mt-12 grid gap-10 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
         {
           PASOS_VSL.map((p, i) => (
             <li class="vsl-paso">
@@ -125,28 +174,6 @@ import { ENTREGABLES, PARA_QUIEN, PASOS_VSL, PREGUNTAS_VSL } from '../vsl';
           ))
         }
       </ol>
-    </div>
-  </section>
-
-  <!-- La solicitud -->
-  <section class="seccion" id="solicitud">
-    <div class="contenedor grid gap-10 lg:grid-cols-[1fr_1.35fr] lg:gap-16">
-      <div class="lg:sticky lg:top-28 lg:self-start">
-        <h2 class="max-w-[12ch]">Solicita tu diagnóstico.</h2>
-        <p class="lead mt-6 max-w-[34ch]">
-          Preguntamos esto para llegar a la llamada con tu caso leído, no para venderte un paquete.
-        </p>
-        <div class="mt-10 border-t border-linea pt-8">
-          <p class="text-texto-2">¿Prefieres contarlo por WhatsApp? Es el mismo camino.</p>
-          <a href={waLink(CONTEXTO.vsl)} target="_blank" rel="noopener" class="boton boton-secundario mt-5">
-            <Icon nombre="whatsapp" tamano={20} />
-            Escribir por WhatsApp
-          </a>
-        </div>
-      </div>
-      <div data-solicitud-zona>
-        <SolicitudVSL />
-      </div>
     </div>
   </section>
 
@@ -187,6 +214,36 @@ import { ENTREGABLES, PARA_QUIEN, PASOS_VSL, PREGUNTAS_VSL } from '../vsl';
 </Layout>
 
 <style>
+  /* La solicitud es la vía principal: en móvil el formulario va justo debajo
+     del título, antes de las señales de confianza y la salida a WhatsApp. */
+  .solicitud-grilla {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-areas: 'titulo' 'form' 'extras';
+  }
+
+  @media (min-width: 64rem) {
+    .solicitud-grilla {
+      column-gap: 4rem;
+      row-gap: 2rem;
+      grid-template-columns: 1fr 1.35fr;
+      grid-template-rows: auto 1fr;
+      grid-template-areas: 'titulo form' 'extras form';
+    }
+  }
+
+  .solicitud-titulo {
+    grid-area: titulo;
+  }
+
+  .solicitud-form {
+    grid-area: form;
+  }
+
+  .solicitud-extras {
+    grid-area: extras;
+  }
+
   .vsl-titulo {
     font-size: clamp(2.25rem, 1.4rem + 3.6vw, 4.25rem);
     line-height: 1.06;
@@ -215,7 +272,7 @@ import { ENTREGABLES, PARA_QUIEN, PASOS_VSL, PREGUNTAS_VSL } from '../vsl';
     z-index: 1;
   }
 
-  @media (min-width: 48rem) {
+  @media (min-width: 64rem) {
     .vsl-paso:not(:last-child)::after {
       content: '';
       position: absolute;

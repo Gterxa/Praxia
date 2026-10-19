@@ -1,15 +1,16 @@
 ---
 /**
  * La solicitud del funnel VSL. Es un formulario de calificación (enfoque de
- * Hormozi), no de contacto: primero el negocio, después lo que quiere
- * resolver y recién al final cómo contactarlo. Quien llega al paso 3 ya se
- * comprometió con dos, y el equipo llega a la llamada con el caso leído.
+ * Hormozi, mecánica de rankhive.co), no de contacto: primero qué necesita,
+ * después el negocio, lo que quiere resolver y recién al final cómo
+ * contactarlo. Quien llega al último paso ya se
+ * comprometió con tres, y el equipo llega a la llamada con el caso leído.
  *
  * Inserta en praxia_leads.leads con origen 'vsl-diagnostico' y las UTM del
- * anuncio. Tres campos son nuevos (facturacion_mensual, urgencia, decisor):
- * si la migración del CRM todavía no se aplicó, PostgREST responde PGRST204
- * y el lead se reintenta sin ellos, con las tres respuestas escritas al final
- * de `idea`. Así no se pierde ningún lead mientras tanto.
+ * anuncio. Seis campos son nuevos (necesidades, facturacion_mensual,
+ * maps_negocio, zona, urgencia, decisor): si la migración del CRM todavía no
+ * se aplicó, PostgREST responde PGRST204 y el lead se reintenta sin ellos,
+ * con las respuestas escritas al final de `idea`. Así no se pierde ningún lead mientras tanto.
  */
 import { INDUSTRIAS } from '../../industrias';
 import { OPCIONES_SOLICITUD } from '../../vsl';
@@ -27,7 +28,7 @@ const [grupoFacturacion, grupoUrgencia, grupoDecisor] = GRUPOS;
 
 <div class="tarjeta solicitud p-6! md:p-9!">
   <div class="mb-7 flex items-center justify-between gap-4">
-    <span class="mono text-texto-3" data-solicitud-etiqueta>Paso 1 de 3</span>
+    <span class="mono text-texto-3" data-solicitud-etiqueta>Paso 1 de 4</span>
     <div class="solicitud-barra" aria-hidden="true">
       <div class="solicitud-barra-relleno" data-solicitud-relleno></div>
     </div>
@@ -36,8 +37,27 @@ const [grupoFacturacion, grupoUrgencia, grupoDecisor] = GRUPOS;
   <form data-solicitud novalidate>
     <input type="text" name="empresa_web" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
 
-    <!-- Paso 1: el negocio -->
+    <!-- Paso 0: qué necesita (selección múltiple, micro-compromiso) -->
     <div class="solicitud-paso space-y-6" data-paso="0">
+      <h3 class="text-[1.375rem] md:text-[1.625rem]">¿Qué necesitas?</h3>
+      <fieldset>
+        <legend class="etiqueta">Marca todo lo que aplique.</legend>
+        <div class="opciones opciones--columna mt-3">
+          {
+            OPCIONES_SOLICITUD.necesidades.map((o) => (
+              <label class="opcion">
+                <input type="checkbox" name="necesidades" value={o.valor} data-texto={o.texto} />
+                <span>{o.texto}</span>
+              </label>
+            ))
+          }
+        </div>
+        <p class="aviso hidden" data-error-de="necesidades"></p>
+      </fieldset>
+    </div>
+
+    <!-- Paso 1: el negocio -->
+    <div class="solicitud-paso hidden space-y-6" data-paso="1">
       <h3 class="text-[1.375rem] md:text-[1.625rem]">Tu negocio</h3>
       <div>
         <label for="vsl-negocio" class="etiqueta">Nombre del negocio</label>
@@ -75,10 +95,20 @@ const [grupoFacturacion, grupoUrgencia, grupoDecisor] = GRUPOS;
         </div>
         <p class="aviso hidden" data-error-de="facturacion"></p>
       </fieldset>
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div>
+          <label for="vsl-maps" class="etiqueta">Tu negocio en Google Maps <span class="text-texto-3">(opcional)</span></label>
+          <input id="vsl-maps" name="maps_negocio" type="text" class="campo mt-2" placeholder="Nombre como aparece, o el enlace" />
+        </div>
+        <div>
+          <label for="vsl-zona" class="etiqueta">¿En qué zona atiendes? <span class="text-texto-3">(opcional)</span></label>
+          <input id="vsl-zona" name="zona" type="text" class="campo mt-2" placeholder="Distrito o ciudad" />
+        </div>
+      </div>
     </div>
 
     <!-- Paso 2: lo que quiere resolver -->
-    <div class="solicitud-paso hidden space-y-6" data-paso="1">
+    <div class="solicitud-paso hidden space-y-6" data-paso="2">
       <h3 class="text-[1.375rem] md:text-[1.625rem]">Lo que quieres resolver</h3>
       <div>
         <label for="vsl-idea" class="etiqueta">¿Qué te quita más tiempo hoy, o qué te gustaría que pase solo?</label>
@@ -110,7 +140,7 @@ const [grupoFacturacion, grupoUrgencia, grupoDecisor] = GRUPOS;
     </div>
 
     <!-- Paso 3: contacto -->
-    <div class="solicitud-paso hidden space-y-6" data-paso="2">
+    <div class="solicitud-paso hidden space-y-6" data-paso="3">
       <h3 class="text-[1.375rem] md:text-[1.625rem]">¿Cómo te contactamos?</h3>
       <div>
         <label for="vsl-nombre" class="etiqueta">Tu nombre</label>
@@ -204,7 +234,7 @@ const [grupoFacturacion, grupoUrgencia, grupoDecisor] = GRUPOS;
     height: 100%;
     width: 100%;
     background: var(--degradado-calido);
-    transform: scaleX(0.333);
+    transform: scaleX(0.25);
     transform-origin: left;
     transition: transform 400ms var(--ease-resorte);
   }
@@ -230,6 +260,17 @@ const [grupoFacturacion, grupoUrgencia, grupoDecisor] = GRUPOS;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+  }
+
+  .opciones--columna {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .opciones--columna .opcion span {
+    width: 100%;
+    border-radius: 0.75rem;
+    padding-block: 0.75rem;
   }
 
   .opcion {
@@ -309,15 +350,18 @@ const [grupoFacturacion, grupoUrgencia, grupoDecisor] = GRUPOS;
     const error = raiz.querySelector<HTMLElement>('[data-solicitud-error]');
 
     const REQUERIDOS: string[][] = [
+      ['necesidades'],
       ['negocio', 'rubro', 'facturacion'],
       ['idea', 'urgencia', 'decisor'],
       ['nombre', 'whatsapp', 'correo'],
     ];
 
-    const RADIOS = new Set(['facturacion', 'urgencia', 'decisor']);
+    /** Grupos de opciones (radios o checkboxes): se validan y se marcan por fieldset. */
+    const RADIOS = new Set(['necesidades', 'facturacion', 'urgencia', 'decisor']);
     const OPCIONALES = new Set(['correo']);
 
     const MENSAJES: Record<string, string> = {
+      necesidades: 'Elige al menos una. Si no sabes, marca «No sé, diagnostícame».',
       negocio: 'Escribe cómo se llama tu negocio.',
       rubro: 'Elige el rubro que más se parece al tuyo.',
       facturacion: 'Elige un rango. Si prefieres no decirlo, hay una opción para eso.',
@@ -330,6 +374,12 @@ const [grupoFacturacion, grupoUrgencia, grupoDecisor] = GRUPOS;
     };
 
     let actual = 0;
+
+    /** Los checkboxes marcados de un grupo: valores, o textos visibles si `visible`. */
+    const marcados = (nombre: string, visible = false) =>
+      Array.from(form.querySelectorAll<HTMLInputElement>(`input[name="${nombre}"]:checked`)).map((c) =>
+        visible ? (c.dataset['texto'] ?? c.value) : c.value,
+      );
 
     const texto = (nombre: string) => {
       const c = form.elements.namedItem(nombre);
@@ -356,7 +406,8 @@ const [grupoFacturacion, grupoUrgencia, grupoDecisor] = GRUPOS;
     }
 
     function validar(nombre: string): boolean {
-      const valor = RADIOS.has(nombre) ? radio(nombre) : texto(nombre);
+      const valor =
+        nombre === 'necesidades' ? marcados(nombre).join(',') : RADIOS.has(nombre) ? radio(nombre) : texto(nombre);
       let ok = valor.length > 1;
       if (nombre === 'whatsapp') ok = valor.replace(/\D/g, '').length >= 9;
       if (nombre === 'correo') ok = valor === '' || /.+@.+\..+/.test(valor);
@@ -391,7 +442,7 @@ const [grupoFacturacion, grupoUrgencia, grupoDecisor] = GRUPOS;
     // Al elegir una opción se borra su aviso, sin esperar al siguiente "Continuar".
     form.addEventListener('change', (e) => {
       const el = e.target as HTMLInputElement;
-      if (el.type === 'radio') marcar(el.name, null);
+      if (el.type === 'radio' || el.type === 'checkbox') marcar(el.name, null);
     });
 
     continuar?.addEventListener('click', () => {
@@ -410,7 +461,7 @@ const [grupoFacturacion, grupoUrgencia, grupoDecisor] = GRUPOS;
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if (![0, 1, 2].every(validarPaso)) return;
+      if (![0, 1, 2, 3].every(validarPaso)) return;
 
       if (enviar) {
         enviar.disabled = true;
@@ -434,6 +485,9 @@ const [grupoFacturacion, grupoUrgencia, grupoDecisor] = GRUPOS;
         referer: document.referrer || null,
       };
       const calificacion = {
+        necesidades: marcados('necesidades'),
+        maps_negocio: texto('maps_negocio') || null,
+        zona: texto('zona') || null,
         facturacion_mensual: radio('facturacion'),
         urgencia: radio('urgencia'),
         decisor: radio('decisor'),
@@ -450,7 +504,9 @@ const [grupoFacturacion, grupoUrgencia, grupoDecisor] = GRUPOS;
           // PGRST204 = columna inexistente: la migración del CRM aún no está.
           if (fallo?.code === 'PGRST204') {
             const nota =
-              `\n\n[Solicitud VSL] Facturación: ${radio('facturacion', true)}. ` +
+              `\n\n[Solicitud VSL] Necesita: ${marcados('necesidades', true).join('; ')}. ` +
+              `Facturación: ${radio('facturacion', true)}. ` +
+              `Maps: ${calificacion.maps_negocio ?? 'sin dato'}. Zona: ${calificacion.zona ?? 'sin dato'}. ` +
               `Para cuándo: ${radio('urgencia', true)}. Decide: ${radio('decisor', true)}.`;
             ({ error: fallo } = await supabase.from('leads').insert({ ...base, idea: base.idea + nota }));
           }
