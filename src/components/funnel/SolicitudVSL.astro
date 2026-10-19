@@ -1,0 +1,476 @@
+---
+/**
+ * La solicitud del funnel VSL. Es un formulario de calificación (enfoque de
+ * Hormozi), no de contacto: primero el negocio, después lo que quiere
+ * resolver y recién al final cómo contactarlo. Quien llega al paso 3 ya se
+ * comprometió con dos, y el equipo llega a la llamada con el caso leído.
+ *
+ * Inserta en praxia_leads.leads con origen 'vsl-diagnostico' y las UTM del
+ * anuncio. Tres campos son nuevos (facturacion_mensual, urgencia, decisor):
+ * si la migración del CRM todavía no se aplicó, PostgREST responde PGRST204
+ * y el lead se reintenta sin ellos, con las tres respuestas escritas al final
+ * de `idea`. Así no se pierde ningún lead mientras tanto.
+ */
+import { INDUSTRIAS } from '../../industrias';
+import { OPCIONES_SOLICITUD } from '../../vsl';
+import { CONTEXTO, waLink } from '../../consts';
+import { ruta } from '../../rutas';
+
+const GRUPOS = [
+  { nombre: 'facturacion', leyenda: '¿Cuánto factura tu negocio al mes, aproximadamente?', opciones: OPCIONES_SOLICITUD.facturacion },
+  { nombre: 'urgencia', leyenda: '¿Para cuándo quieres tenerlo resuelto?', opciones: OPCIONES_SOLICITUD.urgencia },
+  { nombre: 'decisor', leyenda: '¿Quién toma la decisión?', opciones: OPCIONES_SOLICITUD.decisor },
+] as const;
+
+const [grupoFacturacion, grupoUrgencia, grupoDecisor] = GRUPOS;
+---
+
+<div class="tarjeta solicitud p-6! md:p-9!">
+  <div class="mb-7 flex items-center justify-between gap-4">
+    <span class="mono text-texto-3" data-solicitud-etiqueta>Paso 1 de 3</span>
+    <div class="solicitud-barra" aria-hidden="true">
+      <div class="solicitud-barra-relleno" data-solicitud-relleno></div>
+    </div>
+  </div>
+
+  <form data-solicitud novalidate>
+    <input type="text" name="empresa_web" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+    <!-- Paso 1: el negocio -->
+    <div class="solicitud-paso space-y-6" data-paso="0">
+      <h3 class="text-[1.375rem] md:text-[1.625rem]">Tu negocio</h3>
+      <div>
+        <label for="vsl-negocio" class="etiqueta">Nombre del negocio</label>
+        <input id="vsl-negocio" name="negocio" type="text" class="campo mt-2" autocomplete="organization" />
+        <p class="aviso hidden" data-error-de="negocio"></p>
+      </div>
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div>
+          <label for="vsl-rubro" class="etiqueta">Rubro</label>
+          <select id="vsl-rubro" name="rubro" class="campo mt-2">
+            <option value="">Elige uno</option>
+            {INDUSTRIAS.map((r) => <option value={r.nombre}>{r.nombre}</option>)}
+            <option value="Otro">Otro</option>
+          </select>
+          <p class="aviso hidden" data-error-de="rubro"></p>
+        </div>
+        <div>
+          <label for="vsl-equipo" class="etiqueta">Personas en el equipo</label>
+          <select id="vsl-equipo" name="equipo" class="campo mt-2">
+            {OPCIONES_SOLICITUD.equipo.map((t) => <option value={t}>{t}</option>)}
+          </select>
+        </div>
+      </div>
+      <fieldset>
+        <legend class="etiqueta">{grupoFacturacion.leyenda}</legend>
+        <div class="opciones mt-3">
+          {
+            grupoFacturacion.opciones.map((o) => (
+              <label class="opcion">
+                <input type="radio" name={grupoFacturacion.nombre} value={o.valor} data-texto={o.texto} />
+                <span>{o.texto}</span>
+              </label>
+            ))
+          }
+        </div>
+        <p class="aviso hidden" data-error-de="facturacion"></p>
+      </fieldset>
+    </div>
+
+    <!-- Paso 2: lo que quiere resolver -->
+    <div class="solicitud-paso hidden space-y-6" data-paso="1">
+      <h3 class="text-[1.375rem] md:text-[1.625rem]">Lo que quieres resolver</h3>
+      <div>
+        <label for="vsl-idea" class="etiqueta">¿Qué te quita más tiempo hoy, o qué te gustaría que pase solo?</label>
+        <textarea
+          id="vsl-idea"
+          name="idea"
+          rows="4"
+          class="campo mt-2"
+          placeholder="Escríbelo como se lo contarías a un amigo. Ej: respondo los mismos WhatsApp todo el día y de noche se me escapan clientes."
+        ></textarea>
+        <p class="aviso hidden" data-error-de="idea"></p>
+      </div>
+      {
+        [grupoUrgencia, grupoDecisor].map((g) => (
+          <fieldset>
+            <legend class="etiqueta">{g.leyenda}</legend>
+            <div class="opciones mt-3">
+              {g.opciones.map((o) => (
+                <label class="opcion">
+                  <input type="radio" name={g.nombre} value={o.valor} data-texto={o.texto} />
+                  <span>{o.texto}</span>
+                </label>
+              ))}
+            </div>
+            <p class="aviso hidden" data-error-de={g.nombre} />
+          </fieldset>
+        ))
+      }
+    </div>
+
+    <!-- Paso 3: contacto -->
+    <div class="solicitud-paso hidden space-y-6" data-paso="2">
+      <h3 class="text-[1.375rem] md:text-[1.625rem]">¿Cómo te contactamos?</h3>
+      <div>
+        <label for="vsl-nombre" class="etiqueta">Tu nombre</label>
+        <input id="vsl-nombre" name="nombre" type="text" class="campo mt-2" autocomplete="name" />
+        <p class="aviso hidden" data-error-de="nombre"></p>
+      </div>
+      <div>
+        <label for="vsl-whatsapp" class="etiqueta">Tu WhatsApp</label>
+        <input
+          id="vsl-whatsapp"
+          name="whatsapp"
+          type="tel"
+          inputmode="tel"
+          class="campo mt-2"
+          autocomplete="tel"
+          placeholder="+51 9XX XXX XXX"
+        />
+        <p class="aviso hidden" data-error-de="whatsapp"></p>
+      </div>
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div>
+          <label for="vsl-correo" class="etiqueta">Tu correo <span class="text-texto-3">(opcional)</span></label>
+          <input id="vsl-correo" name="correo" type="email" class="campo mt-2" autocomplete="email" />
+          <p class="aviso hidden" data-error-de="correo"></p>
+        </div>
+        <div>
+          <label for="vsl-web" class="etiqueta">Tu web o Instagram <span class="text-texto-3">(opcional)</span></label>
+          <input id="vsl-web" name="web" type="text" class="campo mt-2" placeholder="tunegocio.pe" />
+        </div>
+      </div>
+      <p class="pequeno text-texto-2">
+        Usamos tus datos solo para contactarte por este diagnóstico. Lee la
+        <a href={ruta('/privacidad')} class="enlace">política de privacidad</a>.
+      </p>
+    </div>
+
+    <div class="mt-8 flex gap-3">
+      <button type="button" class="boton boton-secundario hidden" data-solicitud-anterior>Anterior</button>
+      <button type="button" class="boton boton-primario flex-1" data-solicitud-continuar>Continuar</button>
+      <button type="submit" class="boton boton-primario hidden flex-1" data-solicitud-enviar>Enviar solicitud</button>
+    </div>
+  </form>
+
+  <div class="hidden" data-solicitud-exito role="status">
+    <h3 class="text-[1.5rem] text-verde" data-solicitud-exito-titulo>Solicitud recibida.</h3>
+    <p class="mt-3 text-texto-2">
+      Te escribimos hoy por WhatsApp para acordar la hora de los 15 minutos. Si quieres adelantarte,
+      escríbenos tú.
+    </p>
+    <a href={waLink(CONTEXTO.vsl)} target="_blank" rel="noopener" class="boton boton-primario mt-6">
+      Abrir WhatsApp
+    </a>
+  </div>
+
+  <div class="mt-6 hidden rounded-praxia border border-brasa/50 bg-brasa-tenue p-5" data-solicitud-error role="alert">
+    <p class="text-texto">
+      La solicitud no se envió. Revisa tu conexión e inténtalo otra vez, o mándanos lo mismo por WhatsApp.
+    </p>
+    <a href={waLink(CONTEXTO.vsl)} target="_blank" rel="noopener" class="enlace mt-3 inline-block">
+      Escribir por WhatsApp
+    </a>
+  </div>
+</div>
+
+<style>
+  .etiqueta {
+    display: block;
+    font-family: var(--font-titulos);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    color: var(--color-texto);
+  }
+
+  .aviso {
+    margin-top: 0.5rem;
+    font-size: 0.9375rem;
+    color: var(--color-ambar);
+  }
+
+  .solicitud-barra {
+    flex: 1;
+    max-width: 10rem;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--color-linea);
+    overflow: hidden;
+  }
+
+  .solicitud-barra-relleno {
+    height: 100%;
+    width: 100%;
+    background: var(--degradado-calido);
+    transform: scaleX(0.333);
+    transform-origin: left;
+    transition: transform 400ms var(--ease-resorte);
+  }
+
+  .solicitud-paso {
+    animation: entra-paso 400ms var(--ease-resorte);
+  }
+
+  @keyframes entra-paso {
+    from {
+      opacity: 0;
+      transform: translateX(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Opciones de una sola respuesta: radios nativos (teclado y lector de
+     pantalla gratis) vestidos de pill. */
+  .opciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .opcion {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .opcion input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+
+  .opcion span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-linea-viva);
+    background-color: var(--color-surface);
+    color: var(--color-texto-2);
+    font-size: 0.9375rem;
+    transition:
+      color 150ms var(--ease-suave),
+      background-color 150ms var(--ease-suave),
+      border-color 150ms var(--ease-suave),
+      transform 150ms var(--ease-resorte);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .opcion:hover span {
+      color: var(--color-texto);
+      border-color: var(--color-brasa);
+    }
+  }
+
+  .opcion:active span {
+    transform: scale(0.97);
+  }
+
+  .opcion input:focus-visible + span {
+    outline: 2px solid var(--color-brasa);
+    outline-offset: 3px;
+  }
+
+  .opcion input:checked + span {
+    color: var(--color-texto);
+    border-color: var(--color-brasa);
+    background-color: var(--color-brasa-tenue);
+  }
+
+  fieldset[aria-invalid='true'] .opcion span {
+    border-color: var(--color-ambar);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .solicitud-paso {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-solicitud]');
+  const raiz = form?.closest('.solicitud');
+
+  if (form && raiz) {
+    const pasos = Array.from(form.querySelectorAll<HTMLElement>('[data-paso]'));
+    const etiqueta = raiz.querySelector('[data-solicitud-etiqueta]');
+    const relleno = raiz.querySelector<HTMLElement>('[data-solicitud-relleno]');
+    const anterior = raiz.querySelector<HTMLButtonElement>('[data-solicitud-anterior]');
+    const continuar = raiz.querySelector<HTMLButtonElement>('[data-solicitud-continuar]');
+    const enviar = raiz.querySelector<HTMLButtonElement>('[data-solicitud-enviar]');
+    const exito = raiz.querySelector<HTMLElement>('[data-solicitud-exito]');
+    const error = raiz.querySelector<HTMLElement>('[data-solicitud-error]');
+
+    const REQUERIDOS: string[][] = [
+      ['negocio', 'rubro', 'facturacion'],
+      ['idea', 'urgencia', 'decisor'],
+      ['nombre', 'whatsapp', 'correo'],
+    ];
+
+    const RADIOS = new Set(['facturacion', 'urgencia', 'decisor']);
+    const OPCIONALES = new Set(['correo']);
+
+    const MENSAJES: Record<string, string> = {
+      negocio: 'Escribe cómo se llama tu negocio.',
+      rubro: 'Elige el rubro que más se parece al tuyo.',
+      facturacion: 'Elige un rango. Si prefieres no decirlo, hay una opción para eso.',
+      idea: 'Escribe aunque sea una línea de lo que te gustaría resolver.',
+      urgencia: 'Elige para cuándo lo quieres resolver.',
+      decisor: 'Elige quién toma la decisión.',
+      nombre: 'Escribe tu nombre para saber cómo llamarte.',
+      whatsapp: 'Escribe un WhatsApp de al menos 9 dígitos.',
+      correo: 'Ese correo no parece válido. Revísalo o déjalo vacío.',
+    };
+
+    let actual = 0;
+
+    const texto = (nombre: string) => {
+      const c = form.elements.namedItem(nombre);
+      return c && 'value' in c ? String(c.value).trim() : '';
+    };
+
+    /** El valor de un grupo de radios, o su texto visible si `visible`. */
+    const radio = (nombre: string, visible = false) => {
+      const marcado = form.querySelector<HTMLInputElement>(`input[name="${nombre}"]:checked`);
+      if (!marcado) return '';
+      return visible ? (marcado.dataset['texto'] ?? marcado.value) : marcado.value;
+    };
+
+    function marcar(nombre: string, mensaje: string | null) {
+      const aviso = form!.querySelector<HTMLElement>(`[data-error-de="${nombre}"]`);
+      const objetivo = RADIOS.has(nombre)
+        ? form!.querySelector<HTMLElement>(`input[name="${nombre}"]`)?.closest('fieldset')
+        : (form!.elements.namedItem(nombre) as HTMLElement | null);
+      if (!aviso || !objetivo) return;
+      aviso.textContent = mensaje ?? '';
+      aviso.classList.toggle('hidden', !mensaje);
+      if (mensaje) objetivo.setAttribute('aria-invalid', 'true');
+      else objetivo.removeAttribute('aria-invalid');
+    }
+
+    function validar(nombre: string): boolean {
+      const valor = RADIOS.has(nombre) ? radio(nombre) : texto(nombre);
+      let ok = valor.length > 1;
+      if (nombre === 'whatsapp') ok = valor.replace(/\D/g, '').length >= 9;
+      if (nombre === 'correo') ok = valor === '' || /.+@.+\..+/.test(valor);
+      if (OPCIONALES.has(nombre) && valor === '') ok = true;
+      marcar(nombre, ok ? null : (MENSAJES[nombre] ?? 'Completa este campo.'));
+      return ok;
+    }
+
+    function validarPaso(indice: number): boolean {
+      const nombres = REQUERIDOS[indice] ?? [];
+      const resultados = nombres.map(validar);
+      const primero = nombres[resultados.indexOf(false)];
+      if (primero) {
+        const foco = RADIOS.has(primero)
+          ? form!.querySelector<HTMLElement>(`input[name="${primero}"]`)
+          : (form!.elements.namedItem(primero) as HTMLElement | null);
+        foco?.focus();
+      }
+      return !resultados.includes(false);
+    }
+
+    function mostrar(indice: number) {
+      pasos.forEach((p) => p.classList.toggle('hidden', Number(p.dataset['paso']) !== indice));
+      if (etiqueta) etiqueta.textContent = `Paso ${indice + 1} de ${pasos.length}`;
+      if (relleno) relleno.style.transform = `scaleX(${(indice + 1) / pasos.length})`;
+      anterior?.classList.toggle('hidden', indice === 0);
+      const ultimo = indice === pasos.length - 1;
+      continuar?.classList.toggle('hidden', ultimo);
+      enviar?.classList.toggle('hidden', !ultimo);
+    }
+
+    // Al elegir una opción se borra su aviso, sin esperar al siguiente "Continuar".
+    form.addEventListener('change', (e) => {
+      const el = e.target as HTMLInputElement;
+      if (el.type === 'radio') marcar(el.name, null);
+    });
+
+    continuar?.addEventListener('click', () => {
+      if (!validarPaso(actual)) return;
+      actual = Math.min(pasos.length - 1, actual + 1);
+      mostrar(actual);
+      raiz.scrollIntoView({ block: 'start' });
+    });
+
+    anterior?.addEventListener('click', () => {
+      actual = Math.max(0, actual - 1);
+      mostrar(actual);
+    });
+
+    const utm = new URLSearchParams(window.location.search);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (![0, 1, 2].every(validarPaso)) return;
+
+      if (enviar) {
+        enviar.disabled = true;
+        enviar.textContent = 'Enviando…';
+      }
+      error?.classList.add('hidden');
+
+      const base = {
+        nombre: texto('nombre'),
+        whatsapp: texto('whatsapp'),
+        correo: texto('correo') || null,
+        negocio: texto('negocio'),
+        rubro: texto('rubro'),
+        equipo: texto('equipo') || null,
+        idea: texto('idea'),
+        web: texto('web') || null,
+        origen: 'vsl-diagnostico',
+        utm_source: utm.get('utm_source'),
+        utm_medium: utm.get('utm_medium'),
+        utm_campaign: utm.get('utm_campaign'),
+        referer: document.referrer || null,
+      };
+      const calificacion = {
+        facturacion_mensual: radio('facturacion'),
+        urgencia: radio('urgencia'),
+        decisor: radio('decisor'),
+      };
+
+      try {
+        // Honeypot: si un bot llenó el campo oculto, se simula éxito sin insertar.
+        if (!texto('empresa_web')) {
+          // Import dinámico: si faltan las variables de Supabase, createClient
+          // lanza al importarse. Estático, eso mataba todo el script (pasos
+          // incluidos); acá solo cae al aviso con la salida a WhatsApp.
+          const { supabase } = await import('../../lib/supabase');
+          let { error: fallo } = await supabase.from('leads').insert({ ...base, ...calificacion });
+          // PGRST204 = columna inexistente: la migración del CRM aún no está.
+          if (fallo?.code === 'PGRST204') {
+            const nota =
+              `\n\n[Solicitud VSL] Facturación: ${radio('facturacion', true)}. ` +
+              `Para cuándo: ${radio('urgencia', true)}. Decide: ${radio('decisor', true)}.`;
+            ({ error: fallo } = await supabase.from('leads').insert({ ...base, idea: base.idea + nota }));
+          }
+          if (fallo) throw fallo;
+        }
+        const titulo = raiz.querySelector('[data-solicitud-exito-titulo]');
+        if (titulo && base.nombre) titulo.textContent = `Solicitud recibida, ${base.nombre}.`;
+        form.classList.add('hidden');
+        raiz.querySelector('.mb-7')?.classList.add('hidden');
+        exito?.classList.remove('hidden');
+        raiz.scrollIntoView({ block: 'center' });
+      } catch {
+        error?.classList.remove('hidden');
+        if (enviar) {
+          enviar.disabled = false;
+          enviar.textContent = 'Enviar solicitud';
+        }
+      }
+    });
+
+    mostrar(0);
+  }
+</script>

@@ -20,7 +20,8 @@ export default defineConfig({
       // Cuando las cierres, quita este filtro y el Disallow de public/robots.txt.
       // /pruebas/* son bancos de prueba internos (tipografía, fondos del hero):
       // se buildean porque viven en src/pages, pero no son contenido del sitio.
-      filter: (pagina) => !/\/(legal|privacidad|pruebas)\/?/.test(pagina),
+      // /diagnostico-gratis es la página de anuncios (funnel VSL): noindex y fuera.
+      filter: (pagina) => !/\/(legal|privacidad|pruebas|diagnostico-gratis)\/?/.test(pagina),
     }),
   ],
 

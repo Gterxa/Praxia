@@ -5,6 +5,8 @@ import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 import FondoOrbes from '../components/FondoOrbes.astro';
 import BottomSheetValidar from '../components/BottomSheetValidar.astro';
+import CabeceraFunnel from '../components/funnel/CabeceraFunnel.astro';
+import PieFunnel from '../components/funnel/PieFunnel.astro';
 import { SITE, EMAIL, WHATSAPP, CONTEXTO } from '../consts';
 import '../styles/global.css';
 import { ruta, sinBase } from '../rutas';
@@ -24,6 +26,13 @@ interface Props {
    * Solo la usa /pruebas/secciones — el resto del sitio no la toca.
    */
   tipografia?: 'a' | 'b';
+  /**
+   * Página de funnel (ej. /diagnostico-gratis): sin menú, sin pie de
+   * navegación, sin orbe flotante ni bottom sheet. Una página de anuncio no
+   * debería tener salidas que compitan con su único CTA. Deja solo el logo
+   * arriba y las legales abajo.
+   */
+  funnel?: boolean;
 }
 
 const {
@@ -32,6 +41,7 @@ const {
   contextoWhatsApp = CONTEXTO.flotante,
   noIndex = false,
   tipografia = 'a',
+  funnel = false,
 } = Astro.props;
 
 const tituloCompleto = titulo.includes(SITE.nombre)
@@ -223,7 +233,7 @@ const datosEstructurados = {
 
     <FondoOrbes />
     <a class="skip-link" href="#contenido">Ir al contenido</a>
-    <Header />
+    {funnel ? <CabeceraFunnel /> : <Header />}
     <main id="contenido" class="relative z-1">
       <slot />
     </main>
@@ -233,14 +243,23 @@ const datosEstructurados = {
       cosa) y que solo retrasaría los enlaces de navegación. invokube
       tampoco anima su footer.
     */}
-    <Footer />
-    <WhatsAppButton contexto={contextoWhatsApp} />
-    <BottomSheetValidar />
+    {
+      funnel ? (
+        <PieFunnel />
+      ) : (
+        <>
+          <Footer />
+          <WhatsAppButton contexto={contextoWhatsApp} />
+          <BottomSheetValidar />
+        </>
+      )
+    }
 
     <script>
       import '../scripts/scroll-suave';
     </script>
 
+    {/* Sin #hoja-validar en el DOM (modo funnel) la función sale sola. */}
     <script>
       import { montarBottomSheetValidar } from '../scripts/bottom-sheet-validar';
       montarBottomSheetValidar();
