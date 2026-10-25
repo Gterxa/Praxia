@@ -180,9 +180,20 @@ async function ghl<T>(token: string, metodo: string, ruta: string, cuerpo?: unkn
     body: cuerpo ? JSON.stringify(cuerpo) : undefined,
   });
   if (!res.ok) {
-    throw new Error(`GHL ${metodo} ${ruta} → ${res.status}: ${(await res.text()).slice(0, 300)}`);
+    // Sin el cuerpo de la respuesta ni la query: pueden traer datos del contacto.
+    throw new Error(`GHL ${metodo} ${ruta.split('?')[0].replace(/\/[A-Za-z0-9]{15,}/g, '/:id')} → ${res.status}`);
   }
   return (await res.json()) as T;
+}
+
+/** ID del contacto que ya tiene ese correo o, si no, ese teléfono. */
+async function buscarContacto(token: string, correo: string, telefono: string): Promise<string | null> {
+  for (const [clave, valor] of [['email', correo], ['number', telefono]] as const) {
+    const q = new URLSearchParams({ locationId: LOCATION_ID, [clave]: valor });
+    const { contact } = await ghl<{ contact: { id: string } | null }>(token, 'GET', `/contacts/search/duplicate?${q}`);
+    if (contact?.id) return contact.id;
+  }
+  return null;
 }
 
 interface Oportunidad {
@@ -215,17 +226,28 @@ export async function guardarEnGhl(token: string, lead: LeadFunnel): Promise<{ c
     if (lead.frase?.trim()) customFields.push({ id: CAMPO.frase, field_value: lead.frase.trim() });
   }
 
-  const { contact } = await ghl<{ contact: { id: string } }>(token, 'POST', '/contacts/upsert', {
-    locationId: LOCATION_ID,
-    name: lead.nombre,
-    firstName: lead.nombre.split(/\s+/)[0],
-    email: lead.correo,
-    phone: lead.telefono,
-    country: lead.pais.toUpperCase(),
-    source: 'funnel web',
-    customFields,
-  });
-  const contactId = contact.id;
+  // El endpoint es público: cualquiera puede escribir el correo de otro. Por eso un
+  // contacto que ya existe nunca cambia de nombre, correo ni teléfono desde acá;
+  // solo recibe las respuestas del funnel. Los datos de identidad se escriben
+  // únicamente al crearlo.
+  const existente = await buscarContacto(token, lead.correo, lead.telefono);
+  let contactId: string;
+  if (existente) {
+    contactId = existente;
+    await ghl(token, 'PUT', `/contacts/${contactId}`, { customFields });
+  } else {
+    const { contact } = await ghl<{ contact: { id: string } }>(token, 'POST', '/contacts/', {
+      locationId: LOCATION_ID,
+      name: lead.nombre,
+      firstName: lead.nombre.split(/\s+/)[0],
+      email: lead.correo,
+      phone: lead.telefono,
+      country: lead.pais.toUpperCase(),
+      source: 'funnel web',
+      customFields,
+    });
+    contactId = contact.id;
+  }
 
   if (evento === 'paso') return { contactId };
 
@@ -250,7 +272,9 @@ export async function guardarEnGhl(token: string, lead: LeadFunnel): Promise<{ c
   const etapa = resultado ? ETAPA[resultado.categoria] : ETAPA.incompleta;
 
   if (abierta) {
-    if (abierta.pipelineStageId !== etapa) {
+    // Solo el envío final mueve la oportunidad: volver a empezar el funnel no
+    // regresa a «Aplicación incompleta» a quien ya había aplicado.
+    if (resultado && abierta.pipelineStageId !== etapa) {
       await ghl(token, 'PUT', `/opportunities/${abierta.id}`, { pipelineId: PIPELINE, pipelineStageId: etapa });
     }
   } else if (!opportunities.length) {

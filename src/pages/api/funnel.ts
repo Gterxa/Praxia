@@ -41,9 +41,9 @@ function limpiarOrigen(v: unknown): Origen {
 }
 
 export const POST: APIRoute = async ({ request, url }) => {
-  // Solo desde el propio sitio.
+  // Solo desde el propio sitio. El navegador siempre manda Origin en un POST.
   const desde = request.headers.get('origin');
-  if (desde && new URL(desde).host !== url.host) return new Response(null, { status: 403 });
+  if (!desde || new URL(desde).host !== url.host) return new Response(null, { status: 403 });
 
   const crudo = await request.text();
   if (crudo.length > 20_000) return new Response(null, { status: 413 });
@@ -79,7 +79,7 @@ export const POST: APIRoute = async ({ request, url }) => {
 
   const token = getSecret('GHL_TOKEN');
   if (!token) {
-    console.warn('[api/funnel] falta GHL_TOKEN: no se guardó', evento, lead.correo);
+    console.warn('[api/funnel] falta GHL_TOKEN: no se guardó', evento);
     return new Response(null, { status: 204 });
   }
 
@@ -87,7 +87,8 @@ export const POST: APIRoute = async ({ request, url }) => {
     await guardarEnGhl(token, lead);
     return new Response(null, { status: 204 });
   } catch (e) {
-    console.error('[api/funnel]', evento, lead.correo, e);
+    // Sin datos del lead en el log: solo el evento y el error (método, ruta y estado).
+    console.error('[api/funnel]', evento, e instanceof Error ? e.message : 'error');
     return new Response(null, { status: 502 });
   }
 };

@@ -128,10 +128,15 @@ el endpoint responde 204 y solo deja un aviso en el log.
 
 | Evento | Cuándo | Qué hace en GHL |
 |---|---|---|
-| `inicio` | Al pasar la pantalla de contacto | Upsert del contacto (nombre, WhatsApp, correo, país, moneda, fuente, campaña, origen UTM, último paso); quita y pone `funnel-iniciado` (+ `funnel-web`); crea la oportunidad en «Aplicación incompleta» si no tiene una abierta |
-| `paso` | Al llegar a cada pregunta | Upsert con las respuestas hasta ahí y el último paso |
+| `inicio` | Al pasar la pantalla de contacto | Busca o crea el contacto (nombre, WhatsApp, correo, país, moneda, fuente, campaña, origen UTM, último paso); quita y pone `funnel-iniciado` (+ `funnel-web`); crea la oportunidad en «Aplicación incompleta» si no tiene una abierta |
+| `paso` | Al llegar a cada pregunta | Guarda las respuestas hasta ahí y el último paso |
 | `fin` | Al enviar | Clasifica en el servidor (src/funnel.ts), guarda categoría, prioridad, motivo, frase y compromiso; etiquetas `funnel-completo`, `cat-x`, rubro y `decide-otra-persona`; mueve la oportunidad a Aplicó A, Aplicó B o Perfil en evaluación |
 
-Solo mueve oportunidades que están en las 4 etapas del funnel: si el contacto ya va más adelante
-(llamada hecha, cotización…), no la regresa. Los UTM se guardan en sessionStorage al entrar a
+Busca el contacto por correo y luego por teléfono (`/contacts/search/duplicate`). Si ya existe,
+**no le cambia nombre, correo ni teléfono**: solo escribe las respuestas del funnel (el endpoint es
+público y cualquiera puede tipear el correo de otro). Si no existe, lo crea con todo.
+
+Solo el envío final mueve la oportunidad, y solo entre las 4 etapas del funnel: si el contacto ya
+va más adelante (llamada hecha, cotización…), no la regresa. Los logs no llevan datos del lead.
+Pendiente: Cloudflare Turnstile o límite por IP si aparece spam. Los UTM se guardan en sessionStorage al entrar a
 /funnel (src/lib/origen.ts). Hay un campo trampa para bots y el endpoint rechaza otros orígenes.
