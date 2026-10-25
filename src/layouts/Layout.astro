@@ -33,6 +33,11 @@ interface Props {
    * arriba y las legales abajo.
    */
   funnel?: boolean;
+  /**
+   * Solo con `funnel`: quita también la cabecera. Para /funnel y su
+   * aplicación, que traen su propio logo, como el lienzo de referencia.
+   */
+  sinCabecera?: boolean;
 }
 
 const {
@@ -42,6 +47,7 @@ const {
   noIndex = false,
   tipografia = 'a',
   funnel = false,
+  sinCabecera = false,
 } = Astro.props;
 
 const tituloCompleto = titulo.includes(SITE.nombre)
@@ -233,7 +239,7 @@ const datosEstructurados = {
 
     <FondoOrbes />
     <a class="skip-link" href="#contenido">Ir al contenido</a>
-    {funnel ? <CabeceraFunnel /> : <Header />}
+    {funnel ? !sinCabecera && <CabeceraFunnel /> : <Header />}
     <main id="contenido" class="relative z-1">
       <slot />
     </main>

@@ -1,0 +1,24 @@
+---
+/**
+ * La aplicación del funnel: una pregunta por pantalla, la matriz A/B/C y la
+ * pantalla que toca según el resultado. Toda la lógica vive en la isla
+ * AplicacionFunnel; las preguntas y la regla, en src/funnel.ts.
+ */
+import Layout from '../../layouts/Layout.astro';
+import AplicacionFunnel from '../../components/funnel/AplicacionFunnel.tsx';
+import { CONTEXTO, EMAIL, WHATSAPP } from '../../consts';
+
+// +51 941 639 094: el número de Praxia, tal como lo ve quien recibe la llamada.
+const telefono = `+${WHATSAPP.slice(0, 2)} ${WHATSAPP.slice(2, 5)} ${WHATSAPP.slice(5, 8)} ${WHATSAPP.slice(8)}`;
+---
+
+<Layout
+  titulo="Aplica a tu diagnóstico gratis"
+  descripcion="Unas preguntas rápidas para saber cómo ayudarte y agendar tu diagnóstico."
+  contextoWhatsApp={CONTEXTO.vsl}
+  noIndex
+  funnel
+  sinCabecera
+>
+  <AplicacionFunnel client:load correo={EMAIL} telefono={telefono} instagram="alvarosanchezai" />
+</Layout>
