@@ -37,6 +37,8 @@ function limpiarOrigen(v: unknown): Origen {
     const x = texto((v as Record<string, unknown>)[k], 300);
     if (x) o[k] = x;
   }
+  const cid = texto((v as Record<string, unknown>).cid, 40);
+  if (/^[A-Za-z0-9]{10,40}$/.test(cid)) o.cid = cid;
   return o;
 }
 

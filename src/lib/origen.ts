@@ -6,7 +6,8 @@
 import type { Origen } from './ghl';
 
 const CLAVE = 'praxia-funnel-origen';
-const PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'] as const;
+// cid: id del contacto de GHL que manda el DM de Instagram en el link.
+const PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'cid'] as const;
 
 /** Guarda el origen de esta visita. El primero gana: no lo pisa la navegación interna. */
 export function guardarOrigen(): void {

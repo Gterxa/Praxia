@@ -103,6 +103,8 @@ export interface Origen {
   fbclid?: string;
   referrer?: string;
   entrada?: string;
+  /** ID del contacto de GHL que mandó el link (DM de Instagram): se completa ese contacto. */
+  cid?: string;
 }
 
 export interface LeadFunnel {
@@ -163,7 +165,7 @@ function camposRespuestas(r: Respuestas, moneda: Moneda): CampoValor[] {
 
 function textoOrigen(o: Origen): string {
   return Object.entries(o)
-    .filter(([, v]) => v)
+    .filter(([k, v]) => v && k !== 'cid')
     .map(([k, v]) => `${k}: ${v}`)
     .join('\n');
 }
@@ -194,6 +196,29 @@ async function buscarContacto(token: string, correo: string, telefono: string): 
     if (contact?.id) return contact.id;
   }
   return null;
+}
+
+/**
+ * Contacto que vino por el link del DM de Instagram (?cid=). Se usa solo si es de
+ * esta subcuenta. Correo y teléfono se le ponen únicamente si los tiene vacíos
+ * (por Instagram casi nunca los hay); el nombre de Instagram se queda.
+ */
+async function contactoDelLink(token: string, cid: string, correo: string, telefono: string, customFields: CampoValor[]): Promise<string | null> {
+  let contact: { id: string; locationId: string; email?: string | null; phone?: string | null } | undefined;
+  try {
+    ({ contact } = await ghl<{ contact: typeof contact }>(token, 'GET', `/contacts/${cid}`));
+  } catch {
+    return null; // id inválido o borrado: sigue por correo y teléfono
+  }
+  if (!contact || contact.locationId !== LOCATION_ID) return null;
+  const faltan = { ...(contact.email ? {} : { email: correo }), ...(contact.phone ? {} : { phone: telefono }) };
+  try {
+    await ghl(token, 'PUT', `/contacts/${cid}`, { ...faltan, customFields });
+  } catch {
+    // Ese correo o teléfono ya es de otro contacto: se guardan solo las respuestas.
+    await ghl(token, 'PUT', `/contacts/${cid}`, { customFields });
+  }
+  return cid;
 }
 
 interface Oportunidad {
@@ -230,9 +255,12 @@ export async function guardarEnGhl(token: string, lead: LeadFunnel): Promise<{ c
   // contacto que ya existe nunca cambia de nombre, correo ni teléfono desde acá;
   // solo recibe las respuestas del funnel. Los datos de identidad se escriben
   // únicamente al crearlo.
-  const existente = await buscarContacto(token, lead.correo, lead.telefono);
+  const delLink = origen.cid ? await contactoDelLink(token, origen.cid, lead.correo, lead.telefono, customFields) : null;
+  const existente = delLink ? null : await buscarContacto(token, lead.correo, lead.telefono);
   let contactId: string;
-  if (existente) {
+  if (delLink) {
+    contactId = delLink;
+  } else if (existente) {
     contactId = existente;
     await ghl(token, 'PUT', `/contacts/${contactId}`, { customFields });
   } else {

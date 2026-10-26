@@ -67,7 +67,8 @@ la opción por su posición en la lista, no el texto que vio el visitante.
 
 `funnel-web` · `cat-a` · `cat-b` · `cat-c` · `rubro-legal` · `rubro-ecommerce` · `rubro-nicho` ·
 `decide-otra-persona` · `no-show` · `cliente-activo` · `ex-cliente` · `referido` ·
-`funnel-iniciado` · `funnel-completo` · `funnel-abandono`
+`funnel-iniciado` · `funnel-completo` · `funnel-abandono` · `ig-pidio-link` · `ig-no-empezo` ·
+`ig-sin-respuesta`
 
 ## Calendario «Diagnóstico gratis Praxia» (`pVbb0wqNGWIChVKmt986`)
 
@@ -132,7 +133,9 @@ el endpoint responde 204 y solo deja un aviso en el log.
 | `paso` | Al llegar a cada pregunta | Guarda las respuestas hasta ahí y el último paso |
 | `fin` | Al enviar | Clasifica en el servidor (src/funnel.ts), guarda categoría, prioridad, motivo, frase y compromiso; etiquetas `funnel-completo`, `cat-x`, rubro y `decide-otra-persona`; mueve la oportunidad a Aplicó A, Aplicó B o Perfil en evaluación |
 
-Busca el contacto por correo y luego por teléfono (`/contacts/search/duplicate`). Si ya existe,
+Si el link trae `?cid=` (el DM de Instagram manda `{{contact.id}}`), usa ese contacto: le pone correo y
+teléfono solo si los tiene vacíos y guarda las respuestas. Si no, busca el contacto por correo y
+luego por teléfono (`/contacts/search/duplicate`). Si ya existe,
 **no le cambia nombre, correo ni teléfono**: solo escribe las respuestas del funnel (el endpoint es
 público y cualquiera puede tipear el correo de otro). Si no existe, lo crea con todo.
 
