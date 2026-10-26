@@ -199,18 +199,22 @@ async function buscarContacto(token: string, correo: string, telefono: string): 
 }
 
 /**
- * Contacto que vino por el link del DM de Instagram (?cid=). Se usa solo si es de
- * esta subcuenta. Correo y teléfono se le ponen únicamente si los tiene vacíos
- * (por Instagram casi nunca los hay); el nombre de Instagram se queda.
+ * Contacto que vino por el link del DM de Instagram (?cid=). El cid no es una
+ * prueba de identidad (GHL no puede firmar el link sin una acción de código de
+ * pago), así que se acota: solo vale para contactos de esta subcuenta que
+ * pidieron el link por el DM (etiqueta ig-pidio-link). Correo y teléfono se le
+ * ponen únicamente si los tiene vacíos (por Instagram casi nunca los hay); el
+ * nombre de Instagram se queda. El id es aleatorio de 20 caracteres y solo
+ * viaja en el DM de esa persona.
  */
 async function contactoDelLink(token: string, cid: string, correo: string, telefono: string, customFields: CampoValor[]): Promise<string | null> {
-  let contact: { id: string; locationId: string; email?: string | null; phone?: string | null } | undefined;
+  let contact: { id: string; locationId: string; email?: string | null; phone?: string | null; tags?: string[] } | undefined;
   try {
     ({ contact } = await ghl<{ contact: typeof contact }>(token, 'GET', `/contacts/${cid}`));
   } catch {
     return null; // id inválido o borrado: sigue por correo y teléfono
   }
-  if (!contact || contact.locationId !== LOCATION_ID) return null;
+  if (!contact || contact.locationId !== LOCATION_ID || !contact.tags?.includes('ig-pidio-link')) return null;
   const faltan = { ...(contact.email ? {} : { email: correo }), ...(contact.phone ? {} : { phone: telefono }) };
   try {
     await ghl(token, 'PUT', `/contacts/${cid}`, { ...faltan, customFields });

@@ -133,7 +133,7 @@ el endpoint responde 204 y solo deja un aviso en el log.
 | `paso` | Al llegar a cada pregunta | Guarda las respuestas hasta ahí y el último paso |
 | `fin` | Al enviar | Clasifica en el servidor (src/funnel.ts), guarda categoría, prioridad, motivo, frase y compromiso; etiquetas `funnel-completo`, `cat-x`, rubro y `decide-otra-persona`; mueve la oportunidad a Aplicó A, Aplicó B o Perfil en evaluación |
 
-Si el link trae `?cid=` (el DM de Instagram manda `{{contact.id}}`), usa ese contacto: le pone correo y
+Si el link trae `?cid=` (el DM de Instagram manda `{{contact.id}}`) y ese contacto tiene `ig-pidio-link`, usa ese contacto: le pone correo y
 teléfono solo si los tiene vacíos y guarda las respuestas. Si no, busca el contacto por correo y
 luego por teléfono (`/contacts/search/duplicate`). Si ya existe,
 **no le cambia nombre, correo ni teléfono**: solo escribe las respuestas del funnel (el endpoint es
