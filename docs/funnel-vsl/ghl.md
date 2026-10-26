@@ -112,6 +112,16 @@ oportunidad. Nada de correo, SMS ni WhatsApp todavía.
   nace en «Aplicación incompleta»). Avisa en la app a todos los usuarios, crea una tarea para
   Álvaro, espera 1 hora y, si sigue en Aplicó A o B, avisa de nuevo.
 - **Funnel · Perfil C: aviso**: la oportunidad pasa a Perfil en evaluación → aviso con el motivo.
+- **IG - DM praxia al funnel (nuevo)** (`3bd687b2-9b63-4e98-88bf-60d1a58627f6`), **en borrador**:
+  comentario «praxia»/«praxis» (6 variantes, coincidencia exacta) → DM con botón «Sí, lo quiero»
+  (Instagram interactive messenger, espera 24 h).
+  - Sin tocar el botón: etiqueta `ig-sin-respuesta`.
+  - Con el botón: DM con `{{custom_values.link_del_funnel}}?cid={{contact.id}}&utm_source=instagram&utm_medium=dm`
+    → etiqueta `ig-pidio-link` → aviso «Pidió el link» → espera 2 h → si no tiene `funnel-iniciado`:
+    etiqueta `ig-no-empezo`, aviso y tarea para escribirle por DM el mismo día (ventana de 24 h de Meta).
+  - Se publica recién cuando /funnel esté en producción, y en ese momento se despublica
+    «IG - DM praxia a respuesta» (manda al calendario). «IG - Comentario praxia a DM» (respuesta en
+    el comentario) se queda.
 - **Funnel · Cita agendada: mover etapa** (`cfb5dedd-09d2-40c9-a89a-27acfb5558bb`): cita
   confirmada en «Diagnóstico gratis Praxia» → busca la oportunidad más reciente en Ventas Praxia →
   la pasa a «Diagnóstico agendado».
