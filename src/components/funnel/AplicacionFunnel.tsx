@@ -34,7 +34,6 @@ type Fase = 'form' | 'resultado' | 'llamada' | 'agenda' | 'confirmado';
 
 interface Props {
   correo: string;
-  telefono: string;
   instagram: string;
 }
 
@@ -67,7 +66,7 @@ function proximosDias(): { clave: string; dia: string; num: number; largo: strin
   return dias;
 }
 
-export default function AplicacionFunnel({ correo, telefono, instagram }: Props) {
+export default function AplicacionFunnel({ correo, instagram }: Props) {
   const [paso, setPaso] = useState(0);
   const [fase, setFase] = useState<Fase>('form');
   const [nombre, setNombre] = useState('');
@@ -402,7 +401,7 @@ export default function AplicacionFunnel({ correo, telefono, instagram }: Props)
             {enHorario() ? (
               <div className="af-panel">
                 <p className="af-panel-titulo">¿Podemos llamarte en la próxima hora?</p>
-                <p className="af-ayuda">Una llamada corta, desde el número de Praxia, para entender tu situación.</p>
+                <p className="af-ayuda">Una llamada corta de alguien del equipo para entender tu situación.</p>
                 <div className="af-panel-botones">
                   <button type="button" className="boton boton-primario" onClick={() => setFase('llamada')}>Sí, llámenme</button>
                   <button type="button" className="boton boton-secundario" onClick={() => setFase('agenda')}>Prefiero elegir día y hora</button>
@@ -425,7 +424,7 @@ export default function AplicacionFunnel({ correo, telefono, instagram }: Props)
               Te llamamos <span className="af-calido">en la próxima hora.</span>
             </h1>
             <p className="af-ayuda">
-              Desde el número de Praxia, <b className="af-numero">{telefono}</b>. Guárdalo para que no te salga como desconocido.
+              Te va a llamar alguien del equipo. Ten el celular a la mano y <b>contesta aunque no reconozcas el número</b>.
             </p>
             <Preparar />
           </section>
@@ -483,7 +482,7 @@ export default function AplicacionFunnel({ correo, telefono, instagram }: Props)
               Te esperamos el <span className="af-calido">{dias.find((d) => d.clave === dia)?.largo}, a las {hora}</span>
             </h1>
             <p className="af-ayuda">
-              Te llama alguien del equipo desde el número de Praxia, <b className="af-numero">{telefono}</b>. La confirmación te llega a tu correo.
+              A esa hora te llama alguien del equipo: <b>atento al celular, aunque no reconozcas el número</b>. La confirmación te llega a tu correo.
             </p>
             <Preparar />
           </section>
