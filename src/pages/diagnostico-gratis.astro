@@ -1,0 +1,332 @@
+---
+/**
+ * Funnel VSL: la página de anuncios. Video arriba, una sola oferta (el
+ * diagnóstico gratis de 15 minutos) y una solicitud que califica al lead.
+ * La solicitud es la vía principal de entrada (Tony, 19-oct-2026): con ella
+ * se contacta al lead por WhatsApp. Mecánica tomada de rankhive.co (muestra
+ * del entregable, entregables medibles, paso 0 de necesidades); textos y
+ * diseño propios, sin su "ROI garantizado".
+ * Sin menú ni salidas (Layout en modo funnel) y fuera de los buscadores:
+ * el tráfico llega pagado o desde el video, no desde Google.
+ *
+ * Contenido en src/vsl.ts. Guion del video, migración del CRM y notas de
+ * ManyChat en docs/funnel-vsl/.
+ */
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import VideoVSL from '../components/funnel/VideoVSL.astro';
+import SolicitudVSL from '../components/funnel/SolicitudVSL.astro';
+import MuestraDiagnostico from '../components/funnel/MuestraDiagnostico.astro';
+import LogosMarqueeCosmoq from '../components/LogosMarqueeCosmoq.astro';
+import { CONTEXTO, waLink } from '../consts';
+import { CONFIANZA, ENTREGABLES, PARA_QUIEN, PASOS_VSL, PREGUNTAS_VSL } from '../vsl';
+---
+
+<Layout
+  titulo="Diagnóstico gratis de 15 minutos"
+  descripcion="Mira el video y pide tu diagnóstico: en 15 minutos sabes qué parte de tu negocio puede funcionar sin ti y qué resolver primero."
+  contextoWhatsApp={CONTEXTO.vsl}
+  noIndex
+  funnel
+>
+  <!-- Hero: la promesa, el video y el único CTA -->
+  <section class="seccion pt-10! md:pt-14!" data-vsl-hero>
+    <div class="contenedor max-w-[60rem]! text-center">
+      <p class="pequeno mx-auto max-w-[36ch] text-texto-2 md:text-base">
+        Para dueños de negocio que siguen contestando WhatsApp a las once de la noche
+      </p>
+      <h1 class="vsl-titulo mx-auto mt-5 max-w-[20ch]">
+        En 15 minutos sabes qué parte de tu negocio puede funcionar sin ti.
+      </h1>
+      <p class="lead mx-auto mt-6 max-w-[44ch]">
+        Mira el video. Si te hace sentido, llena la solicitud y te escribimos el mismo día para
+        agendar el diagnóstico.
+      </p>
+
+      <div class="mt-10 text-left md:mt-12">
+        <VideoVSL />
+      </div>
+
+      <div class="mt-9 flex flex-col items-center gap-3">
+        <a href="#solicitud" class="boton boton-primario px-8! py-4! text-[1.125rem]!" data-cta-hero>
+          Quiero mi diagnóstico gratis
+        </a>
+        <p class="pequeno text-texto-3">Sin costo. Te respondemos por WhatsApp el mismo día.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prueba: logos reales (autorizados, ver HAY_PRUEBA_SOCIAL en consts.ts) -->
+  <section class="pt-2 pb-6" aria-label="Clientes de Praxia">
+    <p class="pequeno text-center text-texto-3">Equipos con los que ya trabajamos</p>
+    <div class="mt-4"><LogosMarqueeCosmoq /></div>
+  </section>
+
+  <!-- Lo que revisamos: la muestra del entregable y la lista -->
+  <section class="seccion">
+    <div class="contenedor">
+      <h2 class="max-w-[16ch]">Lo que revisamos en tu negocio.</h2>
+      <p class="lead mt-6 max-w-[40ch]">
+        Te lo quedas aunque no trabajes con nosotros. Si no podemos ayudarte, te lo decimos en la
+        misma llamada.
+      </p>
+      <div class="mt-12 grid gap-10 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-16">
+        <div class="lg:sticky lg:top-28 lg:self-start">
+          <MuestraDiagnostico />
+        </div>
+        <dl class="divide-y divide-linea border-y border-linea">
+          {
+            ENTREGABLES.map((e) => (
+              <div class="grid gap-2 py-6 sm:grid-cols-[13rem_1fr] sm:gap-8">
+                <dt class="font-[family-name:var(--font-titulos)] text-[1.125rem] font-semibold text-texto">
+                  {e.titulo}
+                </dt>
+                <dd class="text-texto-2">{e.texto}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- La solicitud -->
+  <section class="seccion" id="solicitud">
+    <div class="contenedor solicitud-grilla">
+      <div class="solicitud-titulo">
+        <h2 class="max-w-[12ch]">Solicita tu diagnóstico.</h2>
+        <p class="lead mt-6 max-w-[34ch]">
+          Preguntamos esto para llegar a la llamada con tu caso leído, no para venderte un paquete.
+        </p>
+      </div>
+      <div class="solicitud-extras">
+        <ul class="space-y-3">
+          {
+            CONFIANZA.map((c) => (
+              <li class="flex gap-3 text-texto">
+                <span class="mt-1 flex-none text-brasa"><Icon nombre="check" tamano={18} /></span>
+                {c}
+              </li>
+            ))
+          }
+        </ul>
+        <div class="mt-10 border-t border-linea pt-8">
+          <p class="text-texto-2">¿Prefieres contarlo por WhatsApp? Es el mismo camino.</p>
+          <a href={waLink(CONTEXTO.vsl)} target="_blank" rel="noopener" class="boton boton-secundario mt-5">
+            <Icon nombre="whatsapp" tamano={20} />
+            Escribir por WhatsApp
+          </a>
+        </div>
+      </div>
+      <div class="solicitud-form" data-solicitud-zona>
+        <SolicitudVSL />
+      </div>
+    </div>
+  </section>
+
+  <!-- Filtro: para quién es y para quién no -->
+  <section class="seccion">
+    <div class="contenedor">
+      <h2 class="max-w-[18ch]">Antes de pedirlo, mira si es para ti.</h2>
+      <div class="mt-12 grid gap-10 md:grid-cols-2 md:gap-14">
+        <div>
+          <h3 class="text-[1.25rem]! text-texto">Es para ti si</h3>
+          <ul class="mt-5 space-y-4">
+            {
+              PARA_QUIEN.si.map((t) => (
+                <li class="flex gap-3 text-texto">
+                  <span class="mt-1 flex-none text-brasa"><Icon nombre="check" tamano={18} /></span>
+                  {t}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="md:border-l md:border-linea md:pl-14">
+          <h3 class="text-[1.25rem]! text-texto-2">No es para ti si</h3>
+          <ul class="mt-5 space-y-4">
+            {
+              PARA_QUIEN.no.map((t) => (
+                <li class="flex gap-3 text-texto-2">
+                  <span class="mt-1 flex-none text-texto-3"><Icon nombre="cerrar" tamano={18} /></span>
+                  {t}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Qué pasa después de enviar -->
+  <section class="seccion">
+    <div class="contenedor">
+      <h2 class="max-w-[16ch]">Cómo funciona.</h2>
+      <ol class="vsl-pasos mt-12 grid gap-10 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+        {
+          PASOS_VSL.map((p, i) => (
+            <li class="vsl-paso">
+              <span class="vsl-paso-numero" aria-hidden="true">{i + 1}</span>
+              <h3 class="mt-6 text-[1.25rem]!">{p.titulo}</h3>
+              <p class="mt-3 text-texto-2">{p.texto}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Objeciones -->
+  <section class="seccion">
+    <div class="contenedor grid gap-10 lg:grid-cols-[1fr_1.35fr] lg:gap-16">
+      <h2 class="max-w-[14ch]">Lo que suelen preguntar antes de pedirlo.</h2>
+      <div class="border-t border-linea">
+        {
+          PREGUNTAS_VSL.map((p) => (
+            <details class="acordeon">
+              <summary>{p.pregunta}</summary>
+              <p class="acordeon-cuerpo">{p.respuesta}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Cierre -->
+  <section class="seccion">
+    <div class="contenedor max-w-[48rem]! text-center">
+      <h2 class="mx-auto max-w-[18ch]">Quince minutos y sales sabiendo qué hacer primero.</h2>
+      <div class="mt-9 flex flex-col items-center gap-4">
+        <a href="#solicitud" class="boton boton-primario px-8! py-4! text-[1.125rem]!">Llenar la solicitud</a>
+        <a href={waLink(CONTEXTO.vsl)} target="_blank" rel="noopener" class="enlace">
+          O escríbenos por WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA fijo en móvil: aparece pasado el hero y se esconde sobre la solicitud -->
+  <div class="vsl-fijo lg:hidden" data-vsl-fijo hidden>
+    <a href="#solicitud" class="boton boton-primario w-full">Quiero mi diagnóstico gratis</a>
+  </div>
+</Layout>
+
+<style>
+  /* La solicitud es la vía principal: en móvil el formulario va justo debajo
+     del título, antes de las señales de confianza y la salida a WhatsApp. */
+  .solicitud-grilla {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-areas: 'titulo' 'form' 'extras';
+  }
+
+  @media (min-width: 64rem) {
+    .solicitud-grilla {
+      column-gap: 4rem;
+      row-gap: 2rem;
+      grid-template-columns: 1fr 1.35fr;
+      grid-template-rows: auto 1fr;
+      grid-template-areas: 'titulo form' 'extras form';
+    }
+  }
+
+  .solicitud-titulo {
+    grid-area: titulo;
+  }
+
+  .solicitud-form {
+    grid-area: form;
+  }
+
+  .solicitud-extras {
+    grid-area: extras;
+  }
+
+  .vsl-titulo {
+    font-size: clamp(2.25rem, 1.4rem + 3.6vw, 4.25rem);
+    line-height: 1.06;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  /* Pasos: número grande en contorno y una línea que los une en escritorio. */
+  .vsl-paso {
+    position: relative;
+  }
+
+  .vsl-paso-numero {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-brasa);
+    color: var(--color-brasa);
+    font-family: var(--font-titulos);
+    font-weight: 700;
+    font-size: 1.125rem;
+    background-color: var(--color-void);
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (min-width: 64rem) {
+    .vsl-paso:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 1.5rem;
+      left: 3rem;
+      right: -2rem;
+      height: 1px;
+      background-color: var(--color-linea);
+    }
+  }
+
+  .vsl-fijo {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+    background: linear-gradient(180deg, rgb(0 0 0 / 0), rgb(0 0 0 / 0.85) 35%);
+    transition:
+      opacity 300ms var(--ease-suave),
+      transform 300ms var(--ease-resorte);
+  }
+
+  .vsl-fijo[data-oculto] {
+    opacity: 0;
+    transform: translateY(100%);
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  // CTA fijo en móvil: visible cuando el CTA del hero salió de pantalla y la
+  // solicitud todavía no entró. Sin IntersectionObserver no se muestra nunca.
+  const fijo = document.querySelector<HTMLElement>('[data-vsl-fijo]');
+  const ctaHero = document.querySelector('[data-cta-hero]');
+  const zona = document.querySelector('[data-solicitud-zona]');
+
+  if (fijo && ctaHero && zona && 'IntersectionObserver' in window) {
+    let heroVisible = true;
+    let zonaVisible = false;
+    const actualizar = () => {
+      if (heroVisible || zonaVisible) fijo.setAttribute('data-oculto', '');
+      else fijo.removeAttribute('data-oculto');
+    };
+    fijo.setAttribute('data-oculto', '');
+    fijo.hidden = false;
+    new IntersectionObserver(([e]) => {
+      heroVisible = Boolean(e?.isIntersecting) || (e?.boundingClientRect.top ?? 0) > 0;
+      actualizar();
+    }).observe(ctaHero);
+    new IntersectionObserver(([e]) => {
+      zonaVisible = Boolean(e?.isIntersecting);
+      actualizar();
+    }).observe(zona);
+  }
+</script>

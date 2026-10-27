@@ -1,0 +1,20 @@
+---
+/**
+ * Pie del funnel: solo las legales. La política de privacidad tiene que
+ * estar a un clic de cualquier formulario que pida datos personales.
+ */
+import { SITE } from '../../consts';
+import { ruta } from '../../rutas';
+
+const anio = new Date().getFullYear();
+---
+
+<footer class="relative border-t border-linea">
+  <div class="contenedor flex flex-col gap-3 py-8 pb-28 md:flex-row md:items-center md:justify-between lg:pb-8">
+    <p class="pequeno text-texto-3">© {anio} {SITE.nombre}</p>
+    <ul class="flex gap-6">
+      <li><a href={ruta('/privacidad')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Privacidad</a></li>
+      <li><a href={ruta('/legal')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Términos</a></li>
+    </ul>
+  </div>
+</footer>

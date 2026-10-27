@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Seccion from '../components/Seccion.astro';
+import { EMAIL, mailtoLink, WHATSAPP_URL } from '../consts';
+import { ruta } from '../rutas';
+---
+
+<Layout
+  titulo="Eliminación de datos"
+  descripcion="Cómo pedir que borremos tus datos personales, incluidos los recibidos por WhatsApp, Facebook o Instagram."
+>
+  <Seccion>
+    <div class="medida">
+      <h1>Eliminación de datos</h1>
+
+      <div class="mt-10 space-y-8">
+        <div>
+          <h2 class="text-[1.25rem] md:text-[1.5rem]">Qué datos puedes pedir que borremos</h2>
+          <p class="mt-3 text-texto-2">
+            Todos los datos personales que tengamos sobre ti: lo que escribiste en el formulario de
+            validación y las conversaciones que tuviste con nosotros por WhatsApp, Facebook,
+            Instagram o correo, incluidas las que recibimos a través de las plataformas de Meta.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[1.25rem] md:text-[1.5rem]">Cómo pedirlo</h2>
+          <ol class="mt-3 list-decimal space-y-2 pl-5 text-texto-2">
+            <li>
+              Escríbenos a <a href={mailtoLink} class="enlace">{EMAIL}</a> o por{' '}
+              <a href={WHATSAPP_URL} class="enlace">WhatsApp</a> con el asunto "Eliminar mis datos".
+            </li>
+            <li>
+              Incluye el número de teléfono, correo o usuario con el que te comunicaste, para
+              ubicar tus datos.
+            </li>
+            <li>
+              Borramos tus datos en un plazo máximo de 30 días y te confirmamos por el mismo medio
+              cuando esté hecho.
+            </li>
+          </ol>
+        </div>
+
+        <div>
+          <h2 class="text-[1.25rem] md:text-[1.5rem]">Más información</h2>
+          <p class="mt-3 text-texto-2">
+            Lee nuestra <a href={ruta('/privacidad')} class="enlace">política de privacidad</a> para
+            saber qué datos recogemos y para qué los usamos.
+          </p>
+        </div>
+      </div>
+    </div>
+  </Seccion>
+</Layout>

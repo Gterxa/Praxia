@@ -21,7 +21,7 @@ export const SITE = {
    ========================================================================== */
 
 /** Formato internacional, sin + ni espacios: así lo pide wa.me. */
-export const WHATSAPP = '51997872779';
+export const WHATSAPP = '51941639094';
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP}`;
 export const EMAIL = 'contacto.praxias@gmail.com';
 
@@ -59,6 +59,8 @@ export const CONTEXTO = {
   nosotros: 'quiero conversar con ustedes',
   flotante: 'quiero hacer una consulta',
   cierre: 'quiero validar mi idea en 15 minutos',
+  /** Funnel VSL. Frase fija: ManyChat la puede usar como palabra clave de entrada. */
+  vsl: 'vi el video y quiero mi diagnóstico gratis',
 } as const;
 
 /**
@@ -171,7 +173,6 @@ export const CLIENTES: readonly {
   { nombre: 'Universidad de Lima', logo: '/clientes/universidad-de-lima.jpg', ancho: 1280, alto: 720 },
   { nombre: 'Pacífico', logo: '/clientes/procesados/pacifico.png', ancho: 1875, alto: 1277 },
   { nombre: 'OCA Global', logo: '/clientes/procesados/oca-global.png', ancho: 756, alto: 184 },
-  { nombre: 'Netprovider', logo: '/clientes/procesados/netprovider.png', ancho: 1396, alto: 226 },
   { nombre: 'Maxiautos' },
   { nombre: 'Automotores Inka', logo: '/clientes/automotores-inka.png', ancho: 384, alto: 53 },
   { nombre: 'Universidad César Vallejo', logo: '/clientes/procesados/ucv.png', ancho: 1318, alto: 214 },

@@ -17,3 +17,6 @@ referencias/node_modules/
 
 # Referencias visuales sueltas para una tarea puntual: material de trabajo, no del sitio.
 design-refs/
+
+# Salida del adaptador de Vercel.
+.vercel/
