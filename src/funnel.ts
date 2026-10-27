@@ -9,8 +9,14 @@
  * se llama primero dentro de A y dentro de B.
  *
  * Este formulario es una excepción a CONTENIDO.md (reglas 5 y 6): pregunta
- * rubro, ventas e inversión porque filtra al lead. Esos montos son preguntas
- * sobre el negocio del visitante, no precios de Praxia.
+ * rubro, clientes, ticket e inversión porque filtra al lead. Esos montos son
+ * preguntas sobre el negocio del visitante, no precios de Praxia.
+ *
+ * Desde el 27-oct no se pregunta la facturación (Tony: sonaba invasiva para
+ * alguien que solo te conoce por contenido). Se preguntan clientes al mes y
+ * ticket promedio, ambos obligatorios, y las ventas se estiman con eso
+ * (ventasEstimadas). Así además se sabe si es poco volumen con ticket alto o
+ * mucho volumen con ticket bajo (perfilDeNegocio).
  */
 
 export type Moneda = 'PEN' | 'USD';
@@ -30,7 +36,7 @@ export interface Pregunta {
   titulo: string;
   ayuda?: string;
   tipo: 'una' | 'varias';
-  /** Opciones fijas, o una por moneda (ventas e inversión). */
+  /** Opciones fijas, o una por moneda (ticket e inversión). */
   opciones: Opcion[] | Record<Moneda, Opcion[]>;
 }
 
@@ -129,36 +135,49 @@ export const PREGUNTAS: Pregunta[] = [
     ],
   },
   {
-    id: 'ventas',
-    titulo: '¿Cuánto vende tu empresa al mes, aproximadamente?',
-    ayuda: 'Para proponerte algo a tu medida. Nadie más lo ve.',
+    id: 'clientes',
+    titulo: '¿Cuántos clientes atienden al mes, más o menos?',
+    ayuda: 'Un promedio basta.',
+    tipo: 'una',
+    opciones: [
+      { valor: 'c0', texto: 'Menos de 20', pts: 0, nivel: 0 },
+      { valor: 'c1', texto: '20 a 50', pts: 1, nivel: 1 },
+      { valor: 'c2', texto: '50 a 150', pts: 2, nivel: 2 },
+      { valor: 'c3', texto: '150 a 500', pts: 3, nivel: 3 },
+      { valor: 'c4', texto: 'Más de 500', pts: 3, nivel: 4 },
+    ],
+  },
+  {
+    id: 'ticket',
+    titulo: '¿Cuánto paga en promedio cada cliente?',
+    ayuda: 'Lo que deja un cliente típico en una compra o en un mes de servicio.',
     tipo: 'una',
     opciones: {
       PEN: [
-        { valor: 'v0', texto: 'Menos de S/ 10 mil', pts: 0, nivel: 0 },
-        { valor: 'v1', texto: 'S/ 10 mil a 30 mil', pts: 1, nivel: 1 },
-        { valor: 'v2', texto: 'S/ 30 mil a 100 mil', pts: 2, nivel: 2 },
-        { valor: 'v3', texto: 'S/ 100 mil a 300 mil', pts: 3, nivel: 3 },
-        { valor: 'v4', texto: 'Más de S/ 300 mil', pts: 4, nivel: 4 },
+        { valor: 't0', texto: 'Menos de S/ 100', pts: 0, nivel: 0 },
+        { valor: 't1', texto: 'S/ 100 a 300', pts: 1, nivel: 1 },
+        { valor: 't2', texto: 'S/ 300 a 1,000', pts: 2, nivel: 2 },
+        { valor: 't3', texto: 'S/ 1,000 a 3,000', pts: 3, nivel: 3 },
+        { valor: 't4', texto: 'Más de S/ 3,000', pts: 4, nivel: 4 },
       ],
       USD: [
-        { valor: 'v0', texto: 'Menos de US$ 3 mil', pts: 0, nivel: 0 },
-        { valor: 'v1', texto: 'US$ 3 mil a 10 mil', pts: 1, nivel: 1 },
-        { valor: 'v2', texto: 'US$ 10 mil a 30 mil', pts: 2, nivel: 2 },
-        { valor: 'v3', texto: 'US$ 30 mil a 100 mil', pts: 3, nivel: 3 },
-        { valor: 'v4', texto: 'Más de US$ 100 mil', pts: 4, nivel: 4 },
+        { valor: 't0', texto: 'Menos de US$ 30', pts: 0, nivel: 0 },
+        { valor: 't1', texto: 'US$ 30 a 100', pts: 1, nivel: 1 },
+        { valor: 't2', texto: 'US$ 100 a 300', pts: 2, nivel: 2 },
+        { valor: 't3', texto: 'US$ 300 a 1,000', pts: 3, nivel: 3 },
+        { valor: 't4', texto: 'Más de US$ 1,000', pts: 4, nivel: 4 },
       ],
     },
   },
   {
-    id: 'consultas',
-    titulo: '¿Cuántas consultas o clientes reciben al mes?',
+    // No suma puntos: alimenta la tarjeta «¿Sabías que…?» (datoDelNegocio).
+    id: 'fines',
+    titulo: '¿Responden mensajes los fines de semana?',
     tipo: 'una',
     opciones: [
-      { valor: 'menos-50', texto: 'Menos de 50', pts: 0 },
-      { valor: '50-200', texto: '50 a 200', pts: 1 },
-      { valor: '200-1000', texto: '200 a 1,000', pts: 2 },
-      { valor: 'mas-1000', texto: 'Más de 1,000', pts: 3 },
+      { valor: 'si', texto: 'Sí, siempre' },
+      { valor: 'a-veces', texto: 'A veces' },
+      { valor: 'no', texto: 'No' },
     ],
   },
   {
@@ -229,7 +248,7 @@ export function clasificar(r: Respuestas, moneda: Moneda): Resultado {
   const urg = elegida('urgencia', r, moneda)?.nivel ?? 0;
   const rubro = elegida('rubro', r, moneda)?.nivel ?? 0;
   const decide = r.decide;
-  const prioridad = ['urgencia', 'horas', 'rol', 'rubro', 'personas', 'ventas', 'consultas', 'inversion'].reduce(
+  const prioridad = ['urgencia', 'horas', 'rol', 'rubro', 'personas', 'clientes', 'ticket', 'inversion'].reduce(
     (suma, id) => suma + (elegida(id, r, moneda)?.pts ?? 0),
     0,
   );
@@ -255,6 +274,109 @@ export function clasificar(r: Respuestas, moneda: Moneda): Resultado {
   // "Sin apuro" = en 3 meses. Un proyecto chico urgente sigue siendo B, venda lo que venda.
   if (inv === 1 && urg === 1) return fin('C', 'Proyecto de S/ 600 a 1,500 sin urgencia');
   return fin('B', 'Decide y tiene intención, pero no llega a las barras de A');
+}
+
+/* Punto medio de cada tramo, para estimar. El último tramo es abierto: se toma
+   un valor conservador. */
+const MEDIO_CLIENTES = [10, 35, 100, 300, 700];
+const MEDIO_TICKET: Record<Moneda, number[]> = {
+  PEN: [60, 200, 600, 2000, 5000],
+  USD: [20, 60, 200, 600, 1500],
+};
+/* Cortes de los tramos de ventas al mes (los mismos del campo de GHL). */
+const CORTES_VENTAS: Record<Moneda, number[]> = {
+  PEN: [10_000, 30_000, 100_000, 300_000],
+  USD: [3_000, 10_000, 30_000, 100_000],
+};
+
+export interface VentasEstimadas {
+  /** Ventas al mes estimadas = clientes × ticket, con los puntos medios. */
+  monto: number;
+  /** Tramo de ventas (0 a 4), el mismo orden que el campo «Ventas al mes». */
+  nivel: number;
+}
+
+/** Ventas al mes estimadas a partir de clientes y ticket. Null si falta alguno. */
+export function ventasEstimadas(r: Respuestas, moneda: Moneda): VentasEstimadas | null {
+  const c = elegida('clientes', r, moneda)?.nivel;
+  const t = elegida('ticket', r, moneda)?.nivel;
+  if (c === undefined || t === undefined) return null;
+  const monto = MEDIO_CLIENTES[c] * MEDIO_TICKET[moneda][t];
+  const nivel = CORTES_VENTAS[moneda].filter((corte) => monto >= corte).length;
+  return { monto, nivel };
+}
+
+export type PerfilDeNegocio = 'Ticket alto, poco volumen' | 'Mucho volumen, ticket bajo' | 'Volumen y ticket altos' | 'Intermedio';
+
+/** Pocos clientes que pagan mucho, o muchos que pagan poco. */
+export function perfilDeNegocio(r: Respuestas, moneda: Moneda): PerfilDeNegocio | null {
+  const c = elegida('clientes', r, moneda)?.nivel;
+  const t = elegida('ticket', r, moneda)?.nivel;
+  if (c === undefined || t === undefined) return null;
+  if (t >= 3 && c >= 3) return 'Volumen y ticket altos';
+  if (t >= 3 && c <= 1) return 'Ticket alto, poco volumen';
+  if (c >= 3 && t <= 1) return 'Mucho volumen, ticket bajo';
+  return 'Intermedio';
+}
+
+/* Horas manuales por semana: punto medio de cada tramo de la pregunta «horas». */
+const MEDIO_HORAS: Record<string, number> = { 'menos-5': 3, '5-20': 12, '20-50': 35, 'mas-50': 60 };
+
+export function formatoMonto(monto: number, moneda: Moneda): string {
+  return `${moneda === 'PEN' ? 'S/' : 'US$'} ${Math.round(monto).toLocaleString('en-US')}`;
+}
+
+export type DatoDelNegocio =
+  | { tipo: 'perdida'; clientesMin: number; clientesMax: number; montoMin: number; montoMax: number; texto: string; supuesto: string }
+  | { tipo: 'horas'; horas: number; texto: string; supuesto: string };
+
+/**
+ * La tarjeta «¿Sabías que…?» que aparece después de clientes, ticket y fines
+ * de semana. Explica por qué preguntamos esos números y le devuelve algo antes
+ * de pedirle la inversión. Es una estimación con sus propias respuestas, con
+ * el supuesto a la vista; no un dato de mercado:
+ * - Si sábado y domingo llegan tantas consultas como un día normal, la demanda
+ *   del fin de semana es 2/5 de la de lunes a viernes (solo contar días).
+ * - De esa gente se recupera entre 1 de cada 4 y 1 de cada 2 (supuesto nuestro).
+ * - «A veces» responde: la mitad. «Sí, siempre»: no hay pérdida que mostrar;
+ *   se muestran las horas manuales que ya dijo.
+ */
+export function datoDelNegocio(r: Respuestas, moneda: Moneda): DatoDelNegocio | null {
+  const c = elegida('clientes', r, moneda)?.nivel;
+  const t = elegida('ticket', r, moneda)?.nivel;
+  const fines = r.fines;
+  if (c === undefined || t === undefined || typeof fines !== 'string') return null;
+
+  if (fines === 'si') {
+    const horas = typeof r.horas === 'string' ? MEDIO_HORAS[r.horas] : undefined;
+    if (!horas) return null;
+    return {
+      tipo: 'horas',
+      horas,
+      texto: `Que atiendan los fines de semana ya es una ventaja. Pero tu equipo dedica unas ${horas} horas a la semana a tareas manuales: eso es tiempo que podría ir a vender.`,
+      supuesto: 'Estimado con tus respuestas de horas manuales.',
+    };
+  }
+
+  const clientes = MEDIO_CLIENTES[c];
+  const ticket = MEDIO_TICKET[moneda][t];
+  const factor = fines === 'a-veces' ? 0.5 : 1;
+  const finDeSemana = clientes * (2 / 5) * factor;
+  const clientesMin = Math.max(1, Math.round(finDeSemana * 0.25));
+  const clientesMax = Math.max(clientesMin, Math.round(finDeSemana * 0.5));
+  const montoMin = clientesMin * ticket;
+  const montoMax = clientesMax * ticket;
+  const rangoClientes = clientesMin === clientesMax ? `${clientesMin}` : `entre ${clientesMin} y ${clientesMax}`;
+  const quien = fines === 'a-veces' ? 'no siempre hay quien responda' : 'nadie responde';
+  return {
+    tipo: 'perdida',
+    clientesMin,
+    clientesMax,
+    montoMin,
+    montoMax,
+    texto: `Si los sábados y domingos te escriben tanto como un día normal y ${quien}, podrías estar dejando ir ${rangoClientes} clientes al mes: unos ${formatoMonto(montoMin, moneda)} a ${formatoMonto(montoMax, moneda)}.`,
+    supuesto: `Estimado con tus respuestas: unos ${clientes} clientes al mes y un ticket de ${formatoMonto(ticket, moneda)}. Suponemos que recuperas entre 1 de cada 4 y 1 de cada 2 de esas personas.`,
+  };
 }
 
 /** ¿Estamos dentro del horario en que se puede prometer la llamada en una hora? */

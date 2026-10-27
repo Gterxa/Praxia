@@ -25,6 +25,9 @@ Usar los IDs, no el nombre.
 
 ## Campos del contacto
 
+Desde el 27-oct ya no se pregunta la facturación (sonaba invasiva): se preguntan clientes al mes y
+ticket promedio, y las ventas se estiman. «Consultas al mes» (`Rrls4UqRrzNAgp8k5Cww`) queda sin uso.
+
 | Pregunta / dato (src/funnel.ts) | Campo en GHL | ID |
 |---|---|---|
 | costo | Qué le cuesta (varias) | `GCt9IL9gS6uGDB0bhbUv` |
@@ -34,8 +37,12 @@ Usar los IDs, no el nombre.
 | rol | Rol en la empresa | `r2mHhAJeQvrVmhp7YeAo` |
 | rubro | Rubro | `NIIWVLTOxSItJTdeuAFz` |
 | personas | Personas en la empresa | `B6LDKQciGmpiELUYxkWt` |
-| ventas | Ventas al mes (tramo con las dos monedas) | `vBCc2V0cwm3PBtqTV2qz` |
-| consultas | Consultas al mes | `Rrls4UqRrzNAgp8k5Cww` |
+| clientes | Clientes al mes (obligatoria) | `jtJoQyQS4isyVR5sNZYo` |
+| ticket | Ticket promedio (tramo con las dos monedas, obligatoria) | `A9iP33DZ5mGxPqeejjMl` |
+| (calculado) | Ventas al mes (estimadas) = clientes × ticket, punto medio de cada tramo | `vBCc2V0cwm3PBtqTV2qz` |
+| fines | Atiende fines de semana (Sí, siempre / A veces / No) | `j7QZFtCaHJQ8ZqZmsnwe` |
+| (calculado) | Dato mostrado («¿Sabías que…?»): el texto que vio, para abrir la llamada | `9wJ7bFg8yxrZM9IoSyVA` |
+| (calculado) | Perfil de negocio: ticket alto/poco volumen, volumen/ticket bajo, ambos altos, intermedio | `AIGWQY13s4KxD1LQ8DRH` |
 | decide | Quién decide | `yjVBJWKrM6b0CwIfHxue` |
 | inversion | Inversión posible (tramo con las dos monedas) | `T4iEfNpdSj6fvJ1IPIYA` |
 | frase | Frase: cómo ayudarle | `nTRLPYHSZ1CenNLnr04S` |
