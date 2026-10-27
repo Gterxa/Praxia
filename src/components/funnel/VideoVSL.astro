@@ -1,0 +1,193 @@
+---
+/**
+ * El marco del video del funnel. Con `VIDEO_VSL.src` vacío muestra el
+ * cuadro con el aviso "Video en grabación"; con un archivo, un <video>
+ * nativo con un botón de reproducir encima que desaparece al empezar.
+ *
+ * El archivo va servido desde el mismo dominio: la CSP prohíbe iframes
+ * (frame-src 'none'), así que un embed de YouTube o Vimeo no cargaría.
+ */
+import { VIDEO_VSL } from '../../vsl';
+import { ruta } from '../../rutas';
+
+const hayVideo = VIDEO_VSL.src !== '';
+---
+
+<figure class="vsl-marco" data-vsl>
+  {
+    hayVideo ? (
+      <video
+        class="vsl-video"
+        src={ruta(VIDEO_VSL.src)}
+        poster={VIDEO_VSL.poster ? ruta(VIDEO_VSL.poster) : undefined}
+        preload="metadata"
+        playsinline
+        controls
+        data-vsl-video
+      />
+    ) : (
+      <div class="vsl-vacio puntos" aria-hidden="true" />
+    )
+  }
+
+  <button
+    type="button"
+    class="vsl-play"
+    data-vsl-play
+    disabled={!hayVideo}
+    aria-label={hayVideo ? 'Reproducir el video' : 'El video todavía no está disponible'}
+  >
+    <span class="vsl-play-disco">
+      <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor" />
+      </svg>
+    </span>
+    {hayVideo && VIDEO_VSL.duracion && <span class="vsl-play-texto">Ver el video ({VIDEO_VSL.duracion})</span>}
+  </button>
+
+  {!hayVideo && <span class="chip-mono vsl-estado">Video en grabación</span>}
+
+  {/* La línea de progreso: el único adorno del marco. Estática, no es un control. */}
+  <span class="vsl-linea" aria-hidden="true"><span class="vsl-linea-relleno"></span></span>
+</figure>
+
+<style>
+  .vsl-marco {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--radius-tarjeta);
+    background-color: var(--color-surface);
+    box-shadow:
+      inset 0 0 0 1px var(--color-linea),
+      0 2px 4px rgb(0 0 0 / 0.4),
+      0 30px 80px -20px rgb(255 107 53 / 0.18);
+  }
+
+  .vsl-video,
+  .vsl-vacio {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: var(--color-surface);
+  }
+
+  .vsl-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: var(--color-texto);
+    background: transparent;
+    cursor: pointer;
+    border-radius: inherit;
+  }
+
+  .vsl-play:disabled {
+    cursor: default;
+  }
+
+  .vsl-play-disco {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    padding-left: 0.25rem;
+    border-radius: 999px;
+    background-color: var(--color-brasa);
+    box-shadow:
+      0 1px 2px rgb(10 15 28 / 0.35),
+      0 12px 28px rgb(255 107 53 / 0.35),
+      inset 0 1px 0 rgb(255 255 255 / 0.22),
+      inset 0 -2px 5px rgb(189 53 108 / 0.28);
+    transition: transform 300ms var(--ease-resorte);
+  }
+
+  @media (min-width: 48rem) {
+    .vsl-play-disco {
+      width: 5.5rem;
+      height: 5.5rem;
+    }
+  }
+
+  .vsl-play:disabled .vsl-play-disco {
+    background-color: var(--color-surface-2);
+    color: var(--color-texto-3);
+    box-shadow: inset 0 0 0 1px var(--color-linea);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .vsl-play:not(:disabled):hover .vsl-play-disco {
+      transform: scale(1.06);
+    }
+  }
+
+  .vsl-play:not(:disabled):active .vsl-play-disco {
+    transform: scale(0.96);
+  }
+
+  .vsl-play:focus-visible {
+    outline-offset: -4px;
+  }
+
+  @media (min-width: 48rem) {
+    .vsl-estado {
+      bottom: 1.75rem;
+    }
+  }
+
+  .vsl-play-texto {
+    font-family: var(--font-titulos);
+    font-weight: 500;
+    font-size: 0.9375rem;
+  }
+
+  .vsl-estado {
+    position: absolute;
+    left: 50%;
+    bottom: 0.875rem;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .vsl-linea {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background-color: var(--color-linea);
+  }
+
+  .vsl-linea-relleno {
+    display: block;
+    width: 18%;
+    height: 100%;
+    background: var(--degradado-calido);
+  }
+
+  /* Reproduciendo: el botón se va y quedan los controles nativos. */
+  .vsl-marco[data-reproduciendo] .vsl-play,
+  .vsl-marco[data-reproduciendo] .vsl-linea {
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-vsl]').forEach((marco) => {
+    const video = marco.querySelector<HTMLVideoElement>('[data-vsl-video]');
+    const play = marco.querySelector<HTMLButtonElement>('[data-vsl-play]');
+    if (!video || !play) return;
+    play.addEventListener('click', () => {
+      marco.dataset['reproduciendo'] = '';
+      void video.play();
+    });
+    video.addEventListener('play', () => (marco.dataset['reproduciendo'] = ''));
+  });
+</script>

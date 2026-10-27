@@ -1,0 +1,34 @@
+---
+/**
+ * Cabecera del funnel: el logo y un único botón que baja a la solicitud.
+ * Sin menú ni enlace al inicio, a propósito: en una página de anuncio cada
+ * salida compite con el CTA. Mismo pill de vidrio que Header.astro.
+ */
+import Logo from '../Logo.astro';
+---
+
+<header class="sticky top-0 z-40 px-4 pt-(--header-aire) pointer-events-none md:px-6">
+  <div class="contenedor relative max-w-[68rem]! px-0!">
+    <div class="vidrio pointer-events-auto relative flex h-(--header-pill) items-center justify-between gap-4 rounded-pill px-4 pr-2 md:px-5 md:pr-3">
+      <Logo />
+      <a href="#solicitud" class="boton boton-primario boton-compacto">Solicitar diagnóstico</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* Las mismas medidas que declara Header.astro, que en modo funnel no se
+     monta. Si cambian allá, cambian acá. */
+  :global(:root) {
+    --header-aire: 1rem;
+    --header-pill: 3.5rem;
+    --alto-header: calc(var(--header-aire) + var(--header-pill));
+  }
+
+  @media (min-width: 48rem) {
+    :global(:root) {
+      --header-aire: 1.125rem;
+      --header-pill: 4rem;
+    }
+  }
+</style>

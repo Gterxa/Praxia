@@ -59,6 +59,8 @@ export const CONTEXTO = {
   nosotros: 'quiero conversar con ustedes',
   flotante: 'quiero hacer una consulta',
   cierre: 'quiero validar mi idea en 15 minutos',
+  /** Funnel VSL. Frase fija: ManyChat la puede usar como palabra clave de entrada. */
+  vsl: 'vi el video y quiero mi diagnóstico gratis',
 } as const;
 
 /**

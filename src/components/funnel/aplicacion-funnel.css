@@ -1,0 +1,634 @@
+/* Aplicación del funnel (/funnel/aplicar). Medidas tomadas del prototipo
+   "2 · Formulario filtro" del lienzo: columna de ~36rem, tarjetas de opción
+   azul noche con borde fino, barra de progreso en segmentos y el reloj en
+   pill. Todos los colores salen de tokens.css. */
+
+.af {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: var(--color-void);
+  color: var(--color-texto);
+}
+
+/* El cielo de arriba: la misma rampa del hero de /funnel, a todo el ancho y
+   bajando a negro, como fondo de la pantalla (no detrás de una tarjeta).
+   Antes era un bloque pegado arriba a la derecha y se veía cortado. */
+.af-cielo {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 30rem;
+  background:
+    linear-gradient(180deg, transparent 0%, transparent 35%, var(--color-void) 100%),
+    linear-gradient(100deg, rgb(189 53 108 / 0.4) 0%, rgb(74 33 120 / 0.32) 45%, var(--color-noche) 100%);
+  pointer-events: none;
+}
+
+.af-marco {
+  position: relative;
+  max-width: 37.5rem;
+  margin: 0 auto;
+  padding: 1.5rem max(1rem, env(safe-area-inset-right, 0px)) 4rem max(1rem, env(safe-area-inset-left, 0px));
+}
+
+.af-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 2.75rem;
+}
+
+.af-logo {
+  font-family: var(--font-titulos);
+  font-weight: 500;
+  font-size: 1.125rem;
+  letter-spacing: -0.01em;
+}
+
+.af-logo-punto {
+  color: var(--color-brasa);
+}
+
+/* Una línea de texto, sin pill ni ícono (Tony, 25-oct: el reloj en pill se
+   veía poco profesional). Solo en la primera pantalla. */
+.af-tiempo {
+  margin-top: 0.375rem;
+  color: var(--color-texto-3);
+  font-size: 0.875rem;
+}
+
+.af-progreso {
+  display: flex;
+  gap: 0.375rem;
+  margin-top: 1.25rem;
+}
+
+.af-seg {
+  flex: 1;
+  height: 0.3125rem;
+  border-radius: var(--radius-pill);
+  background: rgb(84 124 255 / 0.22);
+}
+
+.af-seg-lleno {
+  background: var(--degradado-calido);
+}
+
+.af-avance {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.af-avance-num {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  color: var(--color-texto-2);
+}
+
+.af-avance-num b {
+  color: var(--color-coral);
+  font-weight: 500;
+}
+
+.af-cuerpo {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2.5rem;
+  animation: af-entra 380ms var(--ease-resorte);
+}
+
+@keyframes af-entra {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.af-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-brasa-alto);
+  margin-bottom: 0.75rem;
+}
+
+.af-titulo {
+  font-family: var(--font-titulos);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 5vw, 2.375rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.af-calido {
+  background: var(--degradado-calido);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.af-ayuda {
+  margin-top: 0.75rem;
+  color: var(--color-texto-2);
+  line-height: 1.6;
+}
+
+.af-numero {
+  color: var(--color-texto);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.af-campos {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.75rem;
+}
+
+.af-label {
+  margin: 1rem 0 0.5rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.af-label:first-child {
+  margin-top: 0;
+}
+
+.af-input {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: 1px solid rgb(84 124 255 / 0.28);
+  border-radius: 0.75rem;
+  background: rgb(6 27 102 / 0.35);
+  color: var(--color-texto);
+  font: inherit;
+  font-size: 1rem;
+  transition: border-color 150ms ease;
+}
+
+.af-input::placeholder {
+  color: var(--color-texto-3);
+}
+
+.af-input:focus-visible {
+  outline: none;
+  border-color: var(--color-brasa);
+}
+
+.af-textarea {
+  resize: vertical;
+  min-height: 7rem;
+  line-height: 1.5;
+}
+
+.af-pista {
+  margin-top: 0.4rem;
+  color: var(--color-texto-3);
+  font-size: 0.8125rem;
+}
+
+.af-error {
+  margin-top: 0.75rem;
+  color: var(--color-brasa-alto);
+  font-size: 0.9375rem;
+}
+
+.af-cta {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 1rem 1.5rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.af-cta:disabled {
+  background: rgb(84 124 255 / 0.25);
+  box-shadow: none;
+  color: var(--color-texto-2);
+  cursor: not-allowed;
+  filter: none;
+}
+
+.af-nota {
+  margin-top: 0.75rem;
+  text-align: center;
+  color: var(--color-texto-3);
+  font-size: 0.875rem;
+}
+
+.af-opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin-top: 1.75rem;
+}
+
+.af-opcion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem 1.125rem;
+  border: 1px solid rgb(84 124 255 / 0.28);
+  border-radius: 0.75rem;
+  background: rgb(6 27 102 / 0.35);
+  color: var(--color-texto);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms var(--ease-resorte);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .af-opcion:hover {
+    border-color: var(--color-brasa);
+  }
+}
+
+.af-opcion:focus-visible {
+  outline: 2px solid var(--color-brasa);
+  outline-offset: 2px;
+}
+
+.af-opcion:active {
+  transform: scale(0.99);
+}
+
+.af-opcion-activa {
+  border-color: var(--color-brasa);
+  background: var(--color-brasa-tenue);
+}
+
+.af-flecha {
+  flex: none;
+  color: var(--color-brasa);
+}
+
+.af-opcion-check {
+  justify-content: flex-start;
+}
+
+.af-check {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.375rem;
+  height: 1.375rem;
+  border: 1.5px solid rgb(84 124 255 / 0.55);
+  border-radius: 0.375rem;
+  color: var(--color-texto);
+  font-size: 0.875rem;
+}
+
+.af-opcion-activa .af-check {
+  border-color: var(--color-brasa);
+  background: var(--color-brasa);
+}
+
+.af-opcion-textos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.af-opcion-detalle {
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: var(--color-texto-2);
+}
+
+.af-atras {
+  align-self: flex-start;
+  margin-top: 1.25rem;
+  padding: 0.5rem 0.25rem;
+  border: 0;
+  background: none;
+  color: var(--color-texto-2);
+  font: inherit;
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.af-atras:hover,
+.af-atras:focus-visible {
+  color: var(--color-texto);
+}
+
+.af-confirmar {
+  margin-top: 1.75rem;
+  padding: 1.125rem;
+  border: 1px solid var(--color-ambar);
+  border-radius: 0.75rem;
+}
+
+.af-confirmar-botones {
+  display: grid;
+  gap: 0.625rem;
+  margin-top: 1rem;
+}
+
+.af-compromiso {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-top: 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.af-compromiso input {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: 0.15rem;
+  accent-color: var(--color-brasa);
+}
+
+.af-video {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  margin-top: 1.75rem;
+  border: 1px solid var(--color-linea);
+  border-radius: var(--radius-tarjeta);
+  background: var(--color-surface);
+}
+
+.af-panel {
+  margin-top: 1.75rem;
+  padding: 1.375rem;
+  border: 1px solid rgb(84 124 255 / 0.28);
+  border-radius: var(--radius-tarjeta);
+  background: rgb(6 27 102 / 0.3);
+}
+
+.af-panel-titulo {
+  font-family: var(--font-titulos);
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.af-panel-botones {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.af-lista {
+  margin-top: 0.75rem;
+  padding-left: 1.25rem;
+  list-style: decimal;
+  color: var(--color-texto-2);
+  line-height: 1.7;
+}
+
+/* Agenda: dos columnas como el prototipo "3 · Agenda". */
+.af-agenda {
+  display: grid;
+  gap: 2rem;
+  margin-top: 2rem;
+  animation: af-entra 380ms var(--ease-resorte);
+}
+
+.af-aviso {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding: 1rem 1.125rem;
+  border: 1px solid rgb(84 124 255 / 0.28);
+  border-radius: 0.75rem;
+  background: rgb(6 27 102 / 0.3);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.af-aviso-punto {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-coral);
+}
+
+.af-datos {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  color: var(--color-texto-2);
+}
+
+.af-datos li {
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--color-coral);
+}
+
+.af-agenda-tarjeta {
+  padding: 1.5rem;
+  border: 1px solid rgb(84 124 255 / 0.28);
+  border-radius: var(--radius-tarjeta);
+  background: rgb(6 27 102 / 0.3);
+}
+
+.af-mono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-texto-2);
+}
+
+.af-agenda-tarjeta > .af-mono + div {
+  margin: 0.75rem 0 1.5rem;
+}
+
+.af-dias {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.af-horas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.af-dia,
+.af-hora {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.75rem 0.25rem;
+  border: 1px solid rgb(84 124 255 / 0.28);
+  border-radius: 0.75rem;
+  background: transparent;
+  color: var(--color-texto);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .af-dia:hover,
+  .af-hora:hover {
+    border-color: var(--color-brasa);
+  }
+}
+
+.af-dia:focus-visible,
+.af-hora:focus-visible {
+  outline: 2px solid var(--color-brasa);
+  outline-offset: 2px;
+}
+
+.af-dia-nombre {
+  font-weight: 400;
+  font-size: 0.8125rem;
+  color: var(--color-texto-2);
+  text-transform: capitalize;
+}
+
+.af-dia-num {
+  font-size: 1.375rem;
+}
+
+.af-elegido {
+  border-color: var(--color-brasa);
+  background: var(--color-brasa-tenue);
+}
+
+.af-interno {
+  margin-top: 2.5rem;
+  padding: 1rem;
+  border: 1px dashed var(--color-ambar);
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-texto-2);
+}
+
+.af-interno summary {
+  cursor: pointer;
+  color: var(--color-ambar);
+}
+
+.af-interno p {
+  margin-top: 0.5rem;
+}
+
+/* El selector de país de intl-tel-input, con la piel del formulario. La
+   librería trae fondo blanco: sus variables lo pasan al tema oscuro. En
+   celular el desplegable se abre como popup en <body>, por eso `.iti--container`. */
+.af,
+.iti--container {
+  --iti-country-selector-bg: var(--color-surface);
+  --iti-border-color: rgb(84 124 255 / 0.35);
+  --iti-hover-color: var(--color-brasa-tenue);
+  --iti-icon-color: var(--color-texto-2);
+}
+
+.af .iti {
+  width: 100%;
+}
+
+.af .iti__country-list,
+.iti--container .iti__country-list {
+  background: var(--color-surface);
+  color: var(--color-texto);
+}
+
+.af .iti__selected-country {
+  border-radius: 0.75rem 0 0 0.75rem;
+}
+
+.af .iti__selected-dial-code {
+  color: var(--color-texto);
+}
+
+.af .iti__dropdown-content {
+  border: 1px solid rgb(84 124 255 / 0.35);
+  border-radius: 0.75rem;
+  background: var(--color-surface);
+  color: var(--color-texto);
+}
+
+.af .iti__search-input {
+  background: var(--color-surface-2);
+  color: var(--color-texto);
+}
+
+.af .iti__country.iti__highlight {
+  background: var(--color-brasa-tenue);
+}
+
+@media (min-width: 56rem) {
+  .af-marco:has(.af-agenda) {
+    max-width: 68rem;
+  }
+
+  .af-agenda {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .af-cuerpo,
+  .af-agenda {
+    animation: none;
+  }
+}
+
+/* Campo trampa para bots: fuera de pantalla, no con display:none (algunos bots lo saltan). */
+.af-trampa {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+/* «¿Sabías que…?»: el número del negocio del visitante, arriba de la pregunta
+   que sigue a clientes, ticket y fines de semana. Mismo lenguaje que .af-panel. */
+.af-dato {
+  margin-bottom: 1.5rem;
+  padding: 1.125rem 1.25rem;
+  border: 1px solid var(--color-brasa);
+  border-radius: var(--radius-tarjeta);
+  background: var(--color-brasa-tenue);
+}
+
+.af-dato-titulo {
+  font-family: var(--font-titulos);
+  font-weight: 700;
+  color: var(--color-brasa-alto);
+}
+
+.af-dato-texto {
+  margin-top: 0.4rem;
+  color: var(--color-texto);
+  line-height: 1.55;
+}
+
+.af-dato-supuesto {
+  margin-top: 0.5rem;
+  color: var(--color-texto-3);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}

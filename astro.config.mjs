@@ -3,6 +3,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
+import vercel from '@astrojs/vercel';
 
 import { SITE } from './src/consts.ts';
 
@@ -10,6 +11,9 @@ import { SITE } from './src/consts.ts';
 export default defineConfig({
   site: SITE.url,
   trailingSlash: 'ignore',
+  // El sitio sigue siendo estático. El adaptador solo existe para la única ruta
+  // de servidor, /api/funnel (prerender = false), que guarda el funnel en GHL.
+  adapter: vercel(),
   integrations: [
     // Isla de React, solo para componentes puntuales que lo pidan
     // explícitamente (ver src/components/ui/) — el resto del sitio sigue
@@ -20,7 +24,8 @@ export default defineConfig({
       // Cuando las cierres, quita este filtro y el Disallow de public/robots.txt.
       // /pruebas/* son bancos de prueba internos (tipografía, fondos del hero):
       // se buildean porque viven en src/pages, pero no son contenido del sitio.
-      filter: (pagina) => !/\/(legal|privacidad|pruebas)\/?/.test(pagina),
+      // /diagnostico-gratis es la página de anuncios (funnel VSL): noindex y fuera.
+      filter: (pagina) => !/\/(legal|privacidad|pruebas|diagnostico-gratis|funnel)\/?/.test(pagina),
     }),
   ],
 
