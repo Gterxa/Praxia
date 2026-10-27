@@ -18,6 +18,7 @@ import {
   HORAS_AGENDA,
   PREGUNTAS,
   clasificar,
+  datoDelNegocio,
   enHorario,
   opcionesDe,
   type Moneda,
@@ -164,6 +165,7 @@ export default function AplicacionFunnel({ correo, telefono, instagram }: Props)
   }, [paso, fase]);
 
   const pregunta = paso >= 1 && paso <= PREGUNTAS.length ? PREGUNTAS[paso - 1] : null;
+  const dato = useMemo(() => datoDelNegocio(respuestas, moneda), [respuestas, moneda]);
 
   function empezar() {
     const iti = itiRef.current;
@@ -278,6 +280,14 @@ export default function AplicacionFunnel({ correo, telefono, instagram }: Props)
 
         {fase === 'form' && pregunta && (
           <section className="af-cuerpo" key={pregunta.id}>
+            {/* «¿Sabías que…?»: justo después de clientes, ticket y fines de semana. */}
+            {pregunta.id === 'decide' && dato && (
+              <aside className="af-dato" aria-label="Un dato de tu negocio">
+                <p className="af-dato-titulo">¿Sabías que…?</p>
+                <p className="af-dato-texto">{dato.texto}</p>
+                <p className="af-dato-supuesto">{dato.supuesto}</p>
+              </aside>
+            )}
             <h1 className="af-titulo">{pregunta.titulo}</h1>
             {pregunta.ayuda && <p className="af-ayuda">{pregunta.ayuda}</p>}
 

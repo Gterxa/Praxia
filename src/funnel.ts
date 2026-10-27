@@ -170,6 +170,17 @@ export const PREGUNTAS: Pregunta[] = [
     },
   },
   {
+    // No suma puntos: alimenta la tarjeta «¿Sabías que…?» (datoDelNegocio).
+    id: 'fines',
+    titulo: '¿Responden mensajes los fines de semana?',
+    tipo: 'una',
+    opciones: [
+      { valor: 'si', texto: 'Sí, siempre' },
+      { valor: 'a-veces', texto: 'A veces' },
+      { valor: 'no', texto: 'No' },
+    ],
+  },
+  {
     id: 'decide',
     titulo: '¿Quién toma la decisión?',
     tipo: 'una',
@@ -306,6 +317,66 @@ export function perfilDeNegocio(r: Respuestas, moneda: Moneda): PerfilDeNegocio 
   if (t >= 3 && c <= 1) return 'Ticket alto, poco volumen';
   if (c >= 3 && t <= 1) return 'Mucho volumen, ticket bajo';
   return 'Intermedio';
+}
+
+/* Horas manuales por semana: punto medio de cada tramo de la pregunta «horas». */
+const MEDIO_HORAS: Record<string, number> = { 'menos-5': 3, '5-20': 12, '20-50': 35, 'mas-50': 60 };
+
+export function formatoMonto(monto: number, moneda: Moneda): string {
+  return `${moneda === 'PEN' ? 'S/' : 'US$'} ${Math.round(monto).toLocaleString('en-US')}`;
+}
+
+export type DatoDelNegocio =
+  | { tipo: 'perdida'; clientesMin: number; clientesMax: number; montoMin: number; montoMax: number; texto: string; supuesto: string }
+  | { tipo: 'horas'; horas: number; texto: string; supuesto: string };
+
+/**
+ * La tarjeta «¿Sabías que…?» que aparece después de clientes, ticket y fines
+ * de semana. Explica por qué preguntamos esos números y le devuelve algo antes
+ * de pedirle la inversión. Es una estimación con sus propias respuestas, con
+ * el supuesto a la vista; no un dato de mercado:
+ * - Si sábado y domingo llegan tantas consultas como un día normal, la demanda
+ *   del fin de semana es 2/5 de la de lunes a viernes (solo contar días).
+ * - De esa gente se recupera entre 1 de cada 4 y 1 de cada 2 (supuesto nuestro).
+ * - «A veces» responde: la mitad. «Sí, siempre»: no hay pérdida que mostrar;
+ *   se muestran las horas manuales que ya dijo.
+ */
+export function datoDelNegocio(r: Respuestas, moneda: Moneda): DatoDelNegocio | null {
+  const c = elegida('clientes', r, moneda)?.nivel;
+  const t = elegida('ticket', r, moneda)?.nivel;
+  const fines = r.fines;
+  if (c === undefined || t === undefined || typeof fines !== 'string') return null;
+
+  if (fines === 'si') {
+    const horas = typeof r.horas === 'string' ? MEDIO_HORAS[r.horas] : undefined;
+    if (!horas) return null;
+    return {
+      tipo: 'horas',
+      horas,
+      texto: `Que atiendan los fines de semana ya es una ventaja. Pero tu equipo dedica unas ${horas} horas a la semana a tareas manuales: eso es tiempo que podría ir a vender.`,
+      supuesto: 'Estimado con tus respuestas de horas manuales.',
+    };
+  }
+
+  const clientes = MEDIO_CLIENTES[c];
+  const ticket = MEDIO_TICKET[moneda][t];
+  const factor = fines === 'a-veces' ? 0.5 : 1;
+  const finDeSemana = clientes * (2 / 5) * factor;
+  const clientesMin = Math.max(1, Math.round(finDeSemana * 0.25));
+  const clientesMax = Math.max(clientesMin, Math.round(finDeSemana * 0.5));
+  const montoMin = clientesMin * ticket;
+  const montoMax = clientesMax * ticket;
+  const rangoClientes = clientesMin === clientesMax ? `${clientesMin}` : `entre ${clientesMin} y ${clientesMax}`;
+  const quien = fines === 'a-veces' ? 'no siempre hay quien responda' : 'nadie responde';
+  return {
+    tipo: 'perdida',
+    clientesMin,
+    clientesMax,
+    montoMin,
+    montoMax,
+    texto: `Si los sábados y domingos te escriben tanto como un día normal y ${quien}, podrías estar dejando ir ${rangoClientes} clientes al mes: unos ${formatoMonto(montoMin, moneda)} a ${formatoMonto(montoMax, moneda)}.`,
+    supuesto: `Estimado con tus respuestas: unos ${clientes} clientes al mes y un ticket de ${formatoMonto(ticket, moneda)}. Suponemos que recuperas entre 1 de cada 4 y 1 de cada 2 de esas personas.`,
+  };
 }
 
 /** ¿Estamos dentro del horario en que se puede prometer la llamada en una hora? */

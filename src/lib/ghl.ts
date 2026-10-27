@@ -11,7 +11,7 @@
  *   no en el navegador), etiquetas de categoría y rubro, y la oportunidad pasa
  *   a Aplicó A, Aplicó B o Perfil en evaluación.
  */
-import { PREGUNTAS, clasificar, opcionesDe, perfilDeNegocio, ventasEstimadas, type Moneda, type Respuestas } from '../funnel';
+import { PREGUNTAS, clasificar, datoDelNegocio, opcionesDe, perfilDeNegocio, ventasEstimadas, type Moneda, type Respuestas } from '../funnel';
 
 const API = 'https://services.leadconnectorhq.com';
 const VERSION = '2021-07-28';
@@ -62,6 +62,7 @@ const CAMPO_PREGUNTA: Record<string, { id: string; opciones: string[] }> = {
       'Más de S/ 3,000 · más de US$ 1,000',
     ],
   },
+  fines: { id: 'j7QZFtCaHJQ8ZqZmsnwe', opciones: ['Sí, siempre', 'A veces', 'No'] },
   decide: { id: 'yjVBJWKrM6b0CwIfHxue', opciones: ['Él o ella', 'Con un socio', 'Otra persona'] },
   inversion: {
     id: 'T4iEfNpdSj6fvJ1IPIYA',
@@ -90,6 +91,7 @@ const CAMPO = {
   origen: 'uhKYKlzxBdEAZcNmpKWl',
   ventas: 'vBCc2V0cwm3PBtqTV2qz', // «Ventas al mes (estimadas)»: clientes × ticket
   perfil: 'AIGWQY13s4KxD1LQ8DRH',
+  dato: '9wJ7bFg8yxrZM9IoSyVA', // el texto «¿Sabías que…?» que vio, para abrir la llamada
 } as const;
 
 /** Opciones de «Ventas al mes (estimadas)», en el orden de los tramos (nivel 0 a 4). */
@@ -257,6 +259,8 @@ export async function guardarEnGhl(token: string, lead: LeadFunnel): Promise<{ c
   const perfil = perfilDeNegocio(lead.respuestas, moneda);
   if (ventas) customFields.push({ id: CAMPO.ventas, field_value: OPCIONES_VENTAS[ventas.nivel] });
   if (perfil) customFields.push({ id: CAMPO.perfil, field_value: perfil });
+  const dato = datoDelNegocio(lead.respuestas, moneda);
+  if (dato) customFields.push({ id: CAMPO.dato, field_value: `${dato.texto}\n${dato.supuesto}` });
   if (evento === 'inicio') {
     customFields.push({ id: CAMPO.fuente, field_value: fuenteDe(origen) }, { id: CAMPO.origen, field_value: textoOrigen(origen) });
     if (origen.utm_campaign) customFields.push({ id: CAMPO.campana, field_value: origen.utm_campaign });

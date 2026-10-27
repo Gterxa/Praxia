@@ -603,3 +603,32 @@
   height: 1px;
   opacity: 0;
 }
+
+/* «¿Sabías que…?»: el número del negocio del visitante, arriba de la pregunta
+   que sigue a clientes, ticket y fines de semana. Mismo lenguaje que .af-panel. */
+.af-dato {
+  margin-bottom: 1.5rem;
+  padding: 1.125rem 1.25rem;
+  border: 1px solid var(--color-brasa);
+  border-radius: var(--radius-tarjeta);
+  background: var(--color-brasa-tenue);
+}
+
+.af-dato-titulo {
+  font-family: var(--font-titulos);
+  font-weight: 700;
+  color: var(--color-brasa-alto);
+}
+
+.af-dato-texto {
+  margin-top: 0.4rem;
+  color: var(--color-texto);
+  line-height: 1.55;
+}
+
+.af-dato-supuesto {
+  margin-top: 0.5rem;
+  color: var(--color-texto-3);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}

@@ -40,6 +40,8 @@ ticket promedio, y las ventas se estiman. «Consultas al mes» (`Rrls4UqRrzNAgp8
 | clientes | Clientes al mes (obligatoria) | `jtJoQyQS4isyVR5sNZYo` |
 | ticket | Ticket promedio (tramo con las dos monedas, obligatoria) | `A9iP33DZ5mGxPqeejjMl` |
 | (calculado) | Ventas al mes (estimadas) = clientes × ticket, punto medio de cada tramo | `vBCc2V0cwm3PBtqTV2qz` |
+| fines | Atiende fines de semana (Sí, siempre / A veces / No) | `j7QZFtCaHJQ8ZqZmsnwe` |
+| (calculado) | Dato mostrado («¿Sabías que…?»): el texto que vio, para abrir la llamada | `9wJ7bFg8yxrZM9IoSyVA` |
 | (calculado) | Perfil de negocio: ticket alto/poco volumen, volumen/ticket bajo, ambos altos, intermedio | `AIGWQY13s4KxD1LQ8DRH` |
 | decide | Quién decide | `yjVBJWKrM6b0CwIfHxue` |
 | inversion | Inversión posible (tramo con las dos monedas) | `T4iEfNpdSj6fvJ1IPIYA` |
