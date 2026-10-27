@@ -11,7 +11,7 @@
  *   no en el navegador), etiquetas de categoría y rubro, y la oportunidad pasa
  *   a Aplicó A, Aplicó B o Perfil en evaluación.
  */
-import { PREGUNTAS, clasificar, opcionesDe, type Moneda, type Respuestas } from '../funnel';
+import { PREGUNTAS, clasificar, opcionesDe, perfilDeNegocio, ventasEstimadas, type Moneda, type Respuestas } from '../funnel';
 
 const API = 'https://services.leadconnectorhq.com';
 const VERSION = '2021-07-28';
@@ -51,17 +51,17 @@ const CAMPO_PREGUNTA: Record<string, { id: string; opciones: string[] }> = {
     opciones: ['Legal', 'Ecommerce', 'Inmobiliaria', 'Concesionaria', 'Clínica o salud', 'Wellness', 'Otro'],
   },
   personas: { id: 'B6LDKQciGmpiELUYxkWt', opciones: ['1 a 4', '5 a 20', '21 o más'] },
-  ventas: {
-    id: 'vBCc2V0cwm3PBtqTV2qz',
+  clientes: { id: 'jtJoQyQS4isyVR5sNZYo', opciones: ['Menos de 20', '20 a 50', '50 a 150', '150 a 500', 'Más de 500'] },
+  ticket: {
+    id: 'A9iP33DZ5mGxPqeejjMl',
     opciones: [
-      'Menos de S/ 10 mil · menos de US$ 3 mil',
-      'S/ 10-30 mil · US$ 3-10 mil',
-      'S/ 30-100 mil · US$ 10-30 mil',
-      'S/ 100-300 mil · US$ 30-100 mil',
-      'Más de S/ 300 mil · más de US$ 100 mil',
+      'Menos de S/ 100 · menos de US$ 30',
+      'S/ 100-300 · US$ 30-100',
+      'S/ 300-1,000 · US$ 100-300',
+      'S/ 1,000-3,000 · US$ 300-1,000',
+      'Más de S/ 3,000 · más de US$ 1,000',
     ],
   },
-  consultas: { id: 'Rrls4UqRrzNAgp8k5Cww', opciones: ['Menos de 50', '50 a 200', '200 a 1,000', 'Más de 1,000'] },
   decide: { id: 'yjVBJWKrM6b0CwIfHxue', opciones: ['Él o ella', 'Con un socio', 'Otra persona'] },
   inversion: {
     id: 'T4iEfNpdSj6fvJ1IPIYA',
@@ -88,7 +88,18 @@ const CAMPO = {
   campana: '9R3nSS8duoo3g2EDkpqB',
   ultimoPaso: 'A7T5AZEGFu3JhQ2eZOkV',
   origen: 'uhKYKlzxBdEAZcNmpKWl',
+  ventas: 'vBCc2V0cwm3PBtqTV2qz', // «Ventas al mes (estimadas)»: clientes × ticket
+  perfil: 'AIGWQY13s4KxD1LQ8DRH',
 } as const;
+
+/** Opciones de «Ventas al mes (estimadas)», en el orden de los tramos (nivel 0 a 4). */
+const OPCIONES_VENTAS = [
+  'Menos de S/ 10 mil · menos de US$ 3 mil',
+  'S/ 10-30 mil · US$ 3-10 mil',
+  'S/ 30-100 mil · US$ 10-30 mil',
+  'S/ 100-300 mil · US$ 30-100 mil',
+  'Más de S/ 300 mil · más de US$ 100 mil',
+];
 
 const RUBRO_CONOCIDO = ['legal', 'ecommerce'];
 
@@ -241,6 +252,11 @@ export async function guardarEnGhl(token: string, lead: LeadFunnel): Promise<{ c
     { id: CAMPO.moneda, field_value: moneda },
     { id: CAMPO.ultimoPaso, field_value: fin ? 'Terminó la aplicación' : nombrePaso(lead.paso) },
   ];
+  // Ventas y perfil no se preguntan: salen de clientes × ticket apenas están los dos.
+  const ventas = ventasEstimadas(lead.respuestas, moneda);
+  const perfil = perfilDeNegocio(lead.respuestas, moneda);
+  if (ventas) customFields.push({ id: CAMPO.ventas, field_value: OPCIONES_VENTAS[ventas.nivel] });
+  if (perfil) customFields.push({ id: CAMPO.perfil, field_value: perfil });
   if (evento === 'inicio') {
     customFields.push({ id: CAMPO.fuente, field_value: fuenteDe(origen) }, { id: CAMPO.origen, field_value: textoOrigen(origen) });
     if (origen.utm_campaign) customFields.push({ id: CAMPO.campana, field_value: origen.utm_campaign });
