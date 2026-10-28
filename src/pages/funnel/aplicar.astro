@@ -6,10 +6,7 @@
  */
 import Layout from '../../layouts/Layout.astro';
 import AplicacionFunnel from '../../components/funnel/AplicacionFunnel.tsx';
-import { CONTEXTO, EMAIL, WHATSAPP } from '../../consts';
-
-// +51 941 639 094: el número de Praxia, tal como lo ve quien recibe la llamada.
-const telefono = `+${WHATSAPP.slice(0, 2)} ${WHATSAPP.slice(2, 5)} ${WHATSAPP.slice(5, 8)} ${WHATSAPP.slice(8)}`;
+import { CONTEXTO, EMAIL } from '../../consts';
 ---
 
 <Layout
@@ -20,5 +17,5 @@ const telefono = `+${WHATSAPP.slice(0, 2)} ${WHATSAPP.slice(2, 5)} ${WHATSAPP.sl
   funnel
   sinCabecera
 >
-  <AplicacionFunnel client:load correo={EMAIL} telefono={telefono} instagram="alvarosanchezai" />
+  <AplicacionFunnel client:load correo={EMAIL} instagram="alvarosanchezai" />
 </Layout>
