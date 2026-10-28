@@ -12,6 +12,7 @@
     "og": "node scripts/generar-og.mjs",
     "contraste": "node scripts/verificar-contraste.mjs",
     "captura": "node scripts/captura.mjs",
+    "subtitulos": "node scripts/srt-a-vtt.mjs",
     "limpiar": "rm -rf .astro dist node_modules/.astro && astro build"
   },
   "dependencies": {
