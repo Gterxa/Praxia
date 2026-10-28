@@ -5,7 +5,13 @@
  */
 import { SITE } from '../../consts';
 import { ruta } from '../../rutas';
+import { TEXTOS, type Idioma } from '../../i18n/funnel';
 
+interface Props {
+  idioma?: Idioma;
+}
+const { idioma = 'es' } = Astro.props;
+const t = TEXTOS[idioma].pie;
 const anio = new Date().getFullYear();
 ---
 
@@ -13,8 +19,8 @@ const anio = new Date().getFullYear();
   <div class="contenedor flex flex-col gap-3 py-8 pb-28 md:flex-row md:items-center md:justify-between lg:pb-8">
     <p class="pequeno text-texto-3">© {anio} {SITE.nombre}</p>
     <ul class="flex gap-6">
-      <li><a href={ruta('/privacidad')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Privacidad</a></li>
-      <li><a href={ruta('/legal')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Términos</a></li>
+      <li><a href={ruta('/privacidad')} class="pequeno text-texto-2 hover:text-brasa hover:underline">{t.privacidad}</a></li>
+      <li><a href={ruta('/legal')} class="pequeno text-texto-2 hover:text-brasa hover:underline">{t.terminos}</a></li>
     </ul>
   </div>
 </footer>

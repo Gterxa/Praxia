@@ -1,0 +1,22 @@
+---
+/**
+ * La aplicación del funnel: una pregunta por pantalla, la matriz A/B/C y la
+ * pantalla que toca según el resultado. Toda la lógica vive en la isla
+ * AplicacionFunnel; las preguntas y la regla, en src/funnel.ts; los textos,
+ * en src/i18n/funnel.ts. La usan /funnel/aplicar y /en/funnel/aplicar.
+ */
+import Layout from '../../layouts/Layout.astro';
+import AplicacionFunnel from './AplicacionFunnel.tsx';
+import { CONTEXTO, EMAIL } from '../../consts';
+import { TEXTOS, type Idioma } from '../../i18n/funnel';
+
+interface Props {
+  idioma: Idioma;
+}
+const { idioma } = Astro.props;
+const t = TEXTOS[idioma].aplicacion;
+---
+
+<Layout titulo={t.titulo} descripcion={t.descripcion} contextoWhatsApp={CONTEXTO.vsl} noIndex funnel sinCabecera idioma={idioma}>
+  <AplicacionFunnel client:load correo={EMAIL} instagram="alvarosanchezai" idioma={idioma} />
+</Layout>

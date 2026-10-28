@@ -1,0 +1,727 @@
+---
+/**
+ * Landing del funnel (/funnel y /en/funnel): réplica del prototipo "1 · Landing rápida: VSL, contador
+ * real y cupos" del lienzo "Funnel high ticket Praxia" (Claude Design).
+ * Video arriba, un solo CTA que lleva a la aplicación (/funnel/aplicar), el
+ * contador hasta que cierra la agenda de la semana y los cupos.
+ *
+ * Diferencias a propósito con el lienzo: "Perú" en vez de "Lima" y la FAQ de
+ * rubro sin lista de rubros (CONTENIDO.md, reglas 5 y 7); la nota del botón
+ * dice "unos 2 minutos" porque la aplicación ya no son 6 preguntas.
+ *
+ * Los textos salen de src/i18n/funnel.ts. El costo de la sesión se muestra en
+ * soles o dólares según el idioma y, al cargar, según el país de la IP.
+ */
+import Layout from '../../layouts/Layout.astro';
+import VideoVSL from './VideoVSL.astro';
+import LogosMarqueeCosmoq from '../LogosMarqueeCosmoq.astro';
+import Pendiente from '../Pendiente.astro';
+import { CONTEXTO } from '../../consts';
+import { CUPOS_SEMANA } from '../../funnel';
+import { ruta } from '../../rutas';
+import { TEXTOS, rutaFunnel, type Idioma } from '../../i18n/funnel';
+
+interface Props {
+  idioma: Idioma;
+}
+const { idioma } = Astro.props;
+const tx = TEXTOS[idioma];
+const t = tx.landing;
+const otro: Idioma = idioma === 'es' ? 'en' : 'es';
+
+const aplicar = ruta(rutaFunnel(idioma, '/aplicar'));
+const PILLS = t.pills;
+const TE_LLEVAS = t.items;
+const DUDAS = t.dudas;
+const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
+
+---
+
+<Layout
+  titulo={t.titulo}
+  descripcion={t.descripcion}
+  idioma={idioma}
+  contextoWhatsApp={CONTEXTO.vsl}
+  noIndex
+  funnel
+  sinCabecera
+>
+  <div class="fl">
+    <section class="fl-hero">
+      <div class="fl-cielo" aria-hidden="true"></div>
+      <div class="fl-contenedor">
+        <div class="fl-arriba">
+          <p class="fl-logo">Praxia<span>.</span></p>
+          <a class="fl-idioma" href={ruta(rutaFunnel(otro))} hreflang={otro} lang={otro} data-idioma={otro}>{tx.otroIdioma}</a>
+        </div>
+        <p class="fl-sugerencia" data-sugerencia hidden>
+          <a href={ruta(rutaFunnel(otro))} hreflang={otro} lang={otro} data-idioma={otro}>{tx.sugerencia} →</a>
+          <button type="button" class="fl-sugerencia-cerrar" aria-label={tx.cerrar} data-cerrar>×</button>
+        </p>
+        <h1 class="fl-titulo">
+          {t.h1[0]}<span class="fl-calido">{t.h1[1]}</span>
+        </h1>
+        <ul class="fl-pills" aria-label={t.pillsAria}>
+          {PILLS.map((p) => <li class="fl-pill">{p}</li>)}
+        </ul>
+        <div class="fl-video"><VideoVSL idioma={idioma} /></div>
+        <p class="fl-sub">
+          {t.sub[0]}
+          <b>{t.sub[1]}</b>
+        </p>
+        <a class="boton boton-primario fl-cta" href={aplicar}>{t.cta} <span aria-hidden="true">→</span></a>
+        <p class="fl-nota">{t.nota}</p>
+        <div class="fl-contador" data-contador>
+          <span class="fl-contador-texto">{t.contador}</span>
+          <span class="fl-digitos">
+            <span class="fl-digito" data-d>0 d</span>
+            <span class="fl-digito" data-h>00 h</span>
+            <span class="fl-digito" data-m>00 m</span>
+            <span class="fl-digito" data-s>00 s</span>
+          </span>
+        </div>
+        <p class="fl-cupos"><span class="fl-cupos-punto" aria-hidden="true"></span>{cuposAntes}<b>{cuposNum}</b>{cuposDespues}</p>
+      </div>
+    </section>
+
+    <section class="fl-seccion">
+      <div class="fl-contenedor">
+        <h2 class="fl-h2">{t.confiaron[0]}<span class="fl-calido">{t.confiaron[1]}</span></h2>
+      </div>
+      <div class="fl-logos"><LogosMarqueeCosmoq /></div>
+      <div class="fl-contenedor fl-ancho">
+        <div class="fl-capturas">
+          <div class="fl-captura"><Pendiente que={t.pendientes[0]} /></div>
+          <div class="fl-captura"><Pendiente que={t.pendientes[1]} /></div>
+          <div class="fl-captura"><Pendiente que={t.pendientes[2]} /></div>
+          <div class="fl-captura fl-captura-alta"><Pendiente que={t.pendientes[3]} /></div>
+        </div>
+        <a class="boton boton-primario fl-cta" href={aplicar}>{t.cta}</a>
+      </div>
+    </section>
+
+    <section class="fl-seccion fl-banda">
+      <div class="fl-contenedor">
+        <h2 class="fl-h2">{t.teLlevas[0]}<span class="fl-calido">{t.teLlevas[1]}</span></h2>
+        <p class="fl-bajada">{t.bajada}</p>
+        <ul class="fl-lista">
+          {
+            TE_LLEVAS.map((t) => (
+              <li class="fl-item">
+                <span class="fl-item-check" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </span>
+                <span>
+                  <b>{t.titulo}</b>
+                  <span class="fl-item-texto">{t.texto}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="fl-costo">
+          <span class="fl-mono">{t.costo}</span>
+          <span class="fl-costo-monto" data-costo>{idioma === 'es' ? 'S/ 0' : 'US$ 0'}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="fl-seccion">
+      <div class="fl-contenedor fl-ancho">
+        <h2 class="fl-h2">{t.caminos[0]}<span class="fl-calido">{t.caminos[1]}</span></h2>
+        <div class="fl-caminos">
+          <div class="fl-camino">
+            <p class="fl-mono">{t.camino} 1</p>
+            <h3 class="fl-camino-titulo">{t.seguirIgual}</h3>
+            <p class="fl-camino-texto">{t.seguirIgualTexto}</p>
+            <span class="fl-camino-boton">{t.seguirIgual}</span>
+          </div>
+          <div class="fl-camino fl-camino-vivo">
+            <p class="fl-mono fl-brasa">{t.camino} 2</p>
+            <h3 class="fl-camino-titulo">{t.automatizar}</h3>
+            <p class="fl-camino-texto">{t.automatizarTexto}</p>
+            <a class="boton boton-primario fl-cta fl-cta-camino" href={aplicar}>{t.agendarMiDiagnostico}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fl-seccion">
+      <div class="fl-contenedor">
+        <h2 class="fl-h2">{t.dudasTitulo[0]}<span class="fl-calido">{t.dudasTitulo[1]}</span></h2>
+        <div class="fl-dudas">
+          {
+            DUDAS.map((d) => (
+              <details class="fl-duda">
+                <summary>{d.p}<span class="fl-mas" aria-hidden="true">+</span></summary>
+                <p>{d.r}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <div class="fl-barra" data-contador>
+      <span class="fl-barra-texto">{t.barra[0]}<span class="fl-brasa">{t.barra[1]}</span></span>
+      <span class="fl-barra-reloj"><span data-d>0d</span> <span data-h>00h</span> <span data-m>00m</span> <span data-s>00s</span></span>
+      <span class="fl-barra-cupos">{t.barraCupos(CUPOS_SEMANA)}</span>
+      <a class="boton boton-primario boton-compacto fl-barra-cta" href={aplicar}>{t.agendar}<span class="fl-barra-largo">{t.diagnostico}</span></a>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { guardarOrigen } from '../../lib/origen';
+  import { elegirIdioma, hrefEnIdioma, idiomaSugerido, paisVisitante } from '../../lib/idioma';
+  import { monedaDePais, type Idioma } from '../../i18n/funnel';
+
+  // UTM del anuncio: se guardan acá porque el clic a /funnel/aplicar no los lleva.
+  guardarOrigen();
+
+  // Idioma: el selector lleva los UTM y el cid de la URL, y recuerda la elección.
+  const actual: Idioma = document.documentElement.lang.startsWith('en') ? 'en' : 'es';
+  document.querySelectorAll<HTMLAnchorElement>('a[data-idioma]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const destino = a.dataset['idioma'] as Idioma;
+      elegirIdioma(destino);
+      location.href = hrefEnIdioma(destino);
+    });
+  });
+  const aviso = document.querySelector<HTMLElement>('[data-sugerencia]');
+  aviso?.querySelector('[data-cerrar]')?.addEventListener('click', () => {
+    elegirIdioma(actual);
+    aviso.hidden = true;
+  });
+  // Si la IP es de un país del otro idioma, se ofrece (no se redirige).
+  void idiomaSugerido(actual).then((s) => {
+    if (s && aviso) aviso.hidden = false;
+  });
+  // Costo de la sesión en la moneda del país de la IP. En la aplicación manda el teléfono.
+  void paisVisitante().then((pais) => {
+    const costo = document.querySelector('[data-costo]');
+    if (pais && costo) costo.textContent = monedaDePais(pais) === 'PEN' ? 'S/ 0' : 'US$ 0';
+  });
+
+  // La agenda de la semana cierra el domingo a medianoche, hora de Perú
+  // (UTC-5 todo el año, sin horario de verano): lunes 05:00 UTC.
+  function cierre(): number {
+    // "Hoy" en Perú, a las 00:00 de Perú (= 05:00 UTC), y de ahí al próximo lunes.
+    const peru = new Date(Date.now() - 5 * 3600e3);
+    const hoy = Date.UTC(peru.getUTCFullYear(), peru.getUTCMonth(), peru.getUTCDate(), 5);
+    const dias = (8 - peru.getUTCDay()) % 7 || 7;
+    return hoy + dias * 864e5;
+  }
+
+  const fin = cierre();
+  const dos = (n: number) => String(n).padStart(2, '0');
+
+  function pintar() {
+    const resta = Math.max(0, fin - Date.now());
+    const d = Math.floor(resta / 864e5);
+    const h = Math.floor(resta / 36e5) % 24;
+    const m = Math.floor(resta / 6e4) % 60;
+    const s = Math.floor(resta / 1e3) % 60;
+    document.querySelectorAll<HTMLElement>('[data-contador]').forEach((c) => {
+      const corto = c.classList.contains('fl-barra');
+      c.querySelector('[data-d]')!.textContent = corto ? `${d}d` : `${d} d`;
+      c.querySelector('[data-h]')!.textContent = corto ? `${dos(h)}h` : `${dos(h)} h`;
+      c.querySelector('[data-m]')!.textContent = corto ? `${dos(m)}m` : `${dos(m)} m`;
+      c.querySelector('[data-s]')!.textContent = corto ? `${dos(s)}s` : `${dos(s)} s`;
+    });
+  }
+
+  pintar();
+  setInterval(pintar, 1000);
+</script>
+
+<style>
+  .fl {
+    position: relative;
+    background: var(--color-void);
+    padding-bottom: 6rem;
+  }
+
+  .fl-contenedor {
+    position: relative;
+    max-width: 46rem;
+    margin: 0 auto;
+    padding-inline: max(1rem, env(safe-area-inset-left, 0px));
+    text-align: center;
+  }
+
+  .fl-ancho {
+    max-width: 62rem;
+  }
+
+  .fl-hero {
+    position: relative;
+    padding-top: 2rem;
+    overflow: hidden;
+  }
+
+  /* El cielo del hero: rampa noche → magenta → brasa, como el lienzo. Es el
+     fondo de la sección, no un halo detrás de una tarjeta. */
+  .fl-cielo {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 44rem;
+    background:
+      linear-gradient(180deg, transparent 40%, var(--color-void) 95%),
+      linear-gradient(100deg, rgb(189 53 108 / 0.45) 0%, rgb(74 33 120 / 0.35) 45%, var(--color-noche) 100%);
+    pointer-events: none;
+  }
+
+  .fl-arriba {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .fl-idioma {
+    padding: 0.25rem 0.625rem;
+    border: 1px solid var(--color-linea);
+    border-radius: 999px;
+    color: var(--color-texto-2);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .fl-idioma:hover,
+  .fl-idioma:focus-visible {
+    border-color: var(--color-brasa);
+    color: var(--color-texto);
+  }
+
+  .fl-sugerencia {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.375rem 0.5rem 0.375rem 0.875rem;
+    border: 1px solid var(--color-linea);
+    border-radius: 999px;
+    font-size: 0.875rem;
+  }
+
+  .fl-sugerencia[hidden] {
+    display: none;
+  }
+
+  .fl-sugerencia a {
+    color: var(--color-texto);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .fl-sugerencia-cerrar {
+    border: 0;
+    background: transparent;
+    color: var(--color-texto-2);
+    font-size: 1.125rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .fl-logo {
+    font-family: var(--font-titulos);
+    font-weight: 500;
+    font-size: 1.25rem;
+  }
+
+  .fl-logo span,
+  .fl-brasa {
+    color: var(--color-brasa);
+  }
+
+  .fl-titulo {
+    margin-top: 2.5rem;
+    font-family: var(--font-titulos);
+    font-weight: 700;
+    font-size: clamp(2.25rem, 7vw, 3.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  .fl-calido {
+    background: var(--degradado-calido);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .fl-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.75rem;
+  }
+
+  .fl-pill {
+    padding: 0.4rem 0.9rem;
+    border: 1px solid rgb(255 255 255 / 0.16);
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 0.05);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .fl-video {
+    margin-top: 2rem;
+    text-align: left;
+  }
+
+  .fl-sub {
+    margin: 1.75rem auto 0;
+    max-width: 40ch;
+    color: var(--color-texto-2);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+
+  .fl-sub b {
+    color: var(--color-texto);
+  }
+
+  .fl-cta {
+    width: 100%;
+    max-width: 30rem;
+    margin-top: 1.75rem;
+    padding: 1.05rem 1.5rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .fl-nota {
+    margin-top: 0.75rem;
+    color: var(--color-texto-2);
+    font-size: 0.9375rem;
+  }
+
+  .fl-contador {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin-top: 1.75rem;
+  }
+
+  .fl-contador-texto {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-texto-2);
+  }
+
+  .fl-digitos {
+    display: flex;
+    gap: 0.375rem;
+  }
+
+  .fl-digito {
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.5rem;
+    background: var(--color-magenta);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 1.125rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fl-cupos {
+    margin-top: 1rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+
+  .fl-cupos b {
+    color: var(--color-brasa);
+  }
+
+  .fl-cupos-punto {
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    margin-right: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-brasa);
+    vertical-align: middle;
+  }
+
+  .fl-seccion {
+    padding-block: 4.5rem 0;
+  }
+
+  .fl-banda {
+    margin-top: 4.5rem;
+    padding-block: 4.5rem;
+    background: rgb(6 27 102 / 0.18);
+  }
+
+  .fl-h2 {
+    font-family: var(--font-titulos);
+    font-weight: 700;
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  .fl-bajada {
+    margin-top: 0.5rem;
+    color: var(--color-texto-2);
+  }
+
+  .fl-logos {
+    margin-top: 1.75rem;
+  }
+
+  .fl-capturas {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+    text-align: left;
+  }
+
+  .fl-captura {
+    display: grid;
+    place-items: center;
+    min-height: 14rem;
+    padding: 1.5rem;
+    border: 1px solid rgb(84 124 255 / 0.22);
+    border-radius: var(--radius-tarjeta);
+    background: rgb(6 27 102 / 0.3);
+    text-align: center;
+  }
+
+  .fl-lista {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    text-align: left;
+  }
+
+  .fl-item {
+    display: flex;
+    gap: 0.875rem;
+    padding: 1rem 1.125rem;
+    border: 1px solid rgb(84 124 255 / 0.25);
+    border-radius: 0.875rem;
+    background: rgb(6 27 102 / 0.35);
+  }
+
+  .fl-item-check {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.625rem;
+    height: 1.625rem;
+    border-radius: 50%;
+    background: var(--color-brasa);
+  }
+
+  .fl-item-texto {
+    display: block;
+    margin-top: 0.15rem;
+    color: var(--color-texto-2);
+    font-size: 0.9375rem;
+  }
+
+  .fl-costo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.25rem;
+    padding: 1.25rem 1.25rem;
+    border: 1px solid rgb(189 53 108 / 0.5);
+    border-radius: 0.875rem;
+    background: rgb(189 53 108 / 0.1);
+  }
+
+  .fl-mono {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-texto-2);
+  }
+
+  .fl-costo-monto {
+    font-family: var(--font-titulos);
+    font-weight: 700;
+    font-size: 2rem;
+  }
+
+  .fl-caminos {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+    text-align: left;
+  }
+
+  .fl-camino {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    border: 1px solid rgb(84 124 255 / 0.22);
+    border-radius: var(--radius-tarjeta);
+    background: rgb(6 27 102 / 0.25);
+  }
+
+  .fl-camino-vivo {
+    border-color: var(--color-coral);
+    background: rgb(250 94 69 / 0.08);
+  }
+
+  .fl-camino-titulo {
+    margin-top: 0.5rem;
+    font-family: var(--font-titulos);
+    font-weight: 700;
+    font-size: 1.5rem;
+  }
+
+  .fl-camino-texto {
+    margin-top: 0.5rem;
+    flex: 1;
+    color: var(--color-texto-2);
+    line-height: 1.6;
+  }
+
+  .fl-camino-boton {
+    margin-top: 1.25rem;
+    padding: 0.9rem;
+    border: 1px solid rgb(84 124 255 / 0.3);
+    border-radius: 0.75rem;
+    color: var(--color-texto-3);
+    text-align: center;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.875rem;
+  }
+
+  .fl-cta-camino {
+    max-width: none;
+    margin-top: 1.25rem;
+  }
+
+  .fl-dudas {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    text-align: left;
+  }
+
+  .fl-duda {
+    border: 1px solid rgb(84 124 255 / 0.25);
+    border-radius: 0.875rem;
+    background: rgb(6 27 102 / 0.35);
+  }
+
+  .fl-duda summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .fl-duda summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .fl-duda summary:focus-visible {
+    outline: 2px solid var(--color-brasa);
+    outline-offset: 2px;
+    border-radius: 0.875rem;
+  }
+
+  .fl-mas {
+    color: var(--color-brasa);
+    font-size: 1.25rem;
+    line-height: 1;
+    transition: transform 200ms var(--ease-resorte);
+  }
+
+  .fl-duda[open] .fl-mas {
+    transform: rotate(45deg);
+  }
+
+  .fl-duda p {
+    padding: 0 1.125rem 1rem;
+    color: var(--color-texto-2);
+    line-height: 1.6;
+  }
+
+  /* Barra fija de abajo: contador, cupos y el CTA, siempre a mano. */
+  .fl-barra {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 30;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    padding: 0.75rem max(1rem, env(safe-area-inset-right, 0px)) calc(0.75rem + env(safe-area-inset-bottom, 0px)) max(1rem, env(safe-area-inset-left, 0px));
+    border-top: 1px solid var(--color-linea);
+    background: rgb(13 14 20 / 0.94);
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+
+  .fl-barra-reloj {
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.5rem;
+    background: var(--color-magenta);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fl-barra-cupos {
+    color: var(--color-texto-2);
+  }
+
+  /* En celular la barra va en una sola línea: reloj y botón corto. */
+  @media (max-width: 30rem) {
+    .fl-barra-texto,
+    .fl-barra-cupos,
+    .fl-barra-largo {
+      display: none;
+    }
+
+    .fl-barra {
+      flex-wrap: nowrap;
+      justify-content: space-between;
+    }
+
+    .fl-barra-reloj {
+      font-size: 0.875rem;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .fl-capturas {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .fl-captura-alta {
+      min-height: 20rem;
+    }
+
+    .fl-caminos {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -4,7 +4,8 @@
  *
  * Qué escribe y cuándo (los IDs están en docs/funnel-vsl/ghl.md):
  * - inicio: contacto con nombre, WhatsApp, correo y de dónde vino, etiqueta
- *   funnel-iniciado y oportunidad en «Aplicación incompleta». Ahí el workflow
+ *   funnel-iniciado, etiqueta del idioma en que lo vio (idioma-es o idioma-en)
+ *   y oportunidad en «Aplicación incompleta». Ahí el workflow
  *   del panel avisa al equipo y, si a los 30 min no terminó, marca abandono.
  * - paso: las respuestas que lleva y en qué pregunta va.
  * - fin: todo lo anterior más categoría, prioridad y motivo (calculados acá,
@@ -144,6 +145,8 @@ export interface LeadFunnel {
   respuestas: Respuestas;
   frase?: string;
   compromiso?: boolean;
+  /** Idioma en que vio el funnel. Las respuestas igual se guardan en español. */
+  idioma: 'es' | 'en';
   /** Pantalla en la que está, desde 0 (contacto). */
   paso: number;
   origen: Origen;
@@ -438,8 +441,9 @@ export async function guardarEnGhl(token: string, lead: LeadFunnel): Promise<{ c
   if (evento === 'inicio') {
     // Se quitan y se vuelven a poner para que el workflow del panel arranque
     // de nuevo si la misma persona vuelve a empezar otro día.
-    await ghl(token, 'DELETE', `/contacts/${contactId}/tags`, { tags: ['funnel-iniciado', 'funnel-completo', 'funnel-abandono'] });
-    await ghl(token, 'POST', `/contacts/${contactId}/tags`, { tags: ['funnel-web', 'funnel-iniciado'] });
+    // El idioma también: queda el de la última vez que empezó.
+    await ghl(token, 'DELETE', `/contacts/${contactId}/tags`, { tags: ['funnel-iniciado', 'funnel-completo', 'funnel-abandono', 'idioma-es', 'idioma-en'] });
+    await ghl(token, 'POST', `/contacts/${contactId}/tags`, { tags: ['funnel-web', 'funnel-iniciado', `idioma-${lead.idioma}`] });
   } else if (resultado) {
     const rubro = typeof lead.respuestas.rubro === 'string' ? lead.respuestas.rubro : '';
     const tags = ['funnel-completo', `cat-${resultado.categoria.toLowerCase()}`];

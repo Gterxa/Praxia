@@ -1,21 +1,6 @@
 ---
-/**
- * La aplicación del funnel: una pregunta por pantalla, la matriz A/B/C y la
- * pantalla que toca según el resultado. Toda la lógica vive en la isla
- * AplicacionFunnel; las preguntas y la regla, en src/funnel.ts.
- */
-import Layout from '../../layouts/Layout.astro';
-import AplicacionFunnel from '../../components/funnel/AplicacionFunnel.tsx';
-import { CONTEXTO, EMAIL } from '../../consts';
+/** /funnel/aplicar: la aplicación en español (ver PaginaAplicacion). */
+import PaginaAplicacion from '../../components/funnel/PaginaAplicacion.astro';
 ---
 
-<Layout
-  titulo="Aplica a tu diagnóstico gratis"
-  descripcion="Unas preguntas rápidas para saber cómo ayudarte y agendar tu diagnóstico."
-  contextoWhatsApp={CONTEXTO.vsl}
-  noIndex
-  funnel
-  sinCabecera
->
-  <AplicacionFunnel client:load correo={EMAIL} instagram="alvarosanchezai" />
-</Layout>
+<PaginaAplicacion idioma="es" />

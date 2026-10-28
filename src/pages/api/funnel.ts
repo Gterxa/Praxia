@@ -117,6 +117,7 @@ export const POST: APIRoute = async ({ request, url }) => {
     correo: texto(b.correo, 120).toLowerCase(),
     pais: texto(b.pais, 2) || 'pe',
     moneda: b.moneda === 'USD' ? 'USD' : 'PEN',
+    idioma: b.idioma === 'en' ? 'en' : 'es',
     respuestas: limpiarRespuestas(b.respuestas),
     frase: texto(b.frase, 1000),
     compromiso: b.compromiso === true,
