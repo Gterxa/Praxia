@@ -632,3 +632,9 @@
   font-size: 0.8125rem;
   line-height: 1.5;
 }
+
+/* Con turnos cortos un día puede traer muchas horas: la lista se desplaza y el botón queda a la vista. */
+.af-horas {
+  max-height: 17rem;
+  overflow-y: auto;
+}

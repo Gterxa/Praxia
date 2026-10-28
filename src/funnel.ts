@@ -47,9 +47,6 @@ export const CUPOS_SEMANA = 6;
    Fuera de este horario el aprobado va directo a elegir día y hora. */
 export const HORARIO_ATENCION = { dias: [1, 2, 3, 4, 5, 6], desde: 9, hasta: 19 } as const;
 
-/* Horarios de ejemplo del lienzo. Se reemplazan por el calendario real. */
-export const HORAS_AGENDA = ['9:30 a. m.', '11:00 a. m.', '12:30 p. m.', '3:00 p. m.', '4:30 p. m.', '6:00 p. m.'];
-
 export const PREGUNTAS: Pregunta[] = [
   {
     id: 'costo',

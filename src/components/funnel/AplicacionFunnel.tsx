@@ -8,6 +8,10 @@
  * datos (pantalla 1), cada respuesta se guarda al pasar de pantalla y al enviar
  * se clasifica en el servidor. Así el equipo ve también a quien se queda a
  * medias. Los envíos van en cola, uno detrás de otro, y no frenan la pantalla.
+ *
+ * Después del resultado: «Sí, llámenme» queda registrado en GHL; la agenda
+ * muestra los turnos libres del calendario de diagnóstico (GET /api/funnel) y
+ * «Confirmar» reserva la cita ahí. Esa es la única llamada que se espera.
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import intlTelInput from 'intl-tel-input/intlTelInputWithUtils';
@@ -15,7 +19,6 @@ import { es } from 'intl-tel-input/locale';
 import 'intl-tel-input/styles';
 import './aplicacion-funnel.css';
 import {
-  HORAS_AGENDA,
   PREGUNTAS,
   clasificar,
   datoDelNegocio,
@@ -50,22 +53,21 @@ function etiquetaAvance(i: number): string {
 }
 
 
-/** Los próximos cinco días hábiles, desde mañana. */
-function proximosDias(): { clave: string; dia: string; num: number; largo: string }[] {
-  const dias: { clave: string; dia: string; num: number; largo: string }[] = [];
-  const d = new Date();
-  while (dias.length < 5) {
-    d.setDate(d.getDate() + 1);
-    if (d.getDay() === 0 || d.getDay() === 6) continue;
-    dias.push({
-      clave: d.toISOString().slice(0, 10),
-      dia: d.toLocaleDateString('es-PE', { weekday: 'short' }).replace('.', ''),
-      num: d.getDate(),
-      largo: d.toLocaleDateString('es-PE', { weekday: 'long', day: 'numeric', month: 'long' }),
-    });
-  }
-  return dias;
+/** Días con turnos libres, como los devuelve GET /api/funnel. */
+interface DiaAgenda {
+  fecha: string;
+  turnos: string[];
 }
+type Agenda = { estado: 'cargando' } | { estado: 'listo'; dias: DiaAgenda[] } | { estado: 'error' };
+
+// Todo en hora de Lima, sin importar la zona del navegador: el turno trae su offset.
+const LIMA = 'America/Lima';
+const DIAS_VISIBLES = 5;
+const mediodia = (fecha: string) => new Date(`${fecha}T12:00:00-05:00`);
+const diaCorto = (fecha: string) => mediodia(fecha).toLocaleDateString('es-PE', { timeZone: LIMA, weekday: 'short' }).replace('.', '');
+const diaNum = (fecha: string) => Number(fecha.slice(8, 10));
+const horaDe = (turno: string) => new Date(turno).toLocaleTimeString('es-PE', { timeZone: LIMA, hour: 'numeric', minute: '2-digit' });
+const diaLargo = (turno: string) => new Date(turno).toLocaleDateString('es-PE', { timeZone: LIMA, weekday: 'long', day: 'numeric', month: 'long' });
 
 export default function AplicacionFunnel({ correo, telefono, instagram }: Props) {
   const [paso, setPaso] = useState(0);
@@ -79,8 +81,11 @@ export default function AplicacionFunnel({ correo, telefono, instagram }: Props)
   const [compromiso, setCompromiso] = useState(false);
   const [confirmarDecide, setConfirmarDecide] = useState(false);
   const [resultado, setResultado] = useState<Resultado | null>(null);
+  const [agenda, setAgenda] = useState<Agenda>({ estado: 'cargando' });
   const [dia, setDia] = useState('');
-  const [hora, setHora] = useState('');
+  const [turno, setTurno] = useState('');
+  const [reservando, setReservando] = useState(false);
+  const [errorAgenda, setErrorAgenda] = useState('');
   const telRef = useRef<HTMLInputElement>(null);
   const itiRef = useRef<Iti | null>(null);
   const cimaRef = useRef<HTMLDivElement>(null);
@@ -89,14 +94,22 @@ export default function AplicacionFunnel({ correo, telefono, instagram }: Props)
   const inicioRef = useRef(false);
 
   const moneda: Moneda = pais === 'pe' ? 'PEN' : 'USD';
-  const dias = useMemo(proximosDias, []);
 
   // Si entró directo a /funnel/aplicar desde un anuncio, los UTM están acá.
   useEffect(guardarOrigen, []);
 
   /** Manda el estado actual a GHL. En cola, para que el contacto exista antes del siguiente paso. */
-  function avisarCrm(evento: 'inicio' | 'paso' | 'fin', extra: { respuestas?: Respuestas; paso?: number } = {}) {
-    const cuerpo = JSON.stringify({
+  function avisarCrm(evento: 'inicio' | 'paso' | 'fin' | 'llamada', extra: { respuestas?: Respuestas; paso?: number } = {}) {
+    const cuerpo = cuerpoCrm(evento, extra);
+    colaRef.current = colaRef.current
+      .then(() => fetch(API_FUNNEL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: cuerpo, keepalive: true }))
+      .catch(() => {
+        /* sin red: el visitante sigue; el siguiente paso vuelve a mandar todo */
+      });
+  }
+
+  function cuerpoCrm(evento: string, extra: { respuestas?: Respuestas; paso?: number; turno?: string } = {}) {
+    return JSON.stringify({
       evento,
       nombre: nombre.trim(),
       telefono: typeof respuestas.telefono === 'string' ? respuestas.telefono : '',
@@ -108,14 +121,58 @@ export default function AplicacionFunnel({ correo, telefono, instagram }: Props)
       compromiso,
       paso: extra.paso ?? paso,
       origen: leerOrigen(),
+      turno: extra.turno,
       web: trampaRef.current?.value ?? '',
     });
-    colaRef.current = colaRef.current
-      .then(() => fetch(API_FUNNEL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: cuerpo, keepalive: true }))
-      .catch(() => {
-        /* sin red: el visitante sigue; el siguiente paso vuelve a mandar todo */
-      });
   }
+
+  async function cargarTurnos() {
+    setAgenda({ estado: 'cargando' });
+    try {
+      const res = await fetch(API_FUNNEL, { headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error(String(res.status));
+      const { dias } = (await res.json()) as { dias: DiaAgenda[] };
+      const visibles = dias.slice(0, DIAS_VISIBLES);
+      setAgenda({ estado: 'listo', dias: visibles });
+      setDia((d) => (visibles.some((x) => x.fecha === d) ? d : (visibles[0]?.fecha ?? '')));
+    } catch {
+      setAgenda({ estado: 'error' });
+    }
+  }
+
+  /** Reserva el turno en el calendario. Espera a que la cola termine: el contacto tiene que existir. */
+  async function reservar() {
+    if (!turno || reservando) return;
+    setReservando(true);
+    setErrorAgenda('');
+    const cuerpo = cuerpoCrm('agenda', { turno });
+    try {
+      await colaRef.current;
+      const res = await fetch(API_FUNNEL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: cuerpo });
+      if (res.ok) {
+        setFase('confirmado');
+        return;
+      }
+      if (res.status === 409) {
+        setErrorAgenda('Ese horario se acaba de ocupar. Elige otro, por favor.');
+        setTurno('');
+        cargarTurnos();
+        return;
+      }
+      throw new Error(String(res.status));
+    } catch {
+      setErrorAgenda('No pudimos reservar tu horario. Inténtalo de nuevo en un momento.');
+    } finally {
+      setReservando(false);
+    }
+  }
+
+  // «Sí, llámenme» queda registrado en GHL; la agenda pide los turnos libres al entrar.
+  useEffect(() => {
+    if (fase === 'llamada') avisarCrm('llamada');
+    if (fase === 'agenda') cargarTurnos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fase]);
 
   // Al llegar a cada pregunta se guarda lo que lleva. La primera vez, como inicio.
   useEffect(() => {
@@ -450,28 +507,44 @@ export default function AplicacionFunnel({ correo, telefono, instagram }: Props)
                 <li>Sales con un plan: qué automatizar, precio y plazo.</li>
               </ul>
             </div>
-            <div className="af-agenda-tarjeta">
-              <p className="af-mono">Día</p>
-              <div className="af-dias">
-                {dias.map((d) => (
-                  <button key={d.clave} type="button" className={`af-dia${dia === d.clave ? ' af-elegido' : ''}`} aria-pressed={dia === d.clave} onClick={() => setDia(d.clave)}>
-                    <span className="af-dia-nombre">{d.dia}</span>
-                    <span className="af-dia-num">{d.num}</span>
+            <div className="af-agenda-tarjeta" aria-busy={agenda.estado === 'cargando'}>
+              {agenda.estado === 'cargando' && <p className="af-nota" role="status">Buscando horarios libres…</p>}
+              {agenda.estado === 'error' && (
+                <>
+                  <p className="af-error" role="alert">No pudimos cargar la agenda.</p>
+                  <button type="button" className="boton boton-secundario af-cta" onClick={cargarTurnos}>Intentar de nuevo</button>
+                </>
+              )}
+              {agenda.estado === 'listo' && agenda.dias.length === 0 && (
+                <p className="af-ayuda">
+                  Ya no quedan cupos libres. Escríbenos a <b className="af-numero">{correo}</b> y te avisamos apenas se abra uno.
+                </p>
+              )}
+              {agenda.estado === 'listo' && agenda.dias.length > 0 && (
+                <>
+                  <p className="af-mono">Día</p>
+                  <div className="af-dias">
+                    {agenda.dias.map((d) => (
+                      <button key={d.fecha} type="button" className={`af-dia${dia === d.fecha ? ' af-elegido' : ''}`} aria-pressed={dia === d.fecha} onClick={() => { setDia(d.fecha); setTurno(''); }}>
+                        <span className="af-dia-nombre">{diaCorto(d.fecha)}</span>
+                        <span className="af-dia-num">{diaNum(d.fecha)}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <p className="af-mono">Hora de Lima</p>
+                  <div className="af-horas">
+                    {(agenda.dias.find((d) => d.fecha === dia)?.turnos ?? []).map((t) => (
+                      <button key={t} type="button" className={`af-hora${turno === t ? ' af-elegido' : ''}`} aria-pressed={turno === t} onClick={() => setTurno(t)}>
+                        {horaDe(t)}
+                      </button>
+                    ))}
+                  </div>
+                  {errorAgenda && <p className="af-error" role="alert">{errorAgenda}</p>}
+                  <button type="button" className="boton boton-primario af-cta" disabled={!turno || reservando} onClick={reservar}>
+                    {reservando ? 'Reservando…' : turno ? 'Confirmar' : 'Elige día y hora'}
                   </button>
-                ))}
-              </div>
-              <p className="af-mono">Hora de Lima</p>
-              <div className="af-horas">
-                {HORAS_AGENDA.map((h) => (
-                  <button key={h} type="button" className={`af-hora${hora === h ? ' af-elegido' : ''}`} aria-pressed={hora === h} onClick={() => setHora(h)}>
-                    {h}
-                  </button>
-                ))}
-              </div>
-              <button type="button" className="boton boton-primario af-cta" disabled={!dia || !hora} onClick={() => setFase('confirmado')}>
-                {dia && hora ? 'Confirmar' : 'Elige día y hora'}
-              </button>
-              {import.meta.env.DEV && <p className="af-nota af-mono">Horarios de ejemplo: falta conectar el calendario real.</p>}
+                </>
+              )}
             </div>
           </section>
         )}
@@ -480,7 +553,7 @@ export default function AplicacionFunnel({ correo, telefono, instagram }: Props)
           <section className="af-cuerpo">
             <p className="af-kicker">Agendado</p>
             <h1 className="af-titulo">
-              Te esperamos el <span className="af-calido">{dias.find((d) => d.clave === dia)?.largo}, a las {hora}</span>
+              Te esperamos el <span className="af-calido">{diaLargo(turno)}, a las {horaDe(turno)}</span>
             </h1>
             <p className="af-ayuda">
               Te llama alguien del equipo desde el número de Praxia, <b className="af-numero">{telefono}</b>. La confirmación te llega a tu correo.
