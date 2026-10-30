@@ -1,0 +1,84 @@
+---
+/**
+ * Selector de idioma del funnel, arriba a la derecha: las dos opciones con su
+ * bandera, la actual marcada. El enlace al otro idioma lleva `data-idioma`
+ * para que el script de LandingFunnel guarde la preferencia antes de navegar.
+ * Español con la bandera de Perú (Praxia es de Perú y cobra en soles);
+ * inglés con la de Estados Unidos.
+ */
+import type { Idioma } from '../../i18n/funnel';
+import Bandera from './Bandera.astro';
+
+interface Props {
+  idioma: Idioma;
+  href: string;
+  aria: string;
+}
+const { idioma, href, aria } = Astro.props;
+const OPCIONES: { id: Idioma; codigo: string; nombre: string }[] = [
+  { id: 'es', codigo: 'ES', nombre: 'Español' },
+  { id: 'en', codigo: 'EN', nombre: 'English' },
+];
+---
+
+<nav class="si" aria-label={aria}>
+  {
+    OPCIONES.map((o) =>
+      o.id === idioma ? (
+        <span class="si-opcion si-actual" aria-current="true" lang={o.id} title={o.nombre}>
+          <Bandera id={o.id} />
+          {o.codigo}
+        </span>
+      ) : (
+        <a class="si-opcion" href={href} hreflang={o.id} lang={o.id} data-idioma={o.id} title={o.nombre}>
+          <Bandera id={o.id} />
+          {o.codigo}
+        </a>
+      ),
+    )
+  }
+</nav>
+
+<style>
+  .si {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border: 1px solid var(--color-linea);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.04);
+  }
+
+  .si-opcion {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    color: var(--color-texto-2);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+  }
+
+  .si-actual {
+    background: rgb(255 255 255 / 0.12);
+    color: var(--color-texto);
+  }
+
+  a.si-opcion:hover,
+  a.si-opcion:focus-visible {
+    color: var(--color-texto);
+    background: rgb(255 255 255 / 0.06);
+  }
+
+  .si-opcion :global(.si-bandera) {
+    width: 1.125rem;
+    height: 0.8rem;
+    border-radius: 0.15rem;
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.18);
+    flex-shrink: 0;
+  }
+</style>

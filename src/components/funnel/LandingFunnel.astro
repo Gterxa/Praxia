@@ -16,6 +16,8 @@ import Layout from '../../layouts/Layout.astro';
 import VideoVSL from './VideoVSL.astro';
 import LogosMarqueeCosmoq from '../LogosMarqueeCosmoq.astro';
 import CasosWebs from './CasosWebs.astro';
+import IconoPill from './IconoPill.astro';
+import SelectorIdioma from './SelectorIdioma.astro';
 import { CONTEXTO } from '../../consts';
 import { CUPOS_SEMANA } from '../../funnel';
 import { ruta } from '../../rutas';
@@ -52,7 +54,7 @@ const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
       <div class="fl-contenedor">
         <div class="fl-arriba">
           <p class="fl-logo">Praxia<span>.</span></p>
-          <a class="fl-idioma" href={ruta(rutaFunnel(otro))} hreflang={otro} lang={otro} data-idioma={otro}>{tx.otroIdioma}</a>
+          <SelectorIdioma idioma={idioma} href={ruta(rutaFunnel(otro))} aria={tx.idiomaAria} />
         </div>
         <p class="fl-sugerencia" data-sugerencia hidden>
           <a href={ruta(rutaFunnel(otro))} hreflang={otro} lang={otro} data-idioma={otro}>{tx.sugerencia} →</a>
@@ -62,7 +64,7 @@ const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
           {t.h1[0]}<span class="fl-calido">{t.h1[1]}</span>
         </h1>
         <ul class="fl-pills" aria-label={t.pillsAria}>
-          {PILLS.map((p) => <li class="fl-pill">{p}</li>)}
+          {PILLS.map((p, i) => <li class="fl-pill"><IconoPill i={i} />{p}</li>)}
         </ul>
         <div class="fl-video"><VideoVSL idioma={idioma} /></div>
         <p class="fl-sub">
@@ -271,27 +273,10 @@ const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
   .fl-arriba {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 1rem;
   }
 
-  .fl-idioma {
-    padding: 0.25rem 0.625rem;
-    border: 1px solid var(--color-linea);
-    border-radius: 999px;
-    color: var(--color-texto-2);
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    text-decoration: none;
-  }
-
-  .fl-idioma:hover,
-  .fl-idioma:focus-visible {
-    border-color: var(--color-brasa);
-    color: var(--color-texto);
-  }
 
   .fl-sugerencia {
     display: inline-flex;
@@ -360,6 +345,9 @@ const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
   }
 
   .fl-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
     padding: 0.4rem 0.9rem;
     border: 1px solid rgb(255 255 255 / 0.16);
     border-radius: var(--radius-pill);
