@@ -26,8 +26,8 @@ export const VIDEO_VSL = {
   poster: '',
   /** Duración que se muestra junto al botón de reproducir, por ejemplo '6 min'. */
   duracion: '',
-  /** Subtítulos WebVTT por idioma, dentro de public/ (ver src/videos.ts). Vacío = sin pista. */
-  subtitulos: { es: '', en: '' },
+  /** Subtítulos WebVTT por idioma, dentro de public/ (ver src/videos.ts). Vacío = sin pista. Video grabado: BIENVENIDA. */
+  subtitulos: { es: '/videos/bienvenida.es.vtt', en: '' },
 } as const;
 
 export const PARA_QUIEN = {

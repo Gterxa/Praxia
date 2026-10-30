@@ -27,16 +27,36 @@ export interface VideoFunnel {
   subtitulos: Partial<Record<Idioma, string>>;
 }
 
-/** Pantalla de resultado para A y B (issue piero0702/praxia-hq#25). */
+/**
+ * Pantalla de resultado para A y B (issue piero0702/praxia-hq#25).
+ *
+ * Ojo: se grabaron DOS videos para A/B, no uno, y cada uno corresponde a la
+ * elección que se hace en esta pantalla: VIDEO_LLAMADA («te llamamos por
+ * WhatsApp en las próximas dos horas») y VIDEO_CONFIRMADO («ya tienes tu
+ * reunión agendada por Google Meet»). Falta decidir si se mueven a las fases
+ * 'llamada' y 'confirmado' de AplicacionFunnel o si aquí va otro video.
+ */
 export const VIDEO_APROBADOS: VideoFunnel = {
   src: '',
   subtitulos: { es: '', en: '' },
 };
 
-/** Pantalla de «perfil en evaluación» (C). */
+/** Fase 'llamada': eligió que lo llamen. Video grabado: CLIENTE A. */
+export const VIDEO_LLAMADA: VideoFunnel = {
+  src: '',
+  subtitulos: { es: '/videos/cliente-a.es.vtt', en: '' },
+};
+
+/** Fase 'confirmado': reservó su reunión en la agenda. Video grabado: CLIENTE B. */
+export const VIDEO_CONFIRMADO: VideoFunnel = {
+  src: '',
+  subtitulos: { es: '/videos/cliente-b.es.vtt', en: '' },
+};
+
+/** Pantalla de «perfil en evaluación» (C). Video grabado: CLIENTE C. */
 export const VIDEO_EVALUACION: VideoFunnel = {
   src: '',
-  subtitulos: { es: '', en: '' },
+  subtitulos: { es: '/videos/cliente-c.es.vtt', en: '' },
 };
 
 /** Etiqueta de cada pista en el menú de subtítulos del reproductor. */
