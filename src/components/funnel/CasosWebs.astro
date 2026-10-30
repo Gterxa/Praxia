@@ -1,12 +1,15 @@
 ---
 /**
- * Webs que hicimos (funnel, sección «Ya confiaron en nosotros»): cada caso es
- * su captura real de escritorio en un marco de navegador, con la de móvil
- * encima. Las capturas salen de las webs desplegadas (30-oct-2026) con
- * `npm run captura`; se recortan al primer pantallazo (1440×900 y 390×844).
+ * Webs que hicimos (funnel, sección «Ya confiaron en nosotros»): cada web
+ * vive en un monitor (pantalla con bisel, cuello y pie) con su versión de
+ * iPhone delante, y las dos se recorren solas, lento, como si alguien
+ * estuviera navegándolas. Solo se animan mientras están a la vista y nunca
+ * con «reducir movimiento».
  *
- * Solo se dice qué construimos y para qué rubro: nada de resultados ni
- * cifras (CONTENIDO.md, regla 1).
+ * Capturas reales de las webs desplegadas (30-oct-2026, `npm run captura`):
+ * escritorio a 1440 px recortado a 2700 px de alto (≈3 pantallas) y móvil a
+ * 390 × 2400. Solo se dice qué construimos y para qué rubro: nada de
+ * resultados ni cifras (CONTENIDO.md, regla 1).
  */
 import { Image } from 'astro:assets';
 import type { Idioma } from '../../i18n/funnel';
@@ -31,179 +34,215 @@ const CAPTURAS = [
 ];
 ---
 
-<div class="cw">
-  <p class="cw-rotulo chip-mono">{t.rotulo}</p>
-  <ul class="cw-lista">
-    {t.items.map((caso, i) => (
-      <li class="cw-caso">
-        <div class="cw-dispositivos">
-          <figure class="cw-navegador">
-            <div class="cw-barra" aria-hidden="true">
-              <span class="cw-luces"><i></i><i></i><i></i></span>
-              <span class="cw-direccion">{caso.nombre}</span>
+<ul class="cw" data-casos>
+  {t.items.map((caso, i) => (
+    <li class="cw-caso" style={`--desfase: ${-i * 5}s`}>
+      <div class="cw-escena">
+        <div class="cw-monitor">
+          <div class="cw-pantalla">
+            <div class="cw-vista cw-vista-escritorio">
+              <Image
+                class="cw-recorre"
+                src={CAPTURAS[i].escritorio}
+                alt={t.altEscritorio(caso.nombre)}
+                widths={[560, 840, 1200]}
+                sizes="(min-width: 64rem) 22rem, (min-width: 48rem) 30vw, 80vw"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
+          </div>
+          <div class="cw-cuello" aria-hidden="true"></div>
+          <div class="cw-pie" aria-hidden="true"></div>
+        </div>
+        <div class="cw-iphone">
+          <span class="cw-isla" aria-hidden="true"></span>
+          <div class="cw-vista cw-vista-movil">
             <Image
-              class="cw-captura"
-              src={CAPTURAS[i].escritorio}
-              alt={t.altEscritorio(caso.nombre)}
-              widths={[480, 720, 960]}
-              sizes="(min-width: 64rem) 30vw, (min-width: 48rem) 45vw, 92vw"
-              loading="lazy"
-              decoding="async"
-            />
-          </figure>
-          <figure class="cw-movil">
-            <Image
-              class="cw-captura"
+              class="cw-recorre"
               src={CAPTURAS[i].movil}
               alt={t.altMovil(caso.nombre)}
-              widths={[160, 240]}
-              sizes="8rem"
+              widths={[180, 270]}
+              sizes="7rem"
               loading="lazy"
               decoding="async"
             />
-          </figure>
+          </div>
         </div>
-        <div class="cw-texto">
-          <p class="cw-nombre">{caso.nombre}</p>
-          <p class="cw-rubro">{caso.rubro}</p>
-          <p class="cw-hizo">{caso.hizo}</p>
-        </div>
-      </li>
-    ))}
-  </ul>
-</div>
+      </div>
+      <div class="cw-texto">
+        <p class="cw-nombre">{caso.nombre}</p>
+        <p class="cw-rubro">{caso.rubro}</p>
+        <p class="cw-hizo">{caso.hizo}</p>
+      </div>
+    </li>
+  ))}
+</ul>
+
+<script>
+  // Solo se recorren las webs que están en pantalla.
+  const casos = document.querySelectorAll<HTMLElement>('[data-casos] .cw-caso');
+  const mirador = new IntersectionObserver(
+    (entradas) => entradas.forEach((e) => e.target.classList.toggle('cw-en-vista', e.isIntersecting)),
+    { rootMargin: '0px 0px -10% 0px' },
+  );
+  casos.forEach((c) => mirador.observe(c));
+</script>
 
 <style>
   .cw {
-    margin-top: 2rem;
+    display: grid;
+    gap: 3.5rem 2rem;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    list-style: none;
     text-align: left;
   }
 
-  .cw-rotulo {
-    margin-bottom: 1.25rem;
-  }
+  /* ---------- escena: monitor + iPhone delante ---------- */
 
-  .cw-lista {
-    display: grid;
-    gap: 2.75rem 1.5rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .cw-dispositivos {
+  .cw-escena {
     position: relative;
-    padding: 0 0 1.75rem;
+    padding-right: 9%;
   }
 
-  .cw-navegador {
-    margin: 0 2.25rem 0 0;
-    overflow: hidden;
-    border: 1px solid rgb(255 255 255 / 0.1);
-    border-radius: 0.875rem;
-    background-color: var(--color-surface);
-    box-shadow:
-      0 2px 4px rgb(0 0 0 / 0.4),
-      0 24px 60px -24px rgb(0 0 0 / 0.7);
-  }
-
-  .cw-barra {
+  .cw-monitor {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
-    height: 1.875rem;
-    padding: 0 0.75rem;
-    border-bottom: 1px solid rgb(255 255 255 / 0.08);
-    background-color: rgb(255 255 255 / 0.04);
   }
 
-  .cw-luces {
-    display: flex;
-    gap: 0.3rem;
+  .cw-pantalla {
+    width: 100%;
+    padding: 2.2%;
+    border-radius: 0.875rem;
+    background: linear-gradient(180deg, #1d1e22 0%, #0c0d10 100%);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.09),
+      0 1px 0 rgb(255 255 255 / 0.06),
+      0 30px 60px -28px rgb(0 0 0 / 0.85);
   }
 
-  .cw-luces i {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 999px;
-    background-color: rgb(255 255 255 / 0.18);
-  }
-
-  .cw-direccion {
-    flex: 1;
+  .cw-vista {
+    position: relative;
     overflow: hidden;
-    padding: 0.15rem 0.6rem;
-    border-radius: 999px;
-    background-color: rgb(255 255 255 / 0.06);
-    color: var(--color-texto-2);
-    font-size: 0.6875rem;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    background: #000;
   }
 
-  .cw-captura {
+  .cw-vista-escritorio {
+    aspect-ratio: 16 / 10;
+    border-radius: 0.3rem;
+    /* el recorrido: la imagen mide 1.875 veces el ancho; la vista, 0.625 */
+    --fin: -66.67%;
+  }
+
+  .cw-cuello {
+    width: 18%;
+    height: 1.35rem;
+    background: linear-gradient(90deg, #8d9097 0%, #d8dade 45%, #a4a7ad 100%);
+    clip-path: polygon(14% 0, 86% 0, 100% 100%, 0 100%);
+  }
+
+  .cw-pie {
+    width: 38%;
+    height: 0.4rem;
+    border-radius: 0 0 0.4rem 0.4rem;
+    background: linear-gradient(180deg, #c9cbd0 0%, #8a8d93 100%);
+    box-shadow: 0 10px 18px -6px rgb(0 0 0 / 0.7);
+  }
+
+  .cw-iphone {
+    position: absolute;
+    right: 0;
+    bottom: 0.4rem;
+    width: 24%;
+    padding: 2.4%;
+    border-radius: 1.15rem;
+    background: #141518;
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.14),
+      inset 0 0 0 3px #26272b,
+      0 22px 40px -14px rgb(0 0 0 / 0.9);
+  }
+
+  .cw-isla {
+    position: absolute;
+    z-index: 2;
+    top: 4.5%;
+    left: 50%;
+    width: 30%;
+    height: 3.2%;
+    border-radius: 999px;
+    background: #000;
+    transform: translateX(-50%);
+  }
+
+  .cw-vista-movil {
+    aspect-ratio: 390 / 844;
+    border-radius: 0.85rem;
+    /* 2400/390 = 6.15 anchos de imagen; la vista, 2.16 */
+    --fin: -64.8%;
+  }
+
+  .cw-vista :global(.cw-recorre) {
     display: block;
     width: 100%;
     height: auto;
+    animation: cw-recorrer 18s ease-in-out var(--desfase, 0s) infinite alternate;
+    animation-play-state: paused;
+    will-change: transform;
   }
 
-  .cw-navegador .cw-captura {
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    object-position: top;
+  .cw-en-vista .cw-vista :global(.cw-recorre) {
+    animation-play-state: running;
   }
 
-  .cw-movil {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 26%;
-    max-width: 8rem;
-    margin: 0;
-    overflow: hidden;
-    border: 0.25rem solid #0b0b0d;
-    border-radius: 1rem;
-    background-color: #0b0b0d;
-    box-shadow:
-      0 0 0 1px rgb(255 255 255 / 0.12),
-      0 18px 40px -12px rgb(0 0 0 / 0.75);
+  @keyframes cw-recorrer {
+    0%,
+    14% {
+      transform: translateY(0);
+    }
+    86%,
+    100% {
+      transform: translateY(var(--fin));
+    }
   }
 
-  .cw-movil .cw-captura {
-    aspect-ratio: 390 / 760;
-    object-fit: cover;
-    object-position: top;
-    border-radius: 0.75rem;
+  @media (prefers-reduced-motion: reduce) {
+    .cw-vista :global(.cw-recorre) {
+      animation: none;
+    }
   }
+
+  /* ---------- texto ---------- */
 
   .cw-texto {
-    margin-top: 0.75rem;
+    margin-top: 1.25rem;
+    padding-right: 9%;
   }
 
   .cw-nombre {
-    font-weight: 700;
-    font-size: 1.0625rem;
     color: var(--color-texto);
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 
   .cw-rubro {
     margin-top: 0.125rem;
-    color: var(--color-brasa, #ff6b35);
-    font-size: 0.8125rem;
-    font-weight: 600;
+    color: var(--color-texto-3);
+    font-size: 0.875rem;
   }
 
   .cw-hizo {
-    margin-top: 0.375rem;
+    margin-top: 0.625rem;
     color: var(--color-texto-2);
     font-size: 0.9375rem;
-    line-height: 1.5;
+    line-height: 1.55;
   }
 
   @media (min-width: 48rem) {
-    .cw-lista {
+    .cw {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
