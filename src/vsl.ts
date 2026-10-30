@@ -20,12 +20,12 @@
  * "Video en grabación". Esa versión no se publica.
  */
 export const VIDEO_VSL = {
-  /** Ruta dentro de public/, por ejemplo '/video/diagnostico.mp4'. */
-  src: '',
+  /** Ruta dentro de public/, por ejemplo '/video/diagnostico.mp4'. Video grabado: BIENVENIDA (v9, 30-oct-2026). */
+  src: '/videos/bienvenida.mp4',
   /** Imagen fija del primer cuadro, dentro de public/. Opcional. */
-  poster: '',
+  poster: '/videos/bienvenida.jpg',
   /** Duración que se muestra junto al botón de reproducir, por ejemplo '6 min'. */
-  duracion: '',
+  duracion: '1:33 min',
 } as const;
 
 export const PARA_QUIEN = {

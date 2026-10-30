@@ -14,6 +14,8 @@ referencias/node_modules/
 
 # Grabaciones sueltas: no van al historial del repo.
 *.mp4
+# Excepción: los videos que el sitio sirve (funnel, ver src/vsl.ts y src/videos.ts), ya comprimidos para web.
+!public/videos/*.mp4
 
 # Referencias visuales sueltas para una tarea puntual: material de trabajo, no del sitio.
 design-refs/
