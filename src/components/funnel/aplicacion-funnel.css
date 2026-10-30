@@ -632,3 +632,65 @@
   font-size: 0.8125rem;
   line-height: 1.5;
 }
+
+/* Con turnos cortos un día puede traer muchas horas: la lista se desplaza y el botón queda a la vista. */
+.af-horas {
+  max-height: 17rem;
+  overflow-y: auto;
+}
+
+/* Selector ES/EN: solo en la pantalla de contacto (cambiar a mitad perdería las respuestas). */
+.af-idioma {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid rgb(84 124 255 / 0.28);
+  border-radius: 999px;
+  color: var(--color-texto-2);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.af-idioma:hover,
+.af-idioma:focus-visible {
+  border-color: var(--color-brasa);
+  color: var(--color-texto);
+}
+
+/* Sugerencia de idioma por país de la IP. */
+.af-sugerencia {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid rgb(84 124 255 / 0.28);
+  border-radius: 0.75rem;
+  font-size: 0.9375rem;
+}
+
+.af-sugerencia a {
+  color: var(--color-texto);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.af-sugerencia-cerrar {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  background: transparent;
+  color: var(--color-texto-2);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.af-video-real {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}

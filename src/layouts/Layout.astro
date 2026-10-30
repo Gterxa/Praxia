@@ -10,6 +10,7 @@ import PieFunnel from '../components/funnel/PieFunnel.astro';
 import { SITE, EMAIL, WHATSAPP, CONTEXTO } from '../consts';
 import '../styles/global.css';
 import { ruta, sinBase } from '../rutas';
+import { LOCALE, TEXTOS, type Idioma } from '../i18n/funnel';
 
 interface Props {
   titulo: string;
@@ -38,6 +39,8 @@ interface Props {
    * aplicación, que traen su propio logo, como el lienzo de referencia.
    */
   sinCabecera?: boolean;
+  /** Idioma de la página. Solo el funnel tiene versión en inglés (/en/funnel). */
+  idioma?: Idioma;
 }
 
 const {
@@ -48,6 +51,7 @@ const {
   tipografia = 'a',
   funnel = false,
   sinCabecera = false,
+  idioma = 'es',
 } = Astro.props;
 
 const tituloCompleto = titulo.includes(SITE.nombre)
@@ -92,7 +96,7 @@ const datosEstructurados = {
       '@id': `${SITE.url}/#website`,
       name: SITE.nombre,
       url: SITE.url,
-      inLanguage: 'es-PE',
+      inLanguage: LOCALE[idioma],
       publisher: { '@id': `${SITE.url}/#praxia` },
     },
   ],
@@ -100,7 +104,7 @@ const datosEstructurados = {
 ---
 
 <!doctype html>
-<html lang="es-PE" data-tipo={tipografia}>
+<html lang={LOCALE[idioma]} data-tipo={tipografia}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -136,7 +140,7 @@ const datosEstructurados = {
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.nombre} />
-    <meta property="og:locale" content="es_PE" />
+    <meta property="og:locale" content={LOCALE[idioma].replace('-', '_')} />
     <meta property="og:title" content={tituloCompleto} />
     <meta property="og:description" content={descripcion} />
     <meta property="og:url" content={canonical} />
@@ -238,7 +242,7 @@ const datosEstructurados = {
     </div>
 
     <FondoOrbes />
-    <a class="skip-link" href="#contenido">Ir al contenido</a>
+    <a class="skip-link" href="#contenido">{TEXTOS[idioma].pie.saltar}</a>
     {funnel ? !sinCabecera && <CabeceraFunnel /> : <Header />}
     <main id="contenido" class="relative z-1">
       <slot />
@@ -251,7 +255,7 @@ const datosEstructurados = {
     */}
     {
       funnel ? (
-        <PieFunnel />
+        <PieFunnel idioma={idioma} />
       ) : (
         <>
           <Footer />

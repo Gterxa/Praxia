@@ -21,11 +21,13 @@
  */
 export const VIDEO_VSL = {
   /** Ruta dentro de public/, por ejemplo '/video/diagnostico.mp4'. Video grabado: BIENVENIDA (v9, 30-oct-2026). */
-  src: '/videos/bienvenida.mp4',
+  src: '/videos/bienvenida.mp4' as string,
   /** Imagen fija del primer cuadro, dentro de public/. Opcional. */
   poster: '/videos/bienvenida.jpg',
   /** Duración que se muestra junto al botón de reproducir, por ejemplo '6 min'. */
   duracion: '1:33 min',
+  /** Subtítulos WebVTT por idioma, dentro de public/ (ver src/videos.ts). Vacío = sin pista. Video grabado: BIENVENIDA. */
+  subtitulos: { es: '/videos/bienvenida.es.vtt', en: '' },
 } as const;
 
 export const PARA_QUIEN = {

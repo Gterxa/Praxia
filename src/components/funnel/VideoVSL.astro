@@ -6,11 +6,23 @@
  *
  * El archivo va servido desde el mismo dominio: la CSP prohíbe iframes
  * (frame-src 'none'), así que un embed de YouTube o Vimeo no cargaría.
+ * Lleva una pista de subtítulos por idioma (VIDEO_VSL.subtitulos) y activa
+ * la del idioma de la página.
  */
 import { VIDEO_VSL } from '../../vsl';
 import { ruta } from '../../rutas';
+import { TEXTOS, type Idioma } from '../../i18n/funnel';
+import { NOMBRE_PISTA } from '../../videos';
+
+interface Props {
+  idioma?: Idioma;
+}
+const { idioma = 'es' } = Astro.props;
+const t = TEXTOS[idioma].video;
 
 const hayVideo = VIDEO_VSL.src !== '';
+const subtitulos: Partial<Record<Idioma, string>> = VIDEO_VSL.subtitulos;
+const pistas = (Object.entries(subtitulos) as [Idioma, string | undefined][]).filter((p): p is [Idioma, string] => !!p[1]);
 ---
 
 <figure class="vsl-marco" data-vsl>
@@ -24,7 +36,11 @@ const hayVideo = VIDEO_VSL.src !== '';
         playsinline
         controls
         data-vsl-video
-      />
+      >
+        {pistas.map(([lang, src]) => (
+          <track kind="subtitles" srclang={lang} label={NOMBRE_PISTA[lang]} src={ruta(src)} default={lang === idioma} />
+        ))}
+      </video>
     ) : (
       <div class="vsl-vacio puntos" aria-hidden="true" />
     )
@@ -35,17 +51,17 @@ const hayVideo = VIDEO_VSL.src !== '';
     class="vsl-play"
     data-vsl-play
     disabled={!hayVideo}
-    aria-label={hayVideo ? 'Reproducir el video' : 'El video todavía no está disponible'}
+    aria-label={hayVideo ? t.reproducir : t.noDisponible}
   >
     <span class="vsl-play-disco">
       <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor" />
       </svg>
     </span>
-    {hayVideo && VIDEO_VSL.duracion && <span class="vsl-play-texto">Ver el video ({VIDEO_VSL.duracion})</span>}
+    {hayVideo && VIDEO_VSL.duracion && <span class="vsl-play-texto">{t.ver(VIDEO_VSL.duracion)}</span>}
   </button>
 
-  {!hayVideo && <span class="chip-mono vsl-estado">Video en grabación</span>}
+  {!hayVideo && <span class="chip-mono vsl-estado">{t.enGrabacion}</span>}
 
   {/* La línea de progreso: el único adorno del marco. Estática, no es un control. */}
   <span class="vsl-linea" aria-hidden="true"><span class="vsl-linea-relleno"></span></span>
