@@ -36,7 +36,7 @@ import { EN_BORRADOR, LOCALE, TEXTOS, preguntaEn, rutaFunnel, type Idioma, type 
 import { elegirIdioma, hrefEnIdioma, idiomaSugerido } from '../../lib/idioma';
 import { guardarOrigen, leerOrigen } from '../../lib/origen';
 import VideoFunnel from './VideoFunnel';
-import { VIDEO_APROBADOS, VIDEO_EVALUACION } from '../../videos';
+import { VIDEO_APROBADOS, VIDEO_CONFIRMADO, VIDEO_EVALUACION, VIDEO_LLAMADA } from '../../videos';
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 const API_FUNNEL = `${BASE}/api/funnel`;
@@ -504,7 +504,7 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
               {t.resultado.tuCaso(primerNombre)}
               <span className="af-calido">{t.resultado.encaja}</span>
             </h1>
-            <VideoFunnel video={VIDEO_APROBADOS} idioma={idioma} enGrabacion={tx.video.aprobados} sinSoporte={tx.video.sinSoporte} />
+            {VIDEO_APROBADOS.src && <VideoFunnel video={VIDEO_APROBADOS} idioma={idioma} enGrabacion={tx.video.aprobados} sinSoporte={tx.video.sinSoporte} />}
             {enHorario() ? (
               <div className="af-panel">
                 <p className="af-panel-titulo">{t.resultado.llamarteTitulo}</p>
@@ -530,6 +530,7 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
             <h1 className="af-titulo">
               {t.llamada.h1[0]}<span className="af-calido">{t.llamada.h1[1]}</span>
             </h1>
+            <VideoFunnel video={VIDEO_LLAMADA} idioma={idioma} enGrabacion={tx.video.aprobados} sinSoporte={tx.video.sinSoporte} />
             <p className="af-ayuda">
               {t.llamada.ayuda[0]}<b>{t.llamada.ayuda[1]}</b>{t.llamada.ayuda[2]}
             </p>
@@ -604,6 +605,7 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
               {t.confirmado.h1(diaLargo(turno, loc), horaDe(turno, loc))[0]}
               <span className="af-calido">{t.confirmado.h1(diaLargo(turno, loc), horaDe(turno, loc))[1]}</span>
             </h1>
+            <VideoFunnel video={VIDEO_CONFIRMADO} idioma={idioma} enGrabacion={tx.video.aprobados} sinSoporte={tx.video.sinSoporte} />
             <p className="af-ayuda">
               {t.confirmado.ayuda[0]}<b>{t.confirmado.ayuda[1]}</b>{t.confirmado.ayuda[2]}
             </p>

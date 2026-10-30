@@ -33,8 +33,9 @@ export interface VideoFunnel {
  * Ojo: se grabaron DOS videos para A/B, no uno, y cada uno corresponde a la
  * elección que se hace en esta pantalla: VIDEO_LLAMADA («te llamamos por
  * WhatsApp en las próximas dos horas») y VIDEO_CONFIRMADO («ya tienes tu
- * reunión agendada por Google Meet»). Falta decidir si se mueven a las fases
- * 'llamada' y 'confirmado' de AplicacionFunnel o si aquí va otro video.
+ * reunión agendada por Google Meet»). Decidido el 30-oct-2026: van en las fases
+ * 'llamada' y 'confirmado' de AplicacionFunnel. Aquí no hay video propio: con
+ * `src` vacío la pantalla no muestra ningún cuadro.
  */
 export const VIDEO_APROBADOS: VideoFunnel = {
   src: '',
@@ -43,19 +44,25 @@ export const VIDEO_APROBADOS: VideoFunnel = {
 
 /** Fase 'llamada': eligió que lo llamen. Video grabado: CLIENTE A. */
 export const VIDEO_LLAMADA: VideoFunnel = {
-  src: '',
+  src: '/videos/cliente-a.mp4',
+  poster: '/videos/cliente-a.jpg',
+  duracion: '39 s',
   subtitulos: { es: '/videos/cliente-a.es.vtt', en: '' },
 };
 
 /** Fase 'confirmado': reservó su reunión en la agenda. Video grabado: CLIENTE B. */
 export const VIDEO_CONFIRMADO: VideoFunnel = {
-  src: '',
+  src: '/videos/cliente-b.mp4',
+  poster: '/videos/cliente-b.jpg',
+  duracion: '43 s',
   subtitulos: { es: '/videos/cliente-b.es.vtt', en: '' },
 };
 
 /** Pantalla de «perfil en evaluación» (C). Video grabado: CLIENTE C. */
 export const VIDEO_EVALUACION: VideoFunnel = {
-  src: '',
+  src: '/videos/cliente-c.mp4',
+  poster: '/videos/cliente-c.jpg',
+  duracion: '25 s',
   subtitulos: { es: '/videos/cliente-c.es.vtt', en: '' },
 };
 
