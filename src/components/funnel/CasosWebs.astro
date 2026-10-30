@@ -1,0 +1,210 @@
+---
+/**
+ * Webs que hicimos (funnel, sección «Ya confiaron en nosotros»): cada caso es
+ * su captura real de escritorio en un marco de navegador, con la de móvil
+ * encima. Las capturas salen de las webs desplegadas (30-oct-2026) con
+ * `npm run captura`; se recortan al primer pantallazo (1440×900 y 390×844).
+ *
+ * Solo se dice qué construimos y para qué rubro: nada de resultados ni
+ * cifras (CONTENIDO.md, regla 1).
+ */
+import { Image } from 'astro:assets';
+import type { Idioma } from '../../i18n/funnel';
+import { TEXTOS } from '../../i18n/funnel';
+import kuadranteEscritorio from '../../assets/casos/kuadrante-escritorio.jpg';
+import kuadranteMovil from '../../assets/casos/kuadrante-movil.jpg';
+import xsEscritorio from '../../assets/casos/xs-escritorio.jpg';
+import xsMovil from '../../assets/casos/xs-movil.jpg';
+import delowsEscritorio from '../../assets/casos/delows-escritorio.jpg';
+import delowsMovil from '../../assets/casos/delows-movil.jpg';
+
+interface Props {
+  idioma: Idioma;
+}
+const { idioma } = Astro.props;
+const t = TEXTOS[idioma].landing.casos;
+
+const CAPTURAS = [
+  { escritorio: kuadranteEscritorio, movil: kuadranteMovil },
+  { escritorio: xsEscritorio, movil: xsMovil },
+  { escritorio: delowsEscritorio, movil: delowsMovil },
+];
+---
+
+<div class="cw">
+  <p class="cw-rotulo chip-mono">{t.rotulo}</p>
+  <ul class="cw-lista">
+    {t.items.map((caso, i) => (
+      <li class="cw-caso">
+        <div class="cw-dispositivos">
+          <figure class="cw-navegador">
+            <div class="cw-barra" aria-hidden="true">
+              <span class="cw-luces"><i></i><i></i><i></i></span>
+              <span class="cw-direccion">{caso.nombre}</span>
+            </div>
+            <Image
+              class="cw-captura"
+              src={CAPTURAS[i].escritorio}
+              alt={t.altEscritorio(caso.nombre)}
+              widths={[480, 720, 960]}
+              sizes="(min-width: 64rem) 30vw, (min-width: 48rem) 45vw, 92vw"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <figure class="cw-movil">
+            <Image
+              class="cw-captura"
+              src={CAPTURAS[i].movil}
+              alt={t.altMovil(caso.nombre)}
+              widths={[160, 240]}
+              sizes="8rem"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        </div>
+        <div class="cw-texto">
+          <p class="cw-nombre">{caso.nombre}</p>
+          <p class="cw-rubro">{caso.rubro}</p>
+          <p class="cw-hizo">{caso.hizo}</p>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .cw {
+    margin-top: 2rem;
+    text-align: left;
+  }
+
+  .cw-rotulo {
+    margin-bottom: 1.25rem;
+  }
+
+  .cw-lista {
+    display: grid;
+    gap: 2.75rem 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cw-dispositivos {
+    position: relative;
+    padding: 0 0 1.75rem;
+  }
+
+  .cw-navegador {
+    margin: 0 2.25rem 0 0;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    border-radius: 0.875rem;
+    background-color: var(--color-surface);
+    box-shadow:
+      0 2px 4px rgb(0 0 0 / 0.4),
+      0 24px 60px -24px rgb(0 0 0 / 0.7);
+  }
+
+  .cw-barra {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    height: 1.875rem;
+    padding: 0 0.75rem;
+    border-bottom: 1px solid rgb(255 255 255 / 0.08);
+    background-color: rgb(255 255 255 / 0.04);
+  }
+
+  .cw-luces {
+    display: flex;
+    gap: 0.3rem;
+  }
+
+  .cw-luces i {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background-color: rgb(255 255 255 / 0.18);
+  }
+
+  .cw-direccion {
+    flex: 1;
+    overflow: hidden;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    background-color: rgb(255 255 255 / 0.06);
+    color: var(--color-texto-2);
+    font-size: 0.6875rem;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cw-captura {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .cw-navegador .cw-captura {
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .cw-movil {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 26%;
+    max-width: 8rem;
+    margin: 0;
+    overflow: hidden;
+    border: 0.25rem solid #0b0b0d;
+    border-radius: 1rem;
+    background-color: #0b0b0d;
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.12),
+      0 18px 40px -12px rgb(0 0 0 / 0.75);
+  }
+
+  .cw-movil .cw-captura {
+    aspect-ratio: 390 / 760;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 0.75rem;
+  }
+
+  .cw-texto {
+    margin-top: 0.75rem;
+  }
+
+  .cw-nombre {
+    font-weight: 700;
+    font-size: 1.0625rem;
+    color: var(--color-texto);
+  }
+
+  .cw-rubro {
+    margin-top: 0.125rem;
+    color: var(--color-brasa, #ff6b35);
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+
+  .cw-hizo {
+    margin-top: 0.375rem;
+    color: var(--color-texto-2);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  @media (min-width: 48rem) {
+    .cw-lista {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

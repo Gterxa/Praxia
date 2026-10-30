@@ -57,12 +57,17 @@ const ES = {
     contador: 'La agenda de esta semana cierra en',
     cupos: (n: number) => ['Quedan ', `${n} cupos`, ' de diagnóstico esta semana'] as Tres,
     confiaron: ['Ya confiaron en ', 'nosotros'] as Dos,
-    pendientes: [
-      'captura real: mensaje de un cliente, con permiso',
-      'captura real: WhatsApp de un cliente respondiendo solo de madrugada',
-      'captura real: reporte o tablero de un cliente, datos ocultos',
-      'video corto: un cliente cuenta qué cambió, con permiso',
-    ],
+    // Webs que hicimos: solo rubro y qué construimos, sin resultados (CONTENIDO.md, regla 1).
+    casos: {
+      rotulo: 'Webs que hicimos',
+      items: [
+        { nombre: 'Kuadrante Asset', rubro: 'Fondo de inversión inmobiliaria', hizo: 'Landing para captar inversionistas, con lista privada y contacto con un asesor.' },
+        { nombre: 'XS Peluquería', rubro: 'Salón de belleza · Nueva York', hizo: 'Web del salón: servicios, precios, equipo y reserva desde el celular.' },
+        { nombre: 'De-Lows', rubro: 'Heladería', hizo: 'Tienda online con carrito y pedidos por WhatsApp.' },
+      ],
+      altEscritorio: (n: string) => `Web de ${n} en escritorio`,
+      altMovil: (n: string) => `Web de ${n} en el celular`,
+    },
     teLlevas: ['Todo lo que te llevas ', 'en la sesión'] as Dos,
     bajada: 'Aunque no trabajes con nosotros.',
     items: [
@@ -229,12 +234,16 @@ const EN: Textos = {
     contador: "This week's calendar closes in",
     cupos: (n: number) => ['', `${n} diagnosis spots`, ' left this week'] as Tres,
     confiaron: ['They already ', 'trusted us'],
-    pendientes: [
-      'real screenshot: a message from a client, with permission',
-      "real screenshot: a client's WhatsApp replying on its own at night",
-      "real screenshot: a client's report or dashboard, data hidden",
-      'short video: a client tells what changed, with permission',
-    ],
+    casos: {
+      rotulo: 'Websites we built',
+      items: [
+        { nombre: 'Kuadrante Asset', rubro: 'Real estate investment fund', hizo: 'Landing page to attract investors, with a private list and contact with an advisor.' },
+        { nombre: 'XS Peluquería', rubro: 'Hair salon · New York', hizo: "The salon's website: services, prices, team and booking from the phone." },
+        { nombre: 'De-Lows', rubro: 'Ice cream shop', hizo: 'Online store with a cart and WhatsApp orders.' },
+      ],
+      altEscritorio: (n: string) => `${n} website on desktop`,
+      altMovil: (n: string) => `${n} website on mobile`,
+    },
     teLlevas: ['Everything you take away ', 'from the session'],
     bajada: "Even if you don't work with us.",
     items: [

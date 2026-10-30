@@ -15,7 +15,7 @@
 import Layout from '../../layouts/Layout.astro';
 import VideoVSL from './VideoVSL.astro';
 import LogosMarqueeCosmoq from '../LogosMarqueeCosmoq.astro';
-import Pendiente from '../Pendiente.astro';
+import CasosWebs from './CasosWebs.astro';
 import { CONTEXTO } from '../../consts';
 import { CUPOS_SEMANA } from '../../funnel';
 import { ruta } from '../../rutas';
@@ -90,12 +90,7 @@ const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
       </div>
       <div class="fl-logos"><LogosMarqueeCosmoq /></div>
       <div class="fl-contenedor fl-ancho">
-        <div class="fl-capturas">
-          <div class="fl-captura"><Pendiente que={t.pendientes[0]} /></div>
-          <div class="fl-captura"><Pendiente que={t.pendientes[1]} /></div>
-          <div class="fl-captura"><Pendiente que={t.pendientes[2]} /></div>
-          <div class="fl-captura fl-captura-alta"><Pendiente que={t.pendientes[3]} /></div>
-        </div>
+        <CasosWebs idioma={idioma} />
         <a class="boton boton-primario fl-cta" href={aplicar}>{t.cta}</a>
       </div>
     </section>
@@ -484,23 +479,7 @@ const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
     margin-top: 1.75rem;
   }
 
-  .fl-capturas {
-    display: grid;
-    gap: 1rem;
-    margin-top: 2rem;
-    text-align: left;
-  }
 
-  .fl-captura {
-    display: grid;
-    place-items: center;
-    min-height: 14rem;
-    padding: 1.5rem;
-    border: 1px solid rgb(84 124 255 / 0.22);
-    border-radius: var(--radius-tarjeta);
-    background: rgb(6 27 102 / 0.3);
-    text-align: center;
-  }
 
   .fl-lista {
     display: grid;
@@ -712,13 +691,7 @@ const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
   }
 
   @media (min-width: 48rem) {
-    .fl-capturas {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
 
-    .fl-captura-alta {
-      min-height: 20rem;
-    }
 
     .fl-caminos {
       grid-template-columns: repeat(2, minmax(0, 1fr));
