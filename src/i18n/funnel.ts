@@ -42,6 +42,7 @@ type Tres = readonly [string, string, string];
 const ES = {
   nombreIdioma: 'Español',
   otroIdioma: 'English',
+  idiomaAria: 'Idioma de la página y de los subtítulos',
   sugerencia: 'This page is also in English',
   cerrar: 'Cerrar',
 
@@ -219,6 +220,7 @@ export type Textos = typeof ES;
 const EN: Textos = {
   nombreIdioma: 'English',
   otroIdioma: 'Español',
+  idiomaAria: 'Page and subtitle language',
   sugerencia: 'Esta página también está en español',
   cerrar: 'Close',
 
