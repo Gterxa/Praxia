@@ -47,7 +47,7 @@ export const VIDEO_LLAMADA: VideoFunnel = {
   src: '/videos/cliente-a.mp4',
   poster: '/videos/cliente-a.jpg',
   duracion: '39 s',
-  subtitulos: { es: '/videos/cliente-a.es.vtt', en: '' },
+  subtitulos: { es: '/videos/cliente-a.es.vtt', en: '/videos/cliente-a.en.vtt' },
 };
 
 /** Fase 'confirmado': reservó su reunión en la agenda. Video grabado: CLIENTE B. */
@@ -55,7 +55,7 @@ export const VIDEO_CONFIRMADO: VideoFunnel = {
   src: '/videos/cliente-b.mp4',
   poster: '/videos/cliente-b.jpg',
   duracion: '43 s',
-  subtitulos: { es: '/videos/cliente-b.es.vtt', en: '' },
+  subtitulos: { es: '/videos/cliente-b.es.vtt', en: '/videos/cliente-b.en.vtt' },
 };
 
 /** Pantalla de «perfil en evaluación» (C). Video grabado: CLIENTE C. */
@@ -63,7 +63,7 @@ export const VIDEO_EVALUACION: VideoFunnel = {
   src: '/videos/cliente-c.mp4',
   poster: '/videos/cliente-c.jpg',
   duracion: '25 s',
-  subtitulos: { es: '/videos/cliente-c.es.vtt', en: '' },
+  subtitulos: { es: '/videos/cliente-c.es.vtt', en: '/videos/cliente-c.en.vtt' },
 };
 
 /** Etiqueta de cada pista en el menú de subtítulos del reproductor. */
