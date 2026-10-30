@@ -60,7 +60,6 @@ const ES = {
     confiaron: ['Ya confiaron en ', 'nosotros'] as Dos,
     // Webs que hicimos: solo rubro y qué construimos, sin resultados (CONTENIDO.md, regla 1).
     casos: {
-      rotulo: 'Webs que hicimos',
       items: [
         { nombre: 'Kuadrante Asset', rubro: 'Fondo de inversión inmobiliaria', hizo: 'Landing para captar inversionistas, con lista privada y contacto con un asesor.' },
         { nombre: 'XS Peluquería', rubro: 'Salón de belleza · Nueva York', hizo: 'Web del salón: servicios, precios, equipo y reserva desde el celular.' },
@@ -237,7 +236,6 @@ const EN: Textos = {
     cupos: (n: number) => ['', `${n} diagnosis spots`, ' left this week'] as Tres,
     confiaron: ['They already ', 'trusted us'],
     casos: {
-      rotulo: 'Websites we built',
       items: [
         { nombre: 'Kuadrante Asset', rubro: 'Real estate investment fund', hizo: 'Landing page to attract investors, with a private list and contact with an advisor.' },
         { nombre: 'XS Peluquería', rubro: 'Hair salon · New York', hizo: "The salon's website: services, prices, team and booking from the phone." },
