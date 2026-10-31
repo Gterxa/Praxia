@@ -54,7 +54,7 @@ const pistas = (Object.entries(subtitulos) as [Idioma, string | undefined][]).fi
     aria-label={hayVideo ? t.reproducir : t.noDisponible}
   >
     <span class="vsl-play-disco">
-      <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor" />
       </svg>
     </span>
@@ -113,8 +113,6 @@ const pistas = (Object.entries(subtitulos) as [Idioma, string | undefined][]).fi
     grid-area: 1 / 1;
     width: 3.5rem;
     height: 3.5rem;
-    /* El triángulo pesa a la izquierda: se corre un poco para verse centrado. */
-    padding-left: 0.2rem;
     border-radius: 999px;
     background-color: var(--color-brasa);
     box-shadow:
@@ -130,6 +128,14 @@ const pistas = (Object.entries(subtitulos) as [Idioma, string | undefined][]).fi
       width: 5.5rem;
       height: 5.5rem;
     }
+  }
+
+  /* Crece con el disco. El trazo ya viene corrido a la derecha dentro del
+     viewBox: su centroide cae en el centro, que es donde el ojo lo lee
+     centrado. Nada de padding extra encima, que lo descentra. */
+  .vsl-play-disco svg {
+    width: 44%;
+    height: 44%;
   }
 
   .vsl-play:disabled .vsl-play-disco {
