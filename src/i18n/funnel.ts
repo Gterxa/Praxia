@@ -95,6 +95,14 @@ const ES = {
     barraCupos: (n: number) => `· ${n} cupos`,
     agendar: 'Agendar',
     diagnostico: ' diagnóstico',
+    // El botón queda bloqueado hasta terminar el video (src/scripts/candado-video.ts).
+    candado: {
+      boton: (s: number) => `Termina de ver el video de ${s} segundos para desbloquear tu diagnóstico gratis`,
+      visto: (v: number, s: number) => `Llevas ${v} de ${s} segundos`,
+      listo: 'Listo: tu diagnóstico gratis está desbloqueado',
+      noAdelantar: 'Puedes volver atrás, pero no adelantar el video.',
+      aria: 'Cuánto del video llevas visto',
+    },
   },
 
   video: {
@@ -271,6 +279,13 @@ const EN: Textos = {
     barraCupos: (n: number) => `· ${n} spots`,
     agendar: 'Book',
     diagnostico: ' diagnosis',
+    candado: {
+      boton: (s: number) => `Finish the ${s}-second video to unlock your free diagnosis`,
+      visto: (v: number, s: number) => `${v} of ${s} seconds watched`,
+      listo: 'Done: your free diagnosis is unlocked',
+      noAdelantar: "You can go back, but you can't skip ahead.",
+      aria: 'How much of the video you have watched',
+    },
   },
 
   video: {

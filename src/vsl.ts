@@ -26,6 +26,8 @@ export const VIDEO_VSL = {
   poster: '/videos/bienvenida.jpg',
   /** Duración que se muestra junto al botón de reproducir, por ejemplo '6 min'. */
   duracion: '1:33 min',
+  /** Duración en segundos, redondeada (ffprobe: 93,4 s). La dice el botón bloqueado del funnel. */
+  segundos: 93,
   /** Subtítulos WebVTT por idioma, dentro de public/ (ver src/videos.ts). Vacío = sin pista. Video grabado: BIENVENIDA. */
   subtitulos: { es: '/videos/bienvenida.es.vtt', en: '/videos/bienvenida.en.vtt' },
 } as const;
