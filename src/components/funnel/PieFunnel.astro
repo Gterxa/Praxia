@@ -16,11 +16,11 @@ const anio = new Date().getFullYear();
 ---
 
 <footer class="relative border-t border-linea">
-  <div class="contenedor flex flex-col gap-3 py-8 pb-28 md:flex-row md:items-center md:justify-between lg:pb-8">
+  <div class="contenedor flex flex-col gap-1 py-8 pb-28 md:flex-row md:items-center md:justify-between lg:pb-8">
     <p class="pequeno text-texto-3">© {anio} {SITE.nombre}</p>
     <ul class="flex gap-6">
-      <li><a href={ruta('/privacidad')} class="pequeno text-texto-2 hover:text-brasa hover:underline">{t.privacidad}</a></li>
-      <li><a href={ruta('/legal')} class="pequeno text-texto-2 hover:text-brasa hover:underline">{t.terminos}</a></li>
+      <li><a href={ruta('/privacidad')} class="pequeno inline-flex min-h-11 min-w-11 items-center justify-center text-texto-2 hover:text-brasa hover:underline">{t.privacidad}</a></li>
+      <li><a href={ruta('/legal')} class="pequeno inline-flex min-h-11 min-w-11 items-center justify-center text-texto-2 hover:text-brasa hover:underline">{t.terminos}</a></li>
     </ul>
   </div>
 </footer>

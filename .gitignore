@@ -22,3 +22,6 @@ design-refs/
 
 # Salida del adaptador de Vercel.
 .vercel/
+
+# Salida de la QA móvil del funnel (capturas y reportes de cada corrida).
+qa/movil/salida/
