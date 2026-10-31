@@ -11,6 +11,10 @@
  *
  * Los textos salen de src/i18n/funnel.ts. El costo de la sesión se muestra en
  * soles o dólares según el idioma y, al cargar, según el país de la IP.
+ *
+ * Candado (31-oct-2026): los botones a la aplicación quedan bloqueados hasta
+ * ver el video, con su barra de avance. La lógica está en
+ * src/scripts/candado-video.ts; acá solo el marcado y los estilos.
  */
 import Layout from '../../layouts/Layout.astro';
 import VideoVSL from './VideoVSL.astro';
@@ -20,6 +24,7 @@ import IconoPill from './IconoPill.astro';
 import SelectorIdioma from './SelectorIdioma.astro';
 import { CONTEXTO } from '../../consts';
 import { CUPOS_SEMANA } from '../../funnel';
+import { VIDEO_VSL } from '../../vsl';
 import { ruta } from '../../rutas';
 import { TEXTOS, rutaFunnel, type Idioma } from '../../i18n/funnel';
 
@@ -36,6 +41,7 @@ const PILLS = t.pills;
 const TE_LLEVAS = t.items;
 const DUDAS = t.dudas;
 const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
+const segundos = VIDEO_VSL.segundos;
 
 ---
 
@@ -48,7 +54,7 @@ const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
   funnel
   sinCabecera
 >
-  <div class="fl">
+  <div class="fl" data-funnel data-video="bloqueado" data-idioma={idioma} data-segundos={segundos}>
     <section class="fl-hero">
       <div class="fl-cielo" aria-hidden="true"></div>
       <div class="fl-contenedor">
@@ -71,7 +77,20 @@ const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
           {t.sub[0]}
           <b>{t.sub[1]}</b>
         </p>
-        <a class="boton boton-primario fl-cta" href={aplicar}>{t.cta} <span aria-hidden="true">→</span></a>
+        <a class="boton boton-primario fl-cta fl-cta-principal" href={aplicar} data-cta-aplicar>
+          <span class="fl-cta-libre">{t.cta} <span aria-hidden="true">→</span></span>
+          <span class="fl-cta-cerrado">
+            <svg class="fl-candado" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="11" width="15" height="10" rx="2" /><path d="M8 11V7.5a4 4 0 0 1 8 0V11" /></svg>
+            {t.candado.boton(segundos)}
+          </span>
+        </a>
+        <div class="fl-progreso">
+          <div class="fl-progreso-pista" role="progressbar" aria-label={t.candado.aria} aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-progreso>
+            <span class="fl-progreso-relleno" data-progreso-relleno></span>
+          </div>
+          <p class="fl-progreso-texto" data-progreso-texto aria-live="polite">{t.candado.visto(0, segundos)}</p>
+          <p class="fl-candado-aviso" data-candado-aviso role="status" hidden></p>
+        </div>
         <p class="fl-nota">{t.nota}</p>
         <div class="fl-contador" data-contador>
           <span class="fl-contador-texto">{t.contador}</span>
@@ -93,7 +112,7 @@ const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
       <div class="fl-logos"><LogosMarqueeCosmoq /></div>
       <div class="fl-contenedor fl-ancho">
         <CasosWebs idioma={idioma} />
-        <a class="boton boton-primario fl-cta" href={aplicar}>{t.cta}</a>
+        <a class="boton boton-primario fl-cta" href={aplicar} data-cta-aplicar><svg class="fl-candado fl-candado-chico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="11" width="15" height="10" rx="2" /><path d="M8 11V7.5a4 4 0 0 1 8 0V11" /></svg>{t.cta}</a>
       </div>
     </section>
 
@@ -137,7 +156,7 @@ const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
             <p class="fl-mono fl-brasa">{t.camino} 2</p>
             <h3 class="fl-camino-titulo">{t.automatizar}</h3>
             <p class="fl-camino-texto">{t.automatizarTexto}</p>
-            <a class="boton boton-primario fl-cta fl-cta-camino" href={aplicar}>{t.agendarMiDiagnostico}</a>
+            <a class="boton boton-primario fl-cta fl-cta-camino" href={aplicar} data-cta-aplicar><svg class="fl-candado fl-candado-chico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="11" width="15" height="10" rx="2" /><path d="M8 11V7.5a4 4 0 0 1 8 0V11" /></svg>{t.agendarMiDiagnostico}</a>
           </div>
         </div>
       </div>
@@ -163,7 +182,7 @@ const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
       <span class="fl-barra-texto">{t.barra[0]}<span class="fl-brasa">{t.barra[1]}</span></span>
       <span class="fl-barra-reloj"><span data-d>0d</span> <span data-h>00h</span> <span data-m>00m</span> <span data-s>00s</span></span>
       <span class="fl-barra-cupos">{t.barraCupos(CUPOS_SEMANA)}</span>
-      <a class="boton boton-primario boton-compacto fl-barra-cta" href={aplicar}>{t.agendar}<span class="fl-barra-largo">{t.diagnostico}</span></a>
+      <a class="boton boton-primario boton-compacto fl-barra-cta" href={aplicar} data-cta-aplicar><svg class="fl-candado fl-candado-chico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="11" width="15" height="10" rx="2" /><path d="M8 11V7.5a4 4 0 0 1 8 0V11" /></svg>{t.agendar}<span class="fl-barra-largo">{t.diagnostico}</span></a>
     </div>
   </div>
 </Layout>
@@ -172,9 +191,14 @@ const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
   import { guardarOrigen } from '../../lib/origen';
   import { elegirIdioma, hrefEnIdioma, idiomaSugerido, paisVisitante } from '../../lib/idioma';
   import { monedaDePais, type Idioma } from '../../i18n/funnel';
+  import { montarCandado } from '../../scripts/candado-video';
 
   // UTM del anuncio: se guardan acá porque el clic a /funnel/aplicar no los lleva.
   guardarOrigen();
+
+  // Los botones a la aplicación se abren después de ver el video.
+  const funnel = document.querySelector<HTMLElement>('[data-funnel]');
+  if (funnel) montarCandado(funnel);
 
   // Idioma: el selector lleva los UTM y el cid de la URL, y recuerda la elección.
   const actual: Idioma = document.documentElement.lang.startsWith('en') ? 'en' : 'es';
@@ -384,6 +408,134 @@ const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
     padding: 1.05rem 1.5rem !important;
     text-transform: uppercase;
     letter-spacing: 0.04em;
+  }
+
+  /* ── Candado: bloqueado hasta ver el video ── */
+  .fl-cta-cerrado,
+  .fl-candado {
+    display: none;
+  }
+
+  .fl[data-video='bloqueado'] .fl-cta-libre {
+    display: none;
+  }
+
+  .fl[data-video='bloqueado'] .fl-cta-cerrado {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .fl[data-video='bloqueado'] .fl-candado {
+    display: block;
+  }
+
+  .fl-candado {
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.25;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .fl-candado-chico {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* Bloqueado se ve apagado, no roto: sin el naranja ni el brillo del botón vivo. */
+  .fl[data-video='bloqueado'] [data-cta-aplicar] {
+    background-color: var(--color-surface-2);
+    border-color: var(--color-linea);
+    color: var(--color-texto-2);
+    box-shadow: none;
+    cursor: pointer;
+  }
+
+  .fl[data-video='bloqueado'] .fl-cta-principal {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.35;
+    text-align: left;
+  }
+
+  /* Al abrirse (en esta visita), un solo latido del botón. */
+  .fl[data-recien] .fl-cta-principal {
+    animation: fl-abre 600ms var(--ease-resorte) 1;
+  }
+
+  @keyframes fl-abre {
+    40% {
+      transform: scale(1.04);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fl[data-recien] .fl-cta-principal {
+      animation: none;
+    }
+  }
+
+  .fl-progreso {
+    width: 100%;
+    max-width: 30rem;
+    margin: 0.875rem auto 0;
+  }
+
+  .fl-progreso-pista {
+    height: 0.4rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background-color: var(--color-linea);
+  }
+
+  .fl-progreso-relleno {
+    display: block;
+    height: 100%;
+    background: var(--degradado-calido);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 300ms linear;
+  }
+
+  .fl[data-cargando] .fl-progreso-relleno,
+  .fl[data-cargando] [data-cta-aplicar] {
+    transition: none;
+  }
+
+  .fl-progreso-texto {
+    margin-top: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+    color: var(--color-texto-2);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fl[data-video='libre'] .fl-progreso-texto {
+    color: var(--color-brasa);
+  }
+
+  .fl-candado-aviso {
+    margin-top: 0.375rem;
+    color: var(--color-texto);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .fl-candado-aviso[hidden] {
+    display: none;
+  }
+
+  /* Sin video que ver (en grabación), el candado no aplica. */
+  .fl[data-video='libre'] .fl-progreso-pista:not([aria-valuenow='100']),
+  .fl[data-video='libre'] .fl-progreso-pista:not([aria-valuenow='100']) + .fl-progreso-texto {
+    display: none;
   }
 
   .fl-nota {
