@@ -12,6 +12,15 @@ import { join } from 'node:path';
 
 const carpeta = process.argv[2] ?? 'public/videos';
 
+/**
+ * Sin posición, el navegador pega el subtítulo al borde de abajo del video.
+ * `line:-2` lo pone en la penúltima línea: deja una línea de margen y el
+ * navegador lo sigue subiendo sobre la barra de controles cuando aparece.
+ * (Chrome ignora la variante en porcentaje con alineación, `line:85%,end`.)
+ */
+const POSICION = 'line:-2';
+const conPosicion = (texto) => texto.replace(/^(\d{2}:\d{2}:\d{2}\.\d{3} --> \d{2}:\d{2}:\d{2}\.\d{3})$/gm, `$1 ${POSICION}`);
+
 let archivos;
 try {
   archivos = (await readdir(carpeta)).filter((a) => a.toLowerCase().endsWith('.srt'));
@@ -22,8 +31,9 @@ try {
 
 for (const a of archivos) {
   const srt = (await readFile(join(carpeta, a), 'utf8')).replace(/^﻿/, '').replace(/\r\n?/g, '\n');
-  // Lo único que cambia entre formatos: la cabecera y la coma de los milisegundos.
-  const vtt = `WEBVTT\n\n${srt.replace(/(\d{2}:\d{2}:\d{2}),(\d{3})/g, '$1.$2').trim()}\n`;
+  // Lo que cambia entre formatos: la cabecera, la coma de los milisegundos y
+  // la posición (POSICION), que el .srt no tiene.
+  const vtt = `WEBVTT\n\n${conPosicion(srt.replace(/(\d{2}:\d{2}:\d{2}),(\d{3})/g, '$1.$2').trim())}\n`;
   const destino = a.replace(/\.srt$/i, '.vtt');
   await writeFile(join(carpeta, destino), vtt);
   console.log(`${a} → ${destino}`);
