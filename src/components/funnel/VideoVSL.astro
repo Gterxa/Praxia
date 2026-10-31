@@ -25,7 +25,7 @@ const subtitulos: Partial<Record<Idioma, string>> = VIDEO_VSL.subtitulos;
 const pistas = (Object.entries(subtitulos) as [Idioma, string | undefined][]).filter((p): p is [Idioma, string] => !!p[1]);
 ---
 
-<figure class="vsl-marco" data-vsl>
+<figure class="vsl-marco" data-vsl data-idioma={idioma}>
   {
     hayVideo ? (
       <video
@@ -90,14 +90,13 @@ const pistas = (Object.entries(subtitulos) as [Idioma, string | undefined][]).fi
     background-color: var(--color-surface);
   }
 
+  /* El disco queda en el centro exacto del marco; el texto cuelga debajo
+     sin empujarlo hacia arriba. */
   .vsl-play {
     position: absolute;
     inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
+    display: grid;
+    place-items: center;
     color: var(--color-texto);
     background: transparent;
     cursor: pointer;
@@ -111,9 +110,11 @@ const pistas = (Object.entries(subtitulos) as [Idioma, string | undefined][]).fi
   .vsl-play-disco {
     display: grid;
     place-items: center;
+    grid-area: 1 / 1;
     width: 3.5rem;
     height: 3.5rem;
-    padding-left: 0.25rem;
+    /* El triángulo pesa a la izquierda: se corre un poco para verse centrado. */
+    padding-left: 0.2rem;
     border-radius: 999px;
     background-color: var(--color-brasa);
     box-shadow:
@@ -157,10 +158,28 @@ const pistas = (Object.entries(subtitulos) as [Idioma, string | undefined][]).fi
     }
   }
 
+  /* Va sobre el video (claro y con movimiento): píldora oscura para que se lea. */
   .vsl-play-texto {
+    grid-area: 1 / 1;
+    align-self: center;
+    translate: 0 calc(1.75rem + 1.75rem);
+    padding: 0.375rem 0.875rem;
+    border-radius: 999px;
+    background-color: rgb(10 15 28 / 0.72);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
+    backdrop-filter: blur(6px);
+    color: #fff;
     font-family: var(--font-titulos);
-    font-weight: 500;
-    font-size: 0.9375rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 48rem) {
+    .vsl-play-texto {
+      translate: 0 calc(2.75rem + 2rem);
+      font-size: 0.9375rem;
+    }
   }
 
   .vsl-estado {
@@ -196,14 +215,24 @@ const pistas = (Object.entries(subtitulos) as [Idioma, string | undefined][]).fi
 </style>
 
 <script>
+  import { encenderSubtitulos } from '../../videos';
+
   document.querySelectorAll<HTMLElement>('[data-vsl]').forEach((marco) => {
     const video = marco.querySelector<HTMLVideoElement>('[data-vsl-video]');
     const play = marco.querySelector<HTMLButtonElement>('[data-vsl-play]');
     if (!video || !play) return;
-    play.addEventListener('click', () => {
+    encenderSubtitulos(video, marco.dataset['idioma'] ?? 'es');
+    // Antes de reproducir, la barra nativa chocaba con «Ver el video» (en móvil
+    // lo tapaba). Se esconde hasta el play; sin JS se queda como estaba.
+    video.controls = false;
+    const empezar = () => {
       marco.dataset['reproduciendo'] = '';
+      video.controls = true;
+    };
+    play.addEventListener('click', () => {
+      empezar();
       void video.play();
     });
-    video.addEventListener('play', () => (marco.dataset['reproduciendo'] = ''));
+    video.addEventListener('play', empezar);
   });
 </script>

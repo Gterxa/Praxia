@@ -66,5 +66,22 @@ export const VIDEO_EVALUACION: VideoFunnel = {
   subtitulos: { es: '/videos/cliente-c.es.vtt', en: '/videos/cliente-c.en.vtt' },
 };
 
+/**
+ * Enciende la pista del idioma de la página. El atributo `default` del <track>
+ * no basta: hay navegadores que lo ignoran o recuerdan que el usuario los apagó
+ * en otra visita, y el video arrancaba sin subtítulos.
+ */
+export function encenderSubtitulos(video: HTMLVideoElement, idioma: string) {
+  const aplicar = () => {
+    const pistas = Array.from(video.textTracks);
+    const elegida = pistas.find((p) => p.language === idioma) ?? pistas[0];
+    for (const p of pistas) p.mode = p === elegida ? 'showing' : 'disabled';
+  };
+  aplicar();
+  // Las pistas pueden llegar después del primer render (hidratación, carga lenta).
+  video.textTracks.addEventListener('addtrack', aplicar, { once: true });
+  video.addEventListener('loadedmetadata', aplicar, { once: true });
+}
+
 /** Etiqueta de cada pista en el menú de subtítulos del reproductor. */
 export const NOMBRE_PISTA: Record<Idioma, string> = { es: 'Español', en: 'English' };
