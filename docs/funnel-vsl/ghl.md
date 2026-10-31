@@ -75,7 +75,11 @@ la opción por su posición en la lista, no el texto que vio el visitante.
 `funnel-web` · `cat-a` · `cat-b` · `cat-c` · `rubro-legal` · `rubro-ecommerce` · `rubro-nicho` ·
 `decide-otra-persona` · `no-show` · `cliente-activo` · `ex-cliente` · `referido` ·
 `funnel-iniciado` · `funnel-completo` · `funnel-abandono` · `ig-pidio-link` · `ig-no-empezo` ·
-`ig-sin-respuesta`
+`ig-sin-respuesta` · `vio-video`
+
+`vio-video` (desde el 31-oct-2026): la persona vio el video de bienvenida de /funnel hasta
+desbloquear el botón. La pone el evento `inicio` y no se quita. Quien entra directo a
+/funnel/aplicar (por ejemplo con `link_de_la_aplicacin`) sin haber visto el video no la tiene.
 
 ## Calendario «Diagnóstico gratis Praxia» (`pVbb0wqNGWIChVKmt986`)
 
@@ -146,7 +150,7 @@ el endpoint responde 204 y solo deja un aviso en el log.
 
 | Evento | Cuándo | Qué hace en GHL |
 |---|---|---|
-| `inicio` | Al pasar la pantalla de contacto | Busca o crea el contacto (nombre, WhatsApp, correo, país, moneda, fuente, campaña, origen UTM, último paso); quita y pone `funnel-iniciado` (+ `funnel-web`); crea la oportunidad en «Aplicación incompleta» si no tiene una abierta |
+| `inicio` | Al pasar la pantalla de contacto | Busca o crea el contacto (nombre, WhatsApp, correo, país, moneda, fuente, campaña, origen UTM, último paso); quita y pone `funnel-iniciado` (+ `funnel-web`); pone `vio-video` si desbloqueó el botón viendo el video; crea la oportunidad en «Aplicación incompleta» si no tiene una abierta |
 | `paso` | Al llegar a cada pregunta | Guarda las respuestas hasta ahí y el último paso |
 | `fin` | Al enviar | Clasifica en el servidor (src/funnel.ts), guarda categoría, prioridad, motivo, frase y compromiso; etiquetas `funnel-completo`, `cat-x`, rubro y `decide-otra-persona`; mueve la oportunidad a Aplicó A, Aplicó B o Perfil en evaluación |
 

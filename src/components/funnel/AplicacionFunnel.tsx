@@ -35,6 +35,7 @@ import {
 import { EN_BORRADOR, LOCALE, TEXTOS, preguntaEn, rutaFunnel, type Idioma, type Textos } from '../../i18n/funnel';
 import { elegirIdioma, hrefEnIdioma, idiomaSugerido } from '../../lib/idioma';
 import { guardarOrigen, leerOrigen } from '../../lib/origen';
+import { leerVisto } from '../../lib/video-visto';
 import VideoFunnel from './VideoFunnel';
 import { VIDEO_APROBADOS, VIDEO_CONFIRMADO, VIDEO_EVALUACION, VIDEO_LLAMADA } from '../../videos';
 
@@ -146,6 +147,8 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
       paso: extra.paso ?? paso,
       origen: leerOrigen(),
       turno: extra.turno,
+      // Desbloqueó el botón viendo el video de la landing (etiqueta vio-video en «inicio»).
+      vioVideo: leerVisto().listo,
       web: trampaRef.current?.value ?? '',
     });
   }
