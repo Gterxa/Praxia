@@ -35,9 +35,9 @@ import {
 import { EN_BORRADOR, LOCALE, TEXTOS, preguntaEn, rutaFunnel, type Idioma, type Textos } from '../../i18n/funnel';
 import { elegirIdioma, hrefEnIdioma, idiomaSugerido } from '../../lib/idioma';
 import { guardarOrigen, leerOrigen } from '../../lib/origen';
-import { leerVisto } from '../../lib/video-visto';
 import VideoFunnel from './VideoFunnel';
 import { VIDEO_APROBADOS, VIDEO_CONFIRMADO, VIDEO_EVALUACION, VIDEO_LLAMADA } from '../../videos';
+import { leerVisto } from '../../lib/video-visto';
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 const API_FUNNEL = `${BASE}/api/funnel`;
