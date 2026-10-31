@@ -7,10 +7,12 @@ import FondoOrbes from '../components/FondoOrbes.astro';
 import BottomSheetValidar from '../components/BottomSheetValidar.astro';
 import CabeceraFunnel from '../components/funnel/CabeceraFunnel.astro';
 import PieFunnel from '../components/funnel/PieFunnel.astro';
+import Analitica from '../components/Analitica.astro';
 import { SITE, EMAIL, WHATSAPP, CONTEXTO } from '../consts';
 import '../styles/global.css';
 import { ruta, sinBase } from '../rutas';
 import { LOCALE, TEXTOS, type Idioma } from '../i18n/funnel';
+import { hayAnalitica, idsAnalitica } from '../analitica';
 
 interface Props {
   titulo: string;
@@ -53,6 +55,9 @@ const {
   sinCabecera = false,
   idioma = 'es',
 } = Astro.props;
+
+// GA4, Meta y Clarity: solo si Vercel tiene al menos uno de sus IDs (ver src/analitica.ts).
+const conAnalitica = hayAnalitica(idsAnalitica(import.meta.env));
 
 const tituloCompleto = titulo.includes(SITE.nombre)
   ? titulo
@@ -133,6 +138,9 @@ const datosEstructurados = {
     <link rel="manifest" href={ruta('/site.webmanifest')} />
     <link rel="canonical" href={canonical} />
     <meta name="generator" content={Astro.generator} />
+    {/* Verificación de trypraxia.tech en Meta Business (portafolio «Praxia»): sin
+        ella no se eligen los eventos del píxel para optimizar anuncios. No mide nada. */}
+    <meta name="facebook-domain-verification" content="qry4k1hocwmvefuy0n53qluf4zrpla" />
 
     <title>{tituloCompleto}</title>
     <meta name="description" content={descripcion} />
@@ -268,6 +276,8 @@ const datosEstructurados = {
     <script>
       import '../scripts/scroll-suave';
     </script>
+
+    {conAnalitica && <Analitica />}
 
     {/* Sin #hoja-validar en el DOM (modo funnel) la función sale sola. */}
     <script>

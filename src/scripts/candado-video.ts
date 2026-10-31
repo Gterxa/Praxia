@@ -20,32 +20,12 @@
  */
 import { TEXTOS, type Idioma } from '../i18n/funnel';
 import { PARTE_PARA_DESBLOQUEAR, guardarVisto, leerVisto } from '../lib/video-visto';
+import { medir } from '../lib/medicion';
 
 /** Más que esto entre dos `timeupdate` no es reproducción: es un salto. */
 const SALTO_MAXIMO = 2;
 /** Margen para no pelear con el redondeo del reproductor. */
 const TOLERANCIA = 0.75;
-
-type Ventana = Window & {
-  gtag?: (...a: unknown[]) => void;
-  fbq?: (...a: unknown[]) => void;
-  clarity?: (...a: unknown[]) => void;
-};
-
-/**
- * «Video completado / diagnóstico desbloqueado» hacia GA4, Meta y Clarity, si
- * están cargados (PR de analítica). Sin ellos no hace nada. Sin datos personales.
- */
-function medirDesbloqueo(idioma: Idioma) {
-  const w = window as Ventana;
-  try {
-    w.gtag?.('event', 'video_completado', { video: 'bienvenida', lead_source: 'funnel', idioma });
-    w.fbq?.('trackCustom', 'VideoCompletado', { content_name: 'Funnel diagnóstico', idioma });
-    w.clarity?.('event', 'video_completado');
-  } catch {
-    /* la medición nunca debe romper el funnel */
-  }
-}
 
 export function montarCandado(raiz: HTMLElement) {
   const video = raiz.querySelector<HTMLVideoElement>('[data-vsl-video]');
@@ -90,7 +70,8 @@ export function montarCandado(raiz: HTMLElement) {
     listo = true;
     raiz.dataset['recien'] = '';
     guardarVisto({ segundos: visto, listo });
-    medirDesbloqueo(idioma);
+    // «Video completado / diagnóstico desbloqueado» (src/lib/medicion.ts).
+    medir('video', { idioma });
     pintar();
   }
 

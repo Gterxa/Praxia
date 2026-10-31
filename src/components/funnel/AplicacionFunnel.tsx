@@ -16,6 +16,11 @@
  *
  * Los textos salen de src/i18n/funnel.ts según `idioma`. La moneda sigue
  * saliendo del código del teléfono, en los dos idiomas.
+ *
+ * Medición (src/lib/medicion.ts): Lead cuando GHL confirma el envío final,
+ * Schedule cuando la cita queda reservada y Contact con «Sí, llámenme». Los
+ * campos y textos con datos de la persona llevan data-clarity-mask para que
+ * Clarity no los grabe.
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import intlTelInput from 'intl-tel-input/intlTelInputWithUtils';
@@ -35,6 +40,7 @@ import {
 import { EN_BORRADOR, LOCALE, TEXTOS, preguntaEn, rutaFunnel, type Idioma, type Textos } from '../../i18n/funnel';
 import { elegirIdioma, hrefEnIdioma, idiomaSugerido } from '../../lib/idioma';
 import { guardarOrigen, leerOrigen } from '../../lib/origen';
+import { medir } from '../../lib/medicion';
 import VideoFunnel from './VideoFunnel';
 import { VIDEO_APROBADOS, VIDEO_CONFIRMADO, VIDEO_EVALUACION, VIDEO_LLAMADA } from '../../videos';
 import { leerVisto } from '../../lib/video-visto';
@@ -89,6 +95,7 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
   const [email, setEmail] = useState('');
   const [pais, setPais] = useState('pe');
   const [errorContacto, setErrorContacto] = useState('');
+  const [acepta, setAcepta] = useState(false);
   const [respuestas, setRespuestas] = useState<Respuestas>({});
   const [frase, setFrase] = useState('');
   const [compromiso, setCompromiso] = useState(false);
@@ -122,11 +129,17 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
     };
   }, [idioma]);
 
-  /** Manda el estado actual a GHL. En cola, para que el contacto exista antes del siguiente paso. */
-  function avisarCrm(evento: 'inicio' | 'paso' | 'fin' | 'llamada', extra: { respuestas?: Respuestas; paso?: number } = {}) {
+  /**
+   * Manda el estado actual a GHL. En cola, para que el contacto exista antes del siguiente paso.
+   * `alGuardar` corre solo si el servidor respondió bien (ahí se mide la conversión).
+   */
+  function avisarCrm(evento: 'inicio' | 'paso' | 'fin' | 'llamada', extra: { respuestas?: Respuestas; paso?: number } = {}, alGuardar?: () => void) {
     const cuerpo = cuerpoCrm(evento, extra);
     colaRef.current = colaRef.current
       .then(() => fetch(API_FUNNEL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: cuerpo, keepalive: true }))
+      .then((res) => {
+        if (res.ok) alGuardar?.();
+      })
       .catch(() => {
         /* sin red: el visitante sigue; el siguiente paso vuelve a mandar todo */
       });
@@ -177,6 +190,7 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
       await colaRef.current;
       const res = await fetch(API_FUNNEL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: cuerpo });
       if (res.ok) {
+        medir('agenda', { categoria: resultado?.categoria, idioma });
         setFase('confirmado');
         return;
       }
@@ -196,7 +210,7 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
 
   // «Sí, llámenme» queda registrado en GHL; la agenda pide los turnos libres al entrar.
   useEffect(() => {
-    if (fase === 'llamada') avisarCrm('llamada');
+    if (fase === 'llamada') avisarCrm('llamada', {}, () => medir('llamada', { categoria: resultado?.categoria, idioma }));
     if (fase === 'agenda') cargarTurnos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fase]);
@@ -263,6 +277,8 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
     if (iti && !iti.getSelectedCountry()) return setErrorContacto(t.errores.codigo);
     if (iti && iti.isValidNumber() === false) return setErrorContacto(t.errores.numero);
     if (!/^\S+@\S+\.\S+$/.test(email)) return setErrorContacto(t.errores.correo);
+    // Ley 29733: el consentimiento va antes de que el nombre y el WhatsApp lleguen a GHL.
+    if (!acepta) return setErrorContacto(t.errores.consentimiento);
     setErrorContacto('');
     setRespuestas((r) => ({ ...r, telefono: iti?.getNumber() ?? telRef.current?.value ?? '' }));
     setPaso(1);
@@ -292,7 +308,7 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
     } catch {
       /* sin almacenamiento: la pantalla sigue igual */
     }
-    avisarCrm('fin');
+    avisarCrm('fin', {}, () => medir('lead', { categoria: res.categoria, idioma }));
     setResultado(res);
     setFase('resultado');
   }
@@ -370,6 +386,7 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
             <p className="af-tiempo">{t.contacto.tiempo}</p>
             <form
               className="af-campos"
+              data-clarity-mask="true"
               noValidate
               onSubmit={(e) => {
                 e.preventDefault();
@@ -385,6 +402,14 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
               <input id="af-correo" className="af-input" type="email" autoComplete="email" placeholder={t.contacto.correoPh} value={email} onChange={(e) => setEmail(e.target.value)} />
               {/* Trampa para bots: invisible para personas y lectores de pantalla. */}
               <input ref={trampaRef} name="web" className="af-trampa" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+              <label className="af-compromiso af-consentimiento">
+                <input type="checkbox" checked={acepta} onChange={(e) => setAcepta(e.target.checked)} required />
+                <span>
+                  {t.contacto.consentimiento[0]}
+                  <a href={`${BASE}/privacidad`} target="_blank" rel="noopener">{t.contacto.consentimiento[1]}</a>
+                  {t.contacto.consentimiento[2]}
+                </span>
+              </label>
               {errorContacto && <p className="af-error" role="alert">{errorContacto}</p>}
               <button type="submit" className="boton boton-primario af-cta">
                 {t.contacto.empezar} <span aria-hidden="true">→</span>
@@ -486,6 +511,7 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
             <label className="af-label" htmlFor="af-frase">{t.frase.label}</label>
             <textarea
               id="af-frase"
+              data-clarity-mask="true"
               className="af-input af-textarea"
               rows={4}
               placeholder={t.frase.ph}
@@ -508,7 +534,7 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
         {fase === 'resultado' && resultado && resultado.categoria !== 'C' && (
           <section className="af-cuerpo">
             <p className="af-kicker">{t.resultado.recibida}</p>
-            <h1 className="af-titulo">
+            <h1 className="af-titulo" data-clarity-mask="true">
               {t.resultado.tuCaso(primerNombre)}
               <span className="af-calido">{t.resultado.encaja}</span>
             </h1>
@@ -624,7 +650,7 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
         {fase === 'resultado' && resultado && resultado.categoria === 'C' && (
           <section className="af-cuerpo">
             <p className="af-kicker">{t.resultado.recibida}</p>
-            <h1 className="af-titulo">{t.evaluacion.gracias(primerNombre)}</h1>
+            <h1 className="af-titulo" data-clarity-mask="true">{t.evaluacion.gracias(primerNombre)}</h1>
             <VideoFunnel video={VIDEO_EVALUACION} idioma={idioma} enGrabacion={tx.video.evaluacion} sinSoporte={tx.video.sinSoporte} />
             <p className="af-ayuda">{t.evaluacion.ayuda}</p>
             <p className="af-ayuda">

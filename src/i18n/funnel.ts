@@ -135,6 +135,7 @@ const ES = {
       correoPh: 'tu@correo.com',
       empezar: 'Empezar',
       nota: 'Tus datos no se tocan.',
+      consentimiento: ['Acepto que Praxia use mis datos para contactarme por este diagnóstico, según la ', 'política de privacidad', '.'] as Tres,
     },
     errores: {
       nombre: 'Escribe tu nombre.',
@@ -142,6 +143,7 @@ const ES = {
       codigo: 'Empieza tu WhatsApp con el código de tu país: 51 si es de Perú.',
       numero: 'Revisa tu WhatsApp: le falta o le sobra algún número.',
       correo: 'Revisa tu correo.',
+      consentimiento: 'Marca la casilla para aceptar el uso de tus datos.',
     },
     datoAria: 'Un dato de tu negocio',
     datoTitulo: '¿Sabías que…?',
@@ -318,6 +320,7 @@ const EN: Textos = {
       correoPh: 'you@company.com',
       empezar: 'Start',
       nota: 'Your data stays with us.',
+      consentimiento: ['I agree that Praxia may use my data to contact me about this diagnosis, as described in the ', 'privacy policy (in Spanish)', '.'],
     },
     errores: {
       nombre: 'Enter your name.',
@@ -325,6 +328,7 @@ const EN: Textos = {
       codigo: 'Start your WhatsApp number with your country code: 1 for the US.',
       numero: 'Check your WhatsApp number: a digit is missing or extra.',
       correo: 'Check your email.',
+      consentimiento: 'Check the box to agree to the use of your data.',
     },
     datoAria: 'A fact about your business',
     datoTitulo: 'Did you know…?',

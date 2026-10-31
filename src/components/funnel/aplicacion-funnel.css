@@ -364,6 +364,20 @@
   accent-color: var(--color-brasa);
 }
 
+/* Consentimiento de datos (Ley 29733) en la pantalla de contacto: mismo check
+   que el compromiso, en el tono secundario de la nota de abajo. */
+.af-consentimiento {
+  margin-top: 1rem;
+  color: var(--color-texto-2);
+  font-size: 0.875rem;
+}
+
+.af-consentimiento a {
+  color: var(--color-texto);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 .af-video {
   display: grid;
   place-items: center;
