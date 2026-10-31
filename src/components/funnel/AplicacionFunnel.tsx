@@ -240,9 +240,14 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
     };
   }, [fase, paso, idioma]);
 
-  // Cada pantalla nueva arranca arriba.
+  // Cada pantalla nueva arranca arriba, de golpe. Primero el salto nativo y
+  // después se le avisa a Lenis: solo con Lenis, si su posición interna ya era
+  // 0 (el scroll anterior no pasó por él), ignoraba el salto y la pantalla
+  // quedaba a media altura; solo con el nativo, Lenis lo animaba.
   useEffect(() => {
-    cimaRef.current?.scrollIntoView({ block: 'start' });
+    const top = (cimaRef.current?.getBoundingClientRect().top ?? 0) + window.scrollY;
+    window.scrollTo(0, top);
+    window.scrollSuave?.scrollTo(top, { immediate: true, force: true });
   }, [paso, fase]);
 
   const pregunta = paso >= 1 && paso <= PREGUNTAS.length ? preguntaEn(PREGUNTAS[paso - 1], idioma) : null;

@@ -75,12 +75,20 @@ export function encenderSubtitulos(video: HTMLVideoElement, idioma: string) {
   const aplicar = () => {
     const pistas = Array.from(video.textTracks);
     const elegida = pistas.find((p) => p.language === idioma) ?? pistas[0];
-    for (const p of pistas) p.mode = p === elegida ? 'showing' : 'disabled';
+    for (const p of pistas) {
+      const modo = p === elegida ? 'showing' : 'disabled';
+      if (p.mode !== modo) p.mode = modo;
+    }
   };
   aplicar();
-  // Las pistas pueden llegar después del primer render (hidratación, carga lenta).
-  video.textTracks.addEventListener('addtrack', aplicar, { once: true });
-  video.addEventListener('loadedmetadata', aplicar, { once: true });
+  // Las pistas llegan de a una (hidratación, carga lenta): se elige otra vez con
+  // cada una. Antes era `once` y, si la primera en llegar era la del otro
+  // idioma, Safari terminaba con las dos apagadas en /en/funnel.
+  video.textTracks.addEventListener('addtrack', aplicar);
+  // Safari hace su propia selección automática al cargar: se repite después.
+  for (const evento of ['loadedmetadata', 'loadeddata', 'play'] as const) {
+    video.addEventListener(evento, aplicar, { once: true });
+  }
 }
 
 /** Etiqueta de cada pista en el menú de subtítulos del reproductor. */
