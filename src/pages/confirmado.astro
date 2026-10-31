@@ -1,0 +1,35 @@
+---
+// Destino del botón «Sí, ahí estaré» de los recordatorios del diagnóstico (24 h y 2 h antes).
+// El clic pasa por un trigger link de GHL, que marca al contacto con «confirmo-asistencia» y redirige aquí.
+import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import Seccion from '../components/Seccion.astro';
+import { ruta } from '../rutas';
+---
+
+<Layout
+  titulo="Diagnóstico confirmado"
+  descripcion="Confirmaste tu diagnóstico gratis con Praxia. A la hora que elegiste te llama alguien del equipo."
+  noIndex={true}
+>
+  <Seccion>
+    <div class="medida">
+      <SectionLabel texto="Diagnóstico gratis" />
+      <h1 class="mt-4">Listo, te esperamos.</h1>
+      <p class="lead mt-6">
+        Ya quedó confirmado. A la hora que elegiste te llama alguien del equipo: contesta aunque no
+        reconozcas el número.
+      </p>
+      <p class="mt-6">
+        Para que los 15 minutos te rindan, ten a la mano las tareas que más tiempo le quitan a tu equipo
+        y las herramientas que usan hoy. Si decides con un socio, que esté en la llamada.
+      </p>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+        <a href={ruta('/que-puedes-automatizar')} class="boton boton-primario">
+          Ver qué puedes automatizar
+        </a>
+        <a href={ruta('/')} class="boton boton-secundario">Ir al inicio</a>
+      </div>
+    </div>
+  </Seccion>
+</Layout>
