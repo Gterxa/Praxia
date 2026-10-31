@@ -138,6 +138,9 @@ const datosEstructurados = {
     <link rel="manifest" href={ruta('/site.webmanifest')} />
     <link rel="canonical" href={canonical} />
     <meta name="generator" content={Astro.generator} />
+    {/* Verificación de trypraxia.tech en Meta Business (portafolio «Praxia»): sin
+        ella no se eligen los eventos del píxel para optimizar anuncios. No mide nada. */}
+    <meta name="facebook-domain-verification" content="qry4k1hocwmvefuy0n53qluf4zrpla" />
 
     <title>{tituloCompleto}</title>
     <meta name="description" content={descripcion} />
