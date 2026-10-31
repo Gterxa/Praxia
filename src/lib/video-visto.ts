@@ -3,7 +3,11 @@
  * (/funnel y /en/funnel) deja empezar la aplicación solo después de verlo
  * (src/scripts/candado-video.ts), y lo recuerda en localStorage para la
  * próxima visita. La aplicación lo manda a GHL en el evento «inicio»
- * (etiqueta vio-video).
+ * (etiqueta vio-video), y quien entra directo a /funnel/aplicar sin haberlo
+ * visto vuelve a la landing (puedeAplicar).
+ *
+ * Ojo: qa/movil/qa_movil.py marca el video como visto para entrar directo a
+ * la aplicación; si cambia CLAVE o el formato, hay que cambiarlo allá también.
  *
  * Va atado al archivo del video: si se cambia el video, hay que verlo de nuevo.
  * Sin almacenamiento (modo privado estricto, cookies bloqueadas) todo esto
@@ -31,6 +35,23 @@ export function leerVisto(): Visto {
   } catch {
     return { segundos: 0, listo: false };
   }
+}
+
+/**
+ * ¿Puede entrar a la aplicación? Sí si ya desbloqueó el botón viendo el video.
+ * También si no hay video (en grabación) o si el navegador no deja guardar
+ * nada: ahí no hay cómo recordar el desbloqueo y se mandaría a la landing en
+ * bucle, así que se deja pasar.
+ */
+export function puedeAplicar(): boolean {
+  if (!VIDEO_VSL.src) return true;
+  try {
+    localStorage.setItem(`${CLAVE}-prueba`, '1');
+    localStorage.removeItem(`${CLAVE}-prueba`);
+  } catch {
+    return true;
+  }
+  return leerVisto().listo;
 }
 
 export function guardarVisto(v: Visto): void {
