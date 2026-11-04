@@ -32,7 +32,8 @@ export default defineConfig({
       // /pruebas/* son bancos de prueba internos (tipografía, fondos del hero):
       // se buildean porque viven en src/pages, pero no son contenido del sitio.
       // /diagnostico-gratis es la página de anuncios (funnel VSL): noindex y fuera.
-      filter: (pagina) => !/\/(legal|privacidad|pruebas|diagnostico-gratis|funnel)\/?/.test(pagina),
+      // /confirmado es el destino del botón «Sí, ahí estaré» de los recordatorios: noindex y fuera.
+      filter: (pagina) => !/\/(legal|privacidad|pruebas|diagnostico-gratis|funnel|confirmado)\/?/.test(pagina),
     }),
   ],
 
