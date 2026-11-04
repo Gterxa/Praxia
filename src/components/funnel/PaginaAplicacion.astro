@@ -4,6 +4,10 @@
  * pantalla que toca según el resultado. Toda la lógica vive en la isla
  * AplicacionFunnel; las preguntas y la regla, en src/funnel.ts; los textos,
  * en src/i18n/funnel.ts. La usan /funnel/aplicar y /en/funnel/aplicar.
+ *
+ * Solo se entra habiendo visto el video de la landing (src/lib/video-visto.ts):
+ * si no, vuelve a /funnel con la misma query (cid del DM, UTM), antes de que
+ * se mande nada a GHL.
  */
 import Layout from '../../layouts/Layout.astro';
 import AplicacionFunnel from './AplicacionFunnel.tsx';
@@ -16,6 +20,17 @@ interface Props {
 const { idioma } = Astro.props;
 const t = TEXTOS[idioma].aplicacion;
 ---
+
+<script>
+  import { puedeAplicar } from '../../lib/video-visto';
+  import { ruta } from '../../rutas';
+  import { rutaFunnel } from '../../i18n/funnel';
+
+  if (!puedeAplicar()) {
+    const idioma = document.documentElement.lang.startsWith('en') ? 'en' : 'es';
+    location.replace(`${ruta(rutaFunnel(idioma))}${location.search}${location.hash}`);
+  }
+</script>
 
 <Layout titulo={t.titulo} descripcion={t.descripcion} contextoWhatsApp={CONTEXTO.vsl} noIndex funnel sinCabecera idioma={idioma}>
   <AplicacionFunnel client:load correo={EMAIL} instagram="alvarosanchezai" idioma={idioma} />

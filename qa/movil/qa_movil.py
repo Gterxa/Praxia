@@ -113,6 +113,11 @@ class Corrida:
         # Nada sale a terceros (analítica, píxeles): la QA no ensucia métricas.
         page.route(re.compile(r'^https?://(?!\[::1\]|localhost|127\.0\.0\.1).*'), lambda r: r.abort())
         # Lo que solo existe en `astro dev` (toolbar y «Vista interna») no se mide ni se fotografía.
+        # /funnel/aplicar rebota a la landing si no se vio el video (src/lib/video-visto.ts):
+        # para medir la aplicación se entra con el video ya visto. La landing se mide bloqueada.
+        page.add_init_script("""if (location.pathname.includes('/aplicar')) {
+          try { localStorage.setItem('praxia-funnel-video', JSON.stringify({ src: '/videos/bienvenida.mp4', segundos: 93, listo: true })); } catch (e) {}
+        }""")
         page.add_init_script("""document.addEventListener('DOMContentLoaded', () => {
           const s = document.createElement('style');
           s.textContent = 'astro-dev-toolbar, .af-interno { display: none !important; }';

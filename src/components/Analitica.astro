@@ -1,0 +1,11 @@
+---
+/**
+ * GA4, píxel de Meta y Clarity (ver src/analitica.ts). Layout.astro lo monta
+ * solo si hay al menos un ID, así que sin variables no sale ningún script.
+ */
+---
+
+<script>
+  import { montarAnalitica } from '../scripts/analitica';
+  montarAnalitica();
+</script>

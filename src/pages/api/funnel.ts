@@ -124,6 +124,7 @@ export const POST: APIRoute = async ({ request, url }) => {
     paso: Number.isInteger(b.paso) ? (b.paso as number) : 0,
     origen: limpiarOrigen(b.origen),
     turno: texto(b.turno, 40),
+    vioVideo: b.vioVideo === true,
   };
 
   if (!EVENTOS.includes(evento) || !lead.nombre || !/^\+\d{7,15}$/.test(lead.telefono) || !/^\S+@\S+\.\S+$/.test(lead.correo)) {

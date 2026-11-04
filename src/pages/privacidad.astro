@@ -26,17 +26,31 @@ import { ruta } from '../rutas';
         <div>
           <h2 class="text-[1.25rem] md:text-[1.5rem]">Qué datos recogemos</h2>
           <p class="mt-3 text-texto-2">
-            Solo lo que tú escribes en el formulario de validación: tu nombre, tu número de
-            WhatsApp, tu rubro y lo que te gustaría automatizar. Si nos escribes por WhatsApp o por
-            correo, guardamos esa conversación.
+            Lo que tú escribes en nuestros formularios: en el de validación, tu nombre, tu número de
+            WhatsApp, tu rubro y lo que te gustaría automatizar; en la aplicación al diagnóstico
+            gratis, tu nombre, tu WhatsApp, tu correo y tus respuestas sobre tu negocio. Si nos
+            escribes por WhatsApp o por correo, guardamos esa conversación. Además, al navegar el
+            sitio se registra de forma automática cómo lo usas (lo explicamos abajo, en «Cookies y
+            medición»).
           </p>
         </div>
 
         <div>
           <h2 class="text-[1.25rem] md:text-[1.5rem]">Para qué los usamos</h2>
           <p class="mt-3 text-texto-2">
-            Para contactarte y coordinar la validación, y para responder tus consultas. No
+            Para contactarte, coordinar la validación o el diagnóstico y responder tus consultas.
+            En la aplicación al diagnóstico te pedimos que lo aceptes marcando una casilla. No
             vendemos ni cedemos tus datos a terceros con fines comerciales.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-[1.25rem] md:text-[1.5rem]">Quién más los procesa</h2>
+          <p class="mt-3 text-texto-2">
+            Guardamos los datos de la aplicación al diagnóstico en GoHighLevel, el sistema donde
+            organizamos a nuestros contactos y agendamos las llamadas. Ese proveedor tiene sus
+            servidores fuera del Perú y solo trata tus datos por encargo nuestro, para que podamos
+            atenderte.
           </p>
         </div>
 
@@ -60,17 +74,32 @@ import { ruta } from '../rutas';
         <div>
           <h2 class="text-[1.25rem] md:text-[1.5rem]">Cookies y medición</h2>
           <p class="mt-3 text-texto-2">
-            Este sitio no usa cookies de publicidad ni de seguimiento entre sitios. Las fuentes
-            tipográficas se sirven desde nuestro propio dominio, así que tampoco hay pedidos a
-            terceros al cargar la página.
+            Usamos tres herramientas para saber cómo se usa el sitio y si nuestros anuncios
+            funcionan. Guardan pequeños archivos (cookies) en tu navegador:
           </p>
-          {
-            MOSTRAR_PENDIENTES && (
-              <p class="mt-3 text-texto-2">
-                <Pendiente que="declarar aquí la herramienta de analítica, si instalas una" />
-              </p>
-            )
-          }
+          <ul class="mt-3 list-disc space-y-2 pl-5 text-texto-2">
+            <li>
+              <strong class="text-texto">Google Analytics</strong> (Google): cuenta cuántas personas
+              visitan cada página, de dónde vienen y qué hacen, por ejemplo si enviaron la
+              aplicación.
+            </li>
+            <li>
+              <strong class="text-texto">Píxel de Meta</strong> (Facebook e Instagram): le avisa a
+              Meta cuando alguien que vio uno de nuestros anuncios envía la aplicación o agenda el
+              diagnóstico. Así medimos los anuncios y se los mostramos a personas parecidas.
+            </li>
+            <li>
+              <strong class="text-texto">Microsoft Clarity</strong> (Microsoft): graba cómo te mueves
+              por la página (clics, scroll, dónde te detienes) para que veamos qué partes confunden.
+              Lo que escribes en los formularios queda oculto: Clarity no lo graba.
+            </li>
+          </ul>
+          <p class="mt-3 text-texto-2">
+            A estas herramientas no les mandamos tu nombre, tu WhatsApp ni tu correo: solo datos de
+            navegación y si completaste un paso. Puedes bloquearlas borrando o bloqueando las cookies
+            en tu navegador, o con un bloqueador de anuncios; el sitio sigue funcionando igual. Las
+            fuentes tipográficas se sirven desde nuestro propio dominio.
+          </p>
         </div>
 
         <div>

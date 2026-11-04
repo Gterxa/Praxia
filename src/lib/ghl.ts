@@ -4,7 +4,8 @@
  *
  * Qué escribe y cuándo (los IDs están en docs/funnel-vsl/ghl.md):
  * - inicio: contacto con nombre, WhatsApp, correo y de dónde vino, etiqueta
- *   funnel-iniciado, etiqueta del idioma en que lo vio (idioma-es o idioma-en)
+ *   funnel-iniciado, etiqueta del idioma en que lo vio (idioma-es o idioma-en),
+ *   vio-video si desbloqueó el botón viendo el video de la landing,
  *   y oportunidad en «Aplicación incompleta». Ahí el workflow
  *   del panel avisa al equipo y, si a los 30 min no terminó, marca abandono.
  * - paso: las respuestas que lleva y en qué pregunta va.
@@ -152,6 +153,8 @@ export interface LeadFunnel {
   origen: Origen;
   /** Solo en «agenda»: el turno elegido, tal como lo devolvió free-slots (con su offset). */
   turno?: string;
+  /** Vio el video de la landing hasta desbloquear el botón (src/lib/video-visto.ts). */
+  vioVideo?: boolean;
 }
 
 type CampoValor = { id: string; field_value: string | string[] | number };
@@ -443,7 +446,10 @@ export async function guardarEnGhl(token: string, lead: LeadFunnel): Promise<{ c
     // de nuevo si la misma persona vuelve a empezar otro día.
     // El idioma también: queda el de la última vez que empezó.
     await ghl(token, 'DELETE', `/contacts/${contactId}/tags`, { tags: ['funnel-iniciado', 'funnel-completo', 'funnel-abandono', 'idioma-es', 'idioma-en'] });
-    await ghl(token, 'POST', `/contacts/${contactId}/tags`, { tags: ['funnel-web', 'funnel-iniciado', `idioma-${lead.idioma}`] });
+    // vio-video no se quita: una vez que lo vio, queda.
+    const tags = ['funnel-web', 'funnel-iniciado', `idioma-${lead.idioma}`];
+    if (lead.vioVideo) tags.push('vio-video');
+    await ghl(token, 'POST', `/contacts/${contactId}/tags`, { tags });
   } else if (resultado) {
     const rubro = typeof lead.respuestas.rubro === 'string' ? lead.respuestas.rubro : '';
     const tags = ['funnel-completo', `cat-${resultado.categoria.toLowerCase()}`];
