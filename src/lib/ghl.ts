@@ -356,8 +356,10 @@ export async function registrarSiguientePaso(token: string, lead: LeadFunnel): P
   const turno = lead.turno ?? '';
   if (agenda) {
     // Se vuelve a pedir el día del turno: la pantalla pudo quedar abierta y alguien más lo tomó.
+    // Desde ahora (no desde un día antes del turno): para un turno de mañana eso
+    // caía en el pasado, y free-slots no garantiza aceptar un startDate pasado.
     const inicio = new Date(turno).getTime();
-    const libres = await turnosLibres(token, inicio - 86_400_000, inicio + 86_400_000);
+    const libres = await turnosLibres(token, Math.max(Date.now(), inicio - 86_400_000), inicio + 86_400_000);
     if (!libres.some((d) => d.turnos.some((t) => new Date(t).getTime() === inicio))) {
       throw new ErrorGhl('turno ocupado', 409);
     }
@@ -390,16 +392,29 @@ export async function registrarSiguientePaso(token: string, lead: LeadFunnel): P
     citaId = cita.id;
   }
 
-  await ghl(token, 'PUT', `/contacts/${contactId}`, {
-    customFields: [{ id: CAMPO.ultimoPaso, field_value: agenda ? `Agendó el diagnóstico: ${textoTurno(turno)}` : 'Pidió que lo llamen en la próxima hora' }],
-  });
-  await ghl(token, 'POST', `/contacts/${contactId}/tags`, { tags: [agenda ? 'agendo-diagnostico' : 'pidio-llamada'] });
+  // Con la cita ya creada, lo que sigue es registro interno: si falla, se deja en
+  // el log y la persona ve su reserva confirmada. Antes respondía 502, la pantalla
+  // decía «No pudimos reservar» y, al reintentar, el turno ya figuraba ocupado.
+  const registro = async () => {
+    await ghl(token, 'PUT', `/contacts/${contactId}`, {
+      customFields: [{ id: CAMPO.ultimoPaso, field_value: agenda ? `Agendó el diagnóstico: ${textoTurno(turno)}` : 'Pidió que lo llamen en la próxima hora' }],
+    });
+    await ghl(token, 'POST', `/contacts/${contactId}/tags`, { tags: [agenda ? 'agendo-diagnostico' : 'pidio-llamada'] });
 
-  if (agenda) {
-    // La oportunidad del funnel pasa a «Diagnóstico agendado». Si ya iba más
-    // adelante, no se toca. (La crea el evento «fin», que siempre va antes.)
-    const abierta = (await oportunidadesAbiertas(token, contactId)).find((o) => ETAPAS_DEL_FUNNEL.includes(o.pipelineStageId));
-    if (abierta) await ghl(token, 'PUT', `/opportunities/${abierta.id}`, { pipelineId: PIPELINE, pipelineStageId: ETAPA_AGENDADO });
+    if (agenda) {
+      // La oportunidad del funnel pasa a «Diagnóstico agendado». Si ya iba más
+      // adelante, no se toca. (La crea el evento «fin», que siempre va antes.)
+      const abierta = (await oportunidadesAbiertas(token, contactId)).find((o) => ETAPAS_DEL_FUNNEL.includes(o.pipelineStageId));
+      if (abierta) await ghl(token, 'PUT', `/opportunities/${abierta.id}`, { pipelineId: PIPELINE, pipelineStageId: ETAPA_AGENDADO });
+    }
+  };
+  if (!citaId) await registro();
+  else {
+    try {
+      await registro();
+    } catch (e) {
+      console.error('[ghl] cita creada, falló el registro posterior:', e instanceof Error ? e.message : 'error');
+    }
   }
 
   return { contactId, citaId };

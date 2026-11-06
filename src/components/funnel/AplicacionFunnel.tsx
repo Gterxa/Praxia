@@ -84,6 +84,23 @@ const diaCorto = (fecha: string, loc: string) => mediodia(fecha).toLocaleDateStr
 const diaNum = (fecha: string) => Number(fecha.slice(8, 10));
 const horaDe = (turno: string, loc: string) => new Date(turno).toLocaleTimeString(loc, { timeZone: LIMA, hour: 'numeric', minute: '2-digit' });
 const diaLargo = (turno: string, loc: string) => new Date(turno).toLocaleDateString(loc, { timeZone: LIMA, weekday: 'long', day: 'numeric', month: 'long' });
+/** «9:30», sin «a. m.»: la franja (mañana, tarde, noche) ya lo dice. */
+const horaCorta = (turno: string, loc: string) =>
+  new Intl.DateTimeFormat(loc, { timeZone: LIMA, hour: 'numeric', minute: '2-digit', hour12: true })
+    .formatToParts(new Date(turno))
+    .filter((p) => p.type === 'hour' || p.type === 'minute' || (p.type === 'literal' && p.value === ':'))
+    .map((p) => p.value)
+    .join('');
+const horaLima = (turno: string) => Number(new Intl.DateTimeFormat('en-US', { timeZone: LIMA, hour: 'numeric', hourCycle: 'h23' }).format(new Date(turno)));
+/** Mañana (antes de las 12), tarde (12 a 18:59) y noche (19 en adelante); las franjas vacías no se muestran. */
+function porFranja(turnos: string[]): string[][] {
+  const franjas: string[][] = [[], [], []];
+  for (const x of turnos) {
+    const h = horaLima(x);
+    franjas[h < 12 ? 0 : h < 19 ? 1 : 2].push(x);
+  }
+  return franjas;
+}
 
 export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: Props) {
   const tx = TEXTOS[idioma];
@@ -615,13 +632,27 @@ export default function AplicacionFunnel({ correo, instagram, idioma = 'es' }: P
                     ))}
                   </div>
                   <p className="af-mono">{t.agenda.hora}</p>
-                  <div className="af-horas">
-                    {(agenda.dias.find((d) => d.fecha === dia)?.turnos ?? []).map((x) => (
-                      <button key={x} type="button" className={`af-hora${turno === x ? ' af-elegido' : ''}`} aria-pressed={turno === x} onClick={() => setTurno(x)}>
-                        {horaDe(x, loc)}
-                      </button>
-                    ))}
+                  <div className="af-franjas">
+                    {porFranja(agenda.dias.find((d) => d.fecha === dia)?.turnos ?? []).map((lista, i) =>
+                      lista.length ? (
+                        <div key={i} className="af-franja" role="group" aria-label={t.agenda.franjas[i]}>
+                          <p className="af-franja-nombre">{t.agenda.franjas[i]}</p>
+                          <div className="af-horas">
+                            {lista.map((x) => (
+                              <button key={x} type="button" className={`af-hora${turno === x ? ' af-elegido' : ''}`} aria-pressed={turno === x} aria-label={horaDe(x, loc)} onClick={() => setTurno(x)}>
+                                {horaCorta(x, loc)}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ) : null,
+                    )}
                   </div>
+                  {turno && (
+                    <p className="af-resumen" aria-live="polite">
+                      {t.agenda.resumen}<b>{diaLargo(turno, loc)}, {horaDe(turno, loc)}</b>
+                    </p>
+                  )}
                   {errorAgenda && <p className="af-error" role="alert">{errorAgenda}</p>}
                   <button type="button" className="boton boton-primario af-cta" disabled={!turno || reservando} onClick={reservar}>
                     {reservando ? t.agenda.reservando : turno ? t.agenda.confirmar : t.agenda.elige}

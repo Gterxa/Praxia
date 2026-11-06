@@ -482,16 +482,28 @@
   gap: 0.5rem;
 }
 
-/* Columnas según el ancho: a 320 px «10:00 a. m.» no entraba en tres y se
-   partía en dos líneas. */
+/* Las horas van por franja (mañana, tarde, noche): el botón solo dice «9:30»,
+   así entran 6-7 por fila en escritorio y 4-5 en el celular, sin scroll. */
+.af-franjas {
+  display: grid;
+  gap: 1rem;
+}
+
+.af-franja-nombre {
+  margin-bottom: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-texto-2);
+}
+
 .af-horas {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(6.25rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(4.25rem, 1fr));
   gap: 0.5rem;
 }
 
 .af-hora {
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .af-dia,
@@ -538,6 +550,38 @@
 .af-elegido {
   border-color: var(--color-brasa);
   background: var(--color-brasa-tenue);
+}
+
+.af-hora {
+  padding: 0.625rem 0.25rem;
+  font-weight: 500;
+}
+
+/* Lo que va a reservar, dicho entero antes de confirmar. */
+.af-resumen {
+  margin-top: 1.25rem;
+  color: var(--color-texto-2);
+  font-size: 0.9375rem;
+}
+
+.af-resumen b {
+  color: var(--color-texto);
+}
+
+.af-resumen + .af-cta {
+  margin-top: 0.75rem;
+}
+
+.af-resumen::first-letter {
+  text-transform: uppercase;
+}
+
+/* La hora elegida se rellena: con 20 opciones, el borde solo no alcanzaba. */
+.af-hora.af-elegido {
+  border-color: var(--color-brasa);
+  background: var(--color-brasa);
+  color: var(--color-texto);
+  font-weight: 700;
 }
 
 .af-interno {
@@ -660,11 +704,6 @@
   line-height: 1.5;
 }
 
-/* Con turnos cortos un día puede traer muchas horas: la lista se desplaza y el botón queda a la vista. */
-.af-horas {
-  max-height: 17rem;
-  overflow-y: auto;
-}
 
 /* Selector ES/EN: solo en la pantalla de contacto (cambiar a mitad perdería las respuestas). */
 .af-idioma {
