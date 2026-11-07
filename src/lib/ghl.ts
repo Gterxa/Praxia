@@ -243,6 +243,26 @@ async function buscarContacto(token: string, correo: string, telefono: string): 
   return null;
 }
 
+const esperar = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * Dos envíos del mismo lead casi al mismo tiempo (doble clic, red lenta, inicio
+ * y fin seguidos) ven los dos «no existe» y los dos intentan crear. GHL rechaza
+ * el segundo con un 4xx: en vez de responder 502, se vuelve a buscar lo que el
+ * otro envío acaba de crear. El índice de búsqueda de GHL tarda un poco, por eso
+ * se reintenta con pausas cortas.
+ */
+async function reintentarBusqueda<T>(buscar: () => Promise<T | null>): Promise<T | null> {
+  for (const ms of [300, 800, 1500]) {
+    await esperar(ms);
+    const x = await buscar();
+    if (x) return x;
+  }
+  return null;
+}
+
+const esConflicto = (e: unknown) => e instanceof ErrorGhl && e.status >= 400 && e.status < 500 && e.status !== 401 && e.status !== 403;
+
 /**
  * Contacto que vino por el link del DM de Instagram (?cid=). El cid no es una
  * prueba de identidad (GHL no puede firmar el link sin una acción de código de
@@ -288,17 +308,25 @@ async function resolverContacto(token: string, lead: LeadFunnel, customFields: C
     await ghl(token, 'PUT', `/contacts/${existente}`, { customFields });
     return existente;
   }
-  const { contact } = await ghl<{ contact: { id: string } }>(token, 'POST', '/contacts/', {
-    locationId: LOCATION_ID,
-    name: lead.nombre,
-    firstName: lead.nombre.split(/\s+/)[0],
-    email: lead.correo,
-    phone: lead.telefono,
-    country: lead.pais.toUpperCase(),
-    source: 'funnel web',
-    customFields,
-  });
-  return contact.id;
+  try {
+    const { contact } = await ghl<{ contact: { id: string } }>(token, 'POST', '/contacts/', {
+      locationId: LOCATION_ID,
+      name: lead.nombre,
+      firstName: lead.nombre.split(/\s+/)[0],
+      email: lead.correo,
+      phone: lead.telefono,
+      country: lead.pais.toUpperCase(),
+      source: 'funnel web',
+      customFields,
+    });
+    return contact.id;
+  } catch (e) {
+    if (!esConflicto(e)) throw e;
+    const otro = await reintentarBusqueda(() => buscarContacto(token, lead.correo, lead.telefono));
+    if (!otro) throw e;
+    await ghl(token, 'PUT', `/contacts/${otro}`, { customFields });
+    return otro;
+  }
 }
 
 interface Oportunidad {
@@ -486,15 +514,25 @@ export async function guardarEnGhl(token: string, lead: LeadFunnel): Promise<{ c
       await ghl(token, 'PUT', `/opportunities/${abierta.id}`, { pipelineId: PIPELINE, pipelineStageId: etapa });
     }
   } else if (!opportunities.length) {
-    await ghl(token, 'POST', '/opportunities/', {
-      locationId: LOCATION_ID,
-      pipelineId: PIPELINE,
-      pipelineStageId: etapa,
-      contactId,
-      name: `${lead.nombre} · funnel web`,
-      status: 'open',
-      source: 'funnel web',
-    });
+    try {
+      await ghl(token, 'POST', '/opportunities/', {
+        locationId: LOCATION_ID,
+        pipelineId: PIPELINE,
+        pipelineStageId: etapa,
+        contactId,
+        name: `${lead.nombre} · funnel web`,
+        status: 'open',
+        source: 'funnel web',
+      });
+    } catch (e) {
+      // El otro envío ya la creó: si este es el final, la deja en su etapa.
+      if (!esConflicto(e)) throw e;
+      const otra = await reintentarBusqueda(async () => (await oportunidadesAbiertas(token, contactId)).find((o) => ETAPAS_DEL_FUNNEL.includes(o.pipelineStageId)) ?? null);
+      if (!otra) throw e;
+      if (resultado && otra.pipelineStageId !== etapa) {
+        await ghl(token, 'PUT', `/opportunities/${otra.id}`, { pipelineId: PIPELINE, pipelineStageId: etapa });
+      }
+    }
   }
 
   return { contactId, categoria: resultado?.categoria };
