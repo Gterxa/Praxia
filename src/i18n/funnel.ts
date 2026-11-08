@@ -168,7 +168,7 @@ const ES = {
       siLlamenme: 'Sí, llámenme',
       prefieroElegir: 'Prefiero elegir día y hora',
       fueraTitulo: 'Ahora estamos fuera de horario.',
-      fueraAyuda: 'Elige el día y la hora que te acomoden y te llamamos ahí.',
+      fueraAyuda: 'Elige el día y la hora que te acomoden y nos vemos por Google Meet.',
       elegir: 'Elegir día y hora',
     },
     llamada: {
@@ -179,7 +179,7 @@ const ES = {
     agenda: {
       h1: ['Elige día y hora ', 'para tu diagnóstico'] as Dos,
       aviso: ['Te atiende el equipo que construye. ', 'Pocos cupos por semana:', ' elige el tuyo antes de que cierre la agenda.'] as Tres,
-      datos: ['15 minutos', 'Videollamada (o WhatsApp si prefieres)', 'Sin costo. Si no tiene sentido, te lo decimos.', 'Sales con un plan: qué automatizar, precio y plazo.'],
+      datos: ['15 minutos', 'Videollamada por Google Meet', 'Sin costo. Si no tiene sentido, te lo decimos.', 'Sales con un plan: qué automatizar, precio y plazo.'],
       cargando: 'Buscando horarios libres…',
       errorCarga: 'No pudimos cargar la agenda.',
       reintentar: 'Intentar de nuevo',
@@ -197,7 +197,7 @@ const ES = {
     confirmado: {
       kicker: 'Agendado',
       h1: (dia: string, hora: string) => ['Te esperamos el ', `${dia}, a las ${hora}`] as Dos,
-      ayuda: ['A esa hora te llama alguien del equipo: ', 'atento al celular, aunque no reconozcas el número', '. La confirmación te llega a tu correo.'] as Tres,
+      ayuda: ['A esa hora entras por el link de Google Meet: ', 'está en la invitación del calendario', ', junto con la confirmación en tu correo.'] as Tres,
     },
     evaluacion: {
       gracias: (nombre: string) => `Gracias por contarnos de tu negocio${nombre ? `, ${nombre}` : ''}.`,
@@ -355,7 +355,7 @@ const EN: Textos = {
       siLlamenme: 'Yes, call me',
       prefieroElegir: "I'd rather pick a day and time",
       fueraTitulo: "We're outside business hours right now.",
-      fueraAyuda: "Pick the day and time that work for you and we'll call you then.",
+      fueraAyuda: "Pick the day and time that work for you and we'll meet on Google Meet.",
       elegir: 'Pick a day and time',
     },
     llamada: {
@@ -366,7 +366,7 @@ const EN: Textos = {
     agenda: {
       h1: ['Pick a day and time ', 'for your diagnosis'],
       aviso: ["You'll talk to the team that builds. ", 'Few spots each week:', ' grab yours before the calendar closes.'],
-      datos: ['15 minutes', 'Video call (or WhatsApp if you prefer)', "Free. If it doesn't make sense, we'll tell you.", 'You leave with a plan: what to automate, price and timeline.'],
+      datos: ['15 minutes', 'Video call on Google Meet', "Free. If it doesn't make sense, we'll tell you.", 'You leave with a plan: what to automate, price and timeline.'],
       cargando: 'Looking for open times…',
       errorCarga: "We couldn't load the calendar.",
       reintentar: 'Try again',
@@ -384,7 +384,7 @@ const EN: Textos = {
     confirmado: {
       kicker: 'Booked',
       h1: (dia: string, hora: string) => ['See you on ', `${dia}, at ${hora}`] as Dos,
-      ayuda: ['At that time someone from the team will call you: ', "keep your phone close, even if you don't recognize the number", '. The confirmation will arrive in your email.'],
+      ayuda: ['At that time, join through the Google Meet link: ', "it's in the calendar invitation", ', along with the confirmation in your email.'],
     },
     evaluacion: {
       gracias: (nombre: string) => `Thanks for telling us about your business${nombre ? `, ${nombre}` : ''}.`,
