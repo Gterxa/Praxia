@@ -20,7 +20,6 @@ import Layout from '../../layouts/Layout.astro';
 import VideoVSL from './VideoVSL.astro';
 import LogosMarqueeCosmoq from '../LogosMarqueeCosmoq.astro';
 import CasosWebs from './CasosWebs.astro';
-import IconoPill from './IconoPill.astro';
 import SelectorIdioma from './SelectorIdioma.astro';
 import { CONTEXTO } from '../../consts';
 import { CUPOS_SEMANA } from '../../funnel';
@@ -37,7 +36,7 @@ const t = tx.landing;
 const otro: Idioma = idioma === 'es' ? 'en' : 'es';
 
 const aplicar = ruta(rutaFunnel(idioma, '/aplicar'));
-const PILLS = t.pills;
+const [introAntes, introClave, introDespues] = t.intro;
 const TE_LLEVAS = t.items;
 const DUDAS = t.dudas;
 const [cuposAntes, cuposNum, cuposDespues] = t.cupos(CUPOS_SEMANA);
@@ -69,9 +68,32 @@ const segundos = VIDEO_VSL.segundos;
         <h1 class="fl-titulo">
           {t.h1[0]}<span class="fl-calido">{t.h1[1]}</span>
         </h1>
-        <ul class="fl-pills" aria-label={t.pillsAria}>
-          {PILLS.map((p, i) => <li class="fl-pill"><IconoPill i={i} />{p}</li>)}
-        </ul>
+        <p class="fl-intro">{introAntes}<b>{introClave}</b>{introDespues}</p>
+        <ol class="fl-pasos" aria-label={t.pasos.aria}>
+          <li class="fl-paso fl-paso-uno">
+            <span class="fl-paso-n" aria-hidden="true">1</span>
+            <span class="fl-paso-texto">
+              <span class="fl-paso-etiqueta">{t.pasos.uno.n}</span>
+              <b class="fl-paso-titulo">{t.pasos.uno.titulo}</b>
+              <span class="fl-paso-detalle">{t.pasos.uno.detalle}</span>
+            </span>
+          </li>
+          <li class="fl-paso fl-paso-dos">
+            <span class="fl-paso-n" aria-hidden="true">2</span>
+            <span class="fl-paso-texto">
+              <span class="fl-paso-etiqueta">{t.pasos.dos.n}</span>
+              <b class="fl-paso-titulo">{t.pasos.dos.titulo}</b>
+              <span class="fl-paso-detalle fl-paso-cerrado">
+                <svg class="fl-paso-icono" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="11" width="15" height="10" rx="2" /><path d="M8 11V7.5a4 4 0 0 1 8 0V11" /></svg>
+                {t.pasos.dos.cerrado}
+              </span>
+              <span class="fl-paso-detalle fl-paso-abierto">
+                <svg class="fl-paso-icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+                {t.pasos.dos.abierto}
+              </span>
+            </span>
+          </li>
+        </ol>
         <div class="fl-video"><VideoVSL idioma={idioma} /></div>
         <p class="fl-sub">
           {t.sub[0]}
@@ -364,28 +386,138 @@ const segundos = VIDEO_VSL.segundos;
     color: transparent;
   }
 
-  .fl-pills {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 1.75rem;
+  /* Texto de arranque de Álvaro: qué hacemos, dicho en primera persona. */
+  .fl-intro {
+    max-width: 34rem;
+    margin: 1.5rem auto 0;
+    color: var(--color-texto-2);
+    font-size: clamp(1.0625rem, 2.6vw, 1.25rem);
+    line-height: 1.5;
+    text-wrap: pretty;
   }
 
-  .fl-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.4rem 0.9rem;
-    border: 1px solid rgb(255 255 255 / 0.16);
-    border-radius: var(--radius-pill);
-    background: rgb(255 255 255 / 0.05);
-    font-size: 0.875rem;
+  .fl-intro b {
+    color: var(--color-texto);
     font-weight: 600;
   }
 
+  /* ── Los dos pasos: arriba del video, para que se vea que hay un paso 2 ── */
+  .fl-pasos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.625rem;
+    max-width: 34rem;
+    margin: 1.75rem auto 0;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+  }
+
+  .fl-paso {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border: 1px solid rgb(255 255 255 / 0.16);
+    border-radius: 0.875rem;
+    background: rgb(255 255 255 / 0.05);
+  }
+
+  /* El paso 1 es el de ahora: lleva el color. */
+  .fl-paso-uno {
+    border-color: var(--color-brasa);
+    background: var(--color-brasa-tenue);
+  }
+
+  .fl-paso-n {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--color-brasa);
+    color: #fff;
+    font-family: var(--font-titulos);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    line-height: 1;
+  }
+
+  .fl-paso-dos .fl-paso-n {
+    background: rgb(255 255 255 / 0.12);
+    color: var(--color-texto);
+  }
+
+  .fl-paso-texto {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .fl-paso-etiqueta {
+    color: var(--color-texto-2);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .fl-paso-titulo {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .fl-paso-detalle {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.3rem;
+    color: var(--color-texto-2);
+    font-size: 0.8125rem;
+    line-height: 1.3;
+  }
+
+  .fl-paso-icono {
+    flex: none;
+    width: 0.875rem;
+    height: 0.875rem;
+    margin-top: 0.1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.25;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* El paso 2 cambia con el candado del video. */
+  .fl-paso-abierto,
+  .fl[data-video='bloqueado'] .fl-paso-cerrado {
+    display: flex;
+  }
+
+  .fl-paso-cerrado,
+  .fl[data-video='bloqueado'] .fl-paso-abierto {
+    display: none;
+  }
+
+  .fl[data-video='libre'] .fl-paso-dos {
+    border-color: var(--color-brasa);
+  }
+
+  .fl[data-video='libre'] .fl-paso-dos .fl-paso-n {
+    background: var(--color-brasa);
+    color: #fff;
+  }
+
+  .fl[data-video='libre'] .fl-paso-abierto {
+    color: var(--color-texto);
+  }
+
   .fl-video {
-    margin-top: 2rem;
+    margin-top: 1.25rem;
     text-align: left;
   }
 
@@ -868,14 +1000,14 @@ const segundos = VIDEO_VSL.segundos;
       font-size: 2rem;
     }
 
-    .fl-pills {
-      gap: 0.375rem;
-      margin-top: 1.25rem;
+    .fl-intro {
+      margin-top: 1rem;
+      font-size: 1.0625rem;
+      line-height: 1.45;
     }
 
-    .fl-pill {
-      padding: 0.35rem 0.7rem;
-      font-size: 0.8125rem;
+    .fl-pasos {
+      margin-top: 1.25rem;
     }
 
     .fl-video {
