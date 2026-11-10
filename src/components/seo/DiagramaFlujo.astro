@@ -1,0 +1,191 @@
+---
+/**
+ * Diagrama de flujo animado de un proceso real del rubro (src/lib/flujos.ts,
+ * renderizado con Remotion en remotion/). Va en PaginaSeo antes de la demo.
+ *
+ * Carga: nada hasta que el bloque se acerca a la pantalla. El póster es un
+ * <picture> (solo baja el de la orientación que toca, con loading="lazy") y
+ * reserva el alto exacto: sin desplazamiento de layout. El <video> no lleva
+ * `autoplay` en el HTML a propósito: con autoplay el navegador lo descarga
+ * aunque esté fuera de pantalla e ignora preload="none". El script le pone la
+ * fuente (horizontal o vertical según el ancho) y le da play al entrar en
+ * pantalla; lo pausa al salir. Con prefers-reduced-motion solo queda el póster.
+ *
+ * Los pasos van también en texto (lista para lectores de pantalla, Google y
+ * los LLM). El bloque lleva data-plantilla: se repite entre las páginas que
+ * comparten flujo y no cuenta como contenido propio en `npm run similitud`.
+ */
+import { getEntry } from 'astro:content';
+import { FLUJOS, LIENZO, archivosFlujo, clave } from '../../lib/flujos';
+import { INFO_PROCESO, NOMBRE_NICHO, type Nicho, type Proceso } from '../../lib/procesos';
+import { ruta } from '../../rutas';
+
+interface Props {
+  nicho: Nicho;
+  /** Sin proceso: el principal del rubro (el primero de `procesos` en su página). */
+  proceso?: Proceso;
+}
+
+const { nicho } = Astro.props;
+const pagina = await getEntry('nichos', nicho);
+const proceso: Proceso = Astro.props.proceso ?? pagina?.data.procesos[0] ?? 'atencion';
+const k = clave(nicho, proceso);
+const pasos = FLUJOS[k];
+const a = archivosFlujo(k);
+const nombreNicho = (pagina?.data.nombre ?? NOMBRE_NICHO[nicho]).toLowerCase();
+const id = `diagrama-${k}`;
+---
+
+<section class="diagrama" aria-labelledby={`${id}-t`} data-plantilla>
+  <h2 id={`${id}-t`}>{INFO_PROCESO[proceso].nombre} para {nombreNicho}, paso a paso</h2>
+  <figure>
+    <div class="lienzo">
+      <picture>
+        <source
+          media="(max-width: 39.99rem)"
+          srcset={ruta(a.alto.poster)}
+          width={LIENZO.alto.w}
+          height={LIENZO.alto.h}
+        />
+        <img
+          src={ruta(a.ancho.poster)}
+          width={LIENZO.ancho.w}
+          height={LIENZO.ancho.h}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+      <video
+        data-diagrama
+        data-ancho-webm={ruta(a.ancho.webm)}
+        data-ancho-mp4={ruta(a.ancho.mp4)}
+        data-alto-webm={ruta(a.alto.webm)}
+        data-alto-mp4={ruta(a.alto.mp4)}
+        muted
+        loop
+        playsinline
+        preload="none"
+        disablepictureinpicture
+        aria-hidden="true"
+        tabindex="-1"></video>
+    </div>
+    <figcaption class="sr-only">
+      Diagrama del proceso en {pasos.length} pasos:
+      <ol>
+        {pasos.map((p) => <li>{p.texto}.</li>)}
+      </ol>
+    </figcaption>
+  </figure>
+</section>
+
+<script>
+  const MOVIL = window.matchMedia('(max-width: 39.99rem)');
+  const QUIETO = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const videos = [...document.querySelectorAll<HTMLVideoElement>('video[data-diagrama]')];
+  const visibles = new Set<HTMLVideoElement>();
+
+  const cargar = (v: HTMLVideoElement) => {
+    const o = MOVIL.matches ? 'alto' : 'ancho';
+    if (v.dataset.orientacion === o) return;
+    v.dataset.orientacion = o;
+    v.classList.remove('listo');
+    v.replaceChildren(
+      Object.assign(document.createElement('source'), { src: v.dataset[`${o}Webm`]!, type: 'video/webm' }),
+      Object.assign(document.createElement('source'), { src: v.dataset[`${o}Mp4`]!, type: 'video/mp4' }),
+    );
+    v.load();
+  };
+  const reproducir = (v: HTMLVideoElement) => {
+    if (QUIETO.matches) return;
+    cargar(v);
+    v.play().catch(() => {});
+  };
+
+  videos.forEach((v) => v.addEventListener('playing', () => v.classList.add('listo')));
+
+  const io = new IntersectionObserver(
+    (entradas) =>
+      entradas.forEach(({ target, isIntersecting }) => {
+        const v = target as HTMLVideoElement;
+        if (isIntersecting) {
+          visibles.add(v);
+          reproducir(v);
+        } else {
+          visibles.delete(v);
+          v.pause();
+        }
+      }),
+    { rootMargin: '200px 0px' },
+  );
+  videos.forEach((v) => io.observe(v));
+
+  // Si cambia el ancho de un lado al otro del corte, o se activa «reducir movimiento».
+  MOVIL.addEventListener('change', () => visibles.forEach(reproducir));
+  QUIETO.addEventListener('change', () =>
+    videos.forEach((v) => (QUIETO.matches ? (v.pause(), v.classList.remove('listo')) : visibles.has(v) && reproducir(v))),
+  );
+</script>
+
+<style>
+  .diagrama {
+    margin-top: 4rem;
+  }
+  .diagrama h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  figure {
+    margin-top: 1.5rem;
+  }
+  .lienzo {
+    position: relative;
+    aspect-ratio: 1280 / 360;
+    border-radius: var(--radius-tarjeta);
+    overflow: hidden;
+    background: var(--color-surface);
+    border: 1px solid var(--color-linea);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.04) inset,
+      0 24px 60px rgb(0 0 0 / 0.45),
+      0 8px 24px rgb(255 107 53 / 0.05);
+  }
+  @media (max-width: 39.99rem) {
+    .lienzo {
+      aspect-ratio: 720 / 960;
+    }
+  }
+  .lienzo img,
+  .lienzo video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  /* El video tapa al póster recién cuando ya muestra cuadros: corte, sin fundido. */
+  .lienzo video {
+    visibility: hidden;
+  }
+  .lienzo video:global(.listo) {
+    visibility: visible;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lienzo video {
+      display: none;
+    }
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

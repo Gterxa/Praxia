@@ -79,6 +79,7 @@ const tramo = props.tipo === 'proceso' ? INFO_PROCESO[props.e.data.proceso].nomb
   datos={datos}
   enlaces={enlaces}
   cuerpo={e.body}
+  diagrama={props.tipo === 'proceso' ? { nicho: nicho as Nicho, proceso: props.e.data.proceso } : { nicho: nicho as Nicho }}
 >
   <Content />
 </PaginaSeo>

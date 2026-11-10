@@ -16,6 +16,8 @@ referencias/node_modules/
 *.mp4
 # Excepción: los videos que el sitio sirve (funnel, ver src/vsl.ts y src/videos.ts), ya comprimidos para web.
 !public/videos/*.mp4
+# Respaldo MP4 de los diagramas de flujo de las páginas SEO (remotion/, ~50-80 KB cada uno).
+!public/diagramas/*.mp4
 
 # Referencias visuales sueltas para una tarea puntual: material de trabajo, no del sitio.
 design-refs/

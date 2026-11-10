@@ -43,6 +43,7 @@ const enlaces = await enlacesDe('calculadora', c.id, { nicho: c.data.nicho, proc
   datos={datos}
   enlaces={enlaces}
   cuerpo={c.body}
+  diagrama={{ nicho: c.data.nicho, proceso: c.data.proceso }}
 >
   <form class="calc tarjeta" data-calc data-factor={c.data.factor} aria-labelledby="calc-titulo" slot="extra">
     <h2 id="calc-titulo" class="mono text-brasa">Calcula con tus números</h2>

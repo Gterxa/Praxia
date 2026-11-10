@@ -26,6 +26,7 @@ const enlaces = await enlacesDe('comparativa', c.id, { nicho: c.data.nicho, proc
   datos={datos}
   enlaces={enlaces}
   cuerpo={c.body}
+  diagrama={{ nicho: c.data.nicho, proceso: c.data.proceso }}
   tipoOG="article"
 >
   <Content />

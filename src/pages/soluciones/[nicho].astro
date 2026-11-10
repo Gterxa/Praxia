@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import PaginaSeo from '../../components/seo/PaginaSeo.astro';
 import { publicadas, portada, enlacesDe, service, faqPage, AREA_GENERAL, url, type Entrada } from '../../lib/seo';
+import type { Nicho } from '../../lib/procesos';
 
 export async function getStaticPaths() {
   const nichos = await publicadas('nichos');
@@ -29,6 +30,7 @@ const enlaces = await enlacesDe('nicho', n.id, { nicho: n.id });
   datos={datos}
   enlaces={enlaces}
   cuerpo={n.body}
+  diagrama={{ nicho: n.id as Nicho }}
   preguntaCierre={`¿Cuánto le cuesta a ${n.data.tuNegocio} hacerlo a mano?`}
 >
   <Content />
