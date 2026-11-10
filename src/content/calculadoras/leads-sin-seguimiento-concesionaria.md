@@ -48,25 +48,34 @@ factor: 1
 resultado: "Lo que se te va al mes en cotizaciones sin seguimiento"
 ---
 
-## Cómo se calcula
+## La venta que se va sin que nadie la vea
 
-Cada mes entregas cotizaciones. Una parte no recibe un segundo contacto. De esas, algunas habrían terminado en venta si alguien hubiera vuelto a escribir con algo útil, como en el ejemplo de esta página, donde avisar que llegó el color que el cliente quería convierte una cotización olvidada en una cita.
+Una cotización enviada parece trabajo terminado. El cliente tiene el precio, la versión y la cuota; si quiere, que vuelva. El problema es que el comprador de autos casi nunca vuelve solo: cotiza en dos o tres concesionarias, espera su bono o la respuesta del banco, y compra donde alguien le escribió en el momento justo. En el ejemplo de esta página, ese momento es la llegada del color que el cliente quería.
 
-**Cotizaciones al mes × porcentaje sin seguimiento × porcentaje que habría cerrado × margen por auto = margen que se va al mes.**
+Esa fuga no aparece en ningún reporte. No es una venta perdida contra un competidor con mejor precio: es una cotización que se quedó quieta en el WhatsApp de un vendedor ocupado.
 
-Los valores del formulario son ejemplos para mostrar cómo funciona. Pon los tuyos.
+## La cuenta, paso a paso
 
-## De dónde sacar cada dato
+1. **Cotizaciones al mes**: todas las que salieron, por WhatsApp, correo o en el salón.
+2. **Cuántas no tuvieron segundo contacto**: toma veinte cotizaciones del mes pasado al azar y revisa si alguien volvió a escribir en la semana siguiente. Esa proporción sirve como porcentaje.
+3. **Cuántas habrían cerrado con seguimiento**: mira cuántas cotizaciones con buen seguimiento terminan en venta y usa un número claramente menor. Este dato es una estimación; mejor quedarse corto.
+4. **Margen por auto**: lo que le queda a la concesionaria por venta, no el precio del auto. Si nuevos y seminuevos tienen márgenes muy distintos, haz dos cálculos.
 
-| Dato | Dónde encontrarlo |
+El formulario multiplica los cuatro y te da el margen que se escapa cada mes. Los valores de ejemplo solo muestran cómo funciona.
+
+## Lo que el número no incluye
+
+- Leads que nunca recibieron una primera respuesta.
+- Pruebas de manejo agendadas a las que nadie llegó.
+- El ingreso de taller que ese cliente habría dejado durante años.
+- La recompra cuando cambie de auto.
+
+Por eso el resultado suele quedarse corto frente al impacto real de un buen seguimiento.
+
+## Y ahora qué
+
+| Si el resultado es | Lo que conviene mirar primero |
 |---|---|
-| Cotizaciones al mes | CRM, registro de cotizaciones o lo que reporta cada vendedor |
-| Porcentaje sin seguimiento | Revisa una muestra de cotizaciones y mira cuáles tuvieron un segundo contacto |
-| Porcentaje que habría cerrado | Una estimación prudente, menor a tu cierre con buen seguimiento |
-| Margen por auto | Tu margen promedio de venta, separado por nuevos y seminuevos si difieren mucho |
-
-## Cómo leer el resultado
-
-El número es lo que se va cada mes solo por falta de seguimiento. No incluye leads que nunca recibieron respuesta, pruebas de manejo que no se presentaron ni clientes de taller que no volvieron.
-
-Si el resultado te sorprende, el siguiente paso es ver cómo se arma el [seguimiento para concesionarias](/soluciones/concesionarias/seguimiento) y los [errores más comunes en el seguimiento de leads de autos](/blog/errores-seguimiento-leads-autos). Si prefieres empezar más atrás en el embudo, revisa la [atención para concesionarias](/soluciones/concesionarias/atencion).
+| Alto | [Seguimiento para concesionarias](/soluciones/concesionarias/seguimiento): cada cotización con su próximo mensaje |
+| Moderado | [Errores en el seguimiento de leads de autos](/blog/errores-seguimiento-leads-autos), para ajustar lo que ya haces |
+| Bajo | Tu fuga está antes: revisa la [atención para concesionarias](/soluciones/concesionarias/atencion) |
