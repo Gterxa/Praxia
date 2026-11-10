@@ -44,15 +44,15 @@ faq:
 fecha: 2026-11-10
 ---
 
-## Cómo leer el resultado
+## Qué significa la cifra
 
-El número es lo que dejas de facturar en horas que ya estaban apartadas: la terapeuta estuvo disponible, la cabina preparada y nadie llegó. En un spa o medspa, ese tiempo no se puede vender después, como pasa con el stock de una tienda. Por eso una inasistencia pesa más de lo que parece en la agenda.
+La cifra representa lo que dejas de facturar en horas que ya estaban apartadas: la terapeuta estuvo disponible, la cabina preparada y nadie llegó. En un spa o medspa, ese tiempo no se puede vender después, como pasa con el stock de una tienda. Por eso una inasistencia pesa más de lo que parece en la agenda.
 
 El resultado tampoco incluye lo que no se ve: la clienta que quería ese horario y no lo encontró, ni la terapeuta que cobra igual por una hora sin trabajo.
 
-## Qué hacer con este número
+## Decisiones según lo que te salió
 
-| Si el resultado es… | Lo que suele convenir |
+| Lo que te dio la cuenta | Por dónde empezar |
 |---|---|
 | Pequeño frente a tu facturación | Mantener la confirmación que haces hoy y medir cada mes |
 | Parecido al sueldo de una persona de recepción | Automatizar la confirmación del día anterior |
