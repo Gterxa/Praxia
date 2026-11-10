@@ -3,7 +3,7 @@ nicho: "ecommerce"
 proceso: "atencion"
 tipo: "intencion"
 titulo: "Respuestas automáticas en Instagram para una tienda de lujo"
-seoTitulo: "Chatbot de Instagram para tienda de lujo: cómo responder sin perder clase"
+seoTitulo: "Chatbot de Instagram para tienda de lujo sin perder la clase"
 seoDescripcion: "Cómo automatizar los DMs de Instagram de una tienda de lujo sin sonar a robot: tono de marca, cuándo pasar a una persona y qué preguntas responder solas."
 respuesta: "Un asistente para los DMs de Instagram de una tienda de lujo contesta al instante las preguntas de disponibilidad, envío y cuidado de las piezas con el tono de tu marca, y pasa a una asesora las conversaciones de alto valor. Funciona si respeta el ritmo de la clienta y nunca suena a menú de opciones."
 tldr:
@@ -72,7 +72,7 @@ Antes de escribir una sola respuesta, definimos con la marca cómo habla. Alguna
 
 - ¿Tutea o trata de usted? ¿Cambia según cómo escriba la clienta?
 - ¿Cómo se nombra a las piezas: por nombre de colección, por material, por inspiración?
-- ¿Qué palabras nunca usaría la marca? En lujo suelen ser «oferta», «barato», «promo», exclamaciones dobles.
+- ¿Qué palabras nunca usaría la marca? En lujo suelen ser «oferta», «liquidación», «promo» y las exclamaciones dobles.
 - ¿Cómo se despide? ¿Firma con el nombre de la asesora o con el de la casa?
 
 Con eso se escribe una guía corta y cada respuesta se revisa contra ella. El resultado es que el DM suena igual a las 11 de la mañana, cuando contesta la asesora, que a las 11 de la noche, cuando contesta el asistente.
