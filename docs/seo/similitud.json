@@ -1,476 +1,53 @@
 {
   "umbral": 0.3,
   "paginas": 33,
-  "pares_sobre_umbral": [
-    {
-      "similitud": 0.4944,
-      "a": "/ciudades/los-angeles",
-      "b": "/ciudades/dallas"
-    },
-    {
-      "similitud": 0.4858,
-      "a": "/ciudades/houston",
-      "b": "/ciudades/dallas"
-    },
-    {
-      "similitud": 0.4839,
-      "a": "/ciudades/los-angeles",
-      "b": "/ciudades/houston"
-    },
-    {
-      "similitud": 0.4588,
-      "a": "/ciudades/miami",
-      "b": "/ciudades/houston"
-    },
-    {
-      "similitud": 0.4544,
-      "a": "/ciudades/santiago",
-      "b": "/ciudades/arequipa"
-    },
-    {
-      "similitud": 0.4493,
-      "a": "/ciudades/miami",
-      "b": "/ciudades/dallas"
-    },
-    {
-      "similitud": 0.4386,
-      "a": "/ciudades/miami",
-      "b": "/ciudades/los-angeles"
-    },
-    {
-      "similitud": 0.4364,
-      "a": "/ciudades/nueva-york",
-      "b": "/ciudades/bogota"
-    },
-    {
-      "similitud": 0.4308,
-      "a": "/ciudades/nueva-york",
-      "b": "/ciudades/los-angeles"
-    },
-    {
-      "similitud": 0.4219,
-      "a": "/ciudades/nueva-york",
-      "b": "/ciudades/dallas"
-    },
-    {
-      "similitud": 0.4188,
-      "a": "/ciudades/nueva-york",
-      "b": "/ciudades/houston"
-    },
-    {
-      "similitud": 0.416,
-      "a": "/ciudades/santiago",
-      "b": "/ciudades/monterrey"
-    },
-    {
-      "similitud": 0.4143,
-      "a": "/ciudades/nueva-york",
-      "b": "/ciudades/miami"
-    },
-    {
-      "similitud": 0.4087,
-      "a": "/ciudades/trujillo",
-      "b": "/ciudades/santiago"
-    },
-    {
-      "similitud": 0.4026,
-      "a": "/ciudades/santiago",
-      "b": "/ciudades/houston"
-    },
-    {
-      "similitud": 0.4,
-      "a": "/ciudades/medellin",
-      "b": "/ciudades/bogota"
-    },
-    {
-      "similitud": 0.3978,
-      "a": "/ciudades/monterrey",
-      "b": "/ciudades/bogota"
-    },
-    {
-      "similitud": 0.3971,
-      "a": "/ciudades/santiago",
-      "b": "/ciudades/bogota"
-    },
-    {
-      "similitud": 0.3951,
-      "a": "/ciudades/miami",
-      "b": "/ciudades/bogota"
-    },
-    {
-      "similitud": 0.3934,
-      "a": "/ciudades/houston",
-      "b": "/ciudades/bogota"
-    },
-    {
-      "similitud": 0.3903,
-      "a": "/ciudades/monterrey",
-      "b": "/ciudades/arequipa"
-    },
-    {
-      "similitud": 0.3903,
-      "a": "/ciudades/santiago",
-      "b": "/ciudades/miami"
-    },
-    {
-      "similitud": 0.3887,
-      "a": "/ciudades/nueva-york",
-      "b": "/ciudades/medellin"
-    },
-    {
-      "similitud": 0.3876,
-      "a": "/ciudades/miami",
-      "b": "/ciudades/ciudad-mexico"
-    },
-    {
-      "similitud": 0.3867,
-      "a": "/ciudades/dallas",
-      "b": "/ciudades/bogota"
-    },
-    {
-      "similitud": 0.3866,
-      "a": "/ciudades/monterrey",
-      "b": "/ciudades/dallas"
-    },
-    {
-      "similitud": 0.3853,
-      "a": "/ciudades/los-angeles",
-      "b": "/ciudades/bogota"
-    },
-    {
-      "similitud": 0.3845,
-      "a": "/ciudades/los-angeles",
-      "b": "/ciudades/ciudad-mexico"
-    },
-    {
-      "similitud": 0.3832,
-      "a": "/ciudades/trujillo",
-      "b": "/ciudades/bogota"
-    },
-    {
-      "similitud": 0.3817,
-      "a": "/ciudades/monterrey",
-      "b": "/ciudades/medellin"
-    },
-    {
-      "similitud": 0.3792,
-      "a": "/ciudades/medellin",
-      "b": "/ciudades/dallas"
-    },
-    {
-      "similitud": 0.3792,
-      "a": "/ciudades/trujillo",
-      "b": "/ciudades/arequipa"
-    },
-    {
-      "similitud": 0.3791,
-      "a": "/ciudades/santiago",
-      "b": "/ciudades/medellin"
-    },
-    {
-      "similitud": 0.3789,
-      "a": "/ciudades/trujillo",
-      "b": "/ciudades/monterrey"
-    },
-    {
-      "similitud": 0.3783,
-      "a": "/ciudades/monterrey",
-      "b": "/ciudades/houston"
-    },
-    {
-      "similitud": 0.3779,
-      "a": "/ciudades/houston",
-      "b": "/ciudades/ciudad-mexico"
-    },
-    {
-      "similitud": 0.3756,
-      "a": "/ciudades/santiago",
-      "b": "/ciudades/dallas"
-    },
-    {
-      "similitud": 0.3724,
-      "a": "/ciudades/medellin",
-      "b": "/ciudades/arequipa"
-    },
-    {
-      "similitud": 0.3695,
-      "a": "/ciudades/medellin",
-      "b": "/ciudades/houston"
-    },
-    {
-      "similitud": 0.3683,
-      "a": "/ciudades/nueva-york",
-      "b": "/ciudades/ciudad-mexico"
-    },
-    {
-      "similitud": 0.3682,
-      "a": "/ciudades/santiago",
-      "b": "/ciudades/ciudad-mexico"
-    },
-    {
-      "similitud": 0.3671,
-      "a": "/ciudades/miami",
-      "b": "/ciudades/medellin"
-    },
-    {
-      "similitud": 0.3656,
-      "a": "/ciudades/trujillo",
-      "b": "/ciudades/ciudad-mexico"
-    },
-    {
-      "similitud": 0.3638,
-      "a": "/ciudades/bogota",
-      "b": "/ciudades/arequipa"
-    },
-    {
-      "similitud": 0.3635,
-      "a": "/ciudades/dallas",
-      "b": "/ciudades/ciudad-mexico"
-    },
-    {
-      "similitud": 0.3633,
-      "a": "/ciudades/ciudad-mexico",
-      "b": "/ciudades/bogota"
-    },
-    {
-      "similitud": 0.3632,
-      "a": "/ciudades/trujillo",
-      "b": "/ciudades/houston"
-    },
-    {
-      "similitud": 0.3624,
-      "a": "/ciudades/trujillo",
-      "b": "/ciudades/miami"
-    },
-    {
-      "similitud": 0.3612,
-      "a": "/ciudades/medellin",
-      "b": "/ciudades/ciudad-mexico"
-    },
-    {
-      "similitud": 0.3605,
-      "a": "/ciudades/medellin",
-      "b": "/ciudades/los-angeles"
-    },
-    {
-      "similitud": 0.3588,
-      "a": "/ciudades/nueva-york",
-      "b": "/ciudades/monterrey"
-    },
-    {
-      "similitud": 0.3571,
-      "a": "/ciudades/santiago",
-      "b": "/ciudades/nueva-york"
-    },
-    {
-      "similitud": 0.3563,
-      "a": "/ciudades/houston",
-      "b": "/ciudades/arequipa"
-    },
-    {
-      "similitud": 0.3555,
-      "a": "/ciudades/trujillo",
-      "b": "/ciudades/lima"
-    },
-    {
-      "similitud": 0.3551,
-      "a": "/ciudades/santiago",
-      "b": "/ciudades/los-angeles"
-    },
-    {
-      "similitud": 0.3542,
-      "a": "/ciudades/monterrey",
-      "b": "/ciudades/los-angeles"
-    },
-    {
-      "similitud": 0.3524,
-      "a": "/ciudades/nueva-york",
-      "b": "/ciudades/arequipa"
-    },
-    {
-      "similitud": 0.3481,
-      "a": "/ciudades/dallas",
-      "b": "/ciudades/arequipa"
-    },
-    {
-      "similitud": 0.3471,
-      "a": "/ciudades/monterrey",
-      "b": "/ciudades/ciudad-mexico"
-    },
-    {
-      "similitud": 0.3466,
-      "a": "/ciudades/trujillo",
-      "b": "/ciudades/los-angeles"
-    },
-    {
-      "similitud": 0.3466,
-      "a": "/ciudades/los-angeles",
-      "b": "/ciudades/arequipa"
-    },
-    {
-      "similitud": 0.3456,
-      "a": "/ciudades/trujillo",
-      "b": "/ciudades/medellin"
-    },
-    {
-      "similitud": 0.3454,
-      "a": "/ciudades/lima",
-      "b": "/ciudades/ciudad-mexico"
-    },
-    {
-      "similitud": 0.3415,
-      "a": "/ciudades/miami",
-      "b": "/ciudades/lima"
-    },
-    {
-      "similitud": 0.3381,
-      "a": "/ciudades/lima",
-      "b": "/ciudades/bogota"
-    },
-    {
-      "similitud": 0.3375,
-      "a": "/ciudades/monterrey",
-      "b": "/ciudades/miami"
-    },
-    {
-      "similitud": 0.3335,
-      "a": "/ciudades/lima",
-      "b": "/ciudades/dallas"
-    },
-    {
-      "similitud": 0.3333,
-      "a": "/ciudades/trujillo",
-      "b": "/ciudades/dallas"
-    },
-    {
-      "similitud": 0.3283,
-      "a": "/ciudades/miami",
-      "b": "/ciudades/arequipa"
-    },
-    {
-      "similitud": 0.3272,
-      "a": "/ciudades/ciudad-mexico",
-      "b": "/ciudades/arequipa"
-    },
-    {
-      "similitud": 0.3265,
-      "a": "/ciudades/lima",
-      "b": "/ciudades/arequipa"
-    },
-    {
-      "similitud": 0.3253,
-      "a": "/ciudades/nueva-york",
-      "b": "/ciudades/lima"
-    },
-    {
-      "similitud": 0.3252,
-      "a": "/ciudades/monterrey",
-      "b": "/ciudades/lima"
-    },
-    {
-      "similitud": 0.3248,
-      "a": "/ciudades/medellin",
-      "b": "/ciudades/lima"
-    },
-    {
-      "similitud": 0.3241,
-      "a": "/ciudades/los-angeles",
-      "b": "/ciudades/lima"
-    },
-    {
-      "similitud": 0.3229,
-      "a": "/ciudades/lima",
-      "b": "/ciudades/houston"
-    },
-    {
-      "similitud": 0.3218,
-      "a": "/ciudades/trujillo",
-      "b": "/ciudades/nueva-york"
-    },
-    {
-      "similitud": 0.3174,
-      "a": "/ciudades/santiago",
-      "b": "/ciudades/lima"
-    }
-  ],
+  "pares_sobre_umbral": [],
   "pares_cerca": [
     {
-      "similitud": 0.2801,
-      "a": "/soluciones/ecommerce",
-      "b": "/ciudades/los-angeles"
-    },
-    {
-      "similitud": 0.2666,
-      "a": "/soluciones/ecommerce",
-      "b": "/ciudades/medellin"
-    },
-    {
-      "similitud": 0.2589,
-      "a": "/soluciones/ecommerce",
+      "similitud": 0.2691,
+      "a": "/ciudades/miami",
       "b": "/ciudades/houston"
     },
     {
-      "similitud": 0.2562,
-      "a": "/soluciones/ecommerce",
-      "b": "/ciudades/miami"
+      "similitud": 0.266,
+      "a": "/ciudades/santiago",
+      "b": "/ciudades/arequipa"
+    },
+    {
+      "similitud": 0.2623,
+      "a": "/ciudades/houston",
+      "b": "/ciudades/dallas"
+    },
+    {
+      "similitud": 0.2551,
+      "a": "/ciudades/los-angeles",
+      "b": "/ciudades/dallas"
     }
   ],
   "maximo_por_pagina": {
     "/ciudades/arequipa": {
-      "similitud": 0.4544,
+      "similitud": 0.266,
       "con": "/ciudades/santiago"
-    },
-    "/ciudades/bogota": {
-      "similitud": 0.4364,
-      "con": "/ciudades/nueva-york"
-    },
-    "/ciudades/ciudad-mexico": {
-      "similitud": 0.3876,
-      "con": "/ciudades/miami"
     },
     "/ciudades/dallas": {
-      "similitud": 0.4944,
-      "con": "/ciudades/los-angeles"
-    },
-    "/ciudades/houston": {
-      "similitud": 0.4858,
-      "con": "/ciudades/dallas"
-    },
-    "/ciudades/lima": {
-      "similitud": 0.3555,
-      "con": "/ciudades/trujillo"
-    },
-    "/ciudades/los-angeles": {
-      "similitud": 0.4944,
-      "con": "/ciudades/dallas"
-    },
-    "/ciudades/medellin": {
-      "similitud": 0.4,
-      "con": "/ciudades/bogota"
-    },
-    "/ciudades/miami": {
-      "similitud": 0.4588,
+      "similitud": 0.2623,
       "con": "/ciudades/houston"
     },
-    "/ciudades/monterrey": {
-      "similitud": 0.416,
-      "con": "/ciudades/santiago"
+    "/ciudades/houston": {
+      "similitud": 0.2691,
+      "con": "/ciudades/miami"
     },
-    "/ciudades/nueva-york": {
-      "similitud": 0.4364,
-      "con": "/ciudades/bogota"
+    "/ciudades/los-angeles": {
+      "similitud": 0.2551,
+      "con": "/ciudades/dallas"
+    },
+    "/ciudades/miami": {
+      "similitud": 0.2691,
+      "con": "/ciudades/houston"
     },
     "/ciudades/santiago": {
-      "similitud": 0.4544,
+      "similitud": 0.266,
       "con": "/ciudades/arequipa"
-    },
-    "/ciudades/trujillo": {
-      "similitud": 0.4087,
-      "con": "/ciudades/santiago"
-    },
-    "/soluciones/ecommerce": {
-      "similitud": 0.2801,
-      "con": "/ciudades/los-angeles"
     }
   }
 }
