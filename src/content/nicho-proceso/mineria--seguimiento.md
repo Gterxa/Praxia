@@ -17,7 +17,7 @@ conversacion:
       texto: "Buenos días, ingeniero. Recordatorio: la licitación de mantenimiento de fajas cierra consultas mañana a las 17:00."
       hora: "08:00"
     - de: "cliente"
-      texto: "pucha, tenía una duda sobre el alcance de las guardas. qué dicen las bases?"
+      texto: "uy, tenía una duda sobre el alcance de las guardas. qué dicen las bases?"
       hora: "08:26"
     - de: "negocio"
       texto: "Las bases mencionan guardas en el punto 4.3, pero no dicen si incluyen fabricación o solo instalación. Te dejo un borrador de consulta sobre ese punto."
