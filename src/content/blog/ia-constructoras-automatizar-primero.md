@@ -41,9 +41,9 @@ portadaAlt: "Residente de obra enviando un audio desde su celular mientras sosti
 
 Al dueño de una constructora le ofrecen IA para todo: presupuestos automáticos desde planos, planificación con algoritmos, drones con análisis de imágenes. Algunas de esas herramientas son útiles para empresas grandes. Pero para una constructora mediana con varias obras, la plata se pierde en lugares mucho más simples: lo que nadie anotó, lo que nadie siguió, lo que nadie respondió.
 
-## Lo que conviene automatizar primero
+## Seis tareas donde la IA ya rinde en una obra
 
-| Proceso | Por qué primero | Qué hace la IA |
+| Tarea | El dolor de hoy | Lo que se encarga la IA |
 |---|---|---|
 | Parte diario | Es la base de valorizaciones, adicionales y reclamos | Convierte fotos y audios del residente en un parte ordenado |
 | Resumen de obras | El dueño se entera tarde | Arma cada noche el resumen de todas las obras |
@@ -52,26 +52,22 @@ Al dueño de una constructora le ofrecen IA para todo: presupuestos automáticos
 | Atención por WhatsApp | El dueño contesta de noche | Califica interesados y responde con el avance real |
 | Informe al cliente | El cliente llama preocupado | Redacta el informe semanal con fotos |
 
-Todos son repetitivos, se pueden revisar fácil y un error cuesta algo visible.
+Ninguna de las seis le pide al residente que aprenda algo nuevo: trabajan con las fotos, los audios y los mensajes que ya existen.
 
-## Lo que conviene dejar para después
+## Las promesas que suenan bien pero pueden esperar
 
-**Presupuestos automáticos desde planos.** Dependen de tus precios, rendimientos y proveedores. Si tu problema es cerrar más, no hacer más presupuestos, empieza por el seguimiento.
+Te van a ofrecer presupuestos que se arman solos leyendo los planos. Suena atractivo, pero un presupuesto vive de tus precios, tus rendimientos y tus proveedores, y si tu problema real es que cierras pocos de los que mandas, hacer más no cambia nada: el seguimiento sí.
 
-**Planificación avanzada.** Sin datos de avance confiables, cualquier algoritmo trabaja sobre supuestos. Primero el registro diario.
+También vas a escuchar de planificación con algoritmos. Sin semanas de avance registrado con constancia, esos algoritmos calculan sobre supuestos. El orden lógico es al revés: primero el registro diario, después la planificación.
 
-**Diseño y cálculo.** La responsabilidad técnica es de tus profesionales. Puede haber herramientas útiles, pero no es donde está tu mayor fuga de plata.
+Y el cálculo o el diseño asistido existen, pero la firma y la responsabilidad son de tus ingenieros y proyectistas. No es donde una constructora mediana pierde plata cada semana.
 
-## Cómo empezar
+## Un primer mes razonable
 
-1. **Un proceso.** El que más te cuesta. Si dudas, el parte diario.
-2. **Una obra.** Con el residente que tenga más disposición.
-3. **Un periodo completo.** Una valorización, un mes, lo que tenga sentido.
-4. **Comparar.** Lo que hizo el sistema contra lo que se hacía a mano.
-5. **Extender.** Solo si funciona y la gente lo usa.
+La primera semana se elige la obra y el residente, y se copia su formato de parte. Durante el resto del mes, el residente reporta como siempre por WhatsApp y el sistema arma el parte y el resumen nocturno. Al cierre, se compara lo que armó el sistema con lo que hubiera hecho tu equipo y se decide si se pasa a la siguiente obra o al siguiente proceso.
 
-## Cómo trabajamos
+## Lo que pedimos y lo que dejamos
 
-Armamos sobre lo que tus residentes ya hacen (WhatsApp, fotos, audios) y sobre tus formatos. Te damos tres opciones de alcance, todo por escrito, y te lo explicamos sin jerga a ti y a tu equipo. Cuando abres una obra nueva o cambias algo, seguimos contigo.
+Te pedimos tus formatos y un residente con ganas de probar. Te dejamos tres alcances por escrito, explicados sin jerga, y el compromiso de seguir ajustando cuando abras una obra nueva o cambies algo.
 
 Antes de decidir, revisa el [checklist antes de automatizar tu constructora](/blog/checklist-antes-automatizar-constructora) o la página de [constructoras](/soluciones/constructoras).

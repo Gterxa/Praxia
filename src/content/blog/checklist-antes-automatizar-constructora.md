@@ -37,55 +37,49 @@ fecha: 2026-11-10
 portadaAlt: "Dueño de constructora y su residente revisando juntos un celular en la caseta de una obra"
 ---
 
-## Por qué esta lista
+## Una constructora ya pagó una vez por algo que nadie usó
 
-Muchas constructoras compraron un programa que nadie en obra usó. No porque el programa fuera malo, sino porque se empezó por la herramienta y no por el problema. Esta lista te ayuda a llegar al diagnóstico sabiendo qué quieres resolver.
+Si llevas años en el rubro, probablemente compraste o probaste un programa que terminó abandonado. Casi siempre por lo mismo: se eligió por la demostración y no por lo que pasa en obra un martes cualquiera. Esta lista está pensada para que eso no se repita. Recórrela antes de hablar con cualquier proveedor, incluido nosotros.
 
-## 1. El problema
+## En la obra
 
-- [ ] Identifiqué el proceso que más me cuesta hoy.
-- [ ] Puedo contar un caso concreto de los últimos meses en que me costó algo.
+- [ ] Sé cómo reportan hoy mis residentes: libreta, Excel, fotos, audios, llamadas.
+- [ ] Sé qué residente tiene mejor disposición para probar algo nuevo.
+- [ ] Sé qué obra conviene usar de prueba (una activa, ni recién empezada ni por entregar).
+- [ ] Revisé un día cualquiera del chat de esa obra y vi qué información se pierde ahí.
 
-| Proceso | Señal de que duele |
+## En la oficina
+
+- [ ] Tengo a la mano el formato de parte diario, de valorización y de presupuesto que usamos.
+- [ ] Sé quién arma hoy las valorizaciones y cuántos días le toman.
+- [ ] Sé quién responde a los interesados que piden presupuesto y a qué hora lo hace.
+- [ ] Sé en qué programa o archivo está cada cosa.
+
+## Con mis clientes
+
+- [ ] Sé cuántos presupuestos mandé en los últimos meses y a cuántos les volví a escribir.
+- [ ] Recuerdo si en el último año un cliente no reconoció un adicional o un atraso.
+- [ ] Sé cuántas veces por semana me llaman clientes para saber cómo va su obra.
+
+Para lo primero, la [calculadora de presupuestos sin seguimiento](/calculadoras/presupuestos-sin-seguimiento-constructora) te da un número de referencia.
+
+## La decisión
+
+Con lo anterior, elige una sola fila de esta tabla para empezar:
+
+| Si lo que más te pesa es | Empieza por |
 |---|---|
-| Control de obra | Me entero tarde de lo que pasa en mis obras |
-| Valorizaciones | Cobro días o semanas después de lo que debería |
-| Presupuestos | Mando presupuestos y nadie les hace seguimiento |
-| Atención | Contesto WhatsApp a las 11 de la noche |
-| Documentos | No encuentro el acta o el plano cuando lo necesito |
-| Adicionales | Ejecuté trabajos que no pude cobrar |
+| Enterarte tarde de lo que pasa en tus obras | El parte diario y el resumen nocturno |
+| Cobrar semanas después del corte | Las valorizaciones armadas desde el registro diario |
+| Presupuestos que se enfrían | El seguimiento después de enviar |
+| El WhatsApp a las 11 de la noche | La atención a interesados y clientes |
+| No encontrar el acta o el plano | El archivo de documentos por obra |
 
-## 2. Los formatos
+- [ ] Elegí un número que tiene que mejorar (días de cobro, presupuestos con respuesta, partes completos).
+- [ ] Elegí cuándo lo voy a revisar.
 
-- [ ] Tengo mi formato de parte diario, de valorización o de presupuesto a la mano.
-- [ ] Sé qué formatos me piden mis clientes o la supervisión.
+## Al conversar con un proveedor
 
-## 3. Las personas
+Pídele que te explique sin jerga qué va a hacer, que te deje el alcance y los plazos por escrito, que te dé más de una opción según tu presupuesto y que te diga qué pasa cuando abras una obra nueva o cambies un formato. Si algo de eso falta, pregunta antes de firmar.
 
-- [ ] Elegí a un residente o persona con disposición para probar.
-- [ ] Sé quién va a revisar lo que el sistema prepare antes de enviarlo al cliente.
-- [ ] Sé cómo reportan hoy mis residentes (papel, Excel, WhatsApp, audios).
-
-## 4. Los números de hoy
-
-- [ ] Sé cuántas obras llevo y con cuántos residentes.
-- [ ] Estimé cuántos días después del corte sale mi valorización.
-- [ ] Estimé cuántos presupuestos envié en los últimos meses y a cuántos les hice seguimiento.
-
-Para lo último, usa la [calculadora de presupuestos sin seguimiento](/calculadoras/presupuestos-sin-seguimiento-constructora).
-
-## 5. La medida de éxito
-
-- [ ] Elegí el número que tiene que mejorar.
-- [ ] Definí en cuánto tiempo espero verlo.
-
-## 6. El proveedor
-
-- [ ] Me lo explicó sin jerga y lo entendí.
-- [ ] Me dio alcance, plazos y entregables por escrito.
-- [ ] Me ofreció opciones según mi presupuesto.
-- [ ] Me dijo qué pasa después de entregar, cuando abra una obra nueva o cambie un formato.
-
-## Con esto, el diagnóstico es corto
-
-Si llegas con esta lista, en una conversación podemos decirte qué automatizar primero y qué retorno esperar de cada opción. Lee también [qué automatizar primero en una constructora](/blog/ia-constructoras-automatizar-primero) o revisa la página de [constructoras](/soluciones/constructoras).
+Para ordenar ideas, lee [qué automatizar primero en una constructora](/blog/ia-constructoras-automatizar-primero) o revisa la página de [constructoras](/soluciones/constructoras).
