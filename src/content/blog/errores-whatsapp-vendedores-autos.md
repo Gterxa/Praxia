@@ -76,7 +76,7 @@ El vendedor atiende desde su celular, a cualquier hora, y a veces escribe de noc
 
 ## 6. Desaparecer ante la pregunta difícil
 
-«¿Este auto tuvo choques?», «¿por qué está más barato que en otra tienda?», «¿qué pasa si la financiera me rechaza?». Si el vendedor no sabe, a veces no responde. El silencio se interpreta como que hay algo que esconder.
+«¿Este auto tuvo choques?», «¿por qué en otra tienda lo publican a otro precio?», «¿qué pasa si la financiera me rechaza?». Si el vendedor no sabe, a veces no responde. El silencio se interpreta como que hay algo que esconder.
 
 **Mejor:** responder lo que se sabe y decir cuándo se tendrá el resto. «Lo confirmo con el tasador y te escribo antes de las 5» genera más confianza que el silencio.
 

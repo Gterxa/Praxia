@@ -53,7 +53,7 @@ portadaAlt: "Llaves sobre la isla de mármol de un departamento con vista a la c
 
 ## Dónde se le va la plata a una inmobiliaria que ya tiene leads
 
-En el negocio inmobiliario el lead no es barato. Cada interesado que escribe por un portal, por un anuncio de Instagram o por el cartel de «se vende» cuesta pauta, publicación o tiempo de captación. Y sin embargo, en muchas inmobiliarias ese lead espera horas, a veces hasta el día siguiente, porque el asesor está mostrando otra propiedad, manejando o ya se fue a su casa.
+En el negocio inmobiliario cada lead cuesta conseguirlo. Cada interesado que escribe por un portal, por un anuncio de Instagram o por el cartel de «se vende» cuesta pauta, publicación o tiempo de captación. Y sin embargo, en muchas inmobiliarias ese lead espera horas, a veces hasta el día siguiente, porque el asesor está mostrando otra propiedad, manejando o ya se fue a su casa.
 
 Mientras tanto, el interesado le escribió a tres inmobiliarias más por propiedades parecidas. La que contesta primero, con datos concretos y una hora de visita, se queda con él.
 

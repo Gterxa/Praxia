@@ -33,8 +33,8 @@ código, ciudad ni imagen. Cada slug tiene su propio problema, su demo de WhatsA
 | 1 | `crm-whatsapp-inmobiliaria` | intencion | seguimiento |
 | 2 | `responder-leads-portales-inmobiliarios` | intencion | atencion |
 | 3 | `agendar-visitas-inmuebles-whatsapp` | intencion | citas |
-| 4 | `automatizar-inmobiliaria-ia` | intencion | — |
-| 5 | `cuanto-cuesta-automatizar-inmobiliaria` | cuanto-cuesta | — |
+| 4 | `automatizar-inmobiliaria-ia` | intencion | general |
+| 5 | `cuanto-cuesta-automatizar-inmobiliaria` | cuanto-cuesta | general |
 | 6 | `cuanto-cuesta-chatbot-inmobiliaria` | cuanto-cuesta | atencion |
 | 7 | `cuanto-cuesta-crm-inmobiliario` | cuanto-cuesta | seguimiento |
 | 8 | `como-calificar-leads-inmobiliarios` | como | atencion |
@@ -50,15 +50,15 @@ código, ciudad ni imagen. Cada slug tiene su propio problema, su demo de WhatsA
 | 18 | `como-reactivar-leads-antiguos-inmobiliaria` | como | seguimiento |
 | 19 | `errores-atencion-leads-inmobiliaria` | errores | atencion |
 | 20 | `errores-whatsapp-inmobiliaria` | errores | atencion |
-| 21 | `errores-automatizar-inmobiliaria` | errores | — |
+| 21 | `errores-automatizar-inmobiliaria` | errores | general |
 | 22 | `errores-visitas-inmuebles` | errores | citas |
-| 23 | `checklist-automatizar-inmobiliaria` | checklist | — |
+| 23 | `checklist-automatizar-inmobiliaria` | checklist | general |
 | 24 | `checklist-ficha-propiedad` | checklist | contenido |
 | 25 | `checklist-cierre-compraventa-documentos` | checklist | documentos |
-| 26 | `checklist-contratar-automatizacion-inmobiliaria` | checklist | — |
+| 26 | `checklist-contratar-automatizacion-inmobiliaria` | checklist | general |
 | 27 | `guia-whatsapp-business-inmobiliarias` | guia | atencion |
 | 28 | `guia-reporte-semanal-inmobiliaria` | guia | reportes |
-| 29 | `guia-ia-asesores-inmobiliarios` | guia | — |
+| 29 | `guia-ia-asesores-inmobiliarios` | guia | general |
 | 30 | `guia-postventa-inmobiliaria` | guia | documentos |
 
 ### Concesionarias
@@ -68,9 +68,9 @@ código, ciudad ni imagen. Cada slug tiene su propio problema, su demo de WhatsA
 | 1 | `seguimiento-leads-concesionaria` | intencion | seguimiento |
 | 2 | `chatbot-whatsapp-concesionaria` | intencion | atencion |
 | 3 | `agendar-prueba-manejo-whatsapp` | intencion | citas |
-| 4 | `automatizar-concesionaria-ia` | intencion | — |
+| 4 | `automatizar-concesionaria-ia` | intencion | general |
 | 5 | `agendar-citas-taller-concesionaria` | intencion | citas |
-| 6 | `cuanto-cuesta-automatizar-concesionaria` | cuanto-cuesta | — |
+| 6 | `cuanto-cuesta-automatizar-concesionaria` | cuanto-cuesta | general |
 | 7 | `cuanto-cuesta-chatbot-concesionaria` | cuanto-cuesta | atencion |
 | 8 | `cuanto-cuesta-crm-concesionaria` | cuanto-cuesta | seguimiento |
 | 9 | `como-responder-leads-marketplace-autos` | como | atencion |
@@ -85,15 +85,15 @@ código, ciudad ni imagen. Cada slug tiene su propio problema, su demo de WhatsA
 | 18 | `como-reactivar-leads-concesionaria` | como | seguimiento |
 | 19 | `errores-seguimiento-leads-autos` | errores | seguimiento |
 | 20 | `errores-whatsapp-vendedores-autos` | errores | atencion |
-| 21 | `errores-automatizar-concesionaria` | errores | — |
+| 21 | `errores-automatizar-concesionaria` | errores | general |
 | 22 | `errores-postventa-taller` | errores | citas |
-| 23 | `checklist-automatizar-concesionaria` | checklist | — |
+| 23 | `checklist-automatizar-concesionaria` | checklist | general |
 | 24 | `checklist-publicacion-auto-usado` | checklist | contenido |
 | 25 | `checklist-entrega-auto-nuevo` | checklist | documentos |
-| 26 | `checklist-contratar-automatizacion-concesionaria` | checklist | — |
+| 26 | `checklist-contratar-automatizacion-concesionaria` | checklist | general |
 | 27 | `guia-whatsapp-business-concesionarias` | guia | atencion |
 | 28 | `guia-reporte-diario-concesionaria` | guia | reportes |
-| 29 | `guia-ia-vendedores-autos` | guia | — |
+| 29 | `guia-ia-vendedores-autos` | guia | general |
 | 30 | `guia-dealers-latinos-estados-unidos` | guia | atencion |
 
 ## Comparativas (`src/content/comparativas`)
@@ -102,7 +102,7 @@ código, ciudad ni imagen. Cada slug tiene su propio problema, su demo de WhatsA
 |---|---|---|
 | `crm-inmobiliario-vs-excel` | inmobiliarias | seguimiento |
 | `asistente-ia-vs-recepcionista-inmobiliaria` | inmobiliarias | atencion |
-| `software-inmobiliario-vs-automatizacion-medida` | inmobiliarias | — |
+| `software-inmobiliario-vs-automatizacion-medida` | inmobiliarias | general |
 | `crm-automotriz-vs-excel` | concesionarias | seguimiento |
 | `bdc-vs-asistente-ia-concesionaria` | concesionarias | atencion |
 | `chatbot-botones-vs-ia-concesionaria` | concesionarias | atencion |

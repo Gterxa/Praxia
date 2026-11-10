@@ -65,19 +65,23 @@ Además, cada respuesta cambia la preparación. No es lo mismo recibir a alguien
 
 No hace falta hacerlas todas en el primer mensaje: dos o tres en la conversación inicial y el resto en la visita.
 
-## Cómo preguntar sin espantar
+## El tono importa tanto como la pregunta
 
-- **Primero un dato, después una pregunta.** El comprador pregunta por la pickup; se le responde qué versiones hay y recién entonces se pregunta para qué la usará.
-- **Explica para qué preguntas.** «¿A nombre tuyo o de tu empresa? Cambia la documentación del crédito.» Así, como en el ejemplo, la pregunta suena a ayuda.
-- **Una pregunta por mensaje.** Varias a la vez reciben respuestas a medias.
+En el ejemplo de esta página, el comprador escribe «info de la pickup 4x4» a las ocho de la mañana. Nadie le pregunta de entrada cuánto gana. Primero recibe algo útil (que hay dos versiones en tienda), después una pregunta sobre el uso, y recién cuando contesta que es para su fundo aparece la pregunta de la empresa, con su razón: cambia la documentación del crédito. Tres mensajes y el vendedor ya sabe que es una venta corporativa con urgencia por la cosecha.
 
-## Los tres grupos que salen
+Ese orden (dar, preguntar, explicar por qué) es lo que hace que un comprador de autos conteste sin sentirse interrogado.
 
-**Listo para comprar.** Sabe qué quiere, tiene forma de pago y plazo cercano. Va al vendedor de inmediato, con visita o prueba de manejo agendada.
+## Qué hacer con cada respuesta
 
-**En proceso.** Le falta resolver el crédito, vender su auto o decidir entre dos modelos. Se le agenda prueba si hay interés y entra en seguimiento con lo que le falta anotado. Ver [seguimiento de leads de concesionaria](/blog/seguimiento-leads-concesionaria).
+| Lo que dice el comprador | Qué pasa después |
+|---|---|
+| Sabe el modelo, paga al contado, lo quiere este mes | Prueba de manejo en los próximos días con el vendedor de turno |
+| Financiado y deja auto en parte de pago | Se piden fotos del usado y se prepara la simulación antes de la visita |
+| Compra por empresa o necesita varias unidades | Pasa a quien lleva ventas corporativas |
+| Espera la respuesta del banco | Prueba de manejo si quiere, y seguimiento cuando el banco suele responder |
+| No tiene plazo ni sabe cómo pagaría | Información útil y seguimiento espaciado, sin presión |
 
-**Mirando.** Sin plazo ni forma de pago. Se le responde bien, recibe información y queda en seguimiento espaciado.
+El que no está listo hoy no se descarta: queda anotado lo que busca y lo que le falta. Ver [seguimiento de leads de concesionaria](/blog/seguimiento-leads-concesionaria).
 
 ## Casos especiales que conviene detectar
 
