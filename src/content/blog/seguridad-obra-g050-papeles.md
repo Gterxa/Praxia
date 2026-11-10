@@ -5,7 +5,7 @@ tipo: "como"
 titulo: "Seguridad en obra y la norma G.050: cómo llevar los papeles sin ahogarte"
 seoTitulo: "Norma G.050 en obra: cómo ordenar los papeles de seguridad"
 seoDescripcion: "Cómo ordenar la documentación de seguridad de tus obras en Perú bajo la norma G.050: plan de seguridad, capacitaciones, inspecciones y personal al día."
-respuesta: "En Perú, la norma G.050 «Seguridad durante la construcción» forma parte del Reglamento Nacional de Edificaciones y pide, entre otras cosas, un plan de seguridad y salud en el trabajo para la obra. Para no ahogarte en papeles, ten un legajo por obra con el plan, los registros de capacitación, las inspecciones y los permisos, y un legajo por trabajador con sus documentos y su EPP. Esta guía no reemplaza la norma ni a tu responsable de prevención."
+respuesta: "En Perú, la norma G.050 «Seguridad durante la construcción» forma parte del Reglamento Nacional de Edificaciones y pide, entre otras cosas, un plan de seguridad y salud en el trabajo para la obra. Para no ahogarte en papeles, ten un legajo por obra (plan, capacitaciones, inspecciones, permisos) y uno por trabajador (documentos y EPP)."
 tldr:
   - "La G.050 es parte del Reglamento Nacional de Edificaciones y aplica a las actividades de construcción en Perú."
   - "El plan de seguridad de la obra es la base; lo demás son los registros que demuestran que se cumple."

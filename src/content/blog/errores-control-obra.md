@@ -4,7 +4,7 @@ proceso: "reportes"
 tipo: "errores"
 titulo: "Errores en el control de obra que se comen el margen de tu constructora"
 seoTitulo: "Errores en el control de obra que reducen tu margen"
-seoDescripcion: "Los errores de control de obra más comunes en constructoras con varias obras: partes tardíos, avance sin cronograma, materiales sin verificar y paralizaciones sin registro."
+seoDescripcion: "Los errores de control de obra más comunes con varias obras: partes tardíos, avance sin cronograma, materiales sin verificar y paralizaciones sin registro."
 respuesta: "Los errores de control de obra que más margen le quitan a una constructora son llenar el parte diario de memoria, no comparar el avance con el cronograma, recibir materiales sin verificar contra el pedido, no registrar paralizaciones con su causa, ejecutar adicionales sin aprobación escrita y enterarse de todo por llamadas. Cada uno se paga en plazo, en material o en cobros perdidos."
 tldr:
   - "El margen de una obra no se pierde en el presupuesto: se pierde en lo que nadie anotó."

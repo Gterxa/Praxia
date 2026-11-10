@@ -5,7 +5,7 @@ tipo: "como"
 titulo: "Cómo responder solicitudes de presupuesto de construcción para ganar más obras"
 seoTitulo: "Cómo responder solicitudes de presupuesto de construcción"
 seoDescripcion: "Cómo responder pedidos de presupuesto de construcción para que el interesado te elija: rapidez, las preguntas correctas, visita agendada y propuesta clara."
-respuesta: "Para responder solicitudes de presupuesto de construcción y ganar más obras, contesta el mismo día, haz las preguntas que necesitas para entender el proyecto (ubicación, tipo de obra, metraje, planos, plazo), agenda la visita técnica en esa misma conversación y entrega una propuesta clara con fecha. El interesado elige a quien lo entiende primero, no siempre al más barato."
+respuesta: "Para responder solicitudes de presupuesto de construcción y ganar más obras, contesta el mismo día, haz las preguntas que necesitas para entender el proyecto (ubicación, tipo de obra, metraje, planos, plazo), agenda la visita técnica en esa misma conversación y entrega una propuesta clara con fecha. El interesado elige a quien lo entiende primero, no siempre al que cobra menos."
 tldr:
   - "El interesado escribe a varias constructoras a la vez: la primera en responder bien tiene ventaja."
   - "Las preguntas correctas transmiten que sabes lo que haces."
