@@ -12,8 +12,8 @@ fuentes:
     url: "https://www.gob.pe/institucion/inei/noticias/1417313-censos-nacionales-2025-lima-metropolitana-continua-siendo-la-provincia-mas-poblada"
     verificado: true
 titulo: "Automatización con IA para negocios en Lima, con sede en Surquillo"
-seoTitulo: "Automatización con IA en Lima para dueños de negocio"
-seoDescripcion: "Automatizamos la atención por WhatsApp, las citas y el seguimiento de inmobiliarias, clínicas, concesionarias y estudios en Lima. Sede en Surquillo."
+seoTitulo: "Automatización con IA y chatbots de WhatsApp en Lima"
+seoDescripcion: "Chatbots de WhatsApp con IA, citas y seguimiento automáticos para inmobiliarias, clínicas, concesionarias y estudios en Lima. Sede en Surquillo."
 respuesta: "Si tienes un negocio en Lima que contesta WhatsApp a mano, pierde citas o se olvida de hacer seguimiento, lo automatizamos sobre lo que ya usas. Somos de acá: nuestra sede está en Laurel Rosa 248, Surquillo, y puedes venir a conversar en persona."
 tldr:
   - "Lima es la provincia más poblada del Perú: la competencia por cada cliente es fuerte y el que contesta primero se queda con la venta."
