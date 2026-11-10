@@ -7,7 +7,7 @@ const recientes = (lista: typeof blog) => lista.sort((a, b) => b.data.fecha.getT
 const grupos = [
   ...orden.map((n) => ({
     titulo: n.data.nombre,
-    items: recientes(blog.filter((b) => b.data.nicho?.id === n.id)).map((b) => ({ titulo: b.data.titulo, href: url.blog(b.id) })),
+    items: recientes(blog.filter((b) => b.data.nicho === n.id)).map((b) => ({ titulo: b.data.titulo, href: url.blog(b.id) })),
   })),
   { titulo: 'Para cualquier negocio', items: recientes(blog.filter((b) => !b.data.nicho)).map((b) => ({ titulo: b.data.titulo, href: url.blog(b.id) })) },
 ].filter((g) => g.items.length);

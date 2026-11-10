@@ -29,7 +29,7 @@ const app = {
   publisher: { '@id': `${SITE.url}/#praxia` },
 };
 const datos = [app, faqPage(ruta, c.data.faq)];
-const enlaces = await enlacesDe('calculadora', c.id, { nicho: c.data.nicho.id, proceso: c.data.proceso });
+const enlaces = await enlacesDe('calculadora', c.id, { nicho: c.data.nicho, proceso: c.data.proceso });
 ---
 
 <PaginaSeo

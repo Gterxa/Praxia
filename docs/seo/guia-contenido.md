@@ -36,7 +36,9 @@ o de volumen · `ecommerce` tiendas online de lujo o de volumen. Foco de hoy: **
 8. **De tú, español con jerga latina neutra.** «Dejarte tirado» sí; peruanismos puros, solo en páginas de Perú.
 9. **Nada de frases que declaren honestidad** («te decimos con honestidad», «no es magia»): se muestra cómo trabajamos.
 10. **Cada página trae algo propio:** el problema concreto de ese rubro o esa ciudad, su demo y sus preguntas. El
-    script `npm run similitud` falla si dos páginas comparten más del 30 % del texto. No copies párrafos entre páginas
+    script `npm run similitud` falla si dos páginas comparten más del 30 % de su contenido propio (todo lo que va
+    dentro de `<main>` menos los bloques fijos de la plantilla marcados con `data-plantilla`: CTA, autor, enlaces del
+    cluster). Las frases de cierre y las citas de fuentes también cuentan: varíalas entre páginas hermanas. No copies párrafos entre páginas
     cambiando el nombre del rubro: reescribe desde el problema.
 
 ## El diferenciador (va en el cuerpo cuando encaje, sin repetirlo palabra por palabra)

@@ -1,7 +1,13 @@
-import { defineCollection, reference } from 'astro:content';
+import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
-import { PROCESOS } from './lib/procesos';
+import { PROCESOS, NICHOS, CIUDADES } from './lib/procesos';
+
+// Las relaciones entre colecciones van por slug fijo y no con reference(): así
+// una página puede nombrar un rubro cuya página todavía no se escribió sin
+// romper el build. Las plantillas solo enlazan lo que existe (src/lib/seo.ts).
+const nicho = z.enum(NICHOS);
+const ciudad = z.enum(CIUDADES);
 
 /**
  * Capacidades: las seis cosas que un negocio puede automatizar.
@@ -138,7 +144,7 @@ const ciudades = defineCollection({
     codigoPais: z.string().length(2),
     region: z.string(),
     /** Rubros con plata y presencia real en esta ciudad, en orden. */
-    nichos: z.array(reference('nichos')).min(1),
+    nichos: z.array(nicho).min(1),
     /** Por qué esta ciudad está en la lista. */
     criterio: z.string(),
     /** Fuente primaria de cada dato que se cita en la página. */
@@ -150,20 +156,20 @@ const ciudades = defineCollection({
 /** /soluciones/<nicho>/<proceso>: el proceso contado para ese rubro. */
 const nichoProceso = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/nicho-proceso' }),
-  schema: base.extend({ nicho: reference('nichos'), proceso: z.enum(PROCESOS) }),
+  schema: base.extend({ nicho, proceso: z.enum(PROCESOS) }),
 });
 
 /** /soluciones/<nicho>/<ciudad>: solo donde el cruce tiene sentido. */
 const nichoCiudad = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/nicho-ciudad' }),
-  schema: base.extend({ nicho: reference('nichos'), ciudad: reference('ciudades') }),
+  schema: base.extend({ nicho, ciudad }),
 });
 
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: base.extend({
-    nicho: reference('nichos').optional(),
-    ciudad: reference('ciudades').optional(),
+    nicho: nicho.optional(),
+    ciudad: ciudad.optional(),
     proceso: z.enum(PROCESOS).optional(),
     tipo: z.enum(['intencion', 'cuanto-cuesta', 'como', 'errores', 'checklist', 'guia']),
   }),
@@ -171,7 +177,7 @@ const blog = defineCollection({
 
 const comparativas = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/comparativas' }),
-  schema: base.extend({ nicho: reference('nichos'), proceso: z.enum(PROCESOS).optional() }),
+  schema: base.extend({ nicho, proceso: z.enum(PROCESOS).optional() }),
 });
 
 /**
@@ -182,7 +188,7 @@ const comparativas = defineCollection({
 const calculadoras = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/calculadoras' }),
   schema: base.extend({
-    nicho: reference('nichos'),
+    nicho,
     proceso: z.enum(PROCESOS),
     campos: z
       .array(
