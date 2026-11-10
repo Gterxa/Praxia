@@ -26,7 +26,7 @@ conversacion:
       texto: "y si no me queda bien?"
       hora: "23:43"
     - de: "negocio"
-      texto: "Tienes 30 días para cambiarlo de talla sin costo. Te dejo el link directo al anillo en talla 6 para que no tengas que buscarlo 👇"
+      texto: "Tienes 30 días para cambiarlo de talla sin costo. Te dejo el link directo al anillo en talla 6 para que no tengas que buscarlo."
       hora: "23:43"
     - de: "cliente"
       texto: "listo, lo compro ahora"
