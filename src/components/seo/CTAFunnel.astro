@@ -18,14 +18,14 @@ const { variante = 'arriba', pregunta } = Astro.props;
 
 {
   variante === 'arriba' ? (
-    <div class="cta-arriba">
+    <div class="cta-arriba" data-plantilla>
       <a href={ruta('/funnel')} class="boton boton-primario boton-compacto" data-cta="funnel-arriba">
         Quiero mi diagnóstico gratis
       </a>
       <p class="pequeno text-texto-2">Para dueños y gerentes que deciden. Te decimos qué automatizar primero y cuánto recuperas.</p>
     </div>
   ) : (
-    <section class="cta-cierre tarjeta" aria-labelledby="cta-cierre-titulo">
+    <section class="cta-cierre tarjeta" aria-labelledby="cta-cierre-titulo" data-plantilla>
       <p class="mono text-brasa">Diagnóstico gratis</p>
       <h2 id="cta-cierre-titulo" class="mt-3 text-[1.5rem] md:text-[1.875rem]">
         {pregunta ?? '¿Cuánto te está costando hacerlo a mano?'}

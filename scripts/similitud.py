@@ -28,17 +28,39 @@ RAIZ = Path(__file__).resolve().parent.parent
 DIST = RAIZ / "dist" / "client"
 
 
+VACIAS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
+CON_PLANTILLA = False
+
+
 class TextoMain(HTMLParser):
-    """Junta el texto visible dentro de <main>, sin scripts ni estilos."""
+    """
+    Junta el texto visible dentro de <main>, sin scripts ni estilos. Salta los
+    bloques marcados con `data-plantilla` (CTA, autor, enlaces del cluster):
+    son iguales en todas las páginas, como el menú y el pie, y no son el
+    contenido propio que se compara. Con --con-plantilla se cuentan igual.
+    """
 
     def __init__(self) -> None:
         super().__init__()
         self.en_main = 0
         self.saltar = 0
+        self.profundidad = 0
+        self.plantilla_desde: int | None = None
         self.partes: list[str] = []
         self.noindex = False
 
+    def handle_startendtag(self, tag, attrs):
+        pass
+
     def handle_starttag(self, tag, attrs):
+        if tag not in VACIAS:
+            self.profundidad += 1
+            if (
+                not CON_PLANTILLA
+                and self.plantilla_desde is None
+                and any(k == "data-plantilla" for k, _ in attrs)
+            ):
+                self.plantilla_desde = self.profundidad
         if tag == "meta":
             d = dict(attrs)
             if d.get("name") == "robots" and "noindex" in (d.get("content") or ""):
@@ -49,13 +71,17 @@ class TextoMain(HTMLParser):
             self.saltar += 1
 
     def handle_endtag(self, tag):
+        if tag not in VACIAS:
+            if self.plantilla_desde is not None and self.profundidad == self.plantilla_desde:
+                self.plantilla_desde = None
+            self.profundidad -= 1
         if tag == "main":
             self.en_main -= 1
         if tag in ("script", "style", "noscript", "svg", "template") and self.saltar:
             self.saltar -= 1
 
     def handle_data(self, data):
-        if self.en_main and not self.saltar:
+        if self.en_main and not self.saltar and self.plantilla_desde is None:
             self.partes.append(data)
 
 
@@ -116,9 +142,12 @@ def main() -> int:
         action="store_true",
         help="compara también las páginas viejas entre sí (por defecto, solo pares donde al menos una es del programa SEO)",
     )
+    ap.add_argument("--con-plantilla", action="store_true", help="cuenta también los bloques data-plantilla")
     ap.add_argument("--min-palabras", type=int, default=80, help="ignora páginas con menos texto (índices vacíos, 404)")
     args = ap.parse_args()
 
+    global CON_PLANTILLA
+    CON_PLANTILLA = args.con_plantilla
     if not DIST.exists():
         print("No hay dist/client: corre `npm run build` primero.")
         return 2
@@ -148,6 +177,7 @@ def main() -> int:
     malos = [p for p in pares if p[0] > args.umbral]
     n_prog = sum(del_programa(r) for r, _ in paginas)
     print(f"Páginas leídas: {len(paginas)} ({n_prog} del programa SEO) · alcance: {'todo el sitio' if args.todo else 'pares con al menos una página del programa'}")
+    print(f"Mide: {'página completa dentro de <main>' if args.con_plantilla else 'contenido propio (sin bloques data-plantilla)'}")
     print(f"Umbral: {args.umbral:.0%} · pares sobre el umbral: {len(malos)} · cerca (≥{aviso:.0%}): {len(pares) - len(malos)}")
     for r, a, b in pares[:25]:
         marca = "FALLA" if r > args.umbral else "cerca"

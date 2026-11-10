@@ -12,7 +12,7 @@ const { Content } = await render(c);
 const ruta = url.comparativa(c.id);
 const img = portada('comparativas', c.id);
 const datos = [article(ruta, c.data, img?.og ?? null, 'Article'), persona(), faqPage(ruta, c.data.faq)];
-const enlaces = await enlacesDe('comparativa', c.id, { nicho: c.data.nicho.id, proceso: c.data.proceso });
+const enlaces = await enlacesDe('comparativa', c.id, { nicho: c.data.nicho, proceso: c.data.proceso });
 ---
 
 <PaginaSeo

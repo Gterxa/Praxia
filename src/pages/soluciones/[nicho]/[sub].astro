@@ -8,7 +8,7 @@
 import { render } from 'astro:content';
 import PaginaSeo from '../../../components/seo/PaginaSeo.astro';
 import { publicadas, portada, enlacesDe, service, faqPage, AREA_GENERAL, url, partes, type Entrada } from '../../../lib/seo';
-import { INFO_PROCESO } from '../../../lib/procesos';
+import { INFO_PROCESO, NOMBRE_NICHO, type Nicho } from '../../../lib/procesos';
 
 export async function getStaticPaths() {
   const [procesos, cruces, nichos, ciudades] = await Promise.all([
@@ -17,7 +17,9 @@ export async function getStaticPaths() {
     publicadas('nichos'),
     publicadas('ciudades'),
   ]);
-  const nicho = (id: string) => nichos.find((n) => n.id === id);
+  // El rubro se toma de su página si ya existe; si no, de NOMBRE_NICHO.
+  const nicho = (id: string) =>
+    nichos.find((n) => n.id === id)?.data.nombre ?? NOMBRE_NICHO[id as Nicho];
   return [
     ...procesos
       .filter((p) => nicho(partes(p.id)[0]))
@@ -40,12 +42,12 @@ export async function getStaticPaths() {
 }
 
 type Props =
-  | { tipo: 'proceso'; e: Entrada<'nichoProceso'>; n: Entrada<'nichos'> }
-  | { tipo: 'ciudad'; e: Entrada<'nichoCiudad'>; n: Entrada<'nichos'>; c: Entrada<'ciudades'> };
+  | { tipo: 'proceso'; e: Entrada<'nichoProceso'>; n: string }
+  | { tipo: 'ciudad'; e: Entrada<'nichoCiudad'>; n: string; c: Entrada<'ciudades'> };
 const props = Astro.props as Props;
 const { e, n } = props;
 const { Content } = await render(e);
-const [nicho, sub] = [n.id, Astro.params.sub as string];
+const [nicho, sub] = [Astro.params.nicho as string, Astro.params.sub as string];
 const ruta = `/soluciones/${nicho}/${sub}`;
 const img = portada(props.tipo === 'proceso' ? 'nichoProceso' : 'nichoCiudad', e.id);
 
@@ -55,8 +57,8 @@ const area =
     : AREA_GENERAL;
 const nombreServicio =
   props.tipo === 'proceso'
-    ? `${INFO_PROCESO[props.e.data.proceso].nombre} para ${n.data.nombre.toLowerCase()}`
-    : `Automatización con IA para ${n.data.nombre.toLowerCase()} en ${props.c.data.nombre}`;
+    ? `${INFO_PROCESO[props.e.data.proceso].nombre} para ${n.toLowerCase()}`
+    : `Automatización con IA para ${n.toLowerCase()} en ${props.c.data.nombre}`;
 const datos = [service(ruta, e.data, nombreServicio, area, img?.og ?? null), faqPage(ruta, e.data.faq)];
 const enlaces =
   props.tipo === 'proceso'
@@ -67,10 +69,10 @@ const tramo = props.tipo === 'proceso' ? INFO_PROCESO[props.e.data.proceso].nomb
 
 <PaginaSeo
   d={e.data}
-  antetitulo={`${n.data.nombre} · ${tramo}`}
+  antetitulo={`${n} · ${tramo}`}
   migas={[
     { nombre: 'Soluciones por rubro', ruta: '/soluciones' },
-    { nombre: n.data.nombre, ruta: url.nicho(nicho) },
+    { nombre: n, ruta: url.nicho(nicho) },
     { nombre: tramo, ruta },
   ]}
   portada={img}

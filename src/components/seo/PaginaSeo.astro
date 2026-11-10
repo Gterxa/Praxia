@@ -59,7 +59,7 @@ const compartir = encodeURIComponent(`${d.titulo} ${urlPagina}`);
   contextoWhatsApp={`leí «${d.titulo}» y quiero conversar`}
 >
   <article class="contenedor pagina-seo">
-    <nav aria-label="Estás en" class="migas pequeno">
+    <nav aria-label="Estás en" class="migas pequeno" data-plantilla>
       <ol>
         <li><a href={ruta('/')}>Inicio</a></li>
         {
@@ -81,7 +81,7 @@ const compartir = encodeURIComponent(`${d.titulo} ${urlPagina}`);
       <h1 class="mt-4">{d.titulo}</h1>
       <p class="lead respuesta mt-6">{d.respuesta}</p>
       <CTAFunnel />
-      <p class="meta pequeno mt-8">
+      <p class="meta pequeno mt-8" data-plantilla>
         Por <a href={ruta(`/autor/${AUTOR.slug}`)} class="enlace">{AUTOR.nombre}</a>
         <span aria-hidden="true">·</span>
         <time datetime={actualizado.toISOString()}>Actualizado el {fechaLarga(actualizado)}</time>
@@ -91,7 +91,7 @@ const compartir = encodeURIComponent(`${d.titulo} ${urlPagina}`);
     </header>
 
     <aside class="tldr" aria-labelledby="en-corto">
-      <h2 id="en-corto" class="mono">En corto</h2>
+      <h2 id="en-corto" class="mono" data-plantilla>En corto</h2>
       <ul>
         {d.tldr.map((t) => <li>{t}</li>)}
       </ul>
@@ -123,7 +123,7 @@ const compartir = encodeURIComponent(`${d.titulo} ${urlPagina}`);
         <section class="demo" aria-labelledby="demo-titulo">
           <div>
             <h2 id="demo-titulo">{tituloDemo ?? 'Así se ve en WhatsApp'}</h2>
-            <p class="mt-3 text-texto-2">
+            <p class="mt-3 text-texto-2" data-plantilla>
               Negocio inventado, para que veas cómo funciona. Tu versión se arma con tus horarios, tus precios y tu forma de
               hablar.
             </p>
@@ -134,7 +134,7 @@ const compartir = encodeURIComponent(`${d.titulo} ${urlPagina}`);
     }
 
     <section class="preguntas" aria-labelledby="preguntas-titulo">
-      <h2 id="preguntas-titulo">Preguntas frecuentes</h2>
+      <h2 id="preguntas-titulo" data-plantilla>Preguntas frecuentes</h2>
       <div class="mt-6">
         {
           d.faq.map((f, i) => (
@@ -151,7 +151,7 @@ const compartir = encodeURIComponent(`${d.titulo} ${urlPagina}`);
 
     <CTAFunnel variante="cierre" pregunta={preguntaCierre} />
 
-    <section class="autor tarjeta" aria-label="Sobre el autor">
+    <section class="autor tarjeta" aria-label="Sobre el autor" data-plantilla>
       <Image src={fotoAutor} alt="Álvaro Sánchez, fundador de Praxia" width={72} height={72} class="autor-foto" />
       <div>
         <p class="mono text-texto-3">Escrito por</p>
@@ -177,7 +177,7 @@ const compartir = encodeURIComponent(`${d.titulo} ${urlPagina}`);
 
     {
       enlaces.length > 0 && (
-        <nav class="cluster" aria-label="Sigue explorando">
+        <nav class="cluster" aria-label="Sigue explorando" data-plantilla>
           {enlaces.map((g) => (
             <div>
               <h2 class="mono text-texto-3">{g.titulo}</h2>
