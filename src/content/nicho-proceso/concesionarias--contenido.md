@@ -1,15 +1,15 @@
 ---
 nicho: "concesionarias"
 proceso: "contenido"
-titulo: "Autos seminuevos publicados el mismo día que entran, en todos tus canales"
+titulo: "Seminuevos a la venta el día que entran al patio"
 seoTitulo: "Publicaciones de autos seminuevos más rápido con IA"
-seoDescripcion: "Con las fotos y los datos del auto, la publicación sale lista para portales, Marketplace, redes y tu web. Menos días de patio, más consultas."
-respuesta: "La automatización de contenido toma las fotos y los datos de cada auto que entra a tu inventario y arma la publicación para portales, Marketplace, redes y tu web, con el formato de tu concesionaria. Un encargado la revisa y el auto está a la venta el mismo día."
+seoDescripcion: "Con las fotos y los datos del tasador, cada seminuevo sale publicado en portales, Marketplace, redes y tu web el mismo día. Menos días de patio, más consultas."
+respuesta: "Cada seminuevo que entra a tu inventario puede estar publicado en todos tus canales ese mismo día: el tasador manda fotos y datos por WhatsApp, la automatización arma el anuncio de cada canal con el formato de tu concesionaria y un encargado lo aprueba. Cuando el auto se vende, te avisa dónde bajarlo."
 tldr:
-  - "Cada día que un seminuevo está en el patio sin publicar es un día que no recibe consultas."
-  - "Las publicaciones salen con los mismos datos obligatorios: año, kilometraje, versión, dueños, mantenimientos."
-  - "Del mismo material sale la versión para cada canal, sin rehacer el texto."
-  - "Cuando el auto se vende, avisa en qué canales hay que bajarlo."
+  - "Un seminuevo sin publicar no recibe consultas y sigue ocupando patio y capital."
+  - "El anuncio sale con lo que el comprador de usados mira primero: año, kilometraje, dueños, mantenimientos."
+  - "Un solo envío del tasador alimenta el portal, Marketplace, Instagram y la web."
+  - "Los cambios de precio y las ventas se reflejan en todos los canales, no solo en uno."
 conversacion:
   negocio: "Praxia para Seminuevos Costa Azul"
   mensajes:
@@ -17,54 +17,69 @@ conversacion:
       texto: "hatchback 2020, 52 mil km, automático, color rojo, 24 fotos"
       hora: "15:10"
     - de: "negocio"
-      texto: "Recibido. Para completar la publicación me falta la versión, cuántos dueños tuvo y si tiene mantenimientos en concesionario."
+      texto: "Recibido. Para completar el anuncio me falta la versión, cuántos dueños tuvo y si tiene mantenimientos en concesionario."
       hora: "15:10"
     - de: "cliente"
       texto: "versión intermedia, un dueño, todos los mantenimientos en la marca"
       hora: "15:18"
     - de: "negocio"
-      texto: "Listo. Te dejé el texto para el portal, la publicación para Marketplace y un carrusel para Instagram. Elegí como portada la foto de tres cuartos delantero."
+      texto: "Listo. Te dejé el anuncio para el portal, la versión para Marketplace y un carrusel. Falta una foto del tablero encendido con el kilometraje, ¿la puedes sacar?"
       hora: "15:20"
     - de: "cliente"
-      texto: "ok publica"
-      hora: "15:24"
+      texto: "ahí va, y publica"
+      hora: "15:31"
 faq:
-  - pregunta: "¿Publica directo en Marketplace y los portales?"
-    respuesta: "Depende de lo que permita cada canal. Cuando no hay carga automática, la publicación queda lista para pegar en segundos con el formato de cada uno."
-  - pregunta: "¿Puede escribir mal un dato del auto?"
-    respuesta: "Usa solo los datos que manda tu equipo. Si falta algo obligatorio, lo pide antes de armar la publicación, como en el ejemplo."
+  - pregunta: "¿Publica directo en Marketplace y en los portales de autos?"
+    respuesta: "Depende de lo que permita cada canal. Donde no hay carga automática, el anuncio queda listo para pegar en segundos con los campos que pide cada uno."
+  - pregunta: "¿Qué pasa si cambio el precio de un auto?"
+    respuesta: "Se cambia una vez y la automatización te dice en qué canales está publicado ese auto, para que el precio sea el mismo en todos lados."
   - pregunta: "¿Sirve para autos nuevos?"
-    respuesta: "Sí, aunque donde más se nota es en seminuevos, porque cada auto es único y hay que publicarlo uno por uno. En nuevos se usa para campañas y promociones de la marca."
+    respuesta: "Donde más se nota es en seminuevos, porque cada unidad es única. En nuevos se usa para llegadas de stock, colores disponibles y campañas de la marca."
   - pregunta: "¿Quién aprueba lo que se publica?"
-    respuesta: "Siempre una persona de tu equipo. Nada sale publicado sin su visto bueno."
+    respuesta: "Siempre una persona de tu equipo, normalmente el jefe de seminuevos. Nada sale sin su visto bueno."
 fecha: 2026-11-10
 portadaAlt: "Encargado de seminuevos fotografiando un hatchback rojo en el patio de la concesionaria"
 ---
 
-## El problema: el auto está en el patio, pero no en internet
+## Días de patio: el costo que no aparece en ningún reporte
 
-En el área de seminuevos cada auto es distinto y hay que publicarlo uno por uno. Llega el auto, se revisa, se lava, se fotografía y después alguien tiene que escribir la descripción, completar los campos de cada portal, armar el post de Marketplace y subirlo a la web. Con varios autos entrando por semana, la publicación se atrasa días.
+En el área de seminuevos cada auto es único. Entra por parte de pago o por compra directa, pasa por revisión mecánica, lavado y fotos, y recién ahí empieza a venderse. Ese último tramo, entre que el auto está listo y que aparece en internet, es el que más se estira. Alguien tiene que redactar el anuncio, llenar los campos del portal, armar la publicación de Marketplace, preparar algo para Instagram y pedir que lo suban a la web.
 
-Mientras tanto, el auto ocupa espacio en el patio y no recibe ni una consulta. Y cuando por fin se publica, cada canal tiene un texto distinto, con datos que a veces no coinciden.
+Mientras eso no pasa, el auto no recibe consultas. Y un usado que se queda semanas en el patio pierde valor de mercado, ocupa un espacio que necesitas para el siguiente y tiene plata parada que podrías estar rotando.
 
-## Cómo queda el flujo
+## Lo que mira primero quien compra un usado
 
-| Paso | Antes | Ahora |
-|---|---|---|
-| Datos del auto | Notas del tasador en papel | Se mandan por WhatsApp; se piden los que faltan |
-| Texto de la publicación | Lo escribe quien tenga tiempo | Sale con el formato y el tono de tu concesionaria |
-| Versiones por canal | Se rehace para cada portal | Portal, Marketplace, redes y web del mismo material |
-| Revisión | No siempre | Un encargado aprueba antes de publicar |
-| Auto vendido | Sigue publicado y genera consultas | Se marca vendido y avisa dónde bajarlo |
+El comprador de seminuevos desconfía, con razón: no sabe qué le pasó al auto antes. Por eso busca señales concretas y descarta rápido los anuncios que no las tienen:
 
-## Los datos que el comprador busca primero
+- Año, versión y transmisión.
+- Kilometraje, con foto del tablero que lo muestre.
+- Cuántos dueños tuvo.
+- Si los mantenimientos se hicieron en la marca y si hay registro.
+- Si tiene choques reparados o detalles de pintura.
+- Si se acepta otro auto en parte de pago y si hay financiamiento.
 
-Quien busca un seminuevo quiere saber lo mismo siempre: año, kilometraje, versión, transmisión, cuántos dueños tuvo, si tiene mantenimientos registrados y si acepta auto en parte de pago. Si la publicación lo dice, el comprador llega con menos dudas y la [atención automatizada](/soluciones/concesionarias/atencion) puede responder mejor, porque lee los mismos datos.
+Un anuncio que responde todo eso trae consultas mejores. Además, la [atención automatizada de tu concesionaria](/soluciones/concesionarias/atencion) lee esos mismos datos para contestar el «¿sigue disponible?» con información real.
 
-## Fotos que venden
+## Un envío del tasador, todos los canales
 
-La automatización no saca las fotos, pero sí ayuda a elegir la portada, ordena las imágenes en la secuencia que más se mira (frente, lateral, interior, tablero, maletera) y avisa si falta una toma importante. Para el detalle de qué no puede faltar, revisa el [checklist de publicación de auto usado](/blog/checklist-publicacion-auto-usado).
+| Canal | Qué se arma |
+|---|---|
+| Portal de autos | Todos los campos técnicos y una descripción completa |
+| Marketplace | Texto corto, fotos en el orden que más se mira, ubicación del local |
+| Instagram y Facebook | Carrusel con año, kilometraje y versión sobre las mejores fotos |
+| Web de la concesionaria | Ficha completa con todas las fotos y botón a WhatsApp |
+| WhatsApp | Ficha resumida para que el vendedor la mande a un interesado |
 
-## También para redes, sin contratar a otra persona
+El tasador o el encargado de seminuevos manda fotos y datos desde el celular. La automatización revisa que no falte nada (en el ejemplo, pide la foto del tablero con el kilometraje) y arma las versiones. El jefe de seminuevos aprueba una vez.
 
-Del mismo material sale un carrusel para Instagram, una historia y una publicación para Facebook. No reemplaza una estrategia de marketing, pero asegura que cada auto que entra tenga presencia en tus redes el mismo día. Si quieres ir más allá, lee cómo [vender seminuevos más rápido](/blog/como-vender-autos-seminuevos-mas-rapido).
+## El orden de las fotos también vende
+
+La mayoría de compradores decide en las primeras imágenes si sigue mirando. Conviene una secuencia fija: tres cuartos delantero, lateral, tres cuartos trasero, interior delantero, tablero encendido, asientos traseros, maletera, llantas. La automatización ordena las fotos en esa secuencia y avisa si falta alguna toma clave.
+
+## Precio y vendido, iguales en todos lados
+
+El problema de publicar en muchos canales es mantenerlos al día. Cambias el precio en el portal y en Marketplace sigue el anterior. Vendes el auto y sigue publicado en la web dos semanas. Cada desfase genera una consulta molesta y una mala impresión.
+
+Por eso cada auto queda con la lista de canales donde está publicado. Cuando cambia el precio o se vende, recibes el aviso con lo que hay que actualizar.
+
+Para revisar qué no puede faltar en cada anuncio, usa el [checklist de publicación de auto usado](/blog/checklist-publicacion-auto-usado), y para el resto del proceso de venta, lee cómo [vender seminuevos más rápido](/blog/como-vender-autos-seminuevos-mas-rapido).

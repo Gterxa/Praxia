@@ -93,16 +93,18 @@ La automatización programa esos mensajes para cada cotización y te avisa cuand
 
 ## Tus vendedores siguen vendiendo
 
-La IA no negocia ni cierra. Contesta rápido, ordena la información y mantiene vivo el contacto. La negociación, la prueba de manejo y la entrega siguen siendo de tu equipo, y tú decides qué conversaciones pasan siempre a una persona.
+El sistema no reemplaza al vendedor que conoce el producto, lee al cliente en el salón y negocia la parte de pago. Lo que hace es sacarle de encima lo que no vende: contestar la misma consulta cuarenta veces, perseguir confirmaciones, recordar a quién llamar. Las reglas de qué conversación pasa a una persona las pones tú: descuentos, crédito, flotas, reclamos.
 
-Tampoco te quedas solo con lo que instalamos. Lo dejamos funcionando, con contrato, alcance y factura, y seguimos contigo después de la entrega. Te explicamos cómo funciona con palabras de tu negocio, y si alguien de tu equipo no lo entiende, se lo volvemos a explicar.
+Y el día que lo encendemos no es el último que nos ves. Queda todo firmado (alcance, plazos, factura) y te acompañamos después de la entrega. Si tu jefe de ventas o tu asesor de servicio no entiende cómo funciona algo, se lo explicamos de nuevo con ejemplos de tu propio salón, aunque sea por audio.
 
-## Qué necesitas para empezar
+## Lo que pedimos de tu lado para arrancar
 
-- Tu inventario de autos o al menos la lista de modelos y versiones que vendes.
-- Saber por dónde llegan tus leads: portales, redes, Marketplace, formulario web, WhatsApp.
-- Un número de WhatsApp de la concesionaria.
-- Los horarios de pruebas de manejo y de taller.
-- Quién recibe los casos que la IA pasa a tu equipo.
+| Qué | Para qué sirve |
+|---|---|
+| Inventario o lista de modelos y versiones | Para que la IA responda disponibilidad y colores reales |
+| Las fuentes de tus leads | Para juntarlos en una sola bandeja |
+| Un WhatsApp de la concesionaria | Para que la cartera no viva en celulares personales |
+| Horarios de salón y de taller | Para ofrecer pruebas de manejo y citas que se puedan cumplir |
+| Un responsable por área | Para recibir lo que la IA deriva |
 
-Si quieres ponerle número a lo que hoy se pierde en cotizaciones sin seguimiento, usa la [calculadora para concesionarias](/calculadoras/leads-sin-seguimiento-concesionaria).
+¿Cuánto se te va hoy en cotizaciones que nadie volvió a llamar? Ponle tus números en la [calculadora para concesionarias](/calculadoras/leads-sin-seguimiento-concesionaria).
