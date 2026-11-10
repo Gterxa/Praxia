@@ -77,3 +77,13 @@ Hablar de plata por un chat automático es mala idea en salud. Las condiciones d
 Cada respuesta queda registrada. Después de unos meses tienes algo que pocas clínicas tienen: la lista de por qué sus pacientes dicen que sí y por qué dicen que no. Si muchos preguntan por la duración, conviene explicarla mejor en la consulta. Si muchos piden pagar en partes, tal vez valga la pena ofrecerlo desde el inicio. Esas decisiones salen de datos, no de intuición.
 
 Este seguimiento es parte del proceso de [controles y tratamientos pendientes](/soluciones/clinicas/seguimiento). Si además tienes pacientes que no vienen hace meses, lee [cómo reactivar a los pacientes que dejaron de venir](/blog/como-reactivar-pacientes-inactivos).
+
+## Qué pasa en la consulta influye en el seguimiento
+
+El seguimiento funciona mejor cuando la consulta deja algunas cosas claras. Al terminar la evaluación, el profesional o coordinación puede preguntar al paciente cómo prefiere que lo contacten y si autoriza que le escriban por WhatsApp sobre su plan. Con esa respuesta, el primer mensaje deja de ser una sorpresa: el paciente lo espera.
+
+También ayuda que el plan se entregue por escrito y con nombre propio. «Plan de rehabilitación de Valeria: ocho sesiones, dos por semana» se recuerda mejor que un papel con códigos. Si ese resumen llega al WhatsApp del paciente el mismo día, lo puede mostrar en casa a quien comparte la decisión con él, que muchas veces es quien termina diciendo que sí.
+
+## Cuándo dejar de escribir
+
+Un buen seguimiento sabe cuándo parar. Si el paciente no respondió dos mensajes, se lo pasa a la lista de coordinación y la automatización no insiste. Si dijo que lo hará más adelante, se le pregunta cuándo y se programa un único aviso para esa fecha. Y si dijo que no, se cierra con un agradecimiento. Respetar esas respuestas es lo que hace que, la próxima vez que la clínica le escriba, el paciente abra el mensaje.

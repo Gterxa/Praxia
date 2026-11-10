@@ -2,7 +2,7 @@
 nicho: "clinicas"
 proceso: "atencion"
 tipo: "intencion"
-titulo: "Chatbot de WhatsApp para tu clínica: qué contesta y qué no"
+titulo: "Chatbot de WhatsApp para clínicas"
 seoTitulo: "Chatbot de WhatsApp para clínica privada: qué debe hacer"
 seoDescripcion: "Qué preguntas debe contestar un chatbot de WhatsApp en una clínica privada, cuáles pasan siempre a una persona y cómo saber si tu clínica está lista."
 respuesta: "Un chatbot de WhatsApp le conviene a una clínica privada cuando recepción recibe más mensajes de los que alcanza a contestar a tiempo. Debe contestar lo administrativo (horarios, sedes, seguros, agenda) y pasar a una persona todo lo que suene a salud, sin excepciones."
@@ -102,3 +102,9 @@ Antes de contratar un chatbot para tu clínica, haz estas preguntas y pide las r
 - **¿Qué pasa después de la entrega?** Un chatbot que nadie ajusta se desactualiza en semanas: cambian horarios, médicos y convenios.
 
 En Praxia esas respuestas van en la propuesta, junto con un acuerdo de confidencialidad y protección de datos revisado con abogado, y seguimos ajustando el asistente contigo después de encenderlo.
+
+## Un día después de encenderlo
+
+La primera mañana con el asistente funcionando, recepción suele encontrarse con algo inesperado: varias citas reservadas durante la noche, de pacientes que nunca antes habían escrito. Eran personas que antes preguntaban, no recibían respuesta y seguían buscando. También aparecen dos o tres conversaciones marcadas para una persona: alguien que preguntó por un resultado, alguien que quería hablar de un reclamo. Esas son las que recepción atiende primero, con calma y con todo el contexto a la vista.
+
+En las semanas siguientes cambia el tipo de trabajo de recepción. Disminuye el copiar y pegar horarios y aumenta el tiempo para el paciente que está en el mostrador, para coordinar con aseguradoras y para llamar a quien de verdad necesita una llamada.

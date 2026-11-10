@@ -82,3 +82,13 @@ La automatización puede avisarte cuando entra una reseña nueva y proponerte un
 - Una persona que responda las negativas.
 
 El pedido de reseñas es parte de [redes y reseñas para clínicas](/soluciones/clinicas/contenido). Si además quieres publicar con constancia, lee [cómo publicar en redes sin tiempo](/blog/como-publicar-redes-clinica-sin-tiempo).
+
+## Qué hacer con las reseñas que ya tienes
+
+Antes de empezar a pedir reseñas nuevas, revisa las que tu clínica ya tiene. Es común encontrar reseñas negativas de hace meses sin respuesta, preguntas de pacientes que nadie contestó y reseñas positivas que nadie agradeció. Responderlas, aunque sea tarde, muestra a quien llega hoy que la clínica escucha.
+
+Revisa también que la ficha de Google tenga los datos correctos: horarios, teléfono, sedes, especialidades y fotos actuales de las instalaciones. Una ficha con el horario equivocado genera reseñas negativas que no tienen nada que ver con la atención médica.
+
+## Cómo saber si está funcionando
+
+Mira cada mes cuántas reseñas nuevas llegaron, qué calificación promedio tienen las del último trimestre y qué temas se repiten en los comentarios. Si muchas reseñas mencionan la espera en sala o lo difícil que es comunicarse por teléfono, esas son pistas concretas de qué mejorar, más allá de la calificación.

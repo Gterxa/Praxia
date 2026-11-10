@@ -88,3 +88,14 @@ Si muchos dicen que se cambiaron de clínica por los horarios, ahí tienes una d
 ## Para que no vuelva a pasar
 
 La reactivación es una limpieza que se hace una vez. Lo que evita tener que repetirla es registrar en cada consulta cuándo debe volver el paciente y que el aviso salga solo cuando toca. Ese proceso está descrito en [seguimiento de pacientes para clínicas](/soluciones/clinicas/seguimiento).
+
+## Un ejemplo de tandas
+
+Supón que tu clínica encuentra trescientos pacientes con un control vencido en el último año. En vez de escribirles a todos el lunes, se divide en tandas de cuarenta por día, empezando por los vencidos más recientes, que son los que mejor recuerdan a la clínica. La automatización responde lo administrativo y agenda directamente a quien elige un horario. Recepción solo atiende a quienes hacen preguntas que necesitan una persona. Al final de dos semanas, la lista entera recibió su mensaje sin que nadie colapsara y cada respuesta quedó registrada.
+
+## Qué no hacer
+
+- No mandar el mismo mensaje genérico a toda la base.
+- No escribir en horarios de noche o en fines de semana para algo que no es urgente.
+- No mencionar diagnósticos ni detalles médicos en el texto.
+- No insistir con quien no respondió dos veces.

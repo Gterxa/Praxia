@@ -81,3 +81,13 @@ El mensaje malo es el que podría haberle llegado a cualquiera: «Estimado pacie
 El mensaje bueno nombra al paciente, al profesional y al control, y ofrece horarios: «Hola Lucía, se cumple un año de tu control con la doctora Medina, ¿te ayudo a reservar el de este año?». Se lee en dos segundos, se entiende sin pensar y se contesta con una palabra. Esa diferencia, multiplicada por cientos de pacientes, es la diferencia entre un seguimiento que llena la agenda y uno que nadie lee.
 
 También importa la frecuencia. Un aviso cuando toca y, si no hay respuesta, un segundo mensaje más adelante. Después, el paciente pasa a la lista de coordinación. Escribirle cada semana a quien no responde solo consigue que bloquee el número de la clínica, y entonces se pierden también los recordatorios de citas.
+
+## Lo que necesitas antes de empezar
+
+- Una forma de registrar en cada consulta cuándo debe volver el paciente.
+- Las reglas de qué tipo de paciente entra a cada seguimiento.
+- Los textos de los mensajes, aprobados por el área médica cuando mencionan algo clínico.
+- Una persona de coordinación que reciba las respuestas que necesitan atención.
+- El permiso del paciente para escribirle por WhatsApp, pedido al registrarlo.
+
+Con esas cinco cosas, el seguimiento se arma en poco tiempo y empieza a mostrar resultados apenas llegan las primeras fechas de control.

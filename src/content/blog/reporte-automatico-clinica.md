@@ -92,3 +92,7 @@ Ninguna de esas cosas era un secreto. Todo el mundo en la clínica lo intuía. L
 ## Lo que no hace el reporte
 
 No interpreta datos médicos, no evalúa a los profesionales por la cantidad de pacientes que atienden y no reemplaza la contabilidad de la clínica. Es una herramienta para ordenar la agenda y la operación, pensada para quien dirige.
+
+## Cuando hay varias sedes
+
+En una clínica con varias sedes, el reporte consolidado puede esconder problemas de una sola. Por eso conviene que cada coordinador reciba su sede con el mismo formato, y que dirección vea el consolidado con una línea por sede. Así se compara de un vistazo: si una sede tiene muchas más faltas que las otras, puede ser un problema de ubicación, de horarios o de cómo se agendan las citas ahí, y se puede investigar sin adivinar.

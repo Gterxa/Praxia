@@ -90,3 +90,7 @@ Si una propuesta no trae alguna de estas cosas, pregunta antes de firmar. Lo que
 En Praxia cada diagnóstico termina con tres caminos: el sistema completo, el que de verdad te recomendamos para tu clínica y el que entra en tu presupuesto hoy. Cada uno con lo que incluye, lo que no y en cuánto tiempo lo recuperas. Así decides tú, con números, y no te quedas con la sensación de que te vendieron más de lo que necesitabas. Y lo que se entrega queda funcionando, con alguien que te lo explica sin jerga y sigue ahí después de la entrega.
 
 Para ver qué contesta un buen chatbot de clínica, lee [chatbot de WhatsApp para tu clínica](/blog/chatbot-whatsapp-clinica-privada). Si te preocupa el trato a los pacientes, la [comparativa entre chatbot y recepcionista](/comparativas/chatbot-vs-recepcionista-clinica) muestra qué hace mejor cada uno.
+
+## Señales de una propuesta que va a salir cara después
+
+Algunas propuestas parecen convenientes al inicio y se encarecen en el camino. Desconfía cuando no dicen cuántas especialidades incluyen, cuando cada cambio de horario se cobra como un proyecto nuevo, cuando el costo de WhatsApp aparece recién en la primera factura o cuando nadie puede explicarte en palabras simples qué pasa si el chatbot no sabe una respuesta. Una buena propuesta responde todo eso antes de que preguntes.

@@ -90,3 +90,11 @@ Cuando un paciente adelanta su cita, libera la que tenía más adelante. Ese seg
 - Las reglas de prioridad escritas, aunque sean simples.
 
 La lista de espera funciona mejor junto con los recordatorios, porque estos son los que generan las cancelaciones a tiempo. El proceso completo está en [agenda y recordatorios para clínicas](/soluciones/clinicas/citas), y los pasos para bajar faltas en [cómo reducir las inasistencias](/blog/como-reducir-inasistencias-clinica).
+
+## Qué pasa cuando la lista está vacía
+
+Habrá días en que se libere un horario y nadie en la lista lo pueda tomar. Ahí conviene tener un plan B escrito: ofrecer el horario a pacientes con control vencido que viven cerca, usarlo para una teleconsulta de seguimiento, adelantar a un paciente del día siguiente que haya dicho que tiene flexibilidad o, simplemente, dejarlo para tareas internas del especialista. Lo importante es que la decisión se tome rápido y no por omisión.
+
+## Cómo hacer crecer la lista
+
+La lista de espera crece cuando se ofrece en el momento justo: cuando el paciente pide un horario que no está. Recepción, o la atención por WhatsApp, puede decir «el doctor no tiene nada hasta el jueves, pero si quieres te anoto y te aviso si se libera algo antes». La mayoría de pacientes acepta, porque no le cuesta nada. Con el tiempo, cada especialista con agenda llena tiene una lista activa de personas dispuestas a venir antes.

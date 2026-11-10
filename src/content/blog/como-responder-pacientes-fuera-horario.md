@@ -79,3 +79,9 @@ La clave está en el segundo grupo, que casi todas las clínicas olvidan. Un pac
 La mañana empieza distinta. En vez de cuarenta mensajes sin leer, recepción encuentra una lista: estas citas se reservaron en la noche, estos pacientes esperan una respuesta de una persona, esta urgencia se derivó a las 2 de la mañana y el doctor de turno ya la atendió. El trabajo del día empieza ordenado.
 
 Y los pacientes notan algo que pocas clínicas les dan: les contestaron cuando escribieron. Para profundizar en qué debe contestar un asistente y qué no, lee [chatbot de WhatsApp para tu clínica](/blog/chatbot-whatsapp-clinica-privada). El proceso completo está en [atención a pacientes para clínicas](/soluciones/clinicas/atencion).
+
+## El fin de semana es otro mundo
+
+Los sábados y domingos tienen su propio patrón. Llegan más preguntas de padres sobre sus hijos, más consultas para la semana siguiente y más mensajes de personas que trabajan de lunes a viernes y recién tienen tiempo de ocuparse de su salud. Si tu clínica atiende el sábado en la mañana, conviene que la atención automática sepa exactamente qué servicios están disponibles ese día, para no ofrecer lo que solo existe entre semana.
+
+También conviene definir qué pasa el domingo en la noche: muchas personas escriben para pedir cita el lunes temprano, y si la respuesta llega recién a media mañana, esos horarios ya se ocuparon.

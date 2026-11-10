@@ -95,3 +95,7 @@ Con eso, en el diagnóstico te decimos qué tipo de recordatorio conviene para t
 Cuando los recordatorios los manda una persona desde su celular, aparecen problemas que nadie planeó. La recepcionista se enferma y ese día no sale ninguno. Un paciente responde al número personal de alguien que ya no trabaja en la clínica. Se mandan a la hora del almuerzo y se pierden entre otros chats. Y lo más común: el paciente contesta «no puedo ir», pero la respuesta se lee recién al día siguiente, cuando el hueco ya quedó vacío.
 
 Ninguna de esas cosas es culpa de recepción. Es que un proceso que depende de que alguien se acuerde cada día termina fallando el día que esa persona no puede. El recordatorio automático sale siempre, a la misma hora, desde el número de la clínica, y cada respuesta queda registrada en la agenda en el momento.
+
+## Un ejemplo de cómo se arma el texto
+
+Para una consulta de control, un buen recordatorio podría ser: «Hola Ana, te recordamos tu control con el doctor Rivas el martes 14 a las 5:30 pm en la sede Centro. Responde 1 para confirmar o 2 para cambiar la hora». Para una primera consulta, conviene sumar algo más: «Es tu primera visita: llega 10 minutos antes para registrarte y trae tu documento». Para un examen con preparación, el recordatorio lleva solo la cita, y las indicaciones van en un mensaje aparte que no se pierde entre los datos de hora y sede.

@@ -93,3 +93,11 @@ Multiplica y tendrás lo que se fue en un mes. La [calculadora de inasistencias]
 - Qué incluye el acompañamiento cuando cambian horarios o entra un especialista nuevo.
 
 En Praxia la propuesta trae esos puntos y tres alternativas para elegir: la más completa, la que te sugerimos para tu caso y una que se ajusta a lo que puedes invertir ahora. Y después de encenderlo, lo seguimos ajustando contigo. Si quieres comparar con seguir haciéndolo a mano, lee [recordatorios manuales contra automáticos](/comparativas/recordatorios-manuales-vs-automaticos-clinica).
+
+## Lo que no debería cobrarse aparte sin avisarte
+
+Al comparar propuestas, revisa si estas cosas están incluidas o son extras: las pruebas con pacientes reales antes de encender, la capacitación de recepción para usar la nueva lista de citas, los ajustes de las primeras semanas cuando aparecen casos no previstos y la documentación de cómo funciona todo. No hay una respuesta correcta universal, pero sí una mala: que te enteres después. En una propuesta clara, cada uno de esos puntos aparece con su nombre.
+
+## La inversión por etapas
+
+Para muchas clínicas tiene sentido no hacer todo de una vez. Una primera etapa con recordatorios con respuesta ya cambia la agenda en pocas semanas, y lo que se aprende ahí sirve para diseñar mejor la reserva por WhatsApp y la lista de espera. Pagar por etapas también reduce el riesgo: si la primera no funciona como se esperaba, se corrige antes de seguir.

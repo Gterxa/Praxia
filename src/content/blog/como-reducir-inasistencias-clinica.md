@@ -87,3 +87,9 @@ Para procedimientos que bloquean una sala, un equipo o un especialista por varia
 ## Lo que se automatiza y lo que no
 
 Los pasos 2, 3, 4 y 5 se automatizan casi por completo: salen solos, cada respuesta actualiza la agenda y recepción solo ve lo que necesita una persona. Los pasos 1, 6 y 7 son decisiones de la clínica, y la automatización te da los números para tomarlas. El proceso completo está en [citas y recordatorios para clínicas](/soluciones/clinicas/citas). Para saber cuánto pierdes hoy, usa la [calculadora de inasistencias](/calculadoras/perdida-inasistencias-clinica).
+
+## Lo que dicen los pacientes cuando se les pregunta
+
+Una práctica útil es preguntar, a quien faltó, qué pasó. No como reproche, sino con un mensaje simple al día siguiente: «Te esperábamos ayer, ¿quieres que te busquemos otro horario?». Las respuestas suelen ser muy concretas: se olvidaron, se les cruzó el trabajo, no tenían con quién dejar a los hijos, no encontraron estacionamiento, pensaban que era otro día. Cada una de esas razones apunta a un ajuste distinto: un recordatorio, un horario alternativo, una indicación de cómo llegar.
+
+Además, ese mensaje recupera a muchos pacientes que, por vergüenza de haber faltado, no habrían vuelto a llamar.
