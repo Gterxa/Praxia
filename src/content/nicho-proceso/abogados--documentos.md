@@ -31,7 +31,7 @@ faq:
   - pregunta: "¿Qué documentos se pueden automatizar?"
     respuesta: "Los que se repiten con la misma estructura: contratos tipo, poderes, cartas, escritos de trámite, formularios. Los documentos únicos o de estrategia los sigue escribiendo el abogado."
   - pregunta: "¿Dónde quedan guardados los documentos?"
-    respuesta: "En la carpeta o sistema que tu estudio ya usa, con el nombre del cliente y la fecha. Lo definimos por escrito en el diagnóstico."
+    respuesta: "En el mismo lugar donde el estudio archiva hoy sus expedientes, ordenados por cliente y fecha. Queda acordado antes de empezar."
   - pregunta: "¿Sirve si mis plantillas están en Word?"
     respuesta: "Sí. Es el punto de partida más común. Las ordenamos contigo, marcamos qué datos cambian y desde ahí se arman los borradores."
 fecha: 2026-11-10
@@ -77,3 +77,11 @@ Con la automatización, el cliente recibe un formulario simple o una conversaci�
 ## Cómo se ordenan las plantillas
 
 El trabajo más importante no es tecnológico: es ordenar tus plantillas. En casi todos los estudios hay tres o cuatro versiones del mismo contrato, cada una con cambios que alguien hizo para un cliente y se quedaron. Antes de automatizar, el abogado responsable elige la versión vigente de cada documento, se marcan los datos que cambian y se anotan las cláusulas opcionales. Ese ordenamiento ya vale por sí solo, aunque nunca se automatizara nada.
+
+## Lo que el cliente ve
+
+Para el cliente, el cambio se nota en tres cosas: sabe exactamente qué tiene que mandar, puede hacerlo desde el celular en el momento en que tiene el papel a mano y recibe un aviso cuando su documento está listo. Ya no tiene que llamar para preguntar si llegó su copia ni esperar días sin saber nada. Esa experiencia, simple, es la que hace que un cliente vuelva al estudio para el siguiente contrato.
+
+## Lo que cambia para la asistente
+
+La asistente deja de transcribir y pasa a coordinar: revisa que los datos estén completos, persigue lo que falta con ayuda de los recordatorios automáticos y prepara la firma con el cliente. Es un trabajo de más valor y que se nota en el trato.

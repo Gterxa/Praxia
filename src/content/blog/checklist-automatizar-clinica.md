@@ -104,3 +104,7 @@ No necesitas tener todas las casillas marcadas para empezar. Lo que importa es s
 ## Un consejo para el día uno
 
 Empieza con un proceso y una especialidad. Por ejemplo, recordatorios con respuesta solo para la especialidad con más faltas. En dos o tres semanas vas a tener datos para comparar contra tus números de partida, y tu equipo va a haber aprendido cómo se trabaja con la automatización. Sumar lo demás después es mucho más fácil que lanzar todo de golpe y corregir diez cosas a la vez.
+
+## Quién debería tener esta lista
+
+No la llene solo el dueño. La coordinadora de admisión conoce los números de la agenda, el área médica aprueba las indicaciones, recepción sabe qué preguntan los pacientes y administración maneja los accesos. Repartir la lista entre ellos toma una semana y deja el proyecto mucho mejor parado que si una sola persona intenta adivinar lo que saben los demás.

@@ -87,3 +87,7 @@ Cada «no» es una fuga. La forma de corregirlas todas a la vez está en [agenda
 ## Un error que no parece error: el horario de envío
 
 Mandar todos los recordatorios a la misma hora para simplificar suena razonable, pero tiene un costo. Un recordatorio a las 7 de la mañana se lee mientras el paciente se prepara para salir y se olvida. Uno a las 11 de la noche molesta. Lo que mejor funciona es mandarlo en un horario en que el paciente pueda revisar su agenda y responder, como media mañana o primera hora de la tarde. Si tu clínica atiende a públicos distintos (estudiantes, personas que trabajan, adultos mayores), el horario puede variar por tipo de cita.
+
+## Error extra: no medir
+
+Sin comparar las faltas antes y después, nadie sabe si los recordatorios funcionan. Anota cuántas citas se perdieron el mes previo al cambio y repite la cuenta el mes siguiente, separando por tipo de cita. Así sabrás qué ajustar.

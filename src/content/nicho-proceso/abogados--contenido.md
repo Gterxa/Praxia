@@ -83,3 +83,11 @@ Es poco, y está bien que sea poco. Un estudio que publica una explicación úti
 ## Del borrador a la publicación en minutos
 
 El flujo es simple. Cada lunes, la automatización revisa las consultas de la semana, elige la pregunta que más se repitió y arma un borrador en lenguaje de cliente, sin tecnicismos. El abogado lo recibe por WhatsApp o correo, corrige lo que haga falta y responde «sí». Se programa en tus redes y queda guardado para usarlo también como respuesta en la atención por WhatsApp. Así, una misma explicación sirve tres veces: en redes, en Google y en el chat del estudio.
+
+## Antes de la primera publicación
+
+Conviene revisar la ficha de Google del estudio (dirección, horarios, materias), responder las reseñas que ya existen y acordar entre los socios qué tono quieren en redes. Con eso resuelto, el calendario arranca sobre una base ordenada y las personas que lleguen por una publicación encuentran un estudio que se ve atendido.
+
+## Si el estudio tiene varias áreas
+
+Cada área puede tener su semana en el calendario: laboral una, familia la siguiente, corporativo después. Así ningún abogado revisa más de una publicación al mes y las redes muestran todo lo que el estudio atiende, sin depender de que una sola persona escriba todo.

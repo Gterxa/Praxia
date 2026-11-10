@@ -81,3 +81,7 @@ Menos llamadas a recepción, pacientes que recogen sus resultados antes y más c
 ## Un detalle que importa
 
 Revisa que el número de teléfono registrado sea el del paciente o el que él autorizó. En pediatría o con adultos mayores, el aviso suele ir a un familiar, y eso tiene que estar registrado. Un aviso de resultado al número equivocado es exactamente el tipo de error que esta forma de trabajar busca evitar.
+
+## Cuando el resultado tarda más de lo esperado
+
+Si un examen se demora más de lo habitual (porque se envió a un laboratorio externo o necesita una segunda lectura), un mensaje que avise la nueva fecha evita llamadas y ansiedad. El paciente no necesita saber por qué se demora: necesita saber cuándo estará y que nadie se olvidó de su examen.

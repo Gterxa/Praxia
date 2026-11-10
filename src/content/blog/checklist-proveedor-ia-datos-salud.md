@@ -97,3 +97,7 @@ Nosotros trabajamos con lo mínimo que pide cada proceso, dejamos fuera historia
 ## Un último consejo
 
 Haz estas preguntas también a los proveedores que ya tienes: el sistema de agenda, el de facturación, la empresa que maneja tus redes. Muchas clínicas descubren que el riesgo más grande estaba en un servicio contratado hace años, sin ningún acuerdo de por medio.
+
+## Quién debería hacer estas preguntas
+
+En una clínica, idealmente las hace la dirección junto con quien lleve los temas legales o de calidad. Recepción y sistemas pueden aportar detalles, pero la decisión de abrir datos de pacientes a un tercero es de quien responde por la clínica.

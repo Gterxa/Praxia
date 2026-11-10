@@ -87,7 +87,7 @@ Permiso para consultar tu agenda, media hora con dirección para decidir qué ci
 
 Una clínica de especialidades recibe su primer reporte diario y descubre tres cosas en la primera semana. La primera, que los martes en la tarde dermatología tiene casi siempre dos horas sin pacientes. La segunda, que las faltas se concentran en citas reservadas por teléfono, no en las de WhatsApp, porque esas no reciben recordatorio. La tercera, que nadie anota de dónde llega el paciente nuevo.
 
-Ninguna de esas cosas era un secreto. Todo el mundo en la clínica lo intuía. La diferencia es que ahora está escrito, con fecha, y se puede decidir: mover el bloque de dermatología al jueves, sumar al recordatorio las citas que entran por teléfono y agregar una pregunta corta en recepción para saber cómo llegó cada paciente. Son tres decisiones baratas que salen de mirar los números a tiempo.
+Ninguna de esas cosas era un secreto. Todo el mundo en la clínica lo intuía. La diferencia es que ahora está escrito, con fecha, y se puede decidir: mover el bloque de dermatología al jueves, sumar al recordatorio las citas que entran por teléfono y agregar una pregunta corta en recepción para saber cómo llegó cada paciente. Son tres decisiones simples que salen de mirar los números a tiempo.
 
 ## Lo que no hace el reporte
 

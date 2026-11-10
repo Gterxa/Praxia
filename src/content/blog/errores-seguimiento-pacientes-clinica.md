@@ -74,7 +74,7 @@ Si el mismo número manda recordatorios de control y ofertas de temporada, el pa
 
 ## Error 7: no aprender de las respuestas
 
-Cada «no puedo porque…» es información. Si muchos pacientes no vuelven porque los horarios no les sirven, porque el estacionamiento es difícil o porque se fueron a una clínica más cerca, la clínica tiene una lista de cosas para mejorar que ningún estudio de mercado le daría tan barata. Registrar los motivos y revisarlos cada mes convierte el seguimiento en una fuente de decisiones.
+Cada «no puedo porque…» es información. Si muchos pacientes no vuelven porque los horarios no les sirven, porque el estacionamiento es difícil o porque se fueron a una clínica más cerca, la clínica tiene una lista de cosas para mejorar que ningún estudio de mercado le daría con tanta facilidad. Registrar los motivos y revisarlos cada mes convierte el seguimiento en una fuente de decisiones.
 
 ## Cómo saber si tu seguimiento tiene estos errores
 

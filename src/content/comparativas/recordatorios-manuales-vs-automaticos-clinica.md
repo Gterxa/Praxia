@@ -91,4 +91,4 @@ El detalle del mensaje está en [recordatorios de citas por WhatsApp que sí baj
 
 ## Lo que no conviene
 
-No conviene pasar a recordatorios automáticos que no permiten responder, que salen desde un número desconocido o que nadie revisa. Eso no es una mejora sobre la llamada: es solo una forma más barata de que los pacientes sigan faltando. Lo que hace la diferencia es la respuesta conectada, y eso es lo que hay que exigir.
+No conviene pasar a recordatorios automáticos que no permiten responder, que salen desde un número desconocido o que nadie revisa. Eso no es una mejora sobre la llamada: es solo otra forma de que los pacientes sigan faltando. Lo que hace la diferencia es la respuesta conectada, y eso es lo que hay que exigir.

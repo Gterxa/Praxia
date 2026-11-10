@@ -63,9 +63,9 @@ Fíjate que casi todos se resuelven con una conversación. El problema es que na
 ## La secuencia que funciona
 
 1. **El mismo día:** el paciente recibe por WhatsApp el resumen del plan que conversó, para tenerlo a mano. Sin precios en el chat automático si tu clínica prefiere darlos en persona.
-2. **A los pocos días:** un mensaje que nombra el tratamiento y pregunta si quedó alguna duda.
-3. **Si responde con una duda:** se le ofrece hablar con el profesional o con coordinación, en un horario concreto.
-4. **Si no responde:** un segundo mensaje más adelante, más corto, dejando la puerta abierta.
+2. **Pasados unos días:** el paciente recibe una línea sobre su plan concreto y una invitación a preguntar lo que le frena.
+3. **Si contesta con una inquietud:** coordinación o el profesional lo llaman en un horario que el paciente elige.
+4. **Sin respuesta:** una segunda nota, breve, semanas después, y ahí se detiene.
 5. **Si dice que no:** se le agradece y se registra el motivo.
 
 ## El cuidado con los montos
@@ -76,7 +76,7 @@ Hablar de plata por un chat automático es mala idea en salud. Las condiciones d
 
 Cada respuesta queda registrada. Después de unos meses tienes algo que pocas clínicas tienen: la lista de por qué sus pacientes dicen que sí y por qué dicen que no. Si muchos preguntan por la duración, conviene explicarla mejor en la consulta. Si muchos piden pagar en partes, tal vez valga la pena ofrecerlo desde el inicio. Esas decisiones salen de datos, no de intuición.
 
-Este seguimiento es parte del proceso de [controles y tratamientos pendientes](/soluciones/clinicas/seguimiento). Si además tienes pacientes que no vienen hace meses, lee [cómo reactivar a los pacientes que dejaron de venir](/blog/como-reactivar-pacientes-inactivos).
+Todo esto forma parte de [controles y tratamientos pendientes](/soluciones/clinicas/seguimiento). Si además tienes pacientes que no vienen hace meses, lee [cómo reactivar a los pacientes que dejaron de venir](/blog/como-reactivar-pacientes-inactivos).
 
 ## Qué pasa en la consulta influye en el seguimiento
 

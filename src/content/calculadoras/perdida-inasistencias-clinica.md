@@ -47,3 +47,19 @@ Hay dos cosas que la cuenta no incluye y que conviene tener en mente:
 | Es alto en una sola especialidad | Haz la cuenta por especialidad: ahí suele estar la fuga |
 
 Para bajar ese número, los pasos concretos están en [cómo reducir las inasistencias en tu clínica](/blog/como-reducir-inasistencias-clinica), y el proceso completo en [agenda y recordatorios para tu clínica](/soluciones/clinicas/citas).
+
+## Un ejemplo con números redondos
+
+Supón una clínica que agenda cuatrocientas citas al mes y descubre, revisando su agenda, que doce de cada cien pacientes no llegan o cancelan cuando ya no hay tiempo de reemplazarlos. Son cuarenta y ocho horarios vacíos en un mes. Multiplicados por lo que deja una consulta promedio, aparece una cifra que casi ninguna clínica tiene anotada en ningún lado, porque una cita vacía no genera ninguna factura que la recuerde.
+
+## Por dónde empezar a bajarlo
+
+Mira primero qué tipo de cita concentra las faltas. Casi siempre son las primeras consultas reservadas con mucha anticipación y los primeros turnos de la mañana. Ahí un recordatorio con respuesta y la opción de reprogramar en el mismo chat cambian más que cualquier otra medida. Si además tienes pacientes esperando un horario antes, cada cancelación avisada a tiempo se puede ofrecer a ellos.
+
+## Lo que conviene anotar junto con el resultado
+
+El número solo es una foto. Para que sirva, guarda también de qué mes son los datos y cómo contaste las faltas. Si el mes siguiente cambias algo (un segundo recordatorio para primeras consultas, la reprogramación por WhatsApp, una lista de espera), vuelve a hacer la cuenta con el mismo criterio. La diferencia entre los dos resultados es lo que esa medida le devolvió a tu clínica. Muchas clínicas descubren así que una sola especialidad explicaba la mitad de la pérdida.
+
+## Para clínicas con varias sedes
+
+Haz la cuenta por sede antes que la total. Las sedes nuevas, las que quedan lejos del transporte o las que atienden más primeras consultas suelen tener más faltas. El promedio de toda la clínica esconde esas diferencias, y es justo ahí donde conviene empezar.

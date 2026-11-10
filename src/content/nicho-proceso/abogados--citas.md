@@ -91,3 +91,7 @@ Si tu estudio cobra la primera consulta, la agenda puede enviar el enlace de pag
 ## Un registro que después sirve
 
 Cada consulta agendada queda registrada con su materia, su origen y si el cliente asistió. Con el tiempo, ese registro te dice qué materias generan más consultas, cuántas personas faltan y cuántas primeras consultas terminan en un cliente. Son las mismas preguntas que aparecen en el [reporte para socios](/soluciones/abogados/reportes), y salen solas de la agenda.
+
+## Cuando el cliente está en otro país
+
+Los estudios que atienden a personas que viven en el extranjero (herencias, propiedades, trámites familiares en su país de origen) tienen un desafío extra: la diferencia horaria. La agenda muestra los horarios en la hora del cliente o aclara de qué ciudad es la hora, y el recordatorio llega en un momento razonable para quien lo recibe. Parece un detalle, pero es de las causas más comunes de reuniones perdidas con clientes que viven afuera.

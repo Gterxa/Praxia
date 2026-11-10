@@ -108,3 +108,7 @@ Con esta lista resuelta, la reserva por WhatsApp funciona desde el primer día y
 ## Un detalle que suele olvidarse
 
 Los pacientes no siempre saben qué tipo de cita necesitan. Escriben «quiero ver al doctor por un dolor de rodilla», no «consulta de traumatología, primera vez». Por eso la reserva tiene que hacer una o dos preguntas simples para ubicar el tipo de cita correcto, y si no está claro, pasar a recepción. Un paciente agendado en el tipo equivocado ocupa un horario que no sirve y obliga a reprogramar.
+
+## Después de encender
+
+Las primeras dos semanas, revisa a diario las reservas hechas por WhatsApp: que estén en el tipo de cita correcto, en la sede correcta y con el especialista correcto. Cualquier error que aparezca ahí se corrige en las reglas, y desde la tercera semana la revisión puede ser semanal.

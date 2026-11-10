@@ -88,3 +88,7 @@ Para ver cómo se ve esto aplicado a la atención, lee [tu clínica contesta a s
 ## Una regla para recordar
 
 Si una tarea requiere el criterio de un profesional de la salud, no se automatiza. Si es una tarea que tu equipo repite todos los días igual, con información que ya existe, probablemente sí. Entre esas dos frases cabe casi todo lo que hay que decidir.
+
+## Qué preguntarle a quien te ofrezca IA para tu clínica
+
+Pregunta qué tareas hará, con qué información responderá, qué hará cuando no sepa algo y quién revisará las conversaciones. Si alguna respuesta incluye «orienta a los pacientes sobre sus síntomas», pide que te muestren exactamente qué dice y quién responde si se equivoca.

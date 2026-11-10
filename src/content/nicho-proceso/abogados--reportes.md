@@ -88,3 +88,7 @@ Estas son las preguntas que más se repiten en las reuniones de socios, y de dó
 ## El primer mes
 
 El primer reporte casi siempre incomoda un poco. Aparecen consultas que nadie registró, casos que figuran abiertos aunque se cerraron hace meses y plazos anotados en tres lugares distintos. No es un problema del reporte: es la foto real del estudio. El primer mes se usa para ordenar el registro y dejar una sola fuente de verdad. Desde ahí, el reporte llega cada lunes y la reunión de socios se dedica a decidir, no a reconstruir qué pasó.
+
+## Para cada abogado, su propia vista
+
+Además del consolidado para socios, cada abogado puede recibir el lunes su resumen: sus plazos de la semana, sus consultas nuevas asignadas y los borradores que esperan su revisión. Es una lista de trabajo ya armada que evita empezar la semana revisando tres agendas distintas.
