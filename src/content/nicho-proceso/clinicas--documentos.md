@@ -1,7 +1,7 @@
 ---
 nicho: "clinicas"
 proceso: "documentos"
-titulo: "Documentos de la clínica en orden: indicaciones que llegan antes, autorizaciones que no se pierden en el chat"
+titulo: "Indicaciones, órdenes y autorizaciones sin perderse"
 seoTitulo: "Documentos y papeleo administrativo para clínicas"
 seoDescripcion: "Indicaciones de preparación enviadas a tiempo, avisos de resultados listos y autorizaciones de seguro ordenadas por paciente, sin buscar en el chat."
 respuesta: "En una clínica, el papeleo que más tiempo quita no es el médico: es mandar indicaciones de preparación, avisar que un resultado está listo y juntar las fotos de órdenes y autorizaciones que llegan sueltas por WhatsApp. Eso se automatiza sin tocar la historia clínica ni los resultados."
@@ -72,3 +72,13 @@ Un examen mal preparado es una cita perdida dos veces: la del día y la que hay 
 - El canal por el que entregas resultados hoy.
 
 Si algo de eso no existe todavía, en el diagnóstico lo ordenamos contigo antes de automatizar.
+
+## Un caso típico: la colonoscopía reprogramada
+
+Un paciente tiene una colonoscopía a las 8 de la mañana. La preparación empieza dos días antes, con dieta y un laxante que el médico indicó. En consulta le dieron una hoja con las instrucciones, que dejó en la guantera del carro. Llega el día, no hizo bien la preparación y el procedimiento se suspende. Se pierde el turno del especialista, la sala y el anestesiólogo, y el paciente tiene que repetir todo.
+
+Con las indicaciones automatizadas, ese paciente recibe un primer mensaje tres días antes con la dieta, un segundo mensaje el día en que debe empezar el laxante y un recordatorio la noche anterior. Cada mensaje es el texto que aprobó el área médica, palabra por palabra. Si tiene una duda sobre su medicación habitual, la escribe ahí mismo y pasa a la enfermera.
+
+## Las autorizaciones del seguro
+
+En clínicas que trabajan con aseguradoras, la autorización previa es otro cuello de botella. El paciente manda la foto de su carta o de su orden a cualquier número de la clínica, y recepción la busca entre cientos de mensajes cuando la necesita. La automatización pide el documento correcto según el procedimiento, confirma que llegó legible y lo guarda en la carpeta del paciente con su nombre y la fecha de la cita. Cuando recepción lo necesita, lo encuentra en segundos.

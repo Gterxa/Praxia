@@ -12,7 +12,7 @@ tldr:
   - "El cliente que pregunta por su caso recibe el estado que tu equipo registró, sin una llamada de por medio."
   - "Los documentos repetitivos salen como borrador desde tus plantillas, y siempre los revisa y firma un abogado."
   - "La IA nunca da una opinión legal ni promete resultados: todo lo jurídico pasa a una persona."
-  - "El secreto profesional se cuida por escrito: acuerdo de confidencialidad, mínimo de datos y accesos por persona."
+  - "El secreto profesional se protege con reglas escritas antes de empezar, no con promesas."
 conversacion:
   negocio: "Estudio Vargas & Lino"
   mensajes:
@@ -37,70 +37,69 @@ conversacion:
 faq:
   - pregunta: "¿La IA le da consejos legales a mis clientes?"
     respuesta: "No. Recoge datos, agenda, informa el estado que tu equipo registró y entrega documentos que tú ya aprobaste. Cualquier pregunta jurídica pasa a un abogado del estudio."
-  - pregunta: "¿Cómo se cuida el secreto profesional?"
-    respuesta: "Firmamos un acuerdo de confidencialidad y protección de datos antes de empezar, usamos solo los datos que cada proceso necesita y cada persona del estudio entra con su propio acceso."
+  - pregunta: "¿Qué pasa con el secreto profesional?"
+    respuesta: "Antes de ver un expediente firmamos un compromiso de reserva y tratamiento de datos. Cada proceso usa solo la información indispensable y cada abogado o asistente tiene su propio ingreso."
   - pregunta: "¿Los documentos los redacta la IA?"
     respuesta: "Arma un borrador a partir de tus plantillas y de los datos del cliente. El abogado lo revisa, corrige y firma. Nada sale del estudio sin esa revisión."
   - pregunta: "¿Sirve para un abogado independiente?"
-    respuesta: "Está pensado para estudios que reciben más consultas de las que alcanzan a contestar o que repiten los mismos documentos todas las semanas. Si hoy contestas todo tú sin atrasarte, primero conviene crecer la cartera."
+    respuesta: "Está pensado para estudios que reciben más consultas de las que alcanzan a atender o que repiten los mismos documentos todas las semanas. Con poca demanda, lo primero es conseguir más clientes."
   - pregunta: "¿Funciona con el sistema de gestión de casos que ya usamos?"
     respuesta: "Si tu sistema tiene cómo conectarse, leemos el estado de cada caso desde ahí. Si trabajas con carpetas y hojas de cálculo, también se puede: lo vemos en el diagnóstico."
-  - pregunta: "¿Cuánto tarda en estar funcionando?"
-    respuesta: "Depende de cuántas materias y plantillas entren. En el diagnóstico te damos el plazo por escrito y ves avances cada semana antes de encender nada."
+  - pregunta: "¿En qué plazo queda listo?"
+    respuesta: "Varía según cuántas materias y plantillas entren. La propuesta trae las fechas escritas y antes de encender nada te mostramos el avance semana a semana."
 fecha: 2026-11-10
 portadaAlt: "Mesa de reuniones de un estudio de abogados con expedientes, una laptop y un celular con mensajes de clientes"
 ---
 
-## Dónde se le van las horas a un estudio de abogados
+## Un estudio que crece se queda sin horas, no sin clientes
 
-Un estudio que crece no se queda sin clientes: se queda sin horas. El abogado que debería estar preparando un escrito está contestando WhatsApp, devolviendo llamadas de clientes ansiosos o rehaciendo por enésima vez el mismo poder, la misma carta notarial o el mismo contrato de arrendamiento.
+Cuando un estudio empieza a tener nombre, el teléfono y el WhatsApp suenan más. Eso es bueno hasta que el abogado que debería preparar un escrito pasa la mañana devolviendo llamadas, explicando que el juzgado todavía no notifica o rehaciendo por enésima vez el mismo poder. La hora del abogado es lo único que el estudio vende, y una parte grande se va en tareas que no requieren un abogado.
 
-Las fugas que más se repiten:
+Revisa la última semana de tu estudio con esta lista:
 
-- **Consultas que no eran para el estudio.** Materias que no ves, ciudades donde no litigas o personas que solo querían una opinión gratis. Cada una se lleva media hora de un abogado.
-- **Consultas buenas que se enfrían.** El cliente que sí podía contratar escribió un viernes de noche y el lunes ya había hablado con otro estudio.
-- **«¿Cómo va mi caso?»** La pregunta más repetida del estudio, contestada por teléfono y casi siempre con la misma respuesta.
-- **Documentos repetitivos.** Escritos, contratos y cartas que cambian en diez datos y se arman copiando y pegando, con el riesgo de dejar el nombre del cliente anterior.
-- **Papeles que el cliente no manda.** El caso se atrasa porque falta un DNI, una boleta o un contrato, y alguien tiene que perseguirlo.
+1. ¿Cuántas consultas recibieron que no eran de las materias que ven?
+2. ¿Cuántas consultas buenas esperaron más de un día por una respuesta?
+3. ¿Cuántas veces alguien preguntó cómo iba su caso?
+4. ¿Cuántos documentos se armaron copiando el anterior y cambiando datos?
+5. ¿Cuántos casos se frenaron porque el cliente no mandó un papel?
 
-## Qué automatizamos en un estudio
+Si las respuestas te incomodan, ahí está la plata que se te escapa.
 
-| Proceso | Qué pasa hoy | Cómo queda |
+## Seis frentes, uno a la vez
+
+| Frente | El síntoma | Lo que cambia |
 |---|---|---|
-| [Atención de consultas](/soluciones/abogados/atencion) | La secretaria o el propio abogado contesta todo | La consulta se filtra por materia, ciudad y urgencia, y llega al abogado correcto |
-| [Seguimiento de clientes](/soluciones/abogados/seguimiento) | Consultas sin contratar en un cuaderno | Cada consulta recibe su siguiente paso a tiempo y el cliente sabe cómo va su caso |
-| [Documentos](/soluciones/abogados/documentos) | Copiar y pegar desde el último contrato | Borrador desde tu plantilla con los datos del cliente, listo para revisar |
-| [Agenda de consultas](/soluciones/abogados/citas) | Llamadas para cuadrar horarios | El cliente elige su horario y llega con sus papeles subidos |
-| [Reportes](/soluciones/abogados/reportes) | Nadie sabe cuántas consultas entraron el mes pasado | Consultas, casos abiertos y plazos de la semana, cada lunes |
-| [Contenido](/soluciones/abogados/contenido) | Redes paradas | Publicaciones educativas con calendario fijo, revisadas por un abogado |
+| [Consultas nuevas](/soluciones/abogados/atencion) | El abogado lee todo, incluso lo que no es del estudio | Un filtro corto por WhatsApp: materia, lugar y urgencia |
+| [Clientes y consultas abiertas](/soluciones/abogados/seguimiento) | «Lo voy a pensar» y nunca más se supo | Un siguiente paso a tiempo y avisos de estado del caso |
+| [Documentos repetitivos](/soluciones/abogados/documentos) | Copiar y pegar el último contrato | Borrador desde tu plantilla, listo para revisar y firmar |
+| [Primeras consultas](/soluciones/abogados/citas) | Tres llamadas para cuadrar una hora | El cliente reserva y sube sus papeles antes de la reunión |
+| [Números del estudio](/soluciones/abogados/reportes) | Decisiones por intuición | Resumen de consultas, casos y plazos cada lunes |
+| [Presencia](/soluciones/abogados/contenido) | Redes con la foto del equipo y nada más | Explicaciones útiles cada semana, aprobadas por un abogado |
 
-En el diagnóstico vemos cuál de estas fugas te cuesta más horas y se empieza por esa. Si quieres hacer la cuenta antes, la [calculadora de consultas perdidas](/calculadoras/consultas-perdidas-estudio-abogados) te da una cifra con tus propios números.
+Se elige uno para arrancar, el que más horas te devuelve, y los demás se suman cuando el primero ya funciona. Para estimar lo que pierdes hoy por no responder a tiempo, prueba la [calculadora de consultas perdidas](/calculadoras/consultas-perdidas-estudio-abogados).
 
-## Lo que la IA no hace en tu estudio
+## La línea que no se cruza
 
-- **No da opiniones legales.** No dice si un caso «se gana», no calcula indemnizaciones y no interpreta normas. Recoge datos y deriva.
-- **No firma ni envía documentos sin revisión.** Todo borrador pasa por un abogado del estudio.
-- **No promete resultados.** Ni en el chat ni en las publicaciones.
-- **No decide qué cliente se acepta.** Filtra con los criterios que tú defines; la decisión final es del estudio.
+Un estudio vive de su criterio y de su reputación, así que la automatización trabaja solo alrededor del trabajo jurídico, nunca dentro de él:
 
-## Cómo cuidamos el secreto profesional
+- Jamás opina si un caso es bueno, ni estima indemnizaciones, pensiones o liquidaciones.
+- Todo borrador lo lee, corrige y firma un abogado antes de salir.
+- No ofrece resultados ni en el chat ni en redes.
+- No acepta clientes: agenda consultas, y el estudio decide.
 
-Lo que un cliente le cuenta a su abogado no puede terminar en cualquier lado, y lo entendemos. Por eso trabajamos así:
+## El secreto profesional, en la práctica
 
-1. **Acuerdo de confidencialidad y protección de datos firmado** antes de ver un solo expediente, revisado con abogado.
-2. **Mínimo de datos.** Para agendar una consulta no hace falta el detalle del caso; para avisar un estado basta lo que tu equipo decidió informar.
-3. **Accesos por persona.** Cada abogado y asistente entra con su usuario, y se sabe quién vio qué.
-4. **Te explicamos dónde vive cada dato**, sin jerga, para que puedas responderle a tu cliente si te pregunta.
+Lo que un cliente le cuenta a su abogado no puede terminar en cualquier lado. Antes de empezar dejamos firmado un compromiso de reserva y tratamiento de datos, revisado con abogado, que dice qué información se usa, para qué y quién la ve. Para agendar una consulta no hace falta el relato del caso; para avisar un cambio de etapa basta el texto que el abogado decidió compartir. Cada miembro del estudio entra con su usuario y queda registro de quién abrió qué. Y si tu cliente te pregunta dónde está su información, te lo explicamos con palabras simples para que puedas responderle.
 
-## Si tu estudio atiende a latinos en Estados Unidos
+## Consultas en español desde Estados Unidos
 
-Estudios de inmigración, lesiones personales o temas laborales en Estados Unidos reciben consultas en español a toda hora, muchas de personas que no saben qué tipo de abogado necesitan. La automatización contesta en español o en inglés, filtra por materia y estado, y deja claro desde el primer mensaje que quien da la opinión es un abogado del estudio.
+Los estudios de inmigración, accidentes o temas laborales en Estados Unidos reciben mensajes en español a cualquier hora, muchas veces de personas que no saben qué tipo de abogado buscan. La automatización atiende en el idioma en que escribe cada persona, pregunta en qué estado vive y qué le pasó, y aclara desde el primer mensaje que la opinión la da un abogado del estudio.
 
-## Qué necesitas para empezar
+## Antes de la primera reunión, ten a mano
 
-- Las materias que ves y las que no, y en qué ciudades o estados trabajas.
-- Tu WhatsApp Business y, si tienes, acceso a tu sistema de gestión de casos.
-- Tus plantillas de documentos más usadas, aunque estén en Word.
-- Una persona del estudio que reciba lo que la IA deriva.
+- La lista de materias que atiendes y la de las que derivas.
+- Los lugares donde litigas o asesoras.
+- Las tres o cuatro plantillas que más usas, aunque estén en Word.
+- Quién en el estudio recibirá lo que la automatización le pase.
 
-Con eso armamos el flujo, lo probamos contigo con consultas reales y se enciende cuando te convence. Todo queda por escrito: alcance, contrato y factura. Y después seguimos contigo.
+Con eso hacemos el diagnóstico, te proponemos por dónde empezar y lo probamos con consultas reales antes de encenderlo. Alcance, contrato y factura quedan por escrito, y después de la entrega seguimos ajustando contigo.

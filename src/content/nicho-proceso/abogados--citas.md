@@ -1,7 +1,7 @@
 ---
 nicho: "abogados"
 proceso: "citas"
-titulo: "Agenda de consultas para abogados: el cliente elige su horario y llega con los papeles subidos"
+titulo: "Consultas legales agendadas y con los papeles subidos"
 seoTitulo: "Agenda de consultas legales por WhatsApp para abogados"
 seoDescripcion: "Tus clientes reservan la primera consulta por WhatsApp, reciben el recordatorio y suben sus documentos antes de la reunión. Menos ausencias y llamadas."
 respuesta: "Cuadrar una consulta legal por teléfono toma tres o cuatro mensajes y muchas veces el cliente llega sin los papeles que hacían falta. Con la agenda por WhatsApp, el cliente elige entre los horarios libres del abogado, recibe su recordatorio y sube sus documentos antes de la reunión."
@@ -79,3 +79,15 @@ Las personas no faltan a una consulta legal por desinterés. Faltan porque se le
 - La lista de documentos por materia.
 
 El resto lo armamos nosotros y lo probamos contigo antes de encenderlo.
+
+## Videollamada o presencial, sin vueltas
+
+Muchos estudios hoy atienden la primera consulta por videollamada, sobre todo cuando el cliente está en otra ciudad o en otro país. La agenda automática pregunta qué modalidad prefiere, si el estudio ofrece las dos, y le manda el enlace correcto o la dirección con referencias. Si la consulta es presencial, puede incluir dónde estacionar o qué documento de identidad pedirán en la recepción del edificio.
+
+## Cuando la consulta tiene costo
+
+Si tu estudio cobra la primera consulta, la agenda puede enviar el enlace de pago que ya usas y reservar el horario cuando el pago se confirma. El texto sobre cómo funciona la consulta y su costo lo apruebas tú, y la automatización lo repite tal cual, sin negociar ni hacer excepciones. Si el cliente tiene dudas sobre el pago, la conversación pasa a una persona del estudio.
+
+## Un registro que después sirve
+
+Cada consulta agendada queda registrada con su materia, su origen y si el cliente asistió. Con el tiempo, ese registro te dice qué materias generan más consultas, cuántas personas faltan y cuántas primeras consultas terminan en un cliente. Son las mismas preguntas que aparecen en el [reporte para socios](/soluciones/abogados/reportes), y salen solas de la agenda.

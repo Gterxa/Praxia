@@ -1,7 +1,7 @@
 ---
 nicho: "abogados"
 proceso: "atencion"
-titulo: "Atención de consultas para estudios de abogados: cada consulta llega filtrada al abogado que corresponde"
+titulo: "Cada consulta llega al abogado que corresponde"
 seoTitulo: "Atención de consultas por WhatsApp para estudios de abogados"
 seoDescripcion: "Filtra cada consulta nueva por materia, ciudad y urgencia, contesta lo administrativo al momento y pasa al abogado correcto solo lo que es para el estudio."
 respuesta: "Un estudio pierde horas facturables contestando consultas que no eran para él y pierde clientes por no contestar a tiempo las que sí. La atención automática por WhatsApp pregunta lo justo (materia, ciudad, urgencia), responde lo administrativo y deja la consulta en manos del abogado correcto, sin dar nunca una opinión legal."
@@ -74,3 +74,17 @@ Y el abogado llega a la primera consulta sabiendo de qué se trata, con los pape
 - No acepta un caso en nombre del estudio: agenda una consulta.
 
 Para filtrar sin perder clientes buenos, lee [cómo filtrar consultas en un estudio de abogados](/blog/como-filtrar-consultas-estudio-abogados). Si quieres saber qué preguntar antes de contratar un asistente así, [cuánto cuesta un chatbot para un estudio de abogados](/blog/cuanto-cuesta-chatbot-estudio-abogados) explica de qué depende.
+
+## Un viernes por la noche en el WhatsApp del estudio
+
+Llegan cinco consultas entre las 7 de la noche y la medianoche. Una persona pregunta por un divorcio en otra ciudad. Un dueño de restaurante cuenta que le llegó una inspección laboral y quiere saber qué hacer. Alguien pregunta si el estudio ve temas penales. Una señora escribe sobre la herencia de su padre. Un joven quiere saber si le pueden cobrar una deuda de hace diez años.
+
+Sin automatización, el lunes alguien lee las cinco, contesta en orden y para entonces el dueño del restaurante ya contrató a otro estudio. Con automatización, cada uno recibe respuesta en el momento. Los que no son del estudio reciben una orientación amable sobre a qué tipo de abogado acudir. El dueño del restaurante y la señora de la herencia ya tienen una primera consulta agendada para el lunes, y el abogado de cada materia recibe un resumen con lo que escribieron.
+
+## Lo que defines tú
+
+- Las materias que ve el estudio y las que no.
+- Las ciudades, distritos judiciales o estados donde trabajas.
+- Las preguntas de filtro, que no deberían pasar de cinco o seis.
+- Qué cuenta como urgencia y a quién se avisa a cualquier hora.
+- El texto para la consulta que no es del estudio, para que nadie se vaya sin una respuesta.

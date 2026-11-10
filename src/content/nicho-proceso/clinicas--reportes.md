@@ -1,7 +1,7 @@
 ---
 nicho: "clinicas"
 proceso: "reportes"
-titulo: "El reporte de tu clínica cada mañana: ocupación, faltas y tratamientos pendientes sin contar a mano"
+titulo: "El reporte de tu clínica cada mañana"
 seoTitulo: "Reportes automáticos de agenda y ocupación para clínicas"
 seoDescripcion: "Ocupación por especialista, inasistencias, cancelaciones y tratamientos pendientes, en un resumen que llega solo cada mañana por WhatsApp o correo."
 respuesta: "La mayoría de directores de clínica sabe cuánto facturó el mes pasado, pero no qué especialista tiene la agenda medio vacía ni cuántas citas se perdieron por faltas. Un reporte automático junta esos números desde tu agenda y te los manda cada mañana, sin que nadie arme un Excel."
@@ -75,3 +75,17 @@ Cada persona recibe lo que le toca. El director ve el consolidado; la coordinado
 - Una conversación con dirección para elegir los cinco o seis números que de verdad importan.
 
 El resto lo armamos nosotros, lo revisamos contigo durante unas semanas y lo ajustamos hasta que el reporte sea algo que lees en un minuto y te sirve para decidir.
+
+## Lo que un buen reporte te deja decidir
+
+Un reporte sirve si cambia algo. Estas son decisiones que las clínicas toman mejor cuando miran sus números cada semana:
+
+- **Mover horarios de un especialista.** Si una especialidad tiene la tarde vacía tres semanas seguidas y la mañana llena, se cambian bloques y se gana ocupación sin contratar a nadie.
+- **Ajustar los recordatorios.** Si las faltas se concentran en primeras consultas reservadas con mucha anticipación, conviene un segundo recordatorio solo para ese grupo.
+- **Decidir dónde invertir en publicidad.** Si el reporte muestra de dónde vienen las primeras consultas, sabes qué canal está trayendo pacientes y cuál no.
+- **Ver la carga de recepción.** Si los mensajes fuera de horario crecen, es una señal de que conviene automatizar más la atención.
+- **Hacer seguimiento comercial.** Los tratamientos presupuestados que siguen sin empezar son una lista concreta para coordinación.
+
+## Cómo se ve la primera semana
+
+La primera semana el reporte casi siempre muestra datos incompletos: citas que no tienen registrada la asistencia, pacientes sin origen anotado, especialistas con nombres escritos de dos formas distintas. Es normal y es útil. Se corrige cómo se registra cada cosa y a la segunda o tercera semana los números ya son confiables. Por eso lo acompañamos de cerca al inicio y no lo dejamos andando solo desde el primer día.

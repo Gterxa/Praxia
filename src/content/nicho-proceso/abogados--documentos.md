@@ -1,7 +1,7 @@
 ---
 nicho: "abogados"
 proceso: "documentos"
-titulo: "Documentos legales repetitivos: el borrador sale de tu plantilla y el abogado solo revisa y firma"
+titulo: "Documentos legales desde tu plantilla, revisados por un abogado"
 seoTitulo: "Automatización de documentos legales para estudios de abogados"
 seoDescripcion: "Contratos, cartas, poderes y escritos repetitivos armados desde tus plantillas con los datos del cliente. Siempre revisados y firmados por un abogado."
 respuesta: "Buena parte de los documentos de un estudio cambian en diez datos y se arman copiando y pegando el último. La automatización toma tus plantillas, llena los datos del cliente y deja un borrador listo para que el abogado revise y firme. No redacta desde cero ni decide el contenido jurídico."
@@ -67,3 +67,13 @@ En [qué revisar en tus plantillas antes de automatizar](/blog/checklist-plantil
 ## Los cuidados
 
 Los documentos de un estudio tienen información confidencial. Se trabaja con un acuerdo de confidencialidad y protección de datos firmado, accesos por persona y la carpeta que el estudio ya controla. Nada sale del estudio sin la revisión de un abogado. Para ver qué sale mal cuando se automatiza sin estos cuidados, lee [errores al automatizar documentos legales](/blog/errores-automatizar-documentos-legales).
+
+## Un ejemplo: el estudio que hace contratos de arrendamiento
+
+Un estudio que trabaja con propietarios e inmobiliarias arma varios contratos de arrendamiento por semana. Cada uno pide los datos del propietario, del inquilino, del inmueble, la renta, la garantía y el plazo. Hoy, una asistente recibe esos datos por correo, WhatsApp y llamadas, los pasa a la plantilla y el abogado revisa. Cuando falta un dato, el contrato se queda esperando y nadie avisa al cliente.
+
+Con la automatización, el cliente recibe un formulario simple o una conversación guiada por WhatsApp que pide exactamente esos datos, en orden, y las fotos de los documentos. Si falta algo, se lo vuelve a pedir solo. Cuando está todo, el borrador aparece en la carpeta del cliente con los datos puestos en cada cláusula, y el abogado recibe el aviso de que hay un contrato por revisar. La asistente deja de transcribir y se ocupa de lo que necesita criterio.
+
+## Cómo se ordenan las plantillas
+
+El trabajo más importante no es tecnológico: es ordenar tus plantillas. En casi todos los estudios hay tres o cuatro versiones del mismo contrato, cada una con cambios que alguien hizo para un cliente y se quedaron. Antes de automatizar, el abogado responsable elige la versión vigente de cada documento, se marcan los datos que cambian y se anotan las cláusulas opcionales. Ese ordenamiento ya vale por sí solo, aunque nunca se automatizara nada.

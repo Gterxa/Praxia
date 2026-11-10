@@ -1,7 +1,7 @@
 ---
 nicho: "clinicas"
 proceso: "atencion"
-titulo: "Atención a pacientes por WhatsApp: tu clínica contesta a las 10 de la noche sin que nadie se quede de turno"
+titulo: "Tu clínica contesta a sus pacientes a cualquier hora"
 seoTitulo: "Atención a pacientes por WhatsApp para clínicas"
 seoDescripcion: "Responde al momento horarios, sedes, seguros y preparación de exámenes, y pasa a una persona todo lo médico. Para clínicas con recepción saturada."
 respuesta: "La mayoría de mensajes que recibe una clínica son administrativos: horarios, sedes, qué seguros aceptan, cómo prepararse para un examen. Esos se pueden contestar solos, al momento y a cualquier hora, mientras todo lo que tenga que ver con salud pasa a una persona de tu equipo."
@@ -74,3 +74,17 @@ Cada respuesta se escribe con el tono de tu clínica. Si tu recepción saluda po
 4. Cada semana revisamos lo que la automatización derivó y ajustamos.
 
 Para ver los errores más comunes al poner un asistente en una clínica, lee [errores al automatizar la atención de una clínica](/blog/errores-chatbot-clinica). Si tu recepción ya no da abasto, [recepción saturada en una clínica](/blog/recepcion-clinica-saturada) cuenta por dónde empezar.
+
+## Una noche cualquiera en el WhatsApp de una clínica
+
+Entre las 8 de la noche y la medianoche, el WhatsApp de una clínica con varias especialidades recibe de todo: una madre que pregunta si el pediatra atiende el sábado, un señor que quiere saber si tiene que ir en ayunas a su análisis, alguien que pregunta en qué piso queda radiología, una persona que escribe que le duele el pecho desde la tarde.
+
+Sin automatización, todos esos mensajes esperan igual hasta las 8 de la mañana. Con ella, los tres primeros reciben su respuesta en segundos y, si quieren, reservan su cita ahí mismo. El cuarto recibe de inmediato la indicación de acudir a emergencias o llamar al número que tu clínica definió para esos casos, y tu equipo de turno recibe el aviso. Esa diferencia es la que más le importa a un director médico: lo urgente no se queda en la cola junto con las preguntas de horario.
+
+## Lo que necesitamos de tu equipo
+
+- Las veinte o treinta preguntas que más se repiten y la respuesta que hoy da recepción.
+- La lista vigente de seguros, convenios y sedes, y quién la mantiene al día.
+- Las indicaciones de preparación de cada examen, aprobadas por el área médica.
+- La lista de palabras y situaciones que siempre pasan a una persona.
+- El número o protocolo que tu clínica usa para urgencias fuera de horario.

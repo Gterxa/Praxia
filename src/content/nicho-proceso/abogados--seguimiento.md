@@ -1,7 +1,7 @@
 ---
 nicho: "abogados"
 proceso: "seguimiento"
-titulo: "Seguimiento de clientes en un estudio de abogados: consultas que se convierten y clientes que saben cómo va su caso"
+titulo: "Consultas que se convierten y clientes bien informados"
 seoTitulo: "Seguimiento de clientes y consultas para estudios de abogados"
 seoDescripcion: "La consulta que no contrató recibe su siguiente paso a tiempo y el cliente sabe cómo va su caso sin llamar al estudio. Para estudios con volumen."
 respuesta: "En un estudio, el seguimiento se pierde en dos puntas: la persona que vino a una primera consulta y nadie le volvió a escribir, y el cliente que llama cada semana para preguntar cómo va su caso. Automatizamos las dos: un mensaje a tiempo para la consulta que quedó pendiente y avisos de estado con lo que tu equipo registró."
@@ -64,3 +64,13 @@ También se cuida el canal: los mensajes van al número que el cliente registró
 ## Lo que se ve en el estudio
 
 Cada lunes, una lista: consultas abiertas sin respuesta, clientes que llevan más de un mes sin noticias, documentos que siguen pendientes. Es la agenda de seguimiento de la semana, ya armada. Para la parte comercial, [cómo convertir consultas en clientes](/blog/como-convertir-consultas-clientes-estudio) explica cómo se escribe ese mensaje sin presionar.
+
+## El mensaje que le escribes a quien no contrató
+
+Después de una primera consulta, la persona suele irse con una propuesta y varias dudas que no hizo en la reunión: si el pago puede ser en partes, cuánto va a demorar, si tiene que ir al juzgado. El seguimiento automático le escribe a los pocos días con algo útil, no con presión: le recuerda la propuesta, le pregunta si quedó alguna duda y le ofrece hablar diez minutos con el abogado que la atendió.
+
+Si responde con una pregunta, pasa al abogado con todo el contexto. Si dice que ya resolvió el tema o que no le interesa, se le agradece y no se le escribe más. Y si no responde, recibe un segundo mensaje más adelante y luego se cierra la consulta en el registro con ese motivo.
+
+## Cuando el caso no se mueve
+
+Los procesos judiciales tienen meses sin novedades. Para el cliente, ese silencio se parece al abandono, y ahí empiezan las llamadas. Un mensaje periódico que diga «tu caso sigue en la etapa de pruebas, el juzgado todavía no fija fecha, el doctor revisa el expediente cada semana» baja la ansiedad y las llamadas, aunque no haya una noticia nueva. El texto lo aprueba el abogado una vez por tipo de etapa y se reutiliza. Así, el estudio cumple con algo que los clientes valoran mucho y que casi nadie hace: avisar aunque no pase nada.

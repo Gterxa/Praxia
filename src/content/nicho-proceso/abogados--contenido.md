@@ -1,15 +1,15 @@
 ---
 nicho: "abogados"
 proceso: "contenido"
-titulo: "Contenido para estudios de abogados: publicar seguido sin que un socio pierda la tarde escribiendo"
+titulo: "Contenido y reseñas para tu estudio sin perder la tarde"
 seoTitulo: "Contenido para redes y reseñas de estudios de abogados"
 seoDescripcion: "Publicaciones educativas con calendario fijo a partir de las preguntas reales de tus clientes, revisadas por un abogado. Más pedidos de reseña en Google."
-respuesta: "Un estudio que publica explicaciones claras sobre los problemas de sus clientes recibe consultas mejor calificadas. Armamos un calendario de publicaciones a partir de las preguntas que ya te hacen por WhatsApp, con borradores que un abogado revisa, y pedimos reseñas en Google cuando un caso se cierra bien."
+respuesta: "Un estudio que publica explicaciones claras sobre los problemas de sus clientes recibe consultas mejor calificadas. Armamos un calendario de publicaciones a partir de las preguntas que ya te hacen por WhatsApp, con borradores que un abogado revisa, y, cuando un caso se cierra bien, le pedimos al cliente que cuente su experiencia en Google."
 tldr:
   - "Los temas salen de las preguntas reales que llegan al estudio, no de una lluvia de ideas."
   - "Cada publicación es un borrador que revisa y aprueba un abogado del estudio."
   - "Sin promesas de resultados ni casos de clientes sin su autorización."
-  - "Cuando un caso termina bien, el cliente recibe un pedido de reseña en el momento justo."
+  - "Cuando un caso termina bien, le llega al cliente un mensaje para opinar en Google, justo a tiempo."
 conversacion:
   negocio: "Estudio Salinas Laboralistas"
   mensajes:
@@ -31,8 +31,8 @@ conversacion:
 faq:
   - pregunta: "¿Puede un estudio publicar en redes?"
     respuesta: "Depende de las reglas del colegio de abogados de tu país sobre publicidad. Lo usual es que el contenido educativo sea aceptado; en el diagnóstico lo revisamos contigo antes de publicar nada."
-  - pregunta: "¿Quién escribe las publicaciones?"
-    respuesta: "Se arma un borrador a partir de las preguntas reales de tus clientes. Un abogado del estudio lo revisa y lo corrige. Nada sale sin esa aprobación."
+  - pregunta: "¿Tengo que escribir yo los textos?"
+    respuesta: "No. Te llega un texto armado con lo que preguntan tus clientes; tú o un abogado del estudio lo corrigen y dan el visto bueno antes de publicar."
   - pregunta: "¿Se pueden contar casos del estudio?"
     respuesta: "Solo con la autorización escrita del cliente y sin datos que lo identifiquen. Lo más seguro es explicar situaciones generales, no casos concretos."
   - pregunta: "¿Cómo se piden las reseñas?"
@@ -56,7 +56,7 @@ Mientras tanto, el cliente potencial busca en Google o en redes «me despidieron
 | Cambios normativos que el estudio ya sigue | Publicaciones oportunas, revisadas por el especialista |
 | Preguntas de la primera consulta | Lo que se explica una y otra vez en reunión |
 
-Si la [atención de consultas](/soluciones/abogados/atencion) ya registra las preguntas que llegan, el calendario de contenido sale de ahí cada semana.
+Si la [atención de consultas](/soluciones/abogados/atencion) ya registra las preguntas que llegan, cada semana ya tienes los temas listos sin buscarlos.
 
 ## Los cuidados en un estudio
 
@@ -69,3 +69,17 @@ Si la [atención de consultas](/soluciones/abogados/atencion) ya registra las pr
 ## Reseñas en Google
 
 Para un estudio, las reseñas pesan mucho: el cliente busca a alguien de confianza y lo primero que mira es qué dicen otros. El mejor momento para pedirla es cuando el caso se cerró bien o cuando el cliente agradece por WhatsApp. Más en [cómo conseguir reseñas para tu estudio de abogados](/blog/como-conseguir-resenas-estudio-abogados) y en [cómo publicar contenido legal en redes](/blog/como-publicar-contenido-legal-redes).
+
+## Un calendario realista para un estudio
+
+| Cada cuánto | Tema | Lo aprueba |
+|---|---|---|
+| Una vez por semana | Respuesta a la pregunta más repetida de la semana | El abogado de esa materia |
+| Dos veces al mes | Un cambio normativo explicado en lenguaje simple | El especialista que lo sigue |
+| Una vez al mes | Cómo trabaja el estudio: primera consulta, plazos, documentos | Socio a cargo |
+
+Es poco, y está bien que sea poco. Un estudio que publica una explicación útil por semana durante un año tiene más de cincuenta piezas que responden exactamente lo que sus clientes buscan. Eso pesa en Google y en las respuestas de los asistentes de IA, donde también hay personas buscando abogado.
+
+## Del borrador a la publicación en minutos
+
+El flujo es simple. Cada lunes, la automatización revisa las consultas de la semana, elige la pregunta que más se repitió y arma un borrador en lenguaje de cliente, sin tecnicismos. El abogado lo recibe por WhatsApp o correo, corrige lo que haga falta y responde «sí». Se programa en tus redes y queda guardado para usarlo también como respuesta en la atención por WhatsApp. Así, una misma explicación sirve tres veces: en redes, en Google y en el chat del estudio.

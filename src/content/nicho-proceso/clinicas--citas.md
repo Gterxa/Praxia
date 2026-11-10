@@ -1,7 +1,7 @@
 ---
 nicho: "clinicas"
 proceso: "citas"
-titulo: "Citas y recordatorios por WhatsApp para clínicas: menos huecos en la agenda de tus especialistas"
+titulo: "Agenda y recordatorios por WhatsApp para tu clínica"
 seoTitulo: "Citas y recordatorios por WhatsApp para clínicas privadas"
 seoDescripcion: "Tus pacientes reservan, confirman y reprograman por WhatsApp, y el hueco que deja una cancelación se ofrece a otro paciente al momento."
 respuesta: "Una clínica pierde citas porque el paciente se olvida y nadie se entera a tiempo de que no va a ir. La agenda automática por WhatsApp le recuerda con anticipación, le pide que confirme o reprograme con un toque y, si cancela, ofrece ese horario a quien estaba esperando."
@@ -77,3 +77,18 @@ Si quieres profundizar en cómo bajar las faltas, lee [cómo reducir las inasist
 ## Qué datos usa y cuáles no
 
 Para agendar y recordar basta con el nombre, el teléfono, la especialidad, el profesional y la hora. No hace falta el motivo de consulta ni la historia clínica, y no se usan. Si un paciente escribe algo médico al responder un recordatorio, la conversación pasa a una persona de tu equipo.
+
+## Un día de agenda, antes y después
+
+Imagina una clínica con cuatro especialistas y una tarde llena. A las 3 de la tarde, la recepcionista empieza a llamar a los pacientes de mañana. Le contestan siete de veinte. Deja mensajes de voz, anota en un papel quién confirmó y a las 6 todavía le faltan doce. Al día siguiente, tres no llegan. Dos de ellos habían escrito por WhatsApp la noche anterior para avisar, pero ese celular nadie lo revisó.
+
+Con la agenda conectada, la misma tarde se ve distinta. Los recordatorios salieron solos en la mañana. A mediodía, catorce pacientes ya habían confirmado respondiendo el mensaje, dos movieron su cita a la semana siguiente y uno canceló. Ese horario se le ofreció a una paciente de la lista de espera, que lo tomó en cinco minutos. Recepción solo tuvo que llamar a tres personas que no respondieron, y lo hizo con calma.
+
+Nada de esto requiere cambiar de sistema de agenda ni que tus pacientes descarguen una aplicación. Usan el WhatsApp que ya tienen, y tu equipo sigue viendo la agenda donde la ve hoy.
+
+## Lo que decides tú
+
+- Cuántos recordatorios se mandan y con cuánta anticipación, por tipo de cita.
+- Qué especialistas ofrecen sus horarios por WhatsApp y cuáles se agendan solo por recepción.
+- Qué tan lejos se puede reprogramar sin pasar por una persona.
+- Qué pacientes entran a la lista de espera y en qué orden se les ofrece un horario libre.

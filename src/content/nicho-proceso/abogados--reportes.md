@@ -1,15 +1,15 @@
 ---
 nicho: "abogados"
 proceso: "reportes"
-titulo: "Reportes para socios de un estudio: consultas, casos y plazos de la semana sin armar un Excel"
+titulo: "Consultas, casos y plazos de la semana en un mensaje"
 seoTitulo: "Reportes automáticos de consultas y casos para estudios"
 seoDescripcion: "Consultas nuevas, casos abiertos por abogado y plazos de la semana, en un resumen que llega solo cada lunes. Para socios que quieren decidir con datos."
-respuesta: "La mayoría de socios de un estudio no sabe cuántas consultas entraron el mes pasado ni cuántas se convirtieron en clientes. Un reporte automático junta esos números desde el WhatsApp, la agenda y tu registro de casos, y te los manda cada lunes con los plazos de la semana a la vista."
+respuesta: "La mayoría de socios de un estudio no sabe cuántas consultas entraron el mes pasado ni cuántas se convirtieron en clientes. Con la automatización, esas cifras se cruzan solas entre el WhatsApp, la agenda y tu registro de casos, y el lunes temprano tienes el resumen con los plazos de la semana a la vista."
 tldr:
   - "Cuántas consultas entraron, de qué materias y cuántas terminaron en un cliente."
   - "Casos abiertos por abogado, para ver quién está saturado y quién tiene espacio."
   - "Los plazos de la semana en una lista, sacados del registro que lleva tu equipo."
-  - "Llega cada lunes antes de la reunión de socios, en un mensaje que se lee en un minuto."
+  - "Llega cada lunes antes de la reunión de socios, corto, para revisarlo con el café."
 conversacion:
   negocio: "Estudio Montes & Arce"
   mensajes:
@@ -31,7 +31,7 @@ conversacion:
 faq:
   - pregunta: "¿El reporte controla los plazos procesales?"
     respuesta: "Muestra los plazos que tu equipo registra. El control y la responsabilidad siguen siendo del abogado: el reporte es una alerta más, no reemplaza la revisión del estudio."
-  - pregunta: "¿De dónde salen los números de consultas?"
+  - pregunta: "¿Cómo sabe cuántas consultas entraron?"
     respuesta: "De la automatización de atención y de tu agenda. Si una consulta entró por otro canal y nadie la registró, no aparece, y el reporte te lo hace notar."
   - pregunta: "¿Cada abogado ve todo?"
     respuesta: "No. Cada persona recibe lo que le corresponde: el socio ve el consolidado, cada abogado ve sus casos y sus plazos."
@@ -47,9 +47,9 @@ En muchos estudios, las decisiones se toman con la sensación del momento: «est
 
 Un reporte semanal no busca llenarte de gráficos. Busca que las tres o cuatro preguntas que se hacen en la reunión de socios tengan respuesta con datos.
 
-## Qué trae el reporte
+## Lo que trae el resumen del lunes
 
-| Indicador | Para qué sirve |
+| Qué muestra | Para qué te sirve en la reunión |
 |---|---|
 | Consultas nuevas por materia | Saber qué áreas atraen clientes y cuáles no |
 | Consultas que contrataron | Ver si el problema es atraer o convertir |
@@ -74,3 +74,17 @@ Los plazos de un estudio son de las cosas más delicadas que hay. El reporte los
 - Saber quién recibe qué.
 
 Si hoy el registro no existe o está desordenado, empezamos por ahí. Para ver un ejemplo completo, lee [el reporte semanal para socios de un estudio](/blog/reporte-semanal-socios-estudio).
+
+## Las preguntas que el reporte responde
+
+Estas son las preguntas que más se repiten en las reuniones de socios, y de dónde sale cada respuesta:
+
+- **¿Estamos recibiendo más o menos consultas que antes?** Del registro de la atención por WhatsApp y de la agenda de primeras consultas.
+- **¿Qué materias crecen?** De la clasificación que hace el filtro en el primer mensaje.
+- **¿Estamos perdiendo clientes por tardar en contestar?** Del tiempo entre el primer mensaje y la primera respuesta de una persona.
+- **¿Quién está saturado?** De los casos abiertos y los plazos por abogado.
+- **¿Qué casos están frenados?** De los documentos pendientes de clientes.
+
+## El primer mes
+
+El primer reporte casi siempre incomoda un poco. Aparecen consultas que nadie registró, casos que figuran abiertos aunque se cerraron hace meses y plazos anotados en tres lugares distintos. No es un problema del reporte: es la foto real del estudio. El primer mes se usa para ordenar el registro y dejar una sola fuente de verdad. Desde ahí, el reporte llega cada lunes y la reunión de socios se dedica a decidir, no a reconstruir qué pasó.

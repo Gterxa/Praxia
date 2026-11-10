@@ -1,7 +1,7 @@
 ---
 nicho: "clinicas"
 proceso: "seguimiento"
-titulo: "Seguimiento de pacientes: que el tratamiento presupuestado empiece y el control de seis meses no se olvide"
+titulo: "Controles y tratamientos que no se quedan pendientes"
 seoTitulo: "Seguimiento de pacientes por WhatsApp para clínicas"
 seoDescripcion: "Recordatorios de controles, tratamientos presupuestados que no empezaron y pacientes que no vuelven, con un mensaje a tiempo por WhatsApp."
 respuesta: "El paciente que no vuelve casi nunca se fue enojado: se olvidó o nadie le escribió. El seguimiento automático le recuerda su control, retoma el tratamiento que quedó presupuestado y le pregunta cómo le fue después del procedimiento, cada uno en su momento y por WhatsApp."
@@ -71,3 +71,15 @@ No recomienda tratamientos que el profesional no indicó. No interpreta cómo se
 ## Lo que ves tú
 
 Cada mañana, una lista corta: pacientes con control vencido, tratamientos presupuestados sin empezar, respuestas que necesitan a una persona. Ese es el trabajo del día de coordinación, ordenado.
+
+## Un ejemplo con números que pones tú
+
+Piensa en tu última semana. ¿Cuántos pacientes salieron de consulta con un presupuesto de tratamiento en la mano? ¿Cuántos de ellos empezaron? La diferencia entre esas dos cifras es el tamaño de esta fuga, y casi ninguna clínica la mide porque nadie lleva la cuenta.
+
+El seguimiento automático no convence a nadie de hacerse un tratamiento que no quiere. Lo que hace es que ningún paciente se quede sin la oportunidad de preguntar lo que le frenó. Muchas veces la duda es simple: si puede empezar después de un viaje, si el seguro cubre una parte, si las sesiones pueden ser en la tarde. Una persona de coordinación la resuelve en dos minutos, siempre que la conversación llegue a ella.
+
+## Cómo se ordena el trabajo de coordinación
+
+Hoy, en muchas clínicas, la coordinadora tiene una libreta o una hoja de cálculo con pacientes por llamar y nunca llega al final. Con el seguimiento automático, su lista del día ya viene filtrada: solo aparecen los pacientes que respondieron con una duda, los que pidieron que los llamen y los que no contestaron después de dos mensajes. Llama a los que tiene que llamar, con el contexto de lo que escribieron, en vez de llamar a todos a ciegas.
+
+El resultado es menos llamadas y mejores conversaciones. Y un registro claro de por qué cada paciente dijo que sí o que no, que después sirve para ajustar cómo se presentan los planes de tratamiento en consulta.
