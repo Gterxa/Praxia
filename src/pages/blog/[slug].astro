@@ -1,0 +1,32 @@
+---
+import { render } from 'astro:content';
+import PaginaSeo from '../../components/seo/PaginaSeo.astro';
+import { publicadas, portada, enlacesDe, article, faqPage, persona, url, type Entrada } from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const [blog, nichos] = await Promise.all([publicadas('blog'), publicadas('nichos')]);
+  return blog.map((b) => ({ params: { slug: b.id }, props: { b, n: nichos.find((n) => n.id === b.data.nicho?.id) } }));
+}
+const { b, n } = Astro.props as { b: Entrada<'blog'>; n?: Entrada<'nichos'> };
+const { Content } = await render(b);
+const ruta = url.blog(b.id);
+const img = portada('blog', b.id);
+const datos = [article(ruta, b.data, img?.og ?? null), persona(), faqPage(ruta, b.data.faq)];
+const enlaces = await enlacesDe('blog', b.id, { nicho: b.data.nicho?.id, ciudad: b.data.ciudad?.id, proceso: b.data.proceso });
+---
+
+<PaginaSeo
+  d={b.data}
+  antetitulo={n ? n.data.nombre : 'Blog'}
+  migas={[
+    { nombre: 'Blog', ruta: '/blog' },
+    { nombre: b.data.titulo, ruta },
+  ]}
+  portada={img}
+  datos={datos}
+  enlaces={enlaces}
+  cuerpo={b.body}
+  tipoOG="article"
+>
+  <Content />
+</PaginaSeo>

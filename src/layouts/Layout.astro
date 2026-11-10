@@ -60,6 +60,13 @@ interface Props {
   imagen?: string;
   /** Idioma de la página. Solo el funnel tiene versión en inglés (/en/funnel). */
   idioma?: Idioma;
+  /**
+   * Migas propias (nombre y ruta limpia de cada tramo, sin «Inicio»). Sin
+   * esto se arman solas desde la URL con el slug de cada tramo.
+   */
+  migas?: { nombre: string; ruta: string }[];
+  /** og:type. Los artículos del blog van como 'article'. */
+  tipoOG?: 'website' | 'article';
 }
 
 const {
@@ -73,6 +80,8 @@ const {
   datosEstructuradosExtra = [],
   imagen = '/og-praxia.png',
   idioma = 'es',
+  migas: migasPropias,
+  tipoOG = 'website',
 } = Astro.props;
 
 // GA4, Meta y Clarity: solo si Vercel tiene al menos uno de sus IDs (ver src/analitica.ts).
@@ -112,22 +121,25 @@ const rutaLimpia = sinBase(Astro.url.pathname);
 const segmentos = rutaLimpia.split('/').filter(Boolean);
 const NOMBRES_SECCION: Record<string, string> = {
   'que-puedes-automatizar': 'Qué puedes automatizar',
+  soluciones: 'Soluciones por rubro',
+  ciudades: 'Ciudades',
+  blog: 'Blog',
+  comparativas: 'Comparativas',
+  calculadoras: 'Calculadoras',
+  autor: 'Autor',
 };
+const tramos =
+  migasPropias ??
+  segmentos.map((seg, i) => ({
+    nombre: i === segmentos.length - 1 ? titulo : (NOMBRES_SECCION[seg] ?? seg.replace(/-/g, ' ')),
+    ruta: `/${segmentos.slice(0, i + 1).join('/')}`,
+  }));
 const migas =
   segmentos.length === 0
     ? null
     : {
         '@type': 'BreadcrumbList',
-        itemListElement: [
-          { nombre: 'Inicio', ruta: '/' },
-          ...segmentos.map((seg, i) => ({
-            nombre:
-              i === segmentos.length - 1
-                ? titulo
-                : (NOMBRES_SECCION[seg] ?? seg.replace(/-/g, ' ')),
-            ruta: `/${segmentos.slice(0, i + 1).join('/')}`,
-          })),
-        ].map((m, i) => ({
+        itemListElement: [{ nombre: 'Inicio', ruta: '/' }, ...tramos].map((m, i) => ({
           '@type': 'ListItem',
           position: i + 1,
           name: m.nombre,
@@ -242,7 +254,7 @@ const datosEstructurados = {
     <meta name="description" content={descripcion} />
     {noIndex && <meta name="robots" content="noindex, follow" />}
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={tipoOG} />
     <meta property="og:site_name" content={SITE.nombre} />
     <meta property="og:locale" content={LOCALE[idioma].replace('-', '_')} />
     <meta property="og:title" content={tituloCompleto} />

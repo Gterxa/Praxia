@@ -1,0 +1,23 @@
+---
+import Indice from '../../components/seo/Indice.astro';
+import { publicadas, url } from '../../lib/seo';
+const [blog, nichos] = await Promise.all([publicadas('blog'), publicadas('nichos')]);
+const orden = nichos.sort((a, b) => a.data.orden - b.data.orden);
+const recientes = (lista: typeof blog) => lista.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+const grupos = [
+  ...orden.map((n) => ({
+    titulo: n.data.nombre,
+    items: recientes(blog.filter((b) => b.data.nicho?.id === n.id)).map((b) => ({ titulo: b.data.titulo, href: url.blog(b.id) })),
+  })),
+  { titulo: 'Para cualquier negocio', items: recientes(blog.filter((b) => !b.data.nicho)).map((b) => ({ titulo: b.data.titulo, href: url.blog(b.id) })) },
+].filter((g) => g.items.length);
+---
+
+<Indice
+  titulo="Blog para dueños de negocio"
+  seoTitulo="Blog: automatización con IA para dueños de negocio"
+  seoDescripcion="Respuestas cortas a lo que pregunta un dueño antes de automatizar: qué se puede hacer, cuánto tarda, de qué depende el costo y qué errores evitar."
+  intro="Lo que nos preguntan los dueños antes de automatizar, respondido arriba de todo y sin jerga. Ordenado por rubro."
+  rutaPagina="/blog"
+  grupos={grupos}
+/>

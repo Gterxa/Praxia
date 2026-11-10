@@ -1,0 +1,82 @@
+---
+/**
+ * Dos tipos de página comparten este nivel de URL, sin chocar porque los slugs
+ * de proceso y de ciudad son distintos:
+ *   /soluciones/<nicho>/<proceso>  (nicho × proceso)
+ *   /soluciones/<nicho>/<ciudad>   (nicho × ciudad, solo cruces con sentido)
+ */
+import { render } from 'astro:content';
+import PaginaSeo from '../../../components/seo/PaginaSeo.astro';
+import { publicadas, portada, enlacesDe, service, faqPage, AREA_GENERAL, url, partes, type Entrada } from '../../../lib/seo';
+import { INFO_PROCESO } from '../../../lib/procesos';
+
+export async function getStaticPaths() {
+  const [procesos, cruces, nichos, ciudades] = await Promise.all([
+    publicadas('nichoProceso'),
+    publicadas('nichoCiudad'),
+    publicadas('nichos'),
+    publicadas('ciudades'),
+  ]);
+  const nicho = (id: string) => nichos.find((n) => n.id === id);
+  return [
+    ...procesos
+      .filter((p) => nicho(partes(p.id)[0]))
+      .map((p) => ({
+        params: { nicho: partes(p.id)[0], sub: p.data.proceso },
+        props: { tipo: 'proceso' as const, e: p, n: nicho(partes(p.id)[0])! },
+      })),
+    ...cruces
+      .filter((p) => nicho(partes(p.id)[0]) && ciudades.some((c) => c.id === partes(p.id)[1]))
+      .map((p) => ({
+        params: { nicho: partes(p.id)[0], sub: partes(p.id)[1] },
+        props: {
+          tipo: 'ciudad' as const,
+          e: p,
+          n: nicho(partes(p.id)[0])!,
+          c: ciudades.find((c) => c.id === partes(p.id)[1])!,
+        },
+      })),
+  ];
+}
+
+type Props =
+  | { tipo: 'proceso'; e: Entrada<'nichoProceso'>; n: Entrada<'nichos'> }
+  | { tipo: 'ciudad'; e: Entrada<'nichoCiudad'>; n: Entrada<'nichos'>; c: Entrada<'ciudades'> };
+const props = Astro.props as Props;
+const { e, n } = props;
+const { Content } = await render(e);
+const [nicho, sub] = [n.id, Astro.params.sub as string];
+const ruta = `/soluciones/${nicho}/${sub}`;
+const img = portada(props.tipo === 'proceso' ? 'nichoProceso' : 'nichoCiudad', e.id);
+
+const area =
+  props.tipo === 'ciudad'
+    ? [{ '@type': 'City', name: props.c.data.nombre, containedInPlace: { '@type': 'Country', name: props.c.data.pais } }]
+    : AREA_GENERAL;
+const nombreServicio =
+  props.tipo === 'proceso'
+    ? `${INFO_PROCESO[props.e.data.proceso].nombre} para ${n.data.nombre.toLowerCase()}`
+    : `Automatización con IA para ${n.data.nombre.toLowerCase()} en ${props.c.data.nombre}`;
+const datos = [service(ruta, e.data, nombreServicio, area, img?.og ?? null), faqPage(ruta, e.data.faq)];
+const enlaces =
+  props.tipo === 'proceso'
+    ? await enlacesDe('nichoProceso', e.id, { nicho, proceso: props.e.data.proceso })
+    : await enlacesDe('nichoCiudad', e.id, { nicho, ciudad: sub });
+const tramo = props.tipo === 'proceso' ? INFO_PROCESO[props.e.data.proceso].nombre : props.c.data.nombre;
+---
+
+<PaginaSeo
+  d={e.data}
+  antetitulo={`${n.data.nombre} · ${tramo}`}
+  migas={[
+    { nombre: 'Soluciones por rubro', ruta: '/soluciones' },
+    { nombre: n.data.nombre, ruta: url.nicho(nicho) },
+    { nombre: tramo, ruta },
+  ]}
+  portada={img}
+  datos={datos}
+  enlaces={enlaces}
+  cuerpo={e.body}
+>
+  <Content />
+</PaginaSeo>

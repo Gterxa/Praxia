@@ -11,7 +11,6 @@ import {
   TELEFONO_VISIBLE,
   SEDE,
   GOOGLE_MAPS_URL,
-  CIUDADES_ATENDIDAS,
 } from '../consts';
 import { ruta } from '../rutas';
 
@@ -55,6 +54,10 @@ const anio = new Date().getFullYear();
         </h2>
         <ul class="mt-4 space-y-2.5">
           <li><a href={ruta('/#servicios')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Industrias</a></li>
+          <li><a href={ruta('/soluciones')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Soluciones por rubro</a></li>
+          <li><a href={ruta('/blog')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Blog</a></li>
+          <li><a href={ruta('/calculadoras')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Calculadoras</a></li>
+          <li><a href={ruta('/ciudades')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Ciudades</a></li>
           <li><a href={ruta('/como-trabajamos')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Cómo trabajamos</a></li>
           <li><a href={ruta('/casos')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Casos</a></li>
           <li><a href={ruta('/nosotros')} class="pequeno text-texto-2 hover:text-brasa hover:underline">Nosotros</a></li>
@@ -111,7 +114,7 @@ const anio = new Date().getFullYear();
           </a>
         </address>
         <p class="pequeno mt-3 max-w-[30ch] text-texto-2">
-          Atendemos {CIUDADES_ATENDIDAS.join(', ')} y todo el Perú por videollamada.
+          Atendemos Perú, Latinoamérica y negocios latinos en Estados Unidos, en remoto por videollamada y WhatsApp.
         </p>
       </div>
     </div>
