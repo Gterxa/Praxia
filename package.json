@@ -16,7 +16,8 @@
     "subtitulos": "node scripts/srt-a-vtt.mjs",
     "limpiar": "rm -rf .astro dist node_modules/.astro && astro build",
     "similitud": "python scripts/similitud.py",
-    "portadas": "node scripts/generar-portadas.mjs"
+    "portadas": "node scripts/generar-portadas.mjs",
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

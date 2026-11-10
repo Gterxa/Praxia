@@ -3,7 +3,7 @@ nicho: "clinicas"
 proceso: "seguimiento"
 tipo: "intencion"
 titulo: "Seguimiento de pacientes por WhatsApp que los hace volver"
-seoTitulo: "Seguimiento de pacientes por WhatsApp para clínicas"
+seoTitulo: "Cómo funciona el seguimiento de pacientes por WhatsApp"
 seoDescripcion: "Cómo funciona un sistema de seguimiento de pacientes por WhatsApp: controles, tratamientos por sesiones y post procedimiento, sin escribir uno por uno."
 respuesta: "Un sistema de seguimiento de pacientes por WhatsApp guarda la fecha del próximo control desde la consulta y le escribe al paciente cuando se acerca, con horarios para reservar. También acompaña los tratamientos por sesiones y pregunta cómo sigue después de un procedimiento, pasando a una persona cualquier molestia."
 tldr:
