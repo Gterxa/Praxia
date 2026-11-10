@@ -1,22 +1,17 @@
 {
   "umbral": 0.3,
-  "paginas": 60,
+  "paginas": 113,
   "pares_sobre_umbral": [],
   "pares_cerca": [
     {
-      "similitud": 0.2696,
-      "a": "/soluciones/abogados/nueva-york",
-      "b": "/soluciones/abogados/lima"
+      "similitud": 0.2742,
+      "a": "/soluciones/constructoras/atencion",
+      "b": "/blog/asistente-whatsapp-constructora"
     },
     {
       "similitud": 0.2691,
       "a": "/ciudades/miami",
       "b": "/ciudades/houston"
-    },
-    {
-      "similitud": 0.2683,
-      "a": "/soluciones/constructoras/monterrey",
-      "b": "/soluciones/constructoras/arequipa"
     },
     {
       "similitud": 0.266,
@@ -29,37 +24,29 @@
       "b": "/ciudades/dallas"
     },
     {
-      "similitud": 0.2606,
-      "a": "/soluciones/inmobiliarias/santiago",
-      "b": "/soluciones/inmobiliarias/ciudad-mexico"
-    },
-    {
-      "similitud": 0.2561,
-      "a": "/soluciones/concesionarias/monterrey",
-      "b": "/soluciones/concesionarias/houston"
+      "similitud": 0.2564,
+      "a": "/blog/cuanto-cuesta-asistente-whatsapp-contratista-minero",
+      "b": "/blog/cuanto-cuesta-asistente-presupuestos-construccion"
     },
     {
       "similitud": 0.2551,
       "a": "/ciudades/los-angeles",
       "b": "/ciudades/dallas"
-    },
-    {
-      "similitud": 0.2548,
-      "a": "/soluciones/wellness/medellin",
-      "b": "/ciudades/medellin"
-    },
-    {
-      "similitud": 0.2545,
-      "a": "/soluciones/abogados/nueva-york",
-      "b": "/ciudades/nueva-york"
-    },
-    {
-      "similitud": 0.2508,
-      "a": "/soluciones/mineria/santiago",
-      "b": "/ciudades/santiago"
     }
   ],
   "maximo_por_pagina": {
+    "/blog/asistente-whatsapp-constructora": {
+      "similitud": 0.2742,
+      "con": "/soluciones/constructoras/atencion"
+    },
+    "/blog/cuanto-cuesta-asistente-presupuestos-construccion": {
+      "similitud": 0.2564,
+      "con": "/blog/cuanto-cuesta-asistente-whatsapp-contratista-minero"
+    },
+    "/blog/cuanto-cuesta-asistente-whatsapp-contratista-minero": {
+      "similitud": 0.2564,
+      "con": "/blog/cuanto-cuesta-asistente-presupuestos-construccion"
+    },
     "/ciudades/arequipa": {
       "similitud": 0.266,
       "con": "/ciudades/santiago"
@@ -76,61 +63,17 @@
       "similitud": 0.2551,
       "con": "/ciudades/dallas"
     },
-    "/ciudades/medellin": {
-      "similitud": 0.2548,
-      "con": "/soluciones/wellness/medellin"
-    },
     "/ciudades/miami": {
       "similitud": 0.2691,
       "con": "/ciudades/houston"
-    },
-    "/ciudades/nueva-york": {
-      "similitud": 0.2545,
-      "con": "/soluciones/abogados/nueva-york"
     },
     "/ciudades/santiago": {
       "similitud": 0.266,
       "con": "/ciudades/arequipa"
     },
-    "/soluciones/abogados/lima": {
-      "similitud": 0.2696,
-      "con": "/soluciones/abogados/nueva-york"
-    },
-    "/soluciones/abogados/nueva-york": {
-      "similitud": 0.2696,
-      "con": "/soluciones/abogados/lima"
-    },
-    "/soluciones/concesionarias/houston": {
-      "similitud": 0.2561,
-      "con": "/soluciones/concesionarias/monterrey"
-    },
-    "/soluciones/concesionarias/monterrey": {
-      "similitud": 0.2561,
-      "con": "/soluciones/concesionarias/houston"
-    },
-    "/soluciones/constructoras/arequipa": {
-      "similitud": 0.2683,
-      "con": "/soluciones/constructoras/monterrey"
-    },
-    "/soluciones/constructoras/monterrey": {
-      "similitud": 0.2683,
-      "con": "/soluciones/constructoras/arequipa"
-    },
-    "/soluciones/inmobiliarias/ciudad-mexico": {
-      "similitud": 0.2606,
-      "con": "/soluciones/inmobiliarias/santiago"
-    },
-    "/soluciones/inmobiliarias/santiago": {
-      "similitud": 0.2606,
-      "con": "/soluciones/inmobiliarias/ciudad-mexico"
-    },
-    "/soluciones/mineria/santiago": {
-      "similitud": 0.2508,
-      "con": "/ciudades/santiago"
-    },
-    "/soluciones/wellness/medellin": {
-      "similitud": 0.2548,
-      "con": "/ciudades/medellin"
+    "/soluciones/constructoras/atencion": {
+      "similitud": 0.2742,
+      "con": "/blog/asistente-whatsapp-constructora"
     }
   }
 }

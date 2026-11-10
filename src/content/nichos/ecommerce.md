@@ -68,7 +68,7 @@ Las fugas se repiten en casi todas las tiendas que atendemos:
 | Cambios y devoluciones | Excel y correos sueltos | Solicitud ordenada, con fotos, motivo y plazo, que llega a tu equipo |
 | Reporte diario | Se arma el lunes, si alguien se acuerda | Llega cada mañana: ventas, devoluciones, productos sin stock |
 
-No hace falta hacerlo todo junto. En el diagnóstico vemos cuál de estas fugas te cuesta más y empezamos por esa.
+No hace falta hacerlo todo junto. En el diagnóstico vemos cuál de estas fugas te cuesta más y empezamos por esa. En la mayoría de tiendas la primera es la [atención de preventa](/soluciones/ecommerce/atencion), porque cada consulta que se enfría es una venta que ya pagaste en anuncios. Si quieres ponerle número a esa fuga con tus propios datos, usa la [calculadora de consultas sin responder](/calculadoras/perdida-consultas-sin-responder-tienda).
 
 ## Para tiendas de lujo, el tono importa tanto como la velocidad
 
@@ -77,6 +77,23 @@ Una joyería, una marca de cuero o una boutique de vinos no puede contestar como
 ## Si vendes a Estados Unidos desde Latinoamérica
 
 Muchas tiendas latinas venden a clientes en Estados Unidos y atienden desde Lima, Bogotá o Ciudad de México. La diferencia horaria hace que las preguntas lleguen cuando el equipo ya se fue. La automatización contesta en español o en inglés según cómo escriba el cliente, con los plazos de envío y las políticas de cambio de cada destino.
+
+## Lo que pasa después de la venta también se automatiza
+
+La tienda que crece descubre que la mitad del trabajo llega después del pago. El cliente pregunta por su paquete, pide cambiar la talla, quiere saber si su regalo llega antes del cumpleaños. Cada una de esas conversaciones es corta, pero juntas se comen la mañana de alguien.
+
+- **Seguimiento de pedidos:** el cliente escribe el número de orden y recibe el estado que marca tu courier en ese momento.
+- **Cambios y devoluciones:** la solicitud llega completa, con fotos y motivo, y tu equipo solo aprueba o rechaza. Más detalle en [cambios y devoluciones para ecommerce](/soluciones/ecommerce/documentos).
+- **Recompra:** quien compró un perfume hace unos meses recibe un mensaje cuando probablemente se le está acabando, no un correo masivo. Lo explicamos en [seguimiento para tiendas online](/soluciones/ecommerce/seguimiento).
+
+## Cómo trabajamos con una tienda online
+
+Muchos dueños de tiendas ya pasaron por una agencia que instaló un bot, cobró y no volvió a contestar. Por eso cada proyecto con una tienda sigue el mismo orden, y en cada paso sabes qué estás pagando y qué recibes:
+
+1. **Leemos tus conversaciones y tus pedidos de las últimas semanas** para encontrar dónde se cae la venta: la pregunta sin respuesta, el carrito que nadie siguió, el cambio que tardó.
+2. **Te proponemos por dónde empezar** con alcance, plazos y entregables escritos, y con una versión más chica si prefieres probar con un solo proceso.
+3. **Probamos con tus propios casos** antes de encender nada: tu equipo lee las respuestas y corrige el tono.
+4. **Después de encenderlo seguimos ahí.** Ajustamos las respuestas cuando cambia tu catálogo o tu temporada, y tu equipo tiene a quién escribirle.
 
 ## Qué necesitas para empezar
 
