@@ -117,9 +117,9 @@ export async function enlacesDe(
       .slice(0, max)
       .map((b) => ({ texto: b.data.titulo, href: url.blog(b.id) }));
   const comparativasDe = (n: string) =>
-    s.comparativas.filter((c) => c.data.nicho.id === n).map((c) => ({ texto: c.data.titulo, href: url.comparativa(c.id) }));
+    s.comparativas.filter((c) => c.data.nicho === n).map((c) => ({ texto: c.data.titulo, href: url.comparativa(c.id) }));
   const calculadorasDe = (n: string) =>
-    s.calculadoras.filter((c) => c.data.nicho.id === n).map((c) => ({ texto: c.data.titulo, href: url.calculadora(c.id) }));
+    s.calculadoras.filter((c) => c.data.nicho === n).map((c) => ({ texto: c.data.titulo, href: url.calculadora(c.id) }));
 
   const alNicho = nicho ? [{ texto: `Automatización para ${nombreNicho(nicho).toLowerCase()}`, href: url.nicho(nicho.id) }] : [];
   const alaCiudad = ciudad ? [{ texto: `Praxia en ${ciudad.data.nombre}`, href: url.ciudad(ciudad.id) }] : [];
@@ -132,27 +132,26 @@ export async function enlacesDe(
         ...grupo('Por ciudad', [
           ...ciudadesDeNicho(id),
           ...s.ciudades
-            .filter((c) => c.data.nichos.some((r) => r.id === id))
+            .filter((c) => c.data.nichos.some((r) => r === id))
             .filter((c) => !s.nichoCiudad.some((p) => p.id === `${id}--${c.id}`))
             .map((c) => ({ texto: `Praxia en ${c.data.nombre}`, href: url.ciudad(c.id) })),
         ]),
         ...grupo('Calculadoras y comparativas', [...calculadorasDe(id), ...comparativasDe(id)]),
-        ...grupo('Para leer antes de decidir', blogDe((b) => b.data.nicho?.id === id, 8)),
+        ...grupo('Para leer antes de decidir', blogDe((b) => b.data.nicho === id, 8)),
       ];
     case 'ciudad':
       return [
         ...grupo(
           'Rubros que atendemos acá',
-          ciudad!.data.nichos.map((r) => {
-            const cruce = s.nichoCiudad.find((p) => p.id === `${r.id}--${id}`);
-            const n = s.nichos.find((x) => x.id === r.id);
-            return cruce
-              ? { texto: cruce.data.titulo, href: url.nichoCiudad(r.id, id) }
-              : { texto: `Automatización para ${n ? nombreNicho(n).toLowerCase() : r.id}`, href: url.nicho(r.id) };
+          ciudad!.data.nichos.flatMap((r) => {
+            const cruce = s.nichoCiudad.find((p) => p.id === `${r}--${id}`);
+            const n = s.nichos.find((x) => x.id === r);
+            if (cruce) return [{ texto: cruce.data.titulo, href: url.nichoCiudad(r, id) }];
+            return n ? [{ texto: `Automatización para ${nombreNicho(n).toLowerCase()}`, href: url.nicho(r) }] : [];
           }),
         ),
         ...grupo('Otras ciudades', s.ciudades.filter((c) => c.id !== id && c.data.codigoPais === ciudad!.data.codigoPais).map((c) => ({ texto: c.data.nombre, href: url.ciudad(c.id) }))),
-        ...grupo('Para leer antes de decidir', blogDe((b) => b.data.ciudad?.id === id || ciudad!.data.nichos.some((r) => r.id === b.data.nicho?.id), 6)),
+        ...grupo('Para leer antes de decidir', blogDe((b) => b.data.ciudad === id || ciudad!.data.nichos.some((r) => r === b.data.nicho), 6)),
       ];
     case 'nichoProceso':
       return [
@@ -160,8 +159,8 @@ export async function enlacesDe(
         ...grupo(`Más procesos para ${nicho ? nombreNicho(nicho).toLowerCase() : 'tu rubro'}`, procesosDeNicho(ref.nicho!).filter((e) => !e.href.endsWith(`/${proceso}`))),
         ...grupo('El mismo proceso en otros rubros', s.nichoProceso.filter((p) => p.data.proceso === proceso && partes(p.id)[0] !== ref.nicho).slice(0, 4).map((p) => ({ texto: p.data.titulo, href: url.nichoProceso(partes(p.id)[0], p.data.proceso) }))),
         ...grupo('Para leer antes de decidir', [
-          ...s.calculadoras.filter((c) => c.data.nicho.id === ref.nicho && c.data.proceso === proceso).map((c) => ({ texto: c.data.titulo, href: url.calculadora(c.id) })),
-          ...blogDe((b) => b.data.nicho?.id === ref.nicho && (b.data.proceso === proceso || !b.data.proceso), 5),
+          ...s.calculadoras.filter((c) => c.data.nicho === ref.nicho && c.data.proceso === proceso).map((c) => ({ texto: c.data.titulo, href: url.calculadora(c.id) })),
+          ...blogDe((b) => b.data.nicho === ref.nicho && (b.data.proceso === proceso || !b.data.proceso), 5),
         ]),
       ];
     case 'nichoCiudad':
@@ -170,7 +169,7 @@ export async function enlacesDe(
         ...grupo(`Otros rubros en ${ciudad?.data.nombre ?? 'tu ciudad'}`, s.nichoCiudad.filter((p) => partes(p.id)[1] === ref.ciudad && partes(p.id)[0] !== ref.nicho).map((p) => ({ texto: p.data.titulo, href: url.nichoCiudad(partes(p.id)[0], partes(p.id)[1]) }))),
         ...grupo('El mismo rubro en otras ciudades', ciudadesDeNicho(ref.nicho!).filter((e) => !e.href.endsWith(`/${ref.ciudad}`))),
         ...grupo('Qué automatizar primero', procesosDeNicho(ref.nicho!).slice(0, 4)),
-        ...grupo('Para leer antes de decidir', blogDe((b) => b.data.nicho?.id === ref.nicho, 4)),
+        ...grupo('Para leer antes de decidir', blogDe((b) => b.data.nicho === ref.nicho, 4)),
       ];
     case 'blog':
     case 'comparativa':
@@ -184,7 +183,7 @@ export async function enlacesDe(
           ...alaCiudad,
         ]),
         ...grupo('Herramientas para decidir', nicho ? [...calculadorasDe(nicho.id), ...comparativasDe(nicho.id)].filter((e) => !e.href.endsWith(`/${id}`)).slice(0, 4) : []),
-        ...grupo('Sigue leyendo', blogDe((b) => (nicho ? b.data.nicho?.id === nicho.id : !b.data.nicho), 5)),
+        ...grupo('Sigue leyendo', blogDe((b) => (nicho ? b.data.nicho === nicho.id : !b.data.nicho), 5)),
       ];
   }
 }

@@ -5,14 +5,14 @@ import { publicadas, portada, enlacesDe, article, faqPage, persona, url, type En
 
 export async function getStaticPaths() {
   const [blog, nichos] = await Promise.all([publicadas('blog'), publicadas('nichos')]);
-  return blog.map((b) => ({ params: { slug: b.id }, props: { b, n: nichos.find((n) => n.id === b.data.nicho?.id) } }));
+  return blog.map((b) => ({ params: { slug: b.id }, props: { b, n: nichos.find((n) => n.id === b.data.nicho) } }));
 }
 const { b, n } = Astro.props as { b: Entrada<'blog'>; n?: Entrada<'nichos'> };
 const { Content } = await render(b);
 const ruta = url.blog(b.id);
 const img = portada('blog', b.id);
 const datos = [article(ruta, b.data, img?.og ?? null), persona(), faqPage(ruta, b.data.faq)];
-const enlaces = await enlacesDe('blog', b.id, { nicho: b.data.nicho?.id, ciudad: b.data.ciudad?.id, proceso: b.data.proceso });
+const enlaces = await enlacesDe('blog', b.id, { nicho: b.data.nicho, ciudad: b.data.ciudad, proceso: b.data.proceso });
 ---
 
 <PaginaSeo

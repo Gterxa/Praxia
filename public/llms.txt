@@ -35,3 +35,10 @@
 - El precio se da en la llamada de validación, según el alcance. La validación no tiene costo.
 - Emiten factura. Sin contratos de permanencia.
 - El sistema entregado (código, accesos, documentación) es del cliente.
+
+## Soluciones por rubro y ciudad
+
+- [Soluciones por rubro](https://www.trypraxia.tech/soluciones): qué automatizar en ecommerce, wellness, inmobiliarias, concesionarias, clínicas privadas, estudios de abogados, contratistas mineros y constructoras.
+- [Ciudades](https://www.trypraxia.tech/ciudades): Lima, Arequipa, Trujillo, Ciudad de México, Monterrey, Bogotá, Medellín, Santiago, Miami, Houston, Los Ángeles, Dallas y Nueva York. Todas se atienden en remoto; la única sede es Surquillo, Lima.
+- [Blog](https://www.trypraxia.tech/blog): respuestas cortas a lo que pregunta un dueño antes de automatizar.
+- [Calculadoras](https://www.trypraxia.tech/calculadoras): cuánto pierde un negocio por hacerlo a mano, con sus propios números.

@@ -34,7 +34,7 @@ const enlaces = await enlacesDe('ciudad', c.id, { ciudad: c.id });
 >
   <Content />
   <aside slot="extra" class="fuentes pequeno" aria-labelledby="fuentes-titulo">
-    <h2 id="fuentes-titulo" class="mono">Fuentes de los datos de esta página</h2>
+    <h2 id="fuentes-titulo" class="mono" data-plantilla>Fuentes de los datos de esta página</h2>
     <ul>
       {
         c.data.fuentes.map((f) => (
@@ -48,7 +48,7 @@ const enlaces = await enlacesDe('ciudad', c.id, { ciudad: c.id });
         ))
       }
     </ul>
-    <p class="mt-3">Atendemos {c.data.nombre} en remoto, por videollamada y WhatsApp. No tenemos oficina en la ciudad.</p>
+    <p class="mt-3" data-plantilla>Atendemos {c.data.nombre} en remoto, por videollamada y WhatsApp. No tenemos oficina en la ciudad.</p>
   </aside>
 </PaginaSeo>
 
