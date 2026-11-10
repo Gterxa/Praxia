@@ -75,7 +75,7 @@ El cliente olvida rápido los meses de obra y recuerda cómo fue la entrega. Si 
 - [ ] Garantía de la constructora, por escrito.
 - [ ] Contactos para postventa.
 
-## 6. Cierre económico
+## 6. Cierre de cuentas
 
 - [ ] Liquidación con todas las valorizaciones y adicionales aprobados.
 - [ ] Devolución de retenciones, si corresponde según el contrato.

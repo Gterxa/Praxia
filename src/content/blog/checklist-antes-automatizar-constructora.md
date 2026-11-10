@@ -4,7 +4,7 @@ proceso: "seguimiento"
 tipo: "checklist"
 titulo: "Checklist antes de automatizar tu constructora: qué tener claro primero"
 seoTitulo: "Antes de automatizar tu constructora: checklist"
-seoDescripcion: "Lo que conviene definir antes de automatizar procesos en una constructora: el problema que más cuesta, tus formatos, quién usará el sistema y cómo medirás el resultado."
+seoDescripcion: "Qué definir antes de automatizar procesos en una constructora: el problema que más cuesta, tus formatos, quién usará el sistema y cómo medirás el resultado."
 respuesta: "Antes de automatizar tu constructora, define qué proceso te cuesta más hoy (control de obra, cobros, presupuestos o atención), junta los formatos que ya usas, identifica qué residente o persona va a probar el sistema, mide cómo está ese proceso hoy y decide qué número tiene que mejorar. Así el proyecto parte de tu problema y no de lo que te quieren vender."
 tldr:
   - "Un proceso a la vez: el que más plata o tiempo te cuesta hoy."
