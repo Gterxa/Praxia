@@ -6,7 +6,7 @@ import FAQTabs from '../components/ui/faq-tabs.tsx';
 import FichaHero from '../components/FichaHero.astro';
 import CTABand from '../components/CTABand.astro';
 import { CONTEXTO } from '../consts';
-import { PREGUNTAS_FRECUENTES, CATEGORIAS_FAQ, agruparPorCategoria } from '../faq';
+import { PREGUNTAS_FRECUENTES, CATEGORIAS_FAQ, agruparPorCategoria, faqSchema } from '../faq';
 
 const faqData = agruparPorCategoria(PREGUNTAS_FRECUENTES);
 ---
@@ -15,6 +15,7 @@ const faqData = agruparPorCategoria(PREGUNTAS_FRECUENTES);
   titulo="Preguntas frecuentes"
   descripcion="Cuánto demora una automatización, cómo definimos el presupuesto, qué pasa si tu idea no es viable y qué necesitas para empezar."
   contextoWhatsApp={CONTEXTO.preguntas}
+  datosEstructuradosExtra={[faqSchema(PREGUNTAS_FRECUENTES)]}
 >
   <Hero
     antetitulo="Preguntas frecuentes"

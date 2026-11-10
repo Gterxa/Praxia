@@ -10,6 +10,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "og": "node scripts/generar-og.mjs",
+    "og:paginas": "node scripts/generar-og-paginas.mjs",
     "contraste": "node scripts/verificar-contraste.mjs",
     "captura": "node scripts/captura.mjs",
     "limpiar": "rm -rf .astro dist node_modules/.astro && astro build"

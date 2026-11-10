@@ -8,10 +8,10 @@ import FAQTabs from '../components/ui/faq-tabs.tsx';
 import FichaHero from '../components/FichaHero.astro';
 import CTAInline from '../components/CTAInline.astro';
 import CTABand from '../components/CTABand.astro';
-import { CONTEXTO } from '../consts';
+import { CONTEXTO, METODO } from '../consts';
 import metodo from '../assets/img/metodo.png';
 import { ruta } from '../rutas';
-import { CATEGORIAS_FAQ, agruparPorCategoria } from '../faq';
+import { CATEGORIAS_FAQ, agruparPorCategoria, faqSchema } from '../faq';
 
 const preguntas = [
   {
@@ -61,6 +61,23 @@ const categorias = Object.fromEntries(
   titulo="Cómo trabajamos: de la idea a la automatización andando"
   descripcion="Cuatro pasos: conversamos, validamos, construimos e integramos, y te enseñamos. La mayoría de proyectos toma entre 2 y 4 semanas."
   contextoWhatsApp={CONTEXTO.comoTrabajamos}
+  imagen="/og/como-trabajamos.jpg"
+  datosEstructuradosExtra={[
+    faqSchema(preguntas),
+    {
+      // HowTo: los 4 pasos del método, para que Google y los buscadores
+      // con IA puedan citar el proceso paso a paso.
+      '@type': 'HowTo',
+      name: 'Cómo automatizar un proceso de tu negocio con Praxia',
+      totalTime: 'P4W',
+      step: METODO.map((m) => ({
+        '@type': 'HowToStep',
+        position: m.numero,
+        name: m.titulo,
+        text: m.resumen,
+      })),
+    },
+  ]}
 >
   <Hero
     antetitulo="Cómo trabajamos"

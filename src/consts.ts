@@ -43,6 +43,42 @@ export const waLink = (contexto: string) =>
 
 export const mailtoLink = `mailto:${EMAIL}`;
 
+/** El teléfono tal como se lee (y como figura en el Perfil de Empresa de Google). */
+export const TELEFONO_VISIBLE = `${WHATSAPP.slice(2, 5)} ${WHATSAPP.slice(5, 8)} ${WHATSAPP.slice(8)}`;
+
+/* ==========================================================================
+   Presencia local (SEO). Debe coincidir letra por letra con el Perfil de
+   Empresa de Google: nombre, dirección y teléfono iguales en todos lados
+   (NAP) es lo que le confirma a Google que la web y la ficha son el mismo
+   negocio. Si cambias la ficha, cambia esto, y al revés.
+   ========================================================================== */
+
+export const SEDE = {
+  calle: 'Laurel Rosa 248',
+  distrito: 'Surquillo',
+  ciudad: 'Lima',
+  codigoPostal: '15038',
+  pais: 'PE',
+  /** Coordenadas del pin de la ficha en Google Maps. */
+  latitud: -12.1234974,
+  longitud: -77.0016285,
+} as const;
+
+/** Ficha de Google Maps (por CID, el enlace estable que no cambia con el nombre). */
+export const GOOGLE_MAPS_URL = 'https://maps.google.com/?cid=7632389877815695382';
+
+/** Perfiles oficiales: van al `sameAs` del JSON-LD y a la ficha de Google. */
+export const REDES = {
+  instagram: 'https://www.instagram.com/praxias.ai/',
+} as const;
+
+/**
+ * Ciudades que atendemos y que nombramos explícitamente. Todas se atienden de
+ * forma remota (videollamada y WhatsApp) desde la sede de Lima: no son
+ * oficinas y no deben presentarse como tales, ni en el sitio ni en el JSON-LD.
+ */
+export const CIUDADES_ATENDIDAS = ['Lima', 'Trujillo', 'Huancayo'] as const;
+
 /** El contexto que se prellena en cada página. */
 export const CONTEXTO = {
   home: 'quiero validar una idea para automatizar mi negocio',

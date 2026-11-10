@@ -2,4 +2,17 @@ User-agent: *
 Allow: /
 Disallow: /pruebas
 
+# Buscadores con IA (AEO/GEO): permitidos explícitamente para que puedan
+# citar a Praxia en ChatGPT, Claude, Perplexity, Gemini y Copilot.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: PerplexityBot
+User-agent: Google-Extended
+User-agent: Bingbot
+Allow: /
+Disallow: /pruebas
+
 Sitemap: https://www.trypraxia.tech/sitemap-index.xml

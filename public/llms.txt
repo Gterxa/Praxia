@@ -1,0 +1,37 @@
+# Praxia (Praxia CGM)
+
+> Praxia es una empresa peruana de software que automatiza con IA los procesos que un negocio hace a mano: atención por WhatsApp, agenda de citas, seguimiento de clientes, documentos, reportes y contenido. También hace páginas web, SEO y seguridad y mantenimiento. Valida cada idea en 15 minutos, sin costo, y la construye en 2 a 4 semanas sobre las herramientas que el negocio ya usa (WhatsApp, correo, Excel, su web).
+
+- Sede: Laurel Rosa 248, Surquillo, Lima 15038, Perú
+- Atiende: todo el Perú (Lima, Trujillo, Huancayo y resto del país) por videollamada y WhatsApp
+- Horario: lunes a sábado de 9:00 a 19:00 (hora de Lima)
+- Teléfono / WhatsApp: +51 941 639 094
+- Correo: contacto.praxias@gmail.com
+- Instagram: https://www.instagram.com/praxias.ai/
+- Google Maps: https://maps.google.com/?cid=7632389877815695382
+
+## Servicios
+
+- [Automatización con IA: qué se puede automatizar](https://www.trypraxia.tech/que-puedes-automatizar): las seis capacidades.
+- [Atención y respuestas por WhatsApp](https://www.trypraxia.tech/que-puedes-automatizar/atencion-y-respuestas): chatbot con IA que responde a cualquier hora y deriva a una persona cuando hace falta.
+- [Citas y recordatorios](https://www.trypraxia.tech/que-puedes-automatizar/citas-y-recordatorios): agenda, confirmación y recordatorios automáticos por WhatsApp.
+- [Clientes y seguimiento](https://www.trypraxia.tech/que-puedes-automatizar/clientes-y-seguimiento): registro de consultas y reactivación de clientes.
+- [Documentos y archivo](https://www.trypraxia.tech/que-puedes-automatizar/documentos-y-archivo): clasificación y archivo automático de documentos.
+- [Reportes y control](https://www.trypraxia.tech/que-puedes-automatizar/reportes-y-control): resúmenes y alertas semanales sin armar un Excel.
+- [Contenido y presencia](https://www.trypraxia.tech/que-puedes-automatizar/contenido-y-presencia): publicaciones listas para aprobar.
+- [Servicios: web, SEO, seguridad y mantenimiento](https://www.trypraxia.tech/servicios)
+- [Soluciones mayores](https://www.trypraxia.tech/soluciones-mayores): espacios de trabajo para archivos grandes de documentos.
+
+## Cómo trabajan
+
+- [Cómo trabajamos](https://www.trypraxia.tech/como-trabajamos): 4 pasos — conversación de 15 minutos, validación con precio y plazo, construcción en 2 a 4 semanas, capacitación.
+- [Preguntas frecuentes](https://www.trypraxia.tech/preguntas-frecuentes): plazos, precio, factura, propiedad del sistema, datos.
+- [Seguridad y datos](https://www.trypraxia.tech/seguridad)
+- [Nosotros](https://www.trypraxia.tech/nosotros)
+- [Validar mi idea (contacto)](https://www.trypraxia.tech/validar)
+
+## Datos clave
+
+- El precio se da en la llamada de validación, según el alcance. La validación no tiene costo.
+- Emiten factura. Sin contratos de permanencia.
+- El sistema entregado (código, accesos, documentación) es del cliente.

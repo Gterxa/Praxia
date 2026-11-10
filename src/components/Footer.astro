@@ -1,7 +1,18 @@
 ---
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
-import { SITE, waLink, CONTEXTO, EMAIL, mailtoLink } from '../consts';
+import {
+  SITE,
+  waLink,
+  CONTEXTO,
+  EMAIL,
+  mailtoLink,
+  WHATSAPP,
+  TELEFONO_VISIBLE,
+  SEDE,
+  GOOGLE_MAPS_URL,
+  CIUDADES_ATENDIDAS,
+} from '../consts';
 import { ruta } from '../rutas';
 
 const anio = new Date().getFullYear();
@@ -76,7 +87,32 @@ const anio = new Date().getFullYear();
               {EMAIL}
             </a>
           </li>
+          <li>
+            <a
+              href={`tel:+${WHATSAPP}`}
+              class="pequeno inline-flex items-center gap-2 text-texto-2 hover:text-brasa hover:underline"
+            >
+              {TELEFONO_VISIBLE}
+            </a>
+          </li>
         </ul>
+        {/*
+          NAP (nombre, dirección, teléfono) idéntico al Perfil de Empresa de
+          Google: es la señal con la que Google une la web y la ficha.
+        */}
+        <address class="pequeno mt-5 not-italic text-texto-2">
+          <a
+            href={GOOGLE_MAPS_URL}
+            class="hover:text-brasa hover:underline"
+            rel="noopener"
+            target="_blank"
+          >
+            {SEDE.calle}, {SEDE.distrito}, {SEDE.ciudad} {SEDE.codigoPostal}
+          </a>
+        </address>
+        <p class="pequeno mt-3 max-w-[30ch] text-texto-2">
+          Atendemos {CIUDADES_ATENDIDAS.join(', ')} y todo el Perú por videollamada.
+        </p>
       </div>
     </div>
 
