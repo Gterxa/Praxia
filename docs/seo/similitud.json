@@ -1,12 +1,27 @@
 {
   "umbral": 0.3,
-  "paginas": 33,
+  "paginas": 114,
   "pares_sobre_umbral": [],
   "pares_cerca": [
+    {
+      "similitud": 0.2843,
+      "a": "/blog/cuanto-cuesta-automatizar-inmobiliaria",
+      "b": "/blog/cuanto-cuesta-automatizar-concesionaria"
+    },
     {
       "similitud": 0.2691,
       "a": "/ciudades/miami",
       "b": "/ciudades/houston"
+    },
+    {
+      "similitud": 0.2679,
+      "a": "/blog/checklist-contratar-automatizacion-inmobiliaria",
+      "b": "/blog/checklist-contratar-automatizacion-concesionaria"
+    },
+    {
+      "similitud": 0.2662,
+      "a": "/soluciones/inmobiliarias",
+      "b": "/soluciones/concesionarias"
     },
     {
       "similitud": 0.266,
@@ -19,12 +34,41 @@
       "b": "/ciudades/dallas"
     },
     {
+      "similitud": 0.2565,
+      "a": "/blog/checklist-automatizar-inmobiliaria",
+      "b": "/blog/checklist-automatizar-concesionaria"
+    },
+    {
       "similitud": 0.2551,
       "a": "/ciudades/los-angeles",
       "b": "/ciudades/dallas"
     }
   ],
   "maximo_por_pagina": {
+    "/blog/checklist-automatizar-concesionaria": {
+      "similitud": 0.2565,
+      "con": "/blog/checklist-automatizar-inmobiliaria"
+    },
+    "/blog/checklist-automatizar-inmobiliaria": {
+      "similitud": 0.2565,
+      "con": "/blog/checklist-automatizar-concesionaria"
+    },
+    "/blog/checklist-contratar-automatizacion-concesionaria": {
+      "similitud": 0.2679,
+      "con": "/blog/checklist-contratar-automatizacion-inmobiliaria"
+    },
+    "/blog/checklist-contratar-automatizacion-inmobiliaria": {
+      "similitud": 0.2679,
+      "con": "/blog/checklist-contratar-automatizacion-concesionaria"
+    },
+    "/blog/cuanto-cuesta-automatizar-concesionaria": {
+      "similitud": 0.2843,
+      "con": "/blog/cuanto-cuesta-automatizar-inmobiliaria"
+    },
+    "/blog/cuanto-cuesta-automatizar-inmobiliaria": {
+      "similitud": 0.2843,
+      "con": "/blog/cuanto-cuesta-automatizar-concesionaria"
+    },
     "/ciudades/arequipa": {
       "similitud": 0.266,
       "con": "/ciudades/santiago"
@@ -48,6 +92,14 @@
     "/ciudades/santiago": {
       "similitud": 0.266,
       "con": "/ciudades/arequipa"
+    },
+    "/soluciones/concesionarias": {
+      "similitud": 0.2662,
+      "con": "/soluciones/inmobiliarias"
+    },
+    "/soluciones/inmobiliarias": {
+      "similitud": 0.2662,
+      "con": "/soluciones/concesionarias"
     }
   }
 }
