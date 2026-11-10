@@ -7,6 +7,7 @@ import FondoOrbes from '../components/FondoOrbes.astro';
 import BottomSheetValidar from '../components/BottomSheetValidar.astro';
 import CabeceraFunnel from '../components/funnel/CabeceraFunnel.astro';
 import PieFunnel from '../components/funnel/PieFunnel.astro';
+import Analitica from '../components/Analitica.astro';
 import {
   SITE,
   EMAIL,
@@ -19,6 +20,8 @@ import {
 } from '../consts';
 import '../styles/global.css';
 import { ruta, sinBase } from '../rutas';
+import { LOCALE, TEXTOS, type Idioma } from '../i18n/funnel';
+import { hayAnalitica, idsAnalitica } from '../analitica';
 
 interface Props {
   titulo: string;
@@ -54,6 +57,8 @@ interface Props {
   datosEstructuradosExtra?: Record<string, unknown>[];
   /** Imagen para compartir propia de la página (ruta de public/). Default: og-praxia.png. */
   imagen?: string;
+  /** Idioma de la página. Solo el funnel tiene versión en inglés (/en/funnel). */
+  idioma?: Idioma;
 }
 
 const {
@@ -66,7 +71,11 @@ const {
   sinCabecera = false,
   datosEstructuradosExtra = [],
   imagen = '/og-praxia.png',
+  idioma = 'es',
 } = Astro.props;
+
+// GA4, Meta y Clarity: solo si Vercel tiene al menos uno de sus IDs (ver src/analitica.ts).
+const conAnalitica = hayAnalitica(idsAnalitica(import.meta.env));
 
 const tituloCompleto = titulo.includes(SITE.nombre)
   ? titulo
@@ -185,7 +194,7 @@ const datosEstructurados = {
       '@id': `${SITE.url}/#website`,
       name: SITE.nombre,
       url: SITE.url,
-      inLanguage: 'es-PE',
+      inLanguage: LOCALE[idioma],
       publisher: { '@id': idPraxia },
     },
     ...(migas ? [migas] : []),
@@ -195,7 +204,7 @@ const datosEstructurados = {
 ---
 
 <!doctype html>
-<html lang="es-PE" data-tipo={tipografia}>
+<html lang={LOCALE[idioma]} data-tipo={tipografia}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -224,6 +233,9 @@ const datosEstructurados = {
     <link rel="manifest" href={ruta('/site.webmanifest')} />
     <link rel="canonical" href={canonical} />
     <meta name="generator" content={Astro.generator} />
+    {/* Verificación de trypraxia.tech en Meta Business (portafolio «Praxia»): sin
+        ella no se eligen los eventos del píxel para optimizar anuncios. No mide nada. */}
+    <meta name="facebook-domain-verification" content="qry4k1hocwmvefuy0n53qluf4zrpla" />
 
     <title>{tituloCompleto}</title>
     <meta name="description" content={descripcion} />
@@ -231,7 +243,7 @@ const datosEstructurados = {
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.nombre} />
-    <meta property="og:locale" content="es_PE" />
+    <meta property="og:locale" content={LOCALE[idioma].replace('-', '_')} />
     <meta property="og:title" content={tituloCompleto} />
     <meta property="og:description" content={descripcion} />
     <meta property="og:url" content={canonical} />
@@ -333,7 +345,7 @@ const datosEstructurados = {
     </div>
 
     <FondoOrbes />
-    <a class="skip-link" href="#contenido">Ir al contenido</a>
+    <a class="skip-link" href="#contenido">{TEXTOS[idioma].pie.saltar}</a>
     {funnel ? !sinCabecera && <CabeceraFunnel /> : <Header />}
     <main id="contenido" class="relative z-1">
       <slot />
@@ -346,7 +358,7 @@ const datosEstructurados = {
     */}
     {
       funnel ? (
-        <PieFunnel />
+        <PieFunnel idioma={idioma} />
       ) : (
         <>
           <Footer />
@@ -359,6 +371,8 @@ const datosEstructurados = {
     <script>
       import '../scripts/scroll-suave';
     </script>
+
+    {conAnalitica && <Analitica />}
 
     {/* Sin #hoja-validar en el DOM (modo funnel) la función sale sola. */}
     <script>

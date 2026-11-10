@@ -4,8 +4,15 @@ import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import vercel from '@astrojs/vercel';
+import { loadEnv } from 'vite';
 
 import { SITE } from './src/consts.ts';
+import { cspAnalitica, idsAnalitica } from './src/analitica.ts';
+
+// GA4, Meta y Clarity entran a la CSP solo si su ID está en el entorno del
+// build (Vercel o .env). Mismo criterio que Layout.astro para montar los scripts.
+// loadEnv lee los .env y también process.env (así llegan las variables de Vercel).
+const analitica = cspAnalitica(idsAnalitica(loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), 'PUBLIC_')));
 
 // https://astro.build/config
 export default defineConfig({
@@ -25,7 +32,8 @@ export default defineConfig({
       // /pruebas/* son bancos de prueba internos (tipografía, fondos del hero):
       // se buildean porque viven en src/pages, pero no son contenido del sitio.
       // /diagnostico-gratis es la página de anuncios (funnel VSL): noindex y fuera.
-      filter: (pagina) => !/\/(legal|privacidad|pruebas|diagnostico-gratis|funnel)\/?/.test(pagina),
+      // /confirmado es el destino del botón «Sí, ahí estaré» de los recordatorios: noindex y fuera.
+      filter: (pagina) => !/\/(legal|privacidad|pruebas|diagnostico-gratis|funnel|confirmado)\/?/.test(pagina),
     }),
   ],
 
@@ -162,17 +170,20 @@ export default defineConfig({
   },
   security: {
     csp: {
-      scriptDirective: { resources: ["'self'"] },
+      scriptDirective: { resources: ["'self'", ...analitica.script] },
       styleDirective: {
         resources: [{ resource: "'unsafe-inline'", kind: 'attribute' }],
       },
       directives: [
         "default-src 'self'",
-        "img-src 'self' data:",
+        ["img-src 'self' data:", ...analitica.img].join(' '),
         // Supabase del formulario /validar. Ambos dominios mientras dura la migración del CRM
         // al proyecto praxia-generals (org Praxia); retirar el viejo (fjlaouynjbdczmyodxde)
         // cuando el env de Vercel apunte al nuevo y se haya comprobado un lead real.
-        "connect-src 'self' https://jsqysebvhthnffmbjyzh.supabase.co https://fjlaouynjbdczmyodxde.supabase.co",
+        [
+          "connect-src 'self' https://jsqysebvhthnffmbjyzh.supabase.co https://fjlaouynjbdczmyodxde.supabase.co",
+          ...analitica.connect,
+        ].join(' '),
         "form-action 'self'",
         "frame-src 'none'",
         "object-src 'none'",

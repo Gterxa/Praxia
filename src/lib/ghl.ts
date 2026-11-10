@@ -4,18 +4,33 @@
  *
  * Qué escribe y cuándo (los IDs están en docs/funnel-vsl/ghl.md):
  * - inicio: contacto con nombre, WhatsApp, correo y de dónde vino, etiqueta
- *   funnel-iniciado y oportunidad en «Aplicación incompleta». Ahí el workflow
+ *   funnel-iniciado, etiqueta del idioma en que lo vio (idioma-es o idioma-en),
+ *   vio-video si desbloqueó el botón viendo el video de la landing,
+ *   y oportunidad en «Aplicación incompleta». Ahí el workflow
  *   del panel avisa al equipo y, si a los 30 min no terminó, marca abandono.
  * - paso: las respuestas que lleva y en qué pregunta va.
  * - fin: todo lo anterior más categoría, prioridad y motivo (calculados acá,
  *   no en el navegador), etiquetas de categoría y rubro, y la oportunidad pasa
  *   a Aplicó A, Aplicó B o Perfil en evaluación.
+ * - llamada: eligió «Sí, llámenme». Etiqueta pidio-llamada y el último paso lo dice.
+ * - agenda: eligió un turno del calendario «Diagnóstico gratis Praxia». Se
+ *   reserva la cita, etiqueta agendo-diagnostico y la oportunidad pasa a
+ *   «Diagnóstico agendado».
  */
 import { PREGUNTAS, clasificar, datoDelNegocio, opcionesDe, perfilDeNegocio, ventasEstimadas, type Moneda, type Respuestas } from '../funnel';
 
 const API = 'https://services.leadconnectorhq.com';
 const VERSION = '2021-07-28';
+// Los endpoints de calendario declaran otra versión en el OpenAPI oficial de
+// HighLevel (apps/calendars.json): free-slots y appointments piden 2021-04-15.
+const VERSION_CALENDARIOS = '2021-04-15';
 export const LOCATION_ID = 'zOYyWlh7oNQqcvWdQsvm';
+
+/** «Diagnóstico gratis Praxia»: duración, horario y anticipación se configuran en el panel. */
+const CALENDARIO = 'pVbb0wqNGWIChVKmt986';
+export const ZONA = 'America/Lima';
+/** El calendario abre hasta 21 días adelante; free-slots acepta como máximo 31. */
+const DIAS_AGENDA = 21;
 
 const PIPELINE = 'IuiFTWSqnLCRm4Li3cpx'; // Ventas Praxia
 const ETAPA = {
@@ -24,6 +39,7 @@ const ETAPA = {
   B: '0d036c43-247f-4846-bda6-088de0ae6628',
   C: 'aec5613d-8270-434e-968c-a58d33541f9a', // Perfil en evaluación
 } as const;
+const ETAPA_AGENDADO = '7cd011e7-8b5e-41cd-ade7-7bb9cb0f31ff'; // Diagnóstico agendado
 // Solo estas etapas las mueve el funnel. Si la oportunidad abierta ya va más
 // adelante (llamada hecha, cotización…), no se la regresa.
 const ETAPAS_DEL_FUNNEL: string[] = Object.values(ETAPA);
@@ -105,7 +121,7 @@ const OPCIONES_VENTAS = [
 
 const RUBRO_CONOCIDO = ['legal', 'ecommerce'];
 
-export type Evento = 'inicio' | 'paso' | 'fin';
+export type Evento = 'inicio' | 'paso' | 'fin' | 'llamada' | 'agenda';
 
 export interface Origen {
   utm_source?: string;
@@ -130,9 +146,15 @@ export interface LeadFunnel {
   respuestas: Respuestas;
   frase?: string;
   compromiso?: boolean;
+  /** Idioma en que vio el funnel. Las respuestas igual se guardan en español. */
+  idioma: 'es' | 'en';
   /** Pantalla en la que está, desde 0 (contacto). */
   paso: number;
   origen: Origen;
+  /** Solo en «agenda»: el turno elegido, tal como lo devolvió free-slots (con su offset). */
+  turno?: string;
+  /** Vio el video de la landing hasta desbloquear el botón (src/lib/video-visto.ts). */
+  vioVideo?: boolean;
 }
 
 type CampoValor = { id: string; field_value: string | string[] | number };
@@ -183,12 +205,22 @@ function textoOrigen(o: Origen): string {
     .join('\n');
 }
 
-async function ghl<T>(token: string, metodo: string, ruta: string, cuerpo?: unknown): Promise<T> {
+/** Error de la API con su estado HTTP, para distinguir un 401/403 (permisos) de un turno ocupado. */
+export class ErrorGhl extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+  ) {
+    super(message);
+  }
+}
+
+async function ghl<T>(token: string, metodo: string, ruta: string, cuerpo?: unknown, version = VERSION): Promise<T> {
   const res = await fetch(`${API}${ruta}`, {
     method: metodo,
     headers: {
       Authorization: `Bearer ${token}`,
-      Version: VERSION,
+      Version: version,
       Accept: 'application/json',
       ...(cuerpo ? { 'Content-Type': 'application/json' } : {}),
     },
@@ -196,7 +228,7 @@ async function ghl<T>(token: string, metodo: string, ruta: string, cuerpo?: unkn
   });
   if (!res.ok) {
     // Sin el cuerpo de la respuesta ni la query: pueden traer datos del contacto.
-    throw new Error(`GHL ${metodo} ${ruta.split('?')[0].replace(/\/[A-Za-z0-9]{15,}/g, '/:id')} → ${res.status}`);
+    throw new ErrorGhl(`GHL ${metodo} ${ruta.split('?')[0].replace(/\/[A-Za-z0-9]{15,}/g, '/:id')} → ${res.status}`, res.status);
   }
   return (await res.json()) as T;
 }
@@ -210,6 +242,26 @@ async function buscarContacto(token: string, correo: string, telefono: string): 
   }
   return null;
 }
+
+const esperar = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * Dos envíos del mismo lead casi al mismo tiempo (doble clic, red lenta, inicio
+ * y fin seguidos) ven los dos «no existe» y los dos intentan crear. GHL rechaza
+ * el segundo con un 4xx: en vez de responder 502, se vuelve a buscar lo que el
+ * otro envío acaba de crear. El índice de búsqueda de GHL tarda un poco, por eso
+ * se reintenta con pausas cortas.
+ */
+async function reintentarBusqueda<T>(buscar: () => Promise<T | null>): Promise<T | null> {
+  for (const ms of [300, 800, 1500]) {
+    await esperar(ms);
+    const x = await buscar();
+    if (x) return x;
+  }
+  return null;
+}
+
+const esConflicto = (e: unknown) => e instanceof ErrorGhl && e.status >= 400 && e.status < 500 && e.status !== 401 && e.status !== 403;
 
 /**
  * Contacto que vino por el link del DM de Instagram (?cid=). El cid no es una
@@ -238,9 +290,162 @@ async function contactoDelLink(token: string, cid: string, correo: string, telef
   return cid;
 }
 
+/**
+ * El contacto del lead: el del link del DM, el que ya tiene ese correo o
+ * teléfono, o uno nuevo. Le deja los campos que se pasen.
+ *
+ * El endpoint es público: cualquiera puede escribir el correo de otro. Por eso un
+ * contacto que ya existe nunca cambia de nombre, correo ni teléfono desde acá;
+ * solo recibe las respuestas del funnel. Los datos de identidad se escriben
+ * únicamente al crearlo.
+ */
+async function resolverContacto(token: string, lead: LeadFunnel, customFields: CampoValor[]): Promise<string> {
+  const { origen } = lead;
+  const delLink = origen.cid ? await contactoDelLink(token, origen.cid, lead.correo, lead.telefono, customFields) : null;
+  if (delLink) return delLink;
+  const existente = await buscarContacto(token, lead.correo, lead.telefono);
+  if (existente) {
+    await ghl(token, 'PUT', `/contacts/${existente}`, { customFields });
+    return existente;
+  }
+  try {
+    const { contact } = await ghl<{ contact: { id: string } }>(token, 'POST', '/contacts/', {
+      locationId: LOCATION_ID,
+      name: lead.nombre,
+      firstName: lead.nombre.split(/\s+/)[0],
+      email: lead.correo,
+      phone: lead.telefono,
+      country: lead.pais.toUpperCase(),
+      source: 'funnel web',
+      customFields,
+    });
+    return contact.id;
+  } catch (e) {
+    if (!esConflicto(e)) throw e;
+    const otro = await reintentarBusqueda(() => buscarContacto(token, lead.correo, lead.telefono));
+    if (!otro) throw e;
+    await ghl(token, 'PUT', `/contacts/${otro}`, { customFields });
+    return otro;
+  }
+}
+
 interface Oportunidad {
   id: string;
   pipelineStageId: string;
+}
+
+async function oportunidadesAbiertas(token: string, contactId: string): Promise<Oportunidad[]> {
+  const q = new URLSearchParams({ location_id: LOCATION_ID, pipeline_id: PIPELINE, contact_id: contactId, status: 'open' });
+  const { opportunities } = await ghl<{ opportunities: Oportunidad[] }>(token, 'GET', `/opportunities/search?${q}`);
+  return opportunities;
+}
+
+export interface DiaAgenda {
+  /** YYYY-MM-DD en hora de Lima. */
+  fecha: string;
+  /** Inicio de cada turno libre, ISO con offset (2026-10-29T09:00:00-05:00). */
+  turnos: string[];
+}
+
+/**
+ * Turnos libres del calendario, de ahora a DIAS_AGENDA días. GHL ya descuenta
+ * las citas tomadas, la anticipación mínima y el horario del calendario.
+ * startDate y endDate van en milisegundos (los ejemplos del spec son de 13 dígitos).
+ */
+export async function turnosLibres(token: string, desde = Date.now(), hasta = desde + DIAS_AGENDA * 86_400_000): Promise<DiaAgenda[]> {
+  const q = new URLSearchParams({ startDate: String(desde), endDate: String(hasta), timezone: ZONA });
+  const r = await ghl<Record<string, unknown>>(token, 'GET', `/calendars/${CALENDARIO}/free-slots?${q}`, undefined, VERSION_CALENDARIOS);
+  // La respuesta es un mapa por fecha ({ "2026-10-29": { slots: [...] } }) más claves sueltas como traceId.
+  return Object.entries(r)
+    .filter(([fecha]) => /^\d{4}-\d{2}-\d{2}$/.test(fecha))
+    .map(([fecha, v]) => {
+      const slots = (v as { slots?: unknown }).slots;
+      return { fecha, turnos: Array.isArray(slots) ? slots.filter((s): s is string => typeof s === 'string') : [] };
+    })
+    .filter((d) => d.turnos.length)
+    .sort((a, b) => a.fecha.localeCompare(b.fecha));
+}
+
+/** «jueves 29 de octubre, 9:30 a. m.» en hora de Lima. */
+export function textoTurno(turno: string): string {
+  const d = new Date(turno);
+  const dia = d.toLocaleDateString('es-PE', { timeZone: ZONA, weekday: 'long', day: 'numeric', month: 'long' });
+  const hora = d.toLocaleTimeString('es-PE', { timeZone: ZONA, hour: 'numeric', minute: '2-digit' });
+  return `${dia}, ${hora}`;
+}
+
+/**
+ * Lo que eligió en la pantalla de resultado: «Sí, llámenme» (llamada) o un
+ * turno del calendario (agenda). En agenda, si el turno ya no está libre lanza
+ * ErrorGhl con estado 409 y no toca nada más del contacto.
+ */
+export async function registrarSiguientePaso(token: string, lead: LeadFunnel): Promise<{ contactId: string; citaId?: string }> {
+  const agenda = lead.evento === 'agenda';
+  const turno = lead.turno ?? '';
+  if (agenda) {
+    // Se vuelve a pedir el día del turno: la pantalla pudo quedar abierta y alguien más lo tomó.
+    // Desde ahora (no desde un día antes del turno): para un turno de mañana eso
+    // caía en el pasado, y free-slots no garantiza aceptar un startDate pasado.
+    const inicio = new Date(turno).getTime();
+    const libres = await turnosLibres(token, Math.max(Date.now(), inicio - 86_400_000), inicio + 86_400_000);
+    if (!libres.some((d) => d.turnos.some((t) => new Date(t).getTime() === inicio))) {
+      throw new ErrorGhl('turno ocupado', 409);
+    }
+  }
+
+  const contactId = await resolverContacto(token, lead, camposRespuestas(lead.respuestas, lead.moneda));
+
+  let citaId: string | undefined;
+  if (agenda) {
+    // Sin nombre en el título: el endpoint es público y el contacto puede ser de
+    // otra persona. GHL ya muestra el nombre del contacto en la cita.
+    const cita = await ghl<{ id: string }>(
+      token,
+      'POST',
+      '/calendars/events/appointments',
+      {
+        calendarId: CALENDARIO,
+        locationId: LOCATION_ID,
+        contactId,
+        startTime: turno,
+        title: 'Diagnóstico gratis (funnel web)',
+        appointmentStatus: 'confirmed',
+      },
+      VERSION_CALENDARIOS,
+    ).catch((e: unknown) => {
+      // Lo tomó otra persona entre la validación y la reserva.
+      if (e instanceof ErrorGhl && (e.status === 400 || e.status === 422)) throw new ErrorGhl(e.message, 409);
+      throw e;
+    });
+    citaId = cita.id;
+  }
+
+  // Con la cita ya creada, lo que sigue es registro interno: si falla, se deja en
+  // el log y la persona ve su reserva confirmada. Antes respondía 502, la pantalla
+  // decía «No pudimos reservar» y, al reintentar, el turno ya figuraba ocupado.
+  const registro = async () => {
+    await ghl(token, 'PUT', `/contacts/${contactId}`, {
+      customFields: [{ id: CAMPO.ultimoPaso, field_value: agenda ? `Agendó el diagnóstico: ${textoTurno(turno)}` : 'Pidió que lo llamen en la próxima hora' }],
+    });
+    await ghl(token, 'POST', `/contacts/${contactId}/tags`, { tags: [agenda ? 'agendo-diagnostico' : 'pidio-llamada'] });
+
+    if (agenda) {
+      // La oportunidad del funnel pasa a «Diagnóstico agendado». Si ya iba más
+      // adelante, no se toca. (La crea el evento «fin», que siempre va antes.)
+      const abierta = (await oportunidadesAbiertas(token, contactId)).find((o) => ETAPAS_DEL_FUNNEL.includes(o.pipelineStageId));
+      if (abierta) await ghl(token, 'PUT', `/opportunities/${abierta.id}`, { pipelineId: PIPELINE, pipelineStageId: ETAPA_AGENDADO });
+    }
+  };
+  if (!citaId) await registro();
+  else {
+    try {
+      await registro();
+    } catch (e) {
+      console.error('[ghl] cita creada, falló el registro posterior:', e instanceof Error ? e.message : 'error');
+    }
+  }
+
+  return { contactId, citaId };
 }
 
 export async function guardarEnGhl(token: string, lead: LeadFunnel): Promise<{ contactId: string; categoria?: string }> {
@@ -275,39 +480,19 @@ export async function guardarEnGhl(token: string, lead: LeadFunnel): Promise<{ c
     if (lead.frase?.trim()) customFields.push({ id: CAMPO.frase, field_value: lead.frase.trim() });
   }
 
-  // El endpoint es público: cualquiera puede escribir el correo de otro. Por eso un
-  // contacto que ya existe nunca cambia de nombre, correo ni teléfono desde acá;
-  // solo recibe las respuestas del funnel. Los datos de identidad se escriben
-  // únicamente al crearlo.
-  const delLink = origen.cid ? await contactoDelLink(token, origen.cid, lead.correo, lead.telefono, customFields) : null;
-  const existente = delLink ? null : await buscarContacto(token, lead.correo, lead.telefono);
-  let contactId: string;
-  if (delLink) {
-    contactId = delLink;
-  } else if (existente) {
-    contactId = existente;
-    await ghl(token, 'PUT', `/contacts/${contactId}`, { customFields });
-  } else {
-    const { contact } = await ghl<{ contact: { id: string } }>(token, 'POST', '/contacts/', {
-      locationId: LOCATION_ID,
-      name: lead.nombre,
-      firstName: lead.nombre.split(/\s+/)[0],
-      email: lead.correo,
-      phone: lead.telefono,
-      country: lead.pais.toUpperCase(),
-      source: 'funnel web',
-      customFields,
-    });
-    contactId = contact.id;
-  }
+  const contactId = await resolverContacto(token, lead, customFields);
 
   if (evento === 'paso') return { contactId };
 
   if (evento === 'inicio') {
     // Se quitan y se vuelven a poner para que el workflow del panel arranque
     // de nuevo si la misma persona vuelve a empezar otro día.
-    await ghl(token, 'DELETE', `/contacts/${contactId}/tags`, { tags: ['funnel-iniciado', 'funnel-completo', 'funnel-abandono'] });
-    await ghl(token, 'POST', `/contacts/${contactId}/tags`, { tags: ['funnel-web', 'funnel-iniciado'] });
+    // El idioma también: queda el de la última vez que empezó.
+    await ghl(token, 'DELETE', `/contacts/${contactId}/tags`, { tags: ['funnel-iniciado', 'funnel-completo', 'funnel-abandono', 'idioma-es', 'idioma-en'] });
+    // vio-video no se quita: una vez que lo vio, queda.
+    const tags = ['funnel-web', 'funnel-iniciado', `idioma-${lead.idioma}`];
+    if (lead.vioVideo) tags.push('vio-video');
+    await ghl(token, 'POST', `/contacts/${contactId}/tags`, { tags });
   } else if (resultado) {
     const rubro = typeof lead.respuestas.rubro === 'string' ? lead.respuestas.rubro : '';
     const tags = ['funnel-completo', `cat-${resultado.categoria.toLowerCase()}`];
@@ -318,8 +503,7 @@ export async function guardarEnGhl(token: string, lead: LeadFunnel): Promise<{ c
   }
 
   // Oportunidad abierta del contacto en Ventas Praxia: la del funnel o una nueva.
-  const q = new URLSearchParams({ location_id: LOCATION_ID, pipeline_id: PIPELINE, contact_id: contactId, status: 'open' });
-  const { opportunities } = await ghl<{ opportunities: Oportunidad[] }>(token, 'GET', `/opportunities/search?${q}`);
+  const opportunities = await oportunidadesAbiertas(token, contactId);
   const abierta = opportunities.find((o) => ETAPAS_DEL_FUNNEL.includes(o.pipelineStageId));
   const etapa = resultado ? ETAPA[resultado.categoria] : ETAPA.incompleta;
 
@@ -330,15 +514,25 @@ export async function guardarEnGhl(token: string, lead: LeadFunnel): Promise<{ c
       await ghl(token, 'PUT', `/opportunities/${abierta.id}`, { pipelineId: PIPELINE, pipelineStageId: etapa });
     }
   } else if (!opportunities.length) {
-    await ghl(token, 'POST', '/opportunities/', {
-      locationId: LOCATION_ID,
-      pipelineId: PIPELINE,
-      pipelineStageId: etapa,
-      contactId,
-      name: `${lead.nombre} · funnel web`,
-      status: 'open',
-      source: 'funnel web',
-    });
+    try {
+      await ghl(token, 'POST', '/opportunities/', {
+        locationId: LOCATION_ID,
+        pipelineId: PIPELINE,
+        pipelineStageId: etapa,
+        contactId,
+        name: `${lead.nombre} · funnel web`,
+        status: 'open',
+        source: 'funnel web',
+      });
+    } catch (e) {
+      // El otro envío ya la creó: si este es el final, la deja en su etapa.
+      if (!esConflicto(e)) throw e;
+      const otra = await reintentarBusqueda(async () => (await oportunidadesAbiertas(token, contactId)).find((o) => ETAPAS_DEL_FUNNEL.includes(o.pipelineStageId)) ?? null);
+      if (!otra) throw e;
+      if (resultado && otra.pipelineStageId !== etapa) {
+        await ghl(token, 'PUT', `/opportunities/${otra.id}`, { pipelineId: PIPELINE, pipelineStageId: etapa });
+      }
+    }
   }
 
   return { contactId, categoria: resultado?.categoria };

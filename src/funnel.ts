@@ -19,6 +19,8 @@
  * mucho volumen con ticket bajo (perfilDeNegocio).
  */
 
+import { TEXTOS, type Idioma } from './i18n/funnel';
+
 export type Moneda = 'PEN' | 'USD';
 export type Categoria = 'A' | 'B' | 'C';
 
@@ -46,9 +48,6 @@ export const CUPOS_SEMANA = 6;
 /* [DATO] Horario en que vale "te llamamos en la próxima hora" (hora de Lima).
    Fuera de este horario el aprobado va directo a elegir día y hora. */
 export const HORARIO_ATENCION = { dias: [1, 2, 3, 4, 5, 6], desde: 9, hasta: 19 } as const;
-
-/* Horarios de ejemplo del lienzo. Se reemplazan por el calendario real. */
-export const HORAS_AGENDA = ['9:30 a. m.', '11:00 a. m.', '12:30 p. m.', '3:00 p. m.', '4:30 p. m.', '6:00 p. m.'];
 
 export const PREGUNTAS: Pregunta[] = [
   {
@@ -341,7 +340,8 @@ export type DatoDelNegocio =
  * - «A veces» responde: la mitad. «Sí, siempre»: no hay pérdida que mostrar;
  *   se muestran las horas manuales que ya dijo.
  */
-export function datoDelNegocio(r: Respuestas, moneda: Moneda): DatoDelNegocio | null {
+export function datoDelNegocio(r: Respuestas, moneda: Moneda, idioma: Idioma = 'es'): DatoDelNegocio | null {
+  const tx = TEXTOS[idioma].dato;
   const c = elegida('clientes', r, moneda)?.nivel;
   const t = elegida('ticket', r, moneda)?.nivel;
   const fines = r.fines;
@@ -353,8 +353,8 @@ export function datoDelNegocio(r: Respuestas, moneda: Moneda): DatoDelNegocio | 
     return {
       tipo: 'horas',
       horas,
-      texto: `Que atiendan los fines de semana ya es una ventaja. Pero tu equipo dedica unas ${horas} horas a la semana a tareas manuales: eso es tiempo que podría ir a vender.`,
-      supuesto: 'Estimado con tus respuestas de horas manuales.',
+      texto: tx.horas(horas),
+      supuesto: tx.horasSupuesto,
     };
   }
 
@@ -366,16 +366,15 @@ export function datoDelNegocio(r: Respuestas, moneda: Moneda): DatoDelNegocio | 
   const clientesMax = Math.max(clientesMin, Math.round(finDeSemana * 0.5));
   const montoMin = clientesMin * ticket;
   const montoMax = clientesMax * ticket;
-  const rangoClientes = clientesMin === clientesMax ? `${clientesMin}` : `entre ${clientesMin} y ${clientesMax}`;
-  const quien = fines === 'a-veces' ? 'no siempre hay quien responda' : 'nadie responde';
+  const quien = fines === 'a-veces' ? tx.aVeces : tx.nadie;
   return {
     tipo: 'perdida',
     clientesMin,
     clientesMax,
     montoMin,
     montoMax,
-    texto: `Si los sábados y domingos te escriben tanto como un día normal y ${quien}, podrías estar dejando ir ${rangoClientes} clientes al mes: unos ${formatoMonto(montoMin, moneda)} a ${formatoMonto(montoMax, moneda)}.`,
-    supuesto: `Estimado con tus respuestas: unos ${clientes} clientes al mes y un ticket de ${formatoMonto(ticket, moneda)}. Suponemos que recuperas entre 1 de cada 4 y 1 de cada 2 de esas personas.`,
+    texto: tx.perdida(quien, tx.rango(clientesMin, clientesMax), formatoMonto(montoMin, moneda), formatoMonto(montoMax, moneda)),
+    supuesto: tx.perdidaSupuesto(clientes, formatoMonto(ticket, moneda)),
   };
 }
 

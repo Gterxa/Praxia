@@ -6,14 +6,26 @@
  *
  * El archivo va servido desde el mismo dominio: la CSP prohíbe iframes
  * (frame-src 'none'), así que un embed de YouTube o Vimeo no cargaría.
+ * Lleva una pista de subtítulos por idioma (VIDEO_VSL.subtitulos) y activa
+ * la del idioma de la página.
  */
 import { VIDEO_VSL } from '../../vsl';
 import { ruta } from '../../rutas';
+import { TEXTOS, type Idioma } from '../../i18n/funnel';
+import { NOMBRE_PISTA } from '../../videos';
+
+interface Props {
+  idioma?: Idioma;
+}
+const { idioma = 'es' } = Astro.props;
+const t = TEXTOS[idioma].video;
 
 const hayVideo = VIDEO_VSL.src !== '';
+const subtitulos: Partial<Record<Idioma, string>> = VIDEO_VSL.subtitulos;
+const pistas = (Object.entries(subtitulos) as [Idioma, string | undefined][]).filter((p): p is [Idioma, string] => !!p[1]);
 ---
 
-<figure class="vsl-marco" data-vsl>
+<figure class="vsl-marco" data-vsl data-idioma={idioma}>
   {
     hayVideo ? (
       <video
@@ -24,7 +36,11 @@ const hayVideo = VIDEO_VSL.src !== '';
         playsinline
         controls
         data-vsl-video
-      />
+      >
+        {pistas.map(([lang, src]) => (
+          <track kind="subtitles" srclang={lang} label={NOMBRE_PISTA[lang]} src={ruta(src)} default={lang === idioma} />
+        ))}
+      </video>
     ) : (
       <div class="vsl-vacio puntos" aria-hidden="true" />
     )
@@ -35,17 +51,17 @@ const hayVideo = VIDEO_VSL.src !== '';
     class="vsl-play"
     data-vsl-play
     disabled={!hayVideo}
-    aria-label={hayVideo ? 'Reproducir el video' : 'El video todavía no está disponible'}
+    aria-label={hayVideo ? t.reproducir : t.noDisponible}
   >
     <span class="vsl-play-disco">
-      <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor" />
       </svg>
     </span>
-    {hayVideo && VIDEO_VSL.duracion && <span class="vsl-play-texto">Ver el video ({VIDEO_VSL.duracion})</span>}
+    {hayVideo && VIDEO_VSL.duracion && <span class="vsl-play-texto">{t.ver(VIDEO_VSL.duracion)}</span>}
   </button>
 
-  {!hayVideo && <span class="chip-mono vsl-estado">Video en grabación</span>}
+  {!hayVideo && <span class="chip-mono vsl-estado">{t.enGrabacion}</span>}
 
   {/* La línea de progreso: el único adorno del marco. Estática, no es un control. */}
   <span class="vsl-linea" aria-hidden="true"><span class="vsl-linea-relleno"></span></span>
@@ -74,14 +90,13 @@ const hayVideo = VIDEO_VSL.src !== '';
     background-color: var(--color-surface);
   }
 
+  /* El disco queda en el centro exacto del marco; el texto cuelga debajo
+     sin empujarlo hacia arriba. */
   .vsl-play {
     position: absolute;
     inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
+    display: grid;
+    place-items: center;
     color: var(--color-texto);
     background: transparent;
     cursor: pointer;
@@ -95,9 +110,9 @@ const hayVideo = VIDEO_VSL.src !== '';
   .vsl-play-disco {
     display: grid;
     place-items: center;
+    grid-area: 1 / 1;
     width: 3.5rem;
     height: 3.5rem;
-    padding-left: 0.25rem;
     border-radius: 999px;
     background-color: var(--color-brasa);
     box-shadow:
@@ -113,6 +128,14 @@ const hayVideo = VIDEO_VSL.src !== '';
       width: 5.5rem;
       height: 5.5rem;
     }
+  }
+
+  /* Crece con el disco. El trazo ya viene corrido a la derecha dentro del
+     viewBox: su centroide cae en el centro, que es donde el ojo lo lee
+     centrado. Nada de padding extra encima, que lo descentra. */
+  .vsl-play-disco svg {
+    width: 44%;
+    height: 44%;
   }
 
   .vsl-play:disabled .vsl-play-disco {
@@ -141,10 +164,28 @@ const hayVideo = VIDEO_VSL.src !== '';
     }
   }
 
+  /* Va sobre el video (claro y con movimiento): píldora oscura para que se lea. */
   .vsl-play-texto {
+    grid-area: 1 / 1;
+    align-self: center;
+    translate: 0 calc(1.75rem + 1.75rem);
+    padding: 0.375rem 0.875rem;
+    border-radius: 999px;
+    background-color: rgb(10 15 28 / 0.72);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
+    backdrop-filter: blur(6px);
+    color: #fff;
     font-family: var(--font-titulos);
-    font-weight: 500;
-    font-size: 0.9375rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 48rem) {
+    .vsl-play-texto {
+      translate: 0 calc(2.75rem + 2rem);
+      font-size: 0.9375rem;
+    }
   }
 
   .vsl-estado {
@@ -180,14 +221,24 @@ const hayVideo = VIDEO_VSL.src !== '';
 </style>
 
 <script>
+  import { encenderSubtitulos } from '../../videos';
+
   document.querySelectorAll<HTMLElement>('[data-vsl]').forEach((marco) => {
     const video = marco.querySelector<HTMLVideoElement>('[data-vsl-video]');
     const play = marco.querySelector<HTMLButtonElement>('[data-vsl-play]');
     if (!video || !play) return;
-    play.addEventListener('click', () => {
+    encenderSubtitulos(video, marco.dataset['idioma'] ?? 'es');
+    // Antes de reproducir, la barra nativa chocaba con «Ver el video» (en móvil
+    // lo tapaba). Se esconde hasta el play; sin JS se queda como estaba.
+    video.controls = false;
+    const empezar = () => {
       marco.dataset['reproduciendo'] = '';
+      video.controls = true;
+    };
+    play.addEventListener('click', () => {
+      empezar();
       void video.play();
     });
-    video.addEventListener('play', () => (marco.dataset['reproduciendo'] = ''));
+    video.addEventListener('play', empezar);
   });
 </script>
