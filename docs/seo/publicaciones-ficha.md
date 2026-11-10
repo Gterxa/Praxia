@@ -64,3 +64,12 @@ Mismo formato (9:00, "Más información", `utm_campaign=gbp-posts`).
 | 22 ene | inmobiliarias.jpg | /que-puedes-automatizar/clientes-y-seguimiento |
 | 29 ene | que-automatizar-primero.jpg | /que-puedes-automatizar |
 | 5 feb | videollamada-diagnostico.jpg | /funnel |
+
+## Tanda 4: lunes, miércoles y jueves (programada el 10-nov-2026)
+
+Con esto la ficha publica de lunes a viernes hasta el 5-feb-2027 (59 programadas,
+verificado en la lista de Google: 0 rechazadas, 0 fechas duplicadas). El detalle de
+cada publicación (fecha, título, texto, enlace y escena de la imagen) está en
+`scripts/gbp-tanda4.json`; las imágenes salen de `node scripts/generar-gbp-posts.mjs`.
+Rubros cubiertos: ferreterías, gimnasios, colegios, talleres, estudios contables,
+hospedajes, agencias de viaje, clínicas dentales, salones y spas, distribuidoras.

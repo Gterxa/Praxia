@@ -11,7 +11,7 @@
  * se suben a mano en business.google.com → Agregar novedad / oferta.
  */
 import sharp from 'sharp';
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, readFileSync } from 'node:fs';
 
 const POSTS = [
   { slug: 'oferta-diagnostico', kicker: 'Sin costo · 15 minutos', titulo: 'Te decimos qué automatizar primero en tu negocio', pie: 'Agenda tu diagnóstico gratis · trypraxia.tech' },
@@ -35,6 +35,8 @@ const POSTS = [
   { slug: 'inmobiliarias', kicker: 'Inmobiliarias y estudios', titulo: 'Cada interesado recibe respuesta y seguimiento', pie: 'Clientes y seguimiento · trypraxia.tech' },
   { slug: 'que-automatizar-primero', kicker: 'Por dónde empezar', titulo: 'Qué automatizar primero en tu negocio', pie: '6 áreas para empezar · trypraxia.tech' },
   { slug: 'videollamada-diagnostico', kicker: 'Sin costo · 15 minutos', titulo: 'Cuéntanos tu idea por videollamada', pie: 'Agenda tu diagnóstico gratis · trypraxia.tech' },
+  // Tanda 4: lunes, miércoles y jueves. Título, texto, fecha y enlace en el JSON.
+  ...JSON.parse(readFileSync('scripts/gbp-tanda4.json', 'utf8')),
 ];
 
 const ANCHO = 1200;
