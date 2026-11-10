@@ -2,7 +2,9 @@
 /**
  * Página índice de una sección del programa SEO (/soluciones, /ciudades,
  * /blog, /comparativas, /calculadoras). Grupos de tarjetas con enlace; sin
- * paginación mientras cada grupo quepa en una pantalla razonable.
+ * paginación mientras cada grupo quepa en una pantalla razonable. Las listas
+ * llevan data-plantilla: son navegación (títulos de otras páginas), no
+ * contenido propio, y scripts/similitud.py no las compara.
  */
 import Layout from '../../layouts/Layout.astro';
 import CTAFunnel from './CTAFunnel.astro';
@@ -36,7 +38,7 @@ const lista = {
       grupos.map((g) => (
         <section class="grupo">
           {g.titulo && <h2>{g.titulo}</h2>}
-          <ul class="rejilla">
+          <ul class="rejilla" data-plantilla>
             {g.items.map((i) => (
               <li>
                 <a href={ruta(i.href)} class="tarjeta item">
