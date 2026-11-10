@@ -23,6 +23,18 @@ const POSTS = [
   { slug: 'seguridad', kicker: 'Seguridad y mantenimiento', titulo: 'Tu web y tus datos, cuidados todo el año', pie: 'Un solo responsable técnico · trypraxia.tech' },
   { slug: 'como-trabajamos', kicker: 'Cómo trabajamos', titulo: 'De la idea a algo que funciona, en 4 pasos', pie: 'Listo en 2 a 4 semanas · trypraxia.tech' },
   { slug: 'soluciones-mayores', kicker: 'Archivo grande', titulo: '¿Y si no son cien documentos, sino diez mil?', pie: 'Soluciones a medida · trypraxia.tech' },
+  // Tanda 3: viernes
+  { slug: 'whatsapp-saturado', kicker: 'Atención y respuestas', titulo: '¿Contestas los mismos mensajes todo el día?', pie: 'Que la IA responda lo repetido · trypraxia.tech' },
+  { slug: 'campana-fin-de-ano', kicker: 'Campaña de fin de año', titulo: 'Más consultas, cero mensajes sin responder', pie: 'Atención automática 24/7 · trypraxia.tech' },
+  { slug: 'aparecer-en-google', kicker: 'Web y SEO', titulo: 'Si no apareces en Google, tu cliente se va con otro', pie: 'Web rápida y bien posicionada · trypraxia.tech' },
+  { slug: 'reporte-lunes', kicker: 'Reportes y control', titulo: 'Cada lunes, tus números en tu WhatsApp', pie: 'Sin armar un Excel · trypraxia.tech' },
+  { slug: 'clinicas', kicker: 'Consultorios y clínicas', titulo: 'Pacientes que reservan solos y sí llegan', pie: 'Citas y recordatorios · trypraxia.tech' },
+  { slug: 'restaurantes', kicker: 'Restaurantes y tiendas', titulo: 'Pedidos por WhatsApp, tomados sin errores', pie: 'Atención automática · trypraxia.tech' },
+  { slug: 'sin-tecnologia', kicker: 'Preguntas frecuentes', titulo: '¿Necesito saber de tecnología? No.', pie: 'Solo trae la idea · trypraxia.tech' },
+  { slug: 'datos-seguros', kicker: 'Seguridad', titulo: 'Tus datos se quedan contigo', pie: 'Así los cuidamos · trypraxia.tech' },
+  { slug: 'inmobiliarias', kicker: 'Inmobiliarias y estudios', titulo: 'Cada interesado recibe respuesta y seguimiento', pie: 'Clientes y seguimiento · trypraxia.tech' },
+  { slug: 'que-automatizar-primero', kicker: 'Por dónde empezar', titulo: 'Qué automatizar primero en tu negocio', pie: '6 áreas para empezar · trypraxia.tech' },
+  { slug: 'videollamada-diagnostico', kicker: 'Sin costo · 15 minutos', titulo: 'Cuéntanos tu idea por videollamada', pie: 'Agenda tu diagnóstico gratis · trypraxia.tech' },
 ];
 
 const ANCHO = 1200;

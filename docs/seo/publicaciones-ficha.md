@@ -45,3 +45,22 @@ texto compuesto con `node scripts/generar-gbp-posts.mjs`). Todas a las 9:00, bot
 Nota al programar a mano: el campo "Enlace de tu botón" solo registra el valor si
 se hace clic real en el campo y se sale con Tab; si no, Google responde "Se
 requiere un enlace para este botón" y no guarda.
+
+## Tanda 3: viernes (programada el 10-nov-2026)
+
+Segunda publicación semanal para subir volumen: martes + viernes hasta febrero.
+Mismo formato (9:00, "Más información", `utm_campaign=gbp-posts`).
+
+| Fecha | Imagen | Enlace |
+|---|---|---|
+| 13 nov | whatsapp-saturado.jpg | /que-puedes-automatizar/atencion-y-respuestas |
+| 20 nov | campana-fin-de-ano.jpg | /que-puedes-automatizar/atencion-y-respuestas |
+| 27 nov | aparecer-en-google.jpg | /servicios |
+| 4 dic | reporte-lunes.jpg | /que-puedes-automatizar/reportes-y-control |
+| 11 dic | clinicas.jpg | /que-puedes-automatizar/citas-y-recordatorios |
+| 18 dic | restaurantes.jpg | /que-puedes-automatizar/atencion-y-respuestas |
+| 8 ene | sin-tecnologia.jpg | /preguntas-frecuentes |
+| 15 ene | datos-seguros.jpg | /seguridad |
+| 22 ene | inmobiliarias.jpg | /que-puedes-automatizar/clientes-y-seguimiento |
+| 29 ene | que-automatizar-primero.jpg | /que-puedes-automatizar |
+| 5 feb | videollamada-diagnostico.jpg | /funnel |
