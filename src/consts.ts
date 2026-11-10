@@ -23,7 +23,7 @@ export const SITE = {
 /** Formato internacional, sin + ni espacios: así lo pide wa.me. */
 export const WHATSAPP = '51941639094';
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP}`;
-export const EMAIL = 'contacto.praxias@gmail.com';
+export const EMAIL = 'contacto@trypraxia.tech';
 
 /**
  * Freno de mano. Si alguien reintroduce un placeholder, el build revienta en
@@ -78,6 +78,13 @@ export const REDES = {
  * oficinas y no deben presentarse como tales, ni en el sitio ni en el JSON-LD.
  */
 export const CIUDADES_ATENDIDAS = ['Lima', 'Trujillo', 'Huancayo'] as const;
+
+/**
+ * Regiones que atendemos en remoto (decisión de Tony, 9-nov-2026: LATAM y
+ * latinos en EE. UU.). Van al `areaServed` del JSON-LD como `Place`, nunca
+ * como dirección.
+ */
+export const REGIONES_ATENDIDAS = ['Latinoamérica', 'Estados Unidos'] as const;
 
 /** El contexto que se prellena en cada página. */
 export const CONTEXTO = {

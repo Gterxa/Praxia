@@ -1,12 +1,12 @@
-# Praxia (Praxia CGM)
+# Praxia
 
 > Praxia es una empresa peruana de software que automatiza con IA los procesos que un negocio hace a mano: atención por WhatsApp, agenda de citas, seguimiento de clientes, documentos, reportes y contenido. También hace páginas web, SEO y seguridad y mantenimiento. Valida cada idea en 15 minutos, sin costo, y la construye en 2 a 4 semanas sobre las herramientas que el negocio ya usa (WhatsApp, correo, Excel, su web).
 
 - Sede: Laurel Rosa 248, Surquillo, Lima 15038, Perú
-- Atiende: todo el Perú (Lima, Trujillo, Huancayo y resto del país) por videollamada y WhatsApp
+- Atiende: Perú, Latinoamérica y negocios latinos en Estados Unidos, en remoto por videollamada y WhatsApp
 - Horario: lunes a sábado de 9:00 a 19:00 (hora de Lima)
 - Teléfono / WhatsApp: +51 941 639 094
-- Correo: contacto.praxias@gmail.com
+- Correo: contacto@trypraxia.tech
 - Instagram: https://www.instagram.com/praxias.ai/
 - Google Maps: https://maps.google.com/?cid=7632389877815695382
 

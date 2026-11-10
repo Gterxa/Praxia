@@ -11,7 +11,7 @@ otro teléfono) le resta confianza a Google. Dirección elegida para directorios
 | Dirección | Rosal 157, Surquillo, Lima 15038, Perú |
 | Teléfono | +51 941 639 094 |
 | WhatsApp | https://wa.me/51941639094 |
-| Correo | contacto.praxias@gmail.com |
+| Correo | contacto@trypraxia.tech |
 | Web | https://www.trypraxia.tech/ |
 | Instagram | https://www.instagram.com/praxias.ai/ |
 | Google Maps | https://maps.google.com/?cid=7632389877815695382 |

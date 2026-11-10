@@ -16,6 +16,7 @@ import {
   SEDE,
   GOOGLE_MAPS_URL,
   CIUDADES_ATENDIDAS,
+  REGIONES_ATENDIDAS,
   REDES,
 } from '../consts';
 import '../styles/global.css';
@@ -92,7 +93,7 @@ const logo = new URL('/icon-512.png', Astro.site);
  * Google (`hasMap`/`sameAs` apuntan a esa ficha), para que Google entienda que
  * web y ficha son el mismo negocio.
  *
- * `areaServed` nombra Perú y las ciudades de CIUDADES_ATENDIDAS. Ojo: esas
+ * `areaServed` nombra Perú, EE. UU., Latinoamérica y las ciudades de CIUDADES_ATENDIDAS. Ojo: esas
  * ciudades se atienden en remoto. Son área de servicio, NO sedes: nunca van
  * como `address` ni como LocalBusiness propios (Google lo trata como dato
  * falso y puede penalizar la ficha real).
@@ -141,9 +142,8 @@ const datosEstructurados = {
       '@type': ['Organization', 'ProfessionalService'],
       '@id': idPraxia,
       name: SITE.nombre,
-      // Nombre legal = nombre exacto del Perfil de Empresa de Google. Une la
-      // marca "Praxia" de la web con la ficha "Praxia CGM".
-      legalName: 'Praxia CGM',
+      // Nombre de la ficha de Google: une la marca "Praxia" de la web con la
+      // ficha "Praxia CGM". Sin legalName hasta confirmar la razón social.
       alternateName: 'Praxia CGM',
       description: SITE.descripcion,
       url: SITE.url,
@@ -172,6 +172,8 @@ const datosEstructurados = {
       sameAs: [GOOGLE_MAPS_URL, ...Object.values(REDES)],
       areaServed: [
         { '@type': 'Country', name: 'Perú' },
+        { '@type': 'Country', name: 'Estados Unidos' },
+        ...REGIONES_ATENDIDAS.filter((r) => r !== 'Estados Unidos').map((r) => ({ '@type': 'Place', name: r })),
         ...CIUDADES_ATENDIDAS.map((ciudad) => ({ '@type': 'City', name: ciudad })),
       ],
       contactPoint: {
@@ -179,8 +181,7 @@ const datosEstructurados = {
         contactType: 'customer service',
         telephone: `+${WHATSAPP}`,
         email: EMAIL,
-        areaServed: SITE.pais,
-        availableLanguage: 'Spanish',
+        availableLanguage: ['Spanish', 'English'],
       },
       knowsLanguage: 'es-PE',
       makesOffer: [

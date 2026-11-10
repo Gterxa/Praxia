@@ -68,7 +68,7 @@ Arriba de todo vas a ver algo así:
 export const CONTACTO = {
   /** Formato internacional, sin + ni espacios: así lo pide wa.me. */
   whatsapp: '51960041731',
-  email: 'contacto.praxias@gmail.com',
+  email: 'contacto@trypraxia.tech',
 ```
 
 Si algún día cambia el número, se cambia solo acá. Va sin el `+`, sin espacios y con el 51 de

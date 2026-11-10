@@ -80,7 +80,7 @@ grep -rn "MOSTRAR_PENDIENTES" src/
 | Qué | Dónde | Estado hoy |
 |---|---|---|
 | Número de WhatsApp | `CONTACTO.whatsapp` | `51960041731`, real |
-| Correo | `CONTACTO.email` | `contacto.praxias@gmail.com`, real |
+| Correo | `CONTACTO.email` | `contacto@trypraxia.tech`, real |
 | Dominio real | `SITE.url` | `https://praxia.pe` — **falta confirmar** |
 
 El WhatsApp y el correo ya están puestos. Viven en un solo lugar y se propagan a todos los
