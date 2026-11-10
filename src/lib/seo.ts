@@ -110,12 +110,22 @@ export async function enlacesDe(
     s.nichoCiudad
       .filter((p) => partes(p.id)[0] === n)
       .map((p) => ({ texto: p.data.titulo, href: url.nichoCiudad(n, partes(p.id)[1]) }));
-  const blogDe = (f: (b: Entrada<'blog'>) => boolean, max = 6) =>
-    s.blog
-      .filter(f)
-      .filter((b) => b.id !== id)
-      .slice(0, max)
-      .map((b) => ({ texto: b.data.titulo, href: url.blog(b.id) }));
+  // Rotación circular: un artículo enlaza a los que le siguen en su rubro (y
+  // una página que no es del blog arranca en un punto que depende de su id).
+  // Con slice(0, max) fijo, los mismos 5 artículos se llevaban todos los
+  // enlaces y el resto quedaba con uno solo (el índice del blog): Google los
+  // descubre pero no los indexa. Así cada artículo recibe enlaces de sus vecinos.
+  const blogDe = (f: (b: Entrada<'blog'>) => boolean, max = 6) => {
+    const lista = s.blog.filter(f);
+    const propio = lista.findIndex((b) => b.id === id);
+    const inicio = propio >= 0 ? propio + 1 : [...`${tipo}:${id}`].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 0);
+    const out: Entrada<'blog'>[] = [];
+    for (let i = 0; i < lista.length && out.length < max; i++) {
+      const b = lista[(inicio + i) % lista.length];
+      if (b.id !== id) out.push(b);
+    }
+    return out.map((b) => ({ texto: b.data.titulo, href: url.blog(b.id) }));
+  };
   const comparativasDe = (n: string) =>
     s.comparativas.filter((c) => c.data.nicho === n).map((c) => ({ texto: c.data.titulo, href: url.comparativa(c.id) }));
   const calculadorasDe = (n: string) =>
