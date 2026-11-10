@@ -48,7 +48,7 @@ faq:
   - pregunta: "¿Cuánto tarda en estar funcionando?"
     respuesta: "Depende de cuántos canales y procesos conectemos. El plazo sale del diagnóstico, y nada se enciende sin tu visto bueno después de probarlo con conversaciones reales."
 fecha: 2026-11-10
-portadaAlt: "Sala de exhibición de una concesionaria con autos nuevos y un vendedor revisando su celular junto a una camioneta"
+portadaAlt: "SUV oscura en el salón de exhibición de una concesionaria frente a un ventanal al atardecer"
 ---
 
 ## Dónde se le va la plata a una concesionaria

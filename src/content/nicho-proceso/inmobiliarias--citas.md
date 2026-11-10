@@ -38,7 +38,7 @@ faq:
   - pregunta: "¿Y si el interesado no responde el recordatorio?"
     respuesta: "Se le escribe una segunda vez unas horas después. Si sigue sin responder, el asesor recibe un aviso para decidir si va igual o libera el horario."
 fecha: 2026-11-10
-portadaAlt: "Asesor inmobiliario esperando en la entrada de un edificio mientras mira la hora en su celular"
+portadaAlt: "Asesora mostrando a dos interesados la vista desde el ventanal de un departamento en altura"
 ---
 
 ## El problema: visitas que se caen sin aviso

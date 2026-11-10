@@ -41,7 +41,7 @@ faq:
   - pregunta: "¿Y si el cliente escribe en inglés?"
     respuesta: "Responde en el idioma en que le escriben. Es útil para dealers latinos en Estados Unidos que atienden clientes en español y en inglés."
 fecha: 2026-11-10
-portadaAlt: "Vendedor de autos respondiendo mensajes en su celular junto a un sedán seminuevo en el patio de la concesionaria"
+portadaAlt: "Vendedor de autos revisando su celular junto a un sedán plateado en el salón de exhibición"
 ---
 
 ## El problema: el lead se pregunta en cinco lugares a la vez

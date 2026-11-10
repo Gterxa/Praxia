@@ -48,7 +48,7 @@ faq:
   - pregunta: "¿Cuánto tarda en estar funcionando?"
     respuesta: "Depende de cuántos procesos quieras automatizar y de dónde tienes hoy la información de tus propiedades. El plazo exacto sale del diagnóstico, y ves avances cada semana antes de encender nada."
 fecha: 2026-11-10
-portadaAlt: "Asesora inmobiliaria mostrando un departamento iluminado mientras revisa mensajes en su celular"
+portadaAlt: "Llaves sobre la isla de mármol de un departamento con vista a la ciudad al atardecer"
 ---
 
 ## Dónde se le va la plata a una inmobiliaria que ya tiene leads

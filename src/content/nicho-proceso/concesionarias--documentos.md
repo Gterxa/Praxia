@@ -38,7 +38,7 @@ faq:
   - pregunta: "¿Puede coordinar la fecha de entrega del auto?"
     respuesta: "Sí. Cuando el expediente y el pago están listos, le ofrece al cliente horarios de entrega y le recuerda qué traer ese día."
 fecha: 2026-11-10
-portadaAlt: "Asesora de financiamiento revisando documentos de un comprador de auto en su escritorio"
+portadaAlt: "Carpeta de cuero y bolígrafo sobre un escritorio con una SUV en exhibición al fondo"
 ---
 
 ## El problema: la venta está cerrada, pero el auto no sale

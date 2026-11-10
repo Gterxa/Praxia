@@ -38,7 +38,7 @@ faq:
   - pregunta: "¿Se puede usar para clientes que compraron hace años?"
     respuesta: "Sí. Es una de las formas más simples de vender: quien compró hace varios años puede estar pensando en cambiar de auto, y un mensaje a tiempo lo trae de vuelta a tu salón."
 fecha: 2026-11-10
-portadaAlt: "Vendedor de concesionaria revisando una lista de cotizaciones en una tablet dentro del salón de exhibición"
+portadaAlt: "Técnico de taller dándole la mano a un cliente junto a un auto elevado en el puente"
 ---
 
 ## El problema: «lo voy a pensar» es donde se pierden las ventas

@@ -38,7 +38,7 @@ faq:
   - pregunta: "¿Quién aprueba lo que se publica?"
     respuesta: "Siempre una persona de tu equipo, normalmente el jefe de seminuevos. Nada sale sin su visto bueno."
 fecha: 2026-11-10
-portadaAlt: "Encargado de seminuevos fotografiando un hatchback rojo en el patio de la concesionaria"
+portadaAlt: "Pickup negra en un estudio fotográfico con luces y una cámara en trípode"
 ---
 
 ## Días de patio: el costo que no aparece en ningún reporte

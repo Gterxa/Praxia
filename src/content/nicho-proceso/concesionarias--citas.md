@@ -41,7 +41,7 @@ faq:
   - pregunta: "¿Qué pasa si el taller se atrasa con un auto?"
     respuesta: "El jefe de taller marca el atraso y el cliente recibe un mensaje con la nueva hora estimada, sin tener que llamar a preguntar."
 fecha: 2026-11-10
-portadaAlt: "Cliente recibiendo las llaves de una camioneta para una prueba de manejo frente a la concesionaria"
+portadaAlt: "Cliente al volante durante una prueba de manejo con el vendedor como copiloto"
 ---
 
 ## El problema: dos agendas que se manejan por teléfono

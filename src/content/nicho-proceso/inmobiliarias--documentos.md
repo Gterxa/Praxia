@@ -38,7 +38,7 @@ faq:
   - pregunta: "¿Sirve para administrar contratos de alquiler vigentes?"
     respuesta: "Sí. Puede avisarte antes de que venza un contrato, pedir la renovación de documentos y recordar ajustes pactados, con la información que tú cargas."
 fecha: 2026-11-10
-portadaAlt: "Carpetas de contratos inmobiliarios sobre un escritorio junto a un celular con fotos de documentos"
+portadaAlt: "Mano firmando un contrato de compraventa junto a unas llaves con llavero de casa"
 ---
 
 ## El problema: la operación se traba en los papeles

@@ -38,7 +38,7 @@ faq:
   - pregunta: "¿El reporte me dice qué hacer?"
     respuesta: "Te señala dónde se cae el embudo y qué cambió respecto a la semana anterior. Las decisiones siguen siendo tuyas, pero las tomas con datos y no con impresiones."
 fecha: 2026-11-10
-portadaAlt: "Gerente de inmobiliaria leyendo un resumen semanal en el celular con una taza de café"
+portadaAlt: "Laptop con gráficos sobre un escritorio frente a un mapa de la ciudad lleno de alfileres de colores"
 ---
 
 ## El problema: inviertes en portales sin saber cuál vende

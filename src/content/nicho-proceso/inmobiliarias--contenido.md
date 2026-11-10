@@ -38,7 +38,7 @@ faq:
   - pregunta: "¿Sirve para proyectos en planos?"
     respuesta: "Sí. En preventa la ficha se arma por tipo de departamento y se actualiza cuando cambia la disponibilidad o la etapa del proyecto."
 fecha: 2026-11-10
-portadaAlt: "Asesor fotografiando con su celular la sala de una casa en venta"
+portadaAlt: "Fotógrafo con trípode retratando de noche una casa moderna con piscina iluminada"
 ---
 
 ## El problema: la propiedad está captada pero no publicada

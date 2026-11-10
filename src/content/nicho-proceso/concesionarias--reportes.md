@@ -38,7 +38,7 @@ faq:
   - pregunta: "¿Los vendedores ven su propio reporte?"
     respuesta: "Pueden recibir el suyo, con sus leads, sus pruebas y sus cotizaciones pendientes. Ayuda a que cada uno ordene su día sin esperar al gerente."
 fecha: 2026-11-10
-portadaAlt: "Gerente de concesionaria revisando en su celular el resumen del día frente al salón de exhibición"
+portadaAlt: "Gerente de concesionaria mirando desde un balcón interior el salón con autos en exhibición"
 ---
 
 ## El problema: la reunión del lunes llega tarde

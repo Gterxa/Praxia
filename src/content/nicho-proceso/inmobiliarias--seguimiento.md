@@ -38,7 +38,7 @@ faq:
   - pregunta: "¿Qué pasa con los leads que ya tengo guardados de hace meses?"
     respuesta: "Se pueden reactivar con un mensaje que les pregunte si siguen buscando. Los que responden vuelven al seguimiento activo y el resto se queda tranquilo."
 fecha: 2026-11-10
-portadaAlt: "Pareja revisando en una tablet los planos de un departamento junto a una ventana"
+portadaAlt: "Escritorio con una revista de propiedades abierta, lámpara encendida y café frente a la ciudad al anochecer"
 ---
 
 ## El problema: la venta se decide cuando ya nadie está escribiendo

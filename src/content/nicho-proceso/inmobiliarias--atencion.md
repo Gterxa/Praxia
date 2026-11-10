@@ -41,7 +41,7 @@ faq:
   - pregunta: "¿Contesta preguntas sobre papeles o hipotecas?"
     respuesta: "Puede explicar los pasos generales que tú le cargues, pero cualquier consulta legal o de crédito puntual pasa a una persona de tu equipo."
 fecha: 2026-11-10
-portadaAlt: "Celular sobre un escritorio de inmobiliaria con un chat abierto y llaves de un departamento al lado"
+portadaAlt: "Asesora inmobiliaria hablando por celular en la sala de un departamento iluminado de noche"
 ---
 
 ## El problema: el lead llega cuando tu asesor no puede contestar
