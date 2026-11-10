@@ -4,7 +4,7 @@ tuNegocio: "tu constructora"
 orden: 8
 procesos: ["reportes", "seguimiento", "documentos", "atencion", "citas", "contenido"]
 titulo: "Automatización con IA para constructoras que manejan varias obras a la vez"
-seoTitulo: "Automatización para constructoras: parte diario, avance y cobros"
+seoTitulo: "Automatización para constructoras: parte diario y cobros"
 seoDescripcion: "Parte diario desde el celular, avance de obra que el cliente ve sin llamarte y presupuestos que no se enfrían. Automatización para constructoras."
 respuesta: "Si tu constructora ya lleva varias obras al mismo tiempo, lo que más plata te cuesta no es el fierro ni el cemento: es no saber a tiempo qué pasa en cada frente, cobrar tarde y dejar enfriar los presupuestos que mandaste. Automatizamos el parte diario, el informe de avance y el seguimiento a clientes por WhatsApp."
 tldr:

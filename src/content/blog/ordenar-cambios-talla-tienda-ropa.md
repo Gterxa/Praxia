@@ -3,7 +3,7 @@ nicho: "ecommerce"
 proceso: "documentos"
 tipo: "como"
 titulo: "Cómo ordenar los cambios de talla en una tienda de ropa"
-seoTitulo: "Cómo ordenar los cambios de talla en tu tienda de ropa online"
+seoTitulo: "Cambios de talla en tu tienda de ropa online"
 seoDescripcion: "Un flujo simple por WhatsApp para pedir el cambio, revisar el estado de la prenda, reservar la talla nueva y coordinar el recojo sin perder el control."
 respuesta: "Para ordenar los cambios de talla en una tienda de ropa online, recibe cada solicitud por un solo canal con número de pedido, talla actual y talla deseada, verifica que la talla nueva esté en stock antes de aceptar, reserva esa unidad y coordina el recojo y el envío en la misma conversación. Cada caso queda registrado con su estado."
 tldr:

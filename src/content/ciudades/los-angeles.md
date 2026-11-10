@@ -16,7 +16,7 @@ fuentes:
     url: "https://www2.census.gov/programs-surveys/popest/datasets/2020-2024/cities/totals/sub-est2024.csv"
     verificado: true
 titulo: "Automatización con IA para marcas latinas de wellness y ecommerce en Los Ángeles"
-seoTitulo: "Automatización con IA en Los Ángeles para wellness y ecommerce"
+seoTitulo: "Automatización con IA en Los Ángeles"
 seoDescripcion: "Marcas de belleza, spas y tiendas online latinas en Los Ángeles: DMs respondidos en minutos, reservas, carritos recuperados y reportes diarios. En dólares."
 respuesta: "Si tu marca de belleza, tu spa o tu tienda online en Los Ángeles crece por Instagram y TikTok, el problema ya no es atraer gente: es contestar todos los DMs, cerrar la venta y volver a escribirle al que no compró. Automatizamos esa atención y ese seguimiento."
 tldr:

@@ -2,7 +2,7 @@
 nicho: "mineria"
 proceso: "documentos"
 titulo: "Documentación de seguridad y acreditación al día para tu personal en mina"
-seoTitulo: "Documentación de seguridad para contratistas mineros, sin carpetas"
+seoTitulo: "Documentación de seguridad para contratistas mineros"
 seoDescripcion: "Legajo de cada trabajador al día, aviso antes de que venza el examen médico o el seguro, y ATS e IPERC llenados en campo. Para contratistas mineros."
 respuesta: "Para un contratista minero, un documento vencido significa un trabajador que no sube y un turno incompleto. Ordenamos el legajo de cada persona, te avisamos antes de cada vencimiento y hacemos que el ATS, el IPERC y los permisos se llenen completos desde el celular, con foto y firma."
 tldr:

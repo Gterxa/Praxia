@@ -3,7 +3,7 @@ nicho: "mineria"
 proceso: "reportes"
 tipo: "intencion"
 titulo: "Software de reportes diarios para contratistas mineros: qué debe hacer de verdad"
-seoTitulo: "Software de reportes diarios para contratista minero: qué buscar"
+seoTitulo: "Software de reportes diarios para contratista minero"
 seoDescripcion: "Qué tiene que hacer un software de parte diario para un contratista minero: llenarse en campo sin señal, sumar horas máquina y alimentar la valorización."
 respuesta: "Un software de reportes diarios para contratista minero sirve si el supervisor lo llena en campo, aunque no haya señal, y si con esos datos sale la valorización del mes sin transcribir nada. Si solo reemplaza el papel por una pantalla y alguien igual pasa los datos a Excel, no resolviste el problema."
 tldr:

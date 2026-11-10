@@ -3,7 +3,7 @@ nicho: "wellness"
 proceso: "citas"
 tipo: "como"
 titulo: "Cómo aplicar una política de cancelación en tu spa"
-seoTitulo: "Cómo aplicar una política de cancelación en un spa sin pelear"
+seoTitulo: "Política de cancelación en un spa: cómo aplicarla"
 seoDescripcion: "Cómo escribir, comunicar y aplicar una política de cancelación en tu spa o medspa para reducir inasistencias sin espantar a tus clientas."
 respuesta: "Para aplicar una política de cancelación en tu spa sin conflictos, escríbela en pocas líneas (plazo para cancelar, qué pasa si no se cumple, excepciones), dila al momento de reservar, recuérdala en la confirmación del día anterior y aplícala igual a todas. La política funciona cuando la clienta la conoce antes, no cuando se le cobra."
 tldr:

@@ -12,7 +12,7 @@ fuentes:
     url: "https://inegi.org.mx/contenidos/saladeprensa/boletines/2021/EstSociodemo/ResultCenso2020_NL.pdf"
     verificado: true
 titulo: "Automatización con IA para constructoras y concesionarias en Monterrey"
-seoTitulo: "Automatización con IA en Monterrey para constructoras y autos"
+seoTitulo: "Automatización con IA en Monterrey"
 seoDescripcion: "Reportes de obra que llegan solos, seguimiento de cada cotización de auto y atención por WhatsApp para empresas de Monterrey. Trabajo remoto."
 respuesta: "En Monterrey, las empresas que más pierden por trabajar a mano son las que mueven mucho volumen: constructoras con varias obras y concesionarias con cientos de cotizaciones al mes. Automatizamos el reporte de obra, el seguimiento del prospecto y la atención por WhatsApp."
 tldr:

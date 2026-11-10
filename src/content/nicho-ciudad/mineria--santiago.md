@@ -2,7 +2,7 @@
 nicho: "mineria"
 ciudad: "santiago"
 titulo: "Contratistas mineros con casa matriz en Santiago: acreditaciones y estados de pago sin papeleo"
-seoTitulo: "Automatización para contratistas mineros en Santiago de Chile"
+seoTitulo: "Automatización para contratistas mineros en Santiago"
 seoDescripcion: "Para empresas contratistas con oficina en Santiago y faenas en el norte: acreditaciones al día, reportes de turno automáticos y estados de pago ordenados."
 respuesta: "Un contratista minero con casa matriz en Santiago y faenas en el norte gasta horas en acreditar personal, consolidar reportes de turno y armar estados de pago. Automatizamos ese flujo para que la información de faena llegue sola a Santiago y el estado de pago salga a tiempo."
 tldr:

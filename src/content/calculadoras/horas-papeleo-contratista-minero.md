@@ -2,7 +2,7 @@
 nicho: "mineria"
 proceso: "reportes"
 titulo: "¿Cuánto te cuesta al mes el papeleo a mano en tu contratista minera?"
-seoTitulo: "Calculadora: costo mensual del papeleo en contratistas mineros"
+seoTitulo: "Calculadora: costo del papeleo en contratistas mineros"
 seoDescripcion: "Calcula cuánto te cuestan al mes las horas que tu equipo pasa transcribiendo partes, armando valorizaciones y revisando documentos a mano."
 respuesta: "Multiplica cuántas personas de tu equipo transcriben partes, arman valorizaciones o revisan documentos a mano, por las horas que cada una dedica a la semana y por lo que te cuesta su hora. El resultado es lo que se te va cada mes en papeleo que se puede automatizar."
 tldr:

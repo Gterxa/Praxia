@@ -2,7 +2,7 @@
 nicho: "wellness"
 proceso: "citas"
 titulo: "Agenda, confirmaciones y lista de espera para spas"
-seoTitulo: "Agenda y recordatorios de citas automáticos para spas y medspas"
+seoTitulo: "Agenda y recordatorios de citas para spas y medspas"
 seoDescripcion: "Reserva por WhatsApp, confirmación el día anterior y lista de espera para los huecos de último momento. Menos cabinas vacías en tu spa o medspa."
 respuesta: "La agenda automática de un spa permite reservar dentro de la conversación de WhatsApp, confirma cada cita el día anterior, avisa a la lista de espera cuando alguien cancela y aplica tu política de cancelación sin que la recepción tenga que perseguir a nadie."
 tldr:

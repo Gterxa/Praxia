@@ -3,7 +3,7 @@ nicho: "wellness"
 proceso: "reportes"
 tipo: "como"
 titulo: "Cómo medir la ocupación de las cabinas de tu spa"
-seoTitulo: "Cómo medir la ocupación de cabinas en un spa y qué hacer con ella"
+seoTitulo: "Cómo medir la ocupación de cabinas en un spa"
 seoDescripcion: "Cómo calcular la ocupación por cabina, día y franja, qué cuenta como hora ocupada y cómo usar ese dato para llenar la agenda de tu spa."
 respuesta: "Para medir la ocupación de las cabinas de tu spa, compara las horas que cada cabina estuvo con una clienta contra las horas que estuvo disponible, separado por día de la semana y franja horaria. Ese número, revisado cada semana, muestra qué horarios sobran, cuáles faltan y dónde están las horas que se pierden por inasistencias."
 tldr:

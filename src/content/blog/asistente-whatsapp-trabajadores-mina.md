@@ -3,7 +3,7 @@ nicho: "mineria"
 proceso: "atencion"
 tipo: "intencion"
 titulo: "Asistente de WhatsApp para trabajadores de mina: qué contesta y qué no"
-seoTitulo: "Asistente de WhatsApp para trabajadores de mina y contratistas"
+seoTitulo: "Asistente de WhatsApp para trabajadores de mina"
 seoDescripcion: "Un asistente de WhatsApp que contesta a tu personal de mina sobre pagos, rotaciones y documentos, y pasa a Recursos Humanos lo que necesita una persona."
 respuesta: "Un asistente de WhatsApp para trabajadores de mina contesta lo que tu personal pregunta todos los días (fecha de pago, días trabajados, próxima subida, documentos por vencer) con los datos reales de cada uno, y pasa a Recursos Humanos los reclamos y temas delicados. Le devuelve horas al supervisor y le da respuesta al trabajador a la hora en que tiene señal."
 tldr:

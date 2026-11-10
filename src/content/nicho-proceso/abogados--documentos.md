@@ -2,7 +2,7 @@
 nicho: "abogados"
 proceso: "documentos"
 titulo: "Documentos legales desde tu plantilla, revisados por un abogado"
-seoTitulo: "Automatización de documentos legales para estudios de abogados"
+seoTitulo: "Automatización de documentos legales para abogados"
 seoDescripcion: "Contratos, cartas, poderes y escritos repetitivos armados desde tus plantillas con los datos del cliente. Siempre revisados y firmados por un abogado."
 respuesta: "Buena parte de los documentos de un estudio cambian en diez datos y se arman copiando y pegando el último. La automatización toma tus plantillas, llena los datos del cliente y deja un borrador listo para que el abogado revise y firme. No redacta desde cero ni decide el contenido jurídico."
 tldr:

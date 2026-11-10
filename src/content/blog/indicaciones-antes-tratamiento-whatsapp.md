@@ -3,7 +3,7 @@ nicho: "wellness"
 proceso: "documentos"
 tipo: "como"
 titulo: "Cómo enviar las indicaciones antes de un tratamiento"
-seoTitulo: "Indicaciones antes de un tratamiento por WhatsApp: cómo hacerlo"
+seoTitulo: "Indicaciones antes de un tratamiento por WhatsApp"
 seoDescripcion: "Cuándo y cómo enviar las indicaciones de preparación antes de un tratamiento estético o de spa para que la clienta llegue lista y no se cancele la sesión."
 respuesta: "Las indicaciones antes de un tratamiento se envían por WhatsApp con la anticipación que cada tratamiento pide (días antes si hay que suspender productos o evitar el sol, el día anterior si es solo qué traer), en un mensaje corto con la lista concreta y la opción de preguntar. Así la clienta llega preparada y la sesión no se pierde."
 tldr:

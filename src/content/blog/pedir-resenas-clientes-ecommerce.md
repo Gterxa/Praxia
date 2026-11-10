@@ -3,7 +3,7 @@ nicho: "ecommerce"
 proceso: "seguimiento"
 tipo: "como"
 titulo: "Cómo pedir reseñas a los clientes de tu tienda online"
-seoTitulo: "Cómo pedir reseñas a clientes de tu tienda online sin molestar"
+seoTitulo: "Cómo pedir reseñas a clientes de tu tienda online"
 seoDescripcion: "Cuándo pedir la reseña, por qué canal, qué decir y qué hacer cuando el cliente tiene un problema. Para tiendas online que quieren más reseñas reales."
 respuesta: "Para conseguir más reseñas en una tienda online, pídelas por WhatsApp unos días después de la entrega, cuando el cliente ya usó el producto, con un mensaje corto y un enlace directo. Si el cliente responde con un problema, no le pidas la reseña: resuélvelo primero."
 tldr:

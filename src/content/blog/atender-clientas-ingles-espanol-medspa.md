@@ -3,7 +3,7 @@ nicho: "wellness"
 proceso: "atencion"
 tipo: "como"
 titulo: "Cómo atender en inglés y español en un medspa"
-seoTitulo: "Atender en inglés y español en un medspa sin perder pacientes"
+seoTitulo: "Atender en inglés y español en un medspa"
 seoDescripcion: "Respuestas en el idioma de cada paciente, fichas e indicaciones bilingües y avisos al equipo en su idioma: cómo atender a pacientes latinas en Estados Unidos."
 respuesta: "Para atender en inglés y español en un medspa, la atención tiene que responder en el idioma en que escribe cada paciente, mandar fichas, consentimientos e indicaciones en ese mismo idioma, pasar a la profesional cualquier tema clínico con un resumen en el idioma del equipo y tratar con naturalidad a quien mezcla los dos idiomas."
 tldr:

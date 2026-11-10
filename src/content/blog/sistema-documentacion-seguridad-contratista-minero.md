@@ -3,7 +3,7 @@ nicho: "mineria"
 proceso: "documentos"
 tipo: "intencion"
 titulo: "Sistema de documentación de seguridad para contratistas mineros: cómo elegirlo"
-seoTitulo: "Sistema de documentación de seguridad para contratista minero"
+seoTitulo: "Sistema de documentación de seguridad minera: qué incluir"
 seoDescripcion: "Qué debe resolver un sistema de documentación de seguridad para tu contratista minera: vencimientos, ATS en campo, expedientes para la mina y auditorías."
 respuesta: "Un buen sistema de documentación de seguridad para contratista minero hace tres cosas: te avisa antes de que venza el documento de cualquier trabajador, permite llenar ATS, IPERC y permisos completos en campo, y arma el expediente que pide la mina en minutos. Si no hace las tres, vas a seguir dependiendo de una carpeta y de la memoria de alguien."
 tldr:

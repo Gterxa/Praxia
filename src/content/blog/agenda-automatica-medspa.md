@@ -3,7 +3,7 @@ nicho: "wellness"
 proceso: "citas"
 tipo: "intencion"
 titulo: "Agenda automática para un medspa"
-seoTitulo: "Agenda automática para medspa: reservas, fichas y confirmaciones"
+seoTitulo: "Agenda automática para medspa: reservas y confirmaciones"
 seoDescripcion: "Cómo funciona una agenda automática en un medspa: reserva por WhatsApp, evaluación previa, ficha de salud y confirmación, sin llamadas de por medio."
 respuesta: "Una agenda automática para un medspa permite que la paciente reserve por WhatsApp según la disponibilidad real de cada profesional y equipo, recibe la ficha de salud antes de la cita, confirma el día anterior y, si el tratamiento lo pide, agenda primero una evaluación. Tu recepción deja de coordinar por llamadas."
 tldr:

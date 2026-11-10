@@ -3,7 +3,7 @@ nicho: "ecommerce"
 proceso: "atencion"
 tipo: "intencion"
 titulo: "Automatización de WhatsApp para tiendas online que ya venden"
-seoTitulo: "Automatización de WhatsApp para tienda online: cuándo conviene"
+seoTitulo: "Automatización de WhatsApp para tienda online"
 seoDescripcion: "Qué resuelve automatizar el WhatsApp de tu tienda online, qué no, y cómo saber si tu tienda ya tiene el volumen para que valga la pena."
 respuesta: "Automatizar el WhatsApp de una tienda online sirve para contestar en minutos las preguntas que frenan la compra (stock, talla, envío, cambios), seguir carritos y pedidos, y pasar a tu equipo solo lo que necesita criterio. Conviene cuando ya recibes más mensajes de los que tu equipo responde a tiempo."
 tldr:

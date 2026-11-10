@@ -3,7 +3,7 @@ nicho: "ecommerce"
 proceso: "contenido"
 tipo: "como"
 titulo: "Cómo escribir descripciones de producto con IA para tu tienda"
-seoTitulo: "Descripciones de producto con IA para tu tienda: cómo hacerlo"
+seoTitulo: "Descripciones de producto con IA para tu tienda"
 seoDescripcion: "Cómo usar IA para escribir fichas de producto con la voz de tu marca, datos reales y respuestas a las dudas de siempre, sin textos genéricos ni errores."
 respuesta: "Para escribir descripciones de producto con IA que vendan, dale a la IA los datos reales del producto (medidas, materiales, cuidados), una guía corta de cómo habla tu marca y las preguntas que más te hacen los clientes, y revisa cada ficha antes de publicarla. Sin datos ni guía, la IA escribe textos genéricos que no responden nada."
 tldr:

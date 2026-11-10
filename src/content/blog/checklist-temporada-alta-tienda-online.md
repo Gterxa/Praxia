@@ -2,7 +2,7 @@
 nicho: "ecommerce"
 tipo: "checklist"
 titulo: "Checklist de temporada alta para tu tienda online"
-seoTitulo: "Checklist de temporada alta para tiendas online: antes y después"
+seoTitulo: "Checklist de temporada alta para tiendas online"
 seoDescripcion: "Stock, envíos, atención, pagos, cambios y el día después: lo que tu tienda online tiene que revisar antes de una fecha fuerte como Cyber o fin de año."
 respuesta: "Antes de una temporada alta, tu tienda online tiene que revisar el stock de los productos estrella, los plazos reales de envío y el último día para llegar a tiempo, la atención para el volumen de consultas, los medios de pago, la política de cambios de la campaña y lo que pasa la semana siguiente, cuando llega la ola de seguimiento y devoluciones."
 tldr:

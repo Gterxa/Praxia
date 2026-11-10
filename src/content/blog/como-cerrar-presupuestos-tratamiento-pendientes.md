@@ -3,7 +3,7 @@ nicho: "clinicas"
 proceso: "seguimiento"
 tipo: "como"
 titulo: "Cómo cerrar los presupuestos de tratamiento que quedaron pendientes"
-seoTitulo: "Cómo cerrar presupuestos de tratamiento pendientes en clínicas"
+seoTitulo: "Cerrar presupuestos de tratamiento pendientes"
 seoDescripcion: "Por qué los pacientes no empiezan el tratamiento que se les presupuestó y cómo hacer un seguimiento por WhatsApp que resuelve dudas sin presionar."
 respuesta: "La mayoría de presupuestos de tratamiento no se pierden por el precio: se pierden porque al paciente le quedó una duda y nadie volvió a escribirle. Un seguimiento a los pocos días, que pregunta por esa duda y ofrece hablar con coordinación, cierra muchos de los que hoy se quedan en el cajón."
 tldr:

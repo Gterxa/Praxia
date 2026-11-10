@@ -2,7 +2,7 @@
 nicho: "abogados"
 proceso: "seguimiento"
 titulo: "Consultas que se convierten y clientes bien informados"
-seoTitulo: "Seguimiento de clientes y consultas para estudios de abogados"
+seoTitulo: "Seguimiento de clientes para estudios de abogados"
 seoDescripcion: "La consulta que no contrató recibe su siguiente paso a tiempo y el cliente sabe cómo va su caso sin llamar al estudio. Para estudios con volumen."
 respuesta: "En un estudio, el seguimiento se pierde en dos puntas: la persona que vino a una primera consulta y nadie le volvió a escribir, y el cliente que llama cada semana para preguntar cómo va su caso. Automatizamos las dos: un mensaje a tiempo para la consulta que quedó pendiente y avisos de estado con lo que tu equipo registró."
 tldr:

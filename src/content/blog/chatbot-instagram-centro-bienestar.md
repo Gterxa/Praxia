@@ -3,7 +3,7 @@ nicho: "wellness"
 proceso: "atencion"
 tipo: "intencion"
 titulo: "Respuestas automáticas en Instagram para un centro de bienestar"
-seoTitulo: "Chatbot de Instagram para centro de bienestar: guía para dueños"
+seoTitulo: "Chatbot de Instagram para centro de bienestar"
 seoDescripcion: "Cómo responder DMs, comentarios e historias de Instagram en un centro de bienestar sin pasar el día en el celular, y llevar cada consulta a una reserva."
 respuesta: "Un asistente para el Instagram de un centro de bienestar responde los mensajes directos, las respuestas a historias y los comentarios con preguntas, con la información de tus clases, terapias y horarios, y lleva cada conversación a una reserva o a tu WhatsApp. Lo que no es rutina pasa a una persona de tu equipo."
 tldr:

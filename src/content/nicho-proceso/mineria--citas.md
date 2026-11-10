@@ -2,7 +2,7 @@
 nicho: "mineria"
 proceso: "citas"
 titulo: "Exámenes médicos, inducciones y subidas a mina coordinados por WhatsApp"
-seoTitulo: "Programación de turnos y exámenes médicos para contratistas mineros"
+seoTitulo: "Turnos y exámenes médicos para contratistas mineros"
 seoDescripcion: "Cada trabajador recibe su fecha de examen, de inducción y de subida por WhatsApp, con recordatorio. Coordinación de rotaciones para contratistas mineros."
 respuesta: "En una contratista minera no se agendan citas de clientes: se coordinan exámenes médicos, inducciones y subidas a mina de decenas de trabajadores en rotación. Automatizamos esa programación por WhatsApp, con confirmación y recordatorio, para que nadie llegue tarde al bus ni falte a su examen."
 tldr:

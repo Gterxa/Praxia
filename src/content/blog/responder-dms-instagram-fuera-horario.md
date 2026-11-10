@@ -3,7 +3,7 @@ nicho: "ecommerce"
 proceso: "atencion"
 tipo: "como"
 titulo: "Cómo responder DMs de Instagram fuera de horario"
-seoTitulo: "Cómo responder DMs de Instagram fuera de horario en tu tienda"
+seoTitulo: "Responder DMs de Instagram fuera de horario"
 seoDescripcion: "Qué hacer con los mensajes de Instagram que llegan de noche y en fin de semana: opciones, lo que funciona en una tienda online y lo que espanta al cliente."
 respuesta: "Para responder los DMs de Instagram fuera de horario sin quedarte despierto, la tienda necesita que alguien o algo conteste con información real: un asistente conectado a tu catálogo responde stock, envío y cambios en minutos, y deja para la mañana solo lo que necesita una persona. El mensaje automático de «te respondemos mañana» no alcanza."
 tldr:

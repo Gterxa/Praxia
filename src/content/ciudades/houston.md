@@ -16,7 +16,7 @@ fuentes:
     url: "https://www2.census.gov/programs-surveys/popest/datasets/2020-2024/cities/totals/sub-est2024.csv"
     verificado: true
 titulo: "Automatización con IA para constructoras latinas y dealers en Houston"
-seoTitulo: "Automatización con IA en Houston para constructoras y dealers"
+seoTitulo: "Automatización con IA en Houston"
 seoDescripcion: "Para contratistas, dealers y clínicas de Houston con clientes latinos: atención en español por WhatsApp, cotizaciones con seguimiento y reportes de obra."
 respuesta: "En Houston, muchos contratistas, dealers de autos y clínicas latinas venden más de lo que su oficina alcanza a atender. Automatizamos la atención en español por WhatsApp, el seguimiento de cada cotización y el reporte de obra, para que la venta no dependa de que alguien conteste a tiempo."
 tldr:

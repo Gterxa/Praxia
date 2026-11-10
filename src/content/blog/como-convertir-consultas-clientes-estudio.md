@@ -3,7 +3,7 @@ nicho: "abogados"
 proceso: "seguimiento"
 tipo: "como"
 titulo: "Cómo convertir más consultas en clientes"
-seoTitulo: "Cómo convertir consultas en clientes en un estudio de abogados"
+seoTitulo: "Convertir consultas en clientes en un estudio jurídico"
 seoDescripcion: "Dónde se pierden los clientes potenciales de un estudio de abogados, desde el primer mensaje hasta la propuesta, y qué hacer en cada punto para no perderlos."
 respuesta: "Un estudio convierte más consultas en clientes cuando responde rápido el primer mensaje, agenda la primera reunión sin vueltas, llega a esa reunión con los documentos leídos, entrega una propuesta clara el mismo día y hace seguimiento a los pocos días. Cada uno de esos puntos es una fuga que se puede medir y cerrar."
 tldr:

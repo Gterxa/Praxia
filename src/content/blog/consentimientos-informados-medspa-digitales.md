@@ -3,7 +3,7 @@ nicho: "wellness"
 proceso: "documentos"
 tipo: "como"
 titulo: "Cómo manejar los consentimientos informados de un medspa en digital"
-seoTitulo: "Consentimientos informados digitales en un medspa: cómo hacerlo"
+seoTitulo: "Consentimientos informados digitales en un medspa"
 seoDescripcion: "Cómo enviar, firmar y guardar consentimientos informados desde el celular de la paciente, con registro de fecha y acceso restringido. Sin papeles en la recepción."
 respuesta: "Para manejar los consentimientos informados de un medspa en digital, usa el texto que tu centro ya aprobó, envíalo por WhatsApp a la paciente antes de su cita para que lo lea con calma, registra su aceptación con fecha y hora, guárdalo en su historia con acceso restringido y haz que la profesional lo vea antes de empezar. La validez legal la revisa tu asesor."
 tldr:

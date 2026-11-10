@@ -3,7 +3,7 @@ nicho: "mineria"
 proceso: "atencion"
 tipo: "cuanto-cuesta"
 titulo: "¿Cuánto cuesta un asistente de WhatsApp para el personal de una contratista minera?"
-seoTitulo: "Cuánto cuesta un asistente de WhatsApp para contratista minero"
+seoTitulo: "Cuánto cuesta un asistente de WhatsApp para minería"
 seoDescripcion: "Qué define el costo de un asistente de WhatsApp para tu personal de mina: temas que responde, fuentes de datos, volumen de mensajes y casos derivados."
 respuesta: "El costo de un asistente de WhatsApp para una contratista minera depende de cuántos temas responde, de dónde saca los datos (tareo, planillas, rotaciones, legajos), del volumen de mensajes y de cómo se derivan los casos a tu equipo. Se cotiza en el diagnóstico, con tres opciones, y el costo mensual de uso va detallado desde el inicio."
 tldr:

@@ -2,7 +2,7 @@
 nicho: "ecommerce"
 proceso: "contenido"
 titulo: "Fichas de producto, posts y comentarios al día"
-seoTitulo: "Contenido para tiendas online con IA: fichas, posts y comentarios"
+seoTitulo: "Contenido con IA para tiendas online"
 seoDescripcion: "Descripciones de producto con la voz de tu marca, publicaciones listas para aprobar y comentarios respondidos a tiempo. Para tiendas online que ya venden."
 respuesta: "Automatizar el contenido de una tienda online es tener las fichas de producto, las publicaciones de la semana y las respuestas a comentarios listas con la voz de tu marca, para que tú solo revises y apruebes. No reemplaza tus fotos ni tu criterio: te ahorra las horas de escribir."
 tldr:

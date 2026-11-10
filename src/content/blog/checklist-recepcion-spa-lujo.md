@@ -3,7 +3,7 @@ nicho: "wellness"
 proceso: "atencion"
 tipo: "checklist"
 titulo: "Checklist de recepción para un spa de lujo"
-seoTitulo: "Checklist de recepción para un spa de lujo: antes, durante y después"
+seoTitulo: "Checklist de recepción para un spa de lujo"
 seoDescripcion: "Lo que la recepción de un spa de lujo revisa antes de abrir, al recibir, durante la visita y al despedir, más lo que se resuelve solo por WhatsApp."
 respuesta: "La recepción de un spa de lujo funciona cuando antes de abrir revisa la agenda, las preferencias y las ocasiones especiales del día; al recibir a cada clienta la saluda por su nombre con todo listo; durante la visita cuida esperas y detalles; al despedir propone la próxima cita; y deja que las consultas y confirmaciones rutinarias del chat se resuelvan solas."
 tldr:
