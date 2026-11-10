@@ -1,27 +1,17 @@
 {
   "umbral": 0.3,
-  "paginas": 114,
+  "paginas": 113,
   "pares_sobre_umbral": [],
   "pares_cerca": [
     {
-      "similitud": 0.2843,
-      "a": "/blog/cuanto-cuesta-automatizar-inmobiliaria",
-      "b": "/blog/cuanto-cuesta-automatizar-concesionaria"
+      "similitud": 0.2742,
+      "a": "/soluciones/constructoras/atencion",
+      "b": "/blog/asistente-whatsapp-constructora"
     },
     {
       "similitud": 0.2691,
       "a": "/ciudades/miami",
       "b": "/ciudades/houston"
-    },
-    {
-      "similitud": 0.2679,
-      "a": "/blog/checklist-contratar-automatizacion-inmobiliaria",
-      "b": "/blog/checklist-contratar-automatizacion-concesionaria"
-    },
-    {
-      "similitud": 0.2662,
-      "a": "/soluciones/inmobiliarias",
-      "b": "/soluciones/concesionarias"
     },
     {
       "similitud": 0.266,
@@ -34,9 +24,9 @@
       "b": "/ciudades/dallas"
     },
     {
-      "similitud": 0.2565,
-      "a": "/blog/checklist-automatizar-inmobiliaria",
-      "b": "/blog/checklist-automatizar-concesionaria"
+      "similitud": 0.2564,
+      "a": "/blog/cuanto-cuesta-asistente-whatsapp-contratista-minero",
+      "b": "/blog/cuanto-cuesta-asistente-presupuestos-construccion"
     },
     {
       "similitud": 0.2551,
@@ -45,29 +35,17 @@
     }
   ],
   "maximo_por_pagina": {
-    "/blog/checklist-automatizar-concesionaria": {
-      "similitud": 0.2565,
-      "con": "/blog/checklist-automatizar-inmobiliaria"
+    "/blog/asistente-whatsapp-constructora": {
+      "similitud": 0.2742,
+      "con": "/soluciones/constructoras/atencion"
     },
-    "/blog/checklist-automatizar-inmobiliaria": {
-      "similitud": 0.2565,
-      "con": "/blog/checklist-automatizar-concesionaria"
+    "/blog/cuanto-cuesta-asistente-presupuestos-construccion": {
+      "similitud": 0.2564,
+      "con": "/blog/cuanto-cuesta-asistente-whatsapp-contratista-minero"
     },
-    "/blog/checklist-contratar-automatizacion-concesionaria": {
-      "similitud": 0.2679,
-      "con": "/blog/checklist-contratar-automatizacion-inmobiliaria"
-    },
-    "/blog/checklist-contratar-automatizacion-inmobiliaria": {
-      "similitud": 0.2679,
-      "con": "/blog/checklist-contratar-automatizacion-concesionaria"
-    },
-    "/blog/cuanto-cuesta-automatizar-concesionaria": {
-      "similitud": 0.2843,
-      "con": "/blog/cuanto-cuesta-automatizar-inmobiliaria"
-    },
-    "/blog/cuanto-cuesta-automatizar-inmobiliaria": {
-      "similitud": 0.2843,
-      "con": "/blog/cuanto-cuesta-automatizar-concesionaria"
+    "/blog/cuanto-cuesta-asistente-whatsapp-contratista-minero": {
+      "similitud": 0.2564,
+      "con": "/blog/cuanto-cuesta-asistente-presupuestos-construccion"
     },
     "/ciudades/arequipa": {
       "similitud": 0.266,
@@ -93,13 +71,9 @@
       "similitud": 0.266,
       "con": "/ciudades/arequipa"
     },
-    "/soluciones/concesionarias": {
-      "similitud": 0.2662,
-      "con": "/soluciones/inmobiliarias"
-    },
-    "/soluciones/inmobiliarias": {
-      "similitud": 0.2662,
-      "con": "/soluciones/concesionarias"
+    "/soluciones/constructoras/atencion": {
+      "similitud": 0.2742,
+      "con": "/blog/asistente-whatsapp-constructora"
     }
   }
 }
