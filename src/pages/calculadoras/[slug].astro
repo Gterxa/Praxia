@@ -1,0 +1,164 @@
+---
+/**
+ * «¿Cuánta plata pierdes…?». Los números los pone el visitante; la página no
+ * trae cifras propias (los «ejemplo» del .md son solo el placeholder del campo).
+ * Resultado = producto de los campos (porcentajes / 100) × factor.
+ */
+import { render } from 'astro:content';
+import PaginaSeo from '../../components/seo/PaginaSeo.astro';
+import { publicadas, portada, enlacesDe, faqPage, url, type Entrada } from '../../lib/seo';
+import { SITE } from '../../consts';
+
+export async function getStaticPaths() {
+  const lista = await publicadas('calculadoras');
+  return lista.map((c) => ({ params: { slug: c.id }, props: { c } }));
+}
+const { c } = Astro.props as { c: Entrada<'calculadoras'> };
+const { Content } = await render(c);
+const ruta = url.calculadora(c.id);
+const img = portada('calculadoras', c.id);
+const app = {
+  '@type': 'WebApplication',
+  '@id': `${new URL(ruta, SITE.url)}#calculadora`,
+  name: c.data.titulo,
+  description: c.data.seoDescripcion,
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  isAccessibleForFree: true,
+  inLanguage: 'es',
+  publisher: { '@id': `${SITE.url}/#praxia` },
+};
+const datos = [app, faqPage(ruta, c.data.faq)];
+const enlaces = await enlacesDe('calculadora', c.id, { nicho: c.data.nicho, proceso: c.data.proceso });
+---
+
+<PaginaSeo
+  d={c.data}
+  antetitulo="Calculadora"
+  migas={[
+    { nombre: 'Calculadoras', ruta: '/calculadoras' },
+    { nombre: c.data.titulo, ruta },
+  ]}
+  portada={img}
+  datos={datos}
+  enlaces={enlaces}
+  cuerpo={c.body}
+>
+  <form class="calc tarjeta" data-calc data-factor={c.data.factor} aria-labelledby="calc-titulo" slot="extra">
+    <h2 id="calc-titulo" class="mono text-brasa">Calcula con tus números</h2>
+    <fieldset class="moneda pequeno">
+      <legend class="sr-only">Moneda</legend>
+      <label><input type="radio" name="moneda" value="US$" checked /> US$</label>
+      <label><input type="radio" name="moneda" value="S/" /> S/</label>
+      <label><input type="radio" name="moneda" value="$" /> $ (moneda local)</label>
+    </fieldset>
+    {
+      c.data.campos.map((f) => (
+        <label class="campo-calc">
+          <span class="text-texto">{f.etiqueta}</span>
+          <span class="pequeno text-texto-3">{f.ayuda}</span>
+          <span class="entrada">
+            {f.moneda && <span class="prefijo" data-prefijo>US$</span>}
+            <input
+              class="campo"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              step="any"
+              name={f.id}
+              placeholder={`ej. ${f.ejemplo}`}
+              data-porcentaje={f.porcentaje ? '' : undefined}
+              required
+            />
+            {f.porcentaje && <span class="sufijo">%</span>}
+          </span>
+        </label>
+      ))
+    }
+    <output class="resultado" aria-live="polite" data-resultado>
+      <span class="pequeno text-texto-2">{c.data.resultado}</span>
+      <strong data-monto>Completa los campos</strong>
+      <span class="pequeno text-texto-3" data-anual></span>
+    </output>
+    <p class="pequeno text-texto-3">
+      Es una estimación con los números que tú pones. En el diagnóstico la hacemos con los datos reales de tu negocio.
+    </p>
+  </form>
+  <div slot="extra"><Content /></div>
+</PaginaSeo>
+
+<style>
+  .calc {
+    margin-top: 3rem;
+    max-width: 46rem;
+    display: grid;
+    gap: 1.25rem;
+  }
+  .moneda {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    color: var(--color-texto-2);
+  }
+  .moneda label {
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
+    cursor: pointer;
+  }
+  .campo-calc {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .entrada {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .entrada input {
+    flex: 1;
+  }
+  .prefijo,
+  .sufijo {
+    color: var(--color-texto-2);
+    font-family: var(--font-mono);
+  }
+  .resultado {
+    display: grid;
+    gap: 0.35rem;
+    padding: 1.25rem;
+    border-radius: var(--radius-praxia);
+    background: linear-gradient(90deg, rgb(255 107 53 / 0.1), transparent);
+    border-left: 2px solid var(--color-brasa);
+  }
+  .resultado strong {
+    font-family: var(--font-titulos);
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    letter-spacing: -0.03em;
+    color: var(--color-texto);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-calc]').forEach((form) => {
+    const factor = Number(form.dataset.factor) || 1;
+    const monto = form.querySelector<HTMLElement>('[data-monto]')!;
+    const anual = form.querySelector<HTMLElement>('[data-anual]')!;
+    const calcular = () => {
+      const moneda = (form.querySelector<HTMLInputElement>('input[name="moneda"]:checked')?.value ?? 'US$');
+      form.querySelectorAll<HTMLElement>('[data-prefijo]').forEach((p) => (p.textContent = moneda));
+      const campos = [...form.querySelectorAll<HTMLInputElement>('input[type="number"]')];
+      if (campos.some((c) => c.value === '' || Number(c.value) < 0)) {
+        monto.textContent = 'Completa los campos';
+        anual.textContent = '';
+        return;
+      }
+      const total = campos.reduce((acc, c) => acc * (c.hasAttribute('data-porcentaje') ? Number(c.value) / 100 : Number(c.value)), factor);
+      const fmt = (n: number) => `${moneda} ${Math.round(n).toLocaleString('es-PE')}`;
+      monto.textContent = fmt(total);
+      anual.textContent = factor < 12 ? `Al año: ${fmt(total * 12)}` : '';
+    };
+    form.addEventListener('input', calcular);
+    form.addEventListener('submit', (e) => e.preventDefault());
+  });
+</script>

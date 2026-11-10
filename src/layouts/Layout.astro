@@ -8,7 +8,17 @@ import BottomSheetValidar from '../components/BottomSheetValidar.astro';
 import CabeceraFunnel from '../components/funnel/CabeceraFunnel.astro';
 import PieFunnel from '../components/funnel/PieFunnel.astro';
 import Analitica from '../components/Analitica.astro';
-import { SITE, EMAIL, WHATSAPP, CONTEXTO } from '../consts';
+import {
+  SITE,
+  EMAIL,
+  WHATSAPP,
+  CONTEXTO,
+  SEDE,
+  GOOGLE_MAPS_URL,
+  CIUDADES_ATENDIDAS,
+  REGIONES_ATENDIDAS,
+  REDES,
+} from '../consts';
 import '../styles/global.css';
 import { ruta, sinBase } from '../rutas';
 import { LOCALE, TEXTOS, type Idioma } from '../i18n/funnel';
@@ -41,8 +51,22 @@ interface Props {
    * aplicación, que traen su propio logo, como el lienzo de referencia.
    */
   sinCabecera?: boolean;
+  /**
+   * Nodos schema.org propios de la página (FAQPage, Service…). Se suman al
+   * @graph del sitio, así comparten los @id de la organización y la web.
+   */
+  datosEstructuradosExtra?: Record<string, unknown>[];
+  /** Imagen para compartir propia de la página (ruta de public/). Default: og-praxia.png. */
+  imagen?: string;
   /** Idioma de la página. Solo el funnel tiene versión en inglés (/en/funnel). */
   idioma?: Idioma;
+  /**
+   * Migas propias (nombre y ruta limpia de cada tramo, sin «Inicio»). Sin
+   * esto se arman solas desde la URL con el slug de cada tramo.
+   */
+  migas?: { nombre: string; ruta: string }[];
+  /** og:type. Los artículos del blog van como 'article'. */
+  tipoOG?: 'website' | 'article';
 }
 
 const {
@@ -53,7 +77,11 @@ const {
   tipografia = 'a',
   funnel = false,
   sinCabecera = false,
+  datosEstructuradosExtra = [],
+  imagen = '/og-praxia.png',
   idioma = 'es',
+  migas: migasPropias,
+  tipoOG = 'website',
 } = Astro.props;
 
 // GA4, Meta y Clarity: solo si Vercel tiene al menos uno de sus IDs (ver src/analitica.ts).
@@ -65,30 +93,108 @@ const tituloCompleto = titulo.includes(SITE.nombre)
 
 // `sinBase` quita el prefijo de dev: la canonical siempre es la URL de producción.
 const canonical = new URL(sinBase(Astro.url.pathname), Astro.site);
-const imagenOG = new URL('/og-praxia.png', Astro.site);
+const imagenOG = new URL(imagen, Astro.site);
+const logo = new URL('/icon-512.png', Astro.site);
 
 /**
- * Organization + LocalBusiness, con `areaServed: "PE"` y sin ciudad.
- * Praxia opera de forma remota: segmentar por ciudad no aporta y compite en
- * keywords carísimas. WebSite es un nodo aparte enlazado por `publisher`:
- * es lo que le permite a Google (y a un LLM leyendo el JSON-LD) resolver
- * "qué sitio es este" sin tener que inferirlo de la Organization.
+ * Organization + ProfessionalService (subtipo de LocalBusiness) con la sede
+ * real de Lima: la misma dirección, teléfono y pin del Perfil de Empresa de
+ * Google (`hasMap`/`sameAs` apuntan a esa ficha), para que Google entienda que
+ * web y ficha son el mismo negocio.
+ *
+ * `areaServed` nombra Perú, EE. UU., Latinoamérica y las ciudades de CIUDADES_ATENDIDAS. Ojo: esas
+ * ciudades se atienden en remoto. Son área de servicio, NO sedes: nunca van
+ * como `address` ni como LocalBusiness propios (Google lo trata como dato
+ * falso y puede penalizar la ficha real).
+ *
+ * WebSite es un nodo aparte enlazado por `publisher`: es lo que le permite a
+ * Google (y a un LLM leyendo el JSON-LD) resolver "qué sitio es este" sin
+ * tener que inferirlo de la Organization.
  */
+const idPraxia = `${SITE.url}/#praxia`;
+const rutaLimpia = sinBase(Astro.url.pathname);
+
+/**
+ * Migas (BreadcrumbList) armadas desde la URL: Inicio > [sección] > página.
+ * El último tramo usa el título de la página; los intermedios, su slug.
+ */
+const segmentos = rutaLimpia.split('/').filter(Boolean);
+const NOMBRES_SECCION: Record<string, string> = {
+  'que-puedes-automatizar': 'Qué puedes automatizar',
+  soluciones: 'Soluciones por rubro',
+  ciudades: 'Ciudades',
+  blog: 'Blog',
+  comparativas: 'Comparativas',
+  calculadoras: 'Calculadoras',
+  autor: 'Autor',
+};
+const tramos =
+  migasPropias ??
+  segmentos.map((seg, i) => ({
+    nombre: i === segmentos.length - 1 ? titulo : (NOMBRES_SECCION[seg] ?? seg.replace(/-/g, ' ')),
+    ruta: `/${segmentos.slice(0, i + 1).join('/')}`,
+  }));
+const migas =
+  segmentos.length === 0
+    ? null
+    : {
+        '@type': 'BreadcrumbList',
+        itemListElement: [{ nombre: 'Inicio', ruta: '/' }, ...tramos].map((m, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: m.nombre,
+          item: new URL(m.ruta, SITE.url).toString(),
+        })),
+      };
+
 const datosEstructurados = {
   '@context': 'https://schema.org',
   '@graph': [
     {
-      '@type': ['Organization', 'LocalBusiness'],
-      '@id': `${SITE.url}/#praxia`,
+      '@type': ['Organization', 'ProfessionalService'],
+      '@id': idPraxia,
       name: SITE.nombre,
+      // Nombre de la ficha de Google: une la marca "Praxia" de la web con la
+      // ficha "Praxia CGM". Sin legalName hasta confirmar la razón social.
+      alternateName: 'Praxia CGM',
       description: SITE.descripcion,
       url: SITE.url,
       slogan: SITE.tagline,
       email: EMAIL,
       telephone: `+${WHATSAPP}`,
-      image: imagenOG.toString(),
-      logo: imagenOG.toString(),
-      areaServed: SITE.pais,
+      image: new URL('/og-praxia.png', SITE.url).toString(),
+      logo: logo.toString(),
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: SEDE.calle,
+        addressLocality: SEDE.distrito,
+        addressRegion: SEDE.ciudad,
+        postalCode: SEDE.codigoPostal,
+        addressCountry: SEDE.pais,
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: SEDE.latitud, longitude: SEDE.longitud },
+      // Mismo horario que el Perfil de Empresa de Google (lun–sáb 9:00–19:00).
+      openingHoursSpecification: {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        opens: '09:00',
+        closes: '19:00',
+      },
+      hasMap: GOOGLE_MAPS_URL,
+      sameAs: [GOOGLE_MAPS_URL, ...Object.values(REDES)],
+      areaServed: [
+        { '@type': 'Country', name: 'Perú' },
+        { '@type': 'Country', name: 'Estados Unidos' },
+        ...REGIONES_ATENDIDAS.filter((r) => r !== 'Estados Unidos').map((r) => ({ '@type': 'Place', name: r })),
+        ...CIUDADES_ATENDIDAS.map((ciudad) => ({ '@type': 'City', name: ciudad })),
+      ],
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer service',
+        telephone: `+${WHATSAPP}`,
+        email: EMAIL,
+        availableLanguage: ['Spanish', 'English'],
+      },
       knowsLanguage: 'es-PE',
       makesOffer: [
         'Automatización con IA: atención, citas, seguimiento, documentos y reportes',
@@ -102,8 +208,10 @@ const datosEstructurados = {
       name: SITE.nombre,
       url: SITE.url,
       inLanguage: LOCALE[idioma],
-      publisher: { '@id': `${SITE.url}/#praxia` },
+      publisher: { '@id': idPraxia },
     },
+    ...(migas ? [migas] : []),
+    ...datosEstructuradosExtra,
   ],
 };
 ---
@@ -146,7 +254,7 @@ const datosEstructurados = {
     <meta name="description" content={descripcion} />
     {noIndex && <meta name="robots" content="noindex, follow" />}
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={tipoOG} />
     <meta property="og:site_name" content={SITE.nombre} />
     <meta property="og:locale" content={LOCALE[idioma].replace('-', '_')} />
     <meta property="og:title" content={tituloCompleto} />
@@ -275,6 +383,12 @@ const datosEstructurados = {
 
     <script>
       import '../scripts/scroll-suave';
+    </script>
+
+    {/* Origen del visitante en todas las páginas: el primero gana (ver src/lib/origen.ts). */}
+    <script>
+      import { guardarOrigen } from '../lib/origen';
+      guardarOrigen();
     </script>
 
     {conAnalitica && <Analitica />}

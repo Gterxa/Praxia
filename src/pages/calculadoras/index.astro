@@ -1,0 +1,14 @@
+---
+import Indice from '../../components/seo/Indice.astro';
+import { publicadas, url } from '../../lib/seo';
+const lista = await publicadas('calculadoras');
+---
+
+<Indice
+  titulo="¿Cuánta plata se te va cada mes?"
+  seoTitulo="Calculadoras: cuánto pierde tu negocio por hacerlo a mano"
+  seoDescripcion="Calculadoras gratis para estimar cuánto pierde tu negocio por consultas sin responder, citas que no llegan y seguimientos que nadie hace."
+  intro="Pones tus números y ves cuánto se te va al mes y al año. Sin registrarte."
+  rutaPagina="/calculadoras"
+  grupos={[{ items: lista.map((c) => ({ titulo: c.data.titulo, resumen: c.data.seoDescripcion, href: url.calculadora(c.id) })) }].filter((g) => g.items.length)}
+/>

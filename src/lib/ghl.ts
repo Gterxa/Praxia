@@ -169,6 +169,11 @@ function fuenteDe(o: Origen): string {
   if (/(whatsapp|wa)/.test(src)) return 'WhatsApp';
   if (/linkedin/.test(src)) return 'LinkedIn';
   if (/(referido|referral)/.test(src) || /referral/.test(medio)) return 'Referido';
+  // Google: anuncio o enlace con utm_source=google, o visita orgánica que llegó
+  // desde el buscador (sin UTM, con referrer de google.*). Requiere la opción
+  // «Google» en el desplegable «Fuente del lead» de GHL.
+  if (/google/.test(src)) return 'Google';
+  if (!src && /^https?:\/\/(www\.)?google\./i.test(o.referrer ?? '')) return 'Google';
   if (!src) return 'Web directa';
   return 'Otro';
 }

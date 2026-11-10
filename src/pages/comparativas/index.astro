@@ -1,0 +1,14 @@
+---
+import Indice from '../../components/seo/Indice.astro';
+import { publicadas, url } from '../../lib/seo';
+const lista = await publicadas('comparativas');
+---
+
+<Indice
+  titulo="Comparativas para decidir"
+  seoTitulo="Comparativas: qué conviene a tu negocio"
+  seoDescripcion="Chatbot o recepcionista, CRM o Excel, agencia o freelancer: comparativas por rubro para dueños que tienen que decidir con la plata en la mano."
+  intro="Cuando tienes que elegir entre dos caminos, ponemos los dos lado a lado con lo que cuesta cada uno en tiempo, plata y riesgo."
+  rutaPagina="/comparativas"
+  grupos={[{ items: lista.map((c) => ({ titulo: c.data.titulo, href: url.comparativa(c.id) })) }].filter((g) => g.items.length)}
+/>

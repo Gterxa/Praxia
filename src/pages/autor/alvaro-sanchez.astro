@@ -1,0 +1,128 @@
+---
+/**
+ * Página del autor de los artículos (E-E-A-T: quién escribe y por qué saber
+ * de esto). [REVISAR con Tony] La bio sale de su perfil profesional; no nombra
+ * a su empleador actual a propósito.
+ */
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import CTAFunnel from '../../components/seo/CTAFunnel.astro';
+import { AUTOR, persona, publicadas, url } from '../../lib/seo';
+import { ruta } from '../../rutas';
+import foto from '../../assets/equipo/alvaro-sanchez.png';
+
+const articulos = (await publicadas('blog')).sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime()).slice(0, 12);
+const perfil = {
+  '@type': 'ProfilePage',
+  mainEntity: {
+    ...persona(),
+    alumniOf: { '@type': 'CollegeOrUniversity', name: 'Universidad de Lima' },
+    knowsAbout: ['Automatización de procesos', 'Inteligencia artificial aplicada a negocios', 'Desarrollo de software', 'Ciberseguridad'],
+  },
+};
+---
+
+<Layout
+  titulo="Álvaro Sánchez, fundador de Praxia"
+  descripcion="Álvaro Sánchez es ingeniero de sistemas y fundador de Praxia: automatiza con IA los procesos manuales de dueños de negocio en Latinoamérica y Estados Unidos."
+  datosEstructuradosExtra={[perfil]}
+  migas={[
+    { nombre: 'Álvaro Sánchez', ruta: '/autor/alvaro-sanchez' },
+  ]}
+>
+  <section class="contenedor autor-pagina">
+    <div class="cabecera">
+      <Image src={foto} alt="Álvaro Sánchez, fundador de Praxia" width={160} height={160} class="foto" loading="eager" />
+      <div>
+        <p class="mono text-brasa">Autor</p>
+        <h1 class="mt-3">{AUTOR.nombre}</h1>
+        <p class="lead mt-4">Fundador de Praxia. Escribe para dueños de negocio que quieren dejar de hacer a mano lo que ya se puede automatizar.</p>
+      </div>
+    </div>
+
+    <div class="prosa-autor">
+      <h2>Quién es</h2>
+      <ul>
+        <li>Ingeniero de Sistemas por la Universidad de Lima, tercer puesto de su promoción.</li>
+        <li>Fue desarrollador full stack en una de las cuatro grandes consultoras del mundo: software para empresas grandes, con procesos formales.</li>
+        <li>Viene del monitoreo de ciberseguridad, por eso Praxia cuida los datos de cada cliente desde el primer día.</li>
+        <li>Certificado por Microsoft en Azure (AI-900, AZ-900 y DP-900).</li>
+      </ul>
+      <h2>Por qué escribe esto</h2>
+      <p>
+        La mayoría de dueños con los que conversa no necesita «inteligencia artificial»: necesita que las consultas de la noche se
+        contesten, que las citas lleguen y que el seguimiento no dependa de la memoria de alguien. Estos artículos responden lo que
+        pregunta un dueño antes de invertir, con la respuesta arriba y sin jerga.
+      </p>
+      <p>
+        <a href={AUTOR.linkedin} target="_blank" rel="noopener" class="enlace">LinkedIn</a> ·
+        <a href={AUTOR.instagram} target="_blank" rel="noopener" class="enlace">Instagram</a>
+      </p>
+    </div>
+
+    {
+      articulos.length > 0 && (
+        <div class="prosa-autor" data-plantilla>
+          <h2>Últimos artículos</h2>
+          <ul>
+            {articulos.map((a) => (
+              <li>
+                <a href={ruta(url.blog(a.id))} class="enlace">
+                  {a.data.titulo}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+    <CTAFunnel />
+  </section>
+</Layout>
+
+<style>
+  .autor-pagina {
+    padding-top: 3rem;
+    padding-bottom: 5rem;
+    max-width: 52rem;
+  }
+  .cabecera {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  @media (min-width: 40rem) {
+    .cabecera {
+      grid-template-columns: 160px 1fr;
+    }
+  }
+  .cabecera :global(.foto) {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: -0.03em;
+  }
+  .prosa-autor {
+    margin-top: 3rem;
+    color: var(--color-texto-2);
+    line-height: 1.7;
+  }
+  .prosa-autor h2 {
+    color: var(--color-texto);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .prosa-autor ul {
+    list-style: disc;
+    padding-left: 1.2rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .prosa-autor p + p {
+    margin-top: 1rem;
+  }
+</style>

@@ -1,0 +1,35 @@
+---
+import { render } from 'astro:content';
+import PaginaSeo from '../../components/seo/PaginaSeo.astro';
+import { publicadas, portada, enlacesDe, service, faqPage, AREA_GENERAL, url, type Entrada } from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const nichos = await publicadas('nichos');
+  return nichos.map((n) => ({ params: { nicho: n.id }, props: { n } }));
+}
+const { n } = Astro.props as { n: Entrada<'nichos'> };
+const { Content } = await render(n);
+const ruta = url.nicho(n.id);
+const img = portada('nichos', n.id);
+const datos = [
+  service(ruta, n.data, `Automatización con IA para ${n.data.nombre.toLowerCase()}`, AREA_GENERAL, img?.og ?? null),
+  faqPage(ruta, n.data.faq),
+];
+const enlaces = await enlacesDe('nicho', n.id, { nicho: n.id });
+---
+
+<PaginaSeo
+  d={n.data}
+  antetitulo={n.data.nombre}
+  migas={[
+    { nombre: 'Soluciones por rubro', ruta: '/soluciones' },
+    { nombre: n.data.nombre, ruta },
+  ]}
+  portada={img}
+  datos={datos}
+  enlaces={enlaces}
+  cuerpo={n.body}
+  preguntaCierre={`¿Cuánto le cuesta a ${n.data.tuNegocio} hacerlo a mano?`}
+>
+  <Content />
+</PaginaSeo>

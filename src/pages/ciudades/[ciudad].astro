@@ -1,0 +1,66 @@
+---
+import { render } from 'astro:content';
+import PaginaSeo from '../../components/seo/PaginaSeo.astro';
+import { publicadas, portada, enlacesDe, service, faqPage, url, type Entrada } from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const ciudades = await publicadas('ciudades');
+  return ciudades.map((c) => ({ params: { ciudad: c.id }, props: { c } }));
+}
+const { c } = Astro.props as { c: Entrada<'ciudades'> };
+const { Content } = await render(c);
+const ruta = url.ciudad(c.id);
+const img = portada('ciudades', c.id);
+const area = [{ '@type': 'City', name: c.data.nombre, containedInPlace: { '@type': 'Country', name: c.data.pais } }];
+const datos = [
+  service(ruta, c.data, `Automatización con IA para negocios en ${c.data.nombre}`, area, img?.og ?? null),
+  faqPage(ruta, c.data.faq),
+];
+const enlaces = await enlacesDe('ciudad', c.id, { ciudad: c.id });
+---
+
+<PaginaSeo
+  d={c.data}
+  antetitulo={`${c.data.nombre}, ${c.data.pais}`}
+  migas={[
+    { nombre: 'Ciudades', ruta: '/ciudades' },
+    { nombre: c.data.nombre, ruta },
+  ]}
+  portada={img}
+  datos={datos}
+  enlaces={enlaces}
+  cuerpo={c.body}
+  preguntaCierre={`¿Tienes un negocio en ${c.data.nombre} que todavía hace esto a mano?`}
+>
+  <Content />
+  <aside slot="extra" class="fuentes pequeno" aria-labelledby="fuentes-titulo">
+    <h2 id="fuentes-titulo" class="mono" data-plantilla>Fuentes de los datos de esta página</h2>
+    <ul>
+      {
+        c.data.fuentes.map((f) => (
+          <li>
+            {f.dato}:{' '}
+            <a href={f.url} target="_blank" rel="noopener" class="enlace">
+              {f.fuente}
+            </a>
+            {!f.verificado && ' (sin verificar)'}
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-3" data-plantilla>Atendemos {c.data.nombre} en remoto, por videollamada y WhatsApp. No tenemos oficina en la ciudad.</p>
+  </aside>
+</PaginaSeo>
+
+<style>
+  .fuentes {
+    margin-top: 3rem;
+    max-width: 46rem;
+    color: var(--color-texto-3);
+  }
+  .fuentes ul {
+    margin-top: 0.75rem;
+    display: grid;
+    gap: 0.4rem;
+  }
+</style>

@@ -63,6 +63,12 @@ export const PREGUNTAS_FRECUENTES = [
   },
   {
     categoria: 'trabajo',
+    pregunta: '¿Trabajan con negocios fuera de Lima?',
+    respuesta:
+      'Sí. Trabajamos con negocios de Lima, Trujillo, Huancayo y el resto del Perú. Todo el proceso va por videollamada y WhatsApp, así que estar en otra ciudad no cambia el plazo ni la forma de trabajar.',
+  },
+  {
+    categoria: 'trabajo',
     pregunta: '¿Necesito tener sistemas o ser técnico?',
     respuesta: 'No. Trabajamos con lo que ya usas: WhatsApp, correo, Excel, tus redes.',
   },
@@ -121,6 +127,22 @@ export const PREGUNTAS_FRECUENTES = [
  * (como-trabajamos.astro), pasa ese arreglo — solo necesita `categoria`,
  * `pregunta` y `respuesta`.
  */
+/**
+ * Nodo FAQPage de schema.org para el JSON-LD (lo consume Layout vía
+ * `datosEstructuradosExtra`). Las respuestas pueden traer HTML (enlaces): acá
+ * van como texto plano, que es lo que leen Google y los buscadores con IA.
+ */
+export function faqSchema(preguntas: readonly { pregunta: string; respuesta: string }[]) {
+  return {
+    '@type': 'FAQPage',
+    mainEntity: preguntas.map((p) => ({
+      '@type': 'Question',
+      name: p.pregunta,
+      acceptedAnswer: { '@type': 'Answer', text: p.respuesta.replace(/<[^>]+>/g, '') },
+    })),
+  };
+}
+
 export function agruparPorCategoria<T extends { categoria: string }>(preguntas: readonly T[]) {
   const agrupadas: Record<string, T[]> = {};
   for (const p of preguntas) {

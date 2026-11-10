@@ -1,0 +1,426 @@
+---
+/**
+ * Plantilla única de las páginas del programa SEO (nicho, ciudad, nicho ×
+ * proceso, nicho × ciudad, blog, comparativas, calculadoras).
+ *
+ * Orden pensado para Google y para los LLM (web-launch-checklist, puntos 5-12):
+ * H1 → respuesta en 1-2 frases → CTA → TL;DR → portada → cuerpo (H2/H3,
+ * tablas, listas) → demo de WhatsApp → preguntas → CTA de cierre → autor →
+ * enlaces del cluster.
+ */
+import Layout from '../../layouts/Layout.astro';
+import ChatMockup from '../ChatMockup.astro';
+import CTAFunnel from './CTAFunnel.astro';
+import { ruta } from '../../rutas';
+import { AUTOR, fechaLarga, type GrupoEnlaces } from '../../lib/seo';
+import { SITE } from '../../consts';
+import fotoAutor from '../../assets/equipo/alvaro-sanchez.png';
+import { Image } from 'astro:assets';
+
+interface Props {
+  d: {
+    titulo: string;
+    seoTitulo: string;
+    seoDescripcion: string;
+    respuesta: string;
+    tldr: string[];
+    faq: { pregunta: string; respuesta: string }[];
+    conversacion?: { negocio: string; mensajes: { de: 'cliente' | 'negocio'; texto: string; hora: string }[] };
+    fecha: Date;
+    actualizado?: Date;
+    portadaAlt?: string;
+  };
+  antetitulo: string;
+  migas: { nombre: string; ruta: string }[];
+  portada: { webp: string; og: string } | null;
+  datos: Record<string, unknown>[];
+  enlaces: GrupoEnlaces[];
+  /** Texto del cuerpo, para calcular minutos de lectura. */
+  cuerpo?: string;
+  preguntaCierre?: string;
+  tituloDemo?: string;
+  tipoOG?: 'website' | 'article';
+}
+
+const { d, antetitulo, migas, portada, datos, enlaces, cuerpo = '', preguntaCierre, tituloDemo, tipoOG = 'website' } = Astro.props;
+const minutos = Math.max(2, Math.round((cuerpo.split(/\s+/).length + d.tldr.join(' ').split(/\s+/).length) / 200));
+const actualizado = d.actualizado ?? d.fecha;
+const urlPagina = new URL(migas.at(-1)?.ruta ?? '/', SITE.url).toString();
+const compartir = encodeURIComponent(`${d.titulo} ${urlPagina}`);
+---
+
+<Layout
+  titulo={d.seoTitulo}
+  descripcion={d.seoDescripcion}
+  datosEstructuradosExtra={datos}
+  imagen={portada?.og}
+  migas={migas}
+  tipoOG={tipoOG}
+  contextoWhatsApp={`leí «${d.titulo}» y quiero conversar`}
+>
+  <article class="contenedor pagina-seo">
+    <nav aria-label="Estás en" class="migas pequeno" data-plantilla>
+      <ol>
+        <li><a href={ruta('/')}>Inicio</a></li>
+        {
+          migas.map((m, i) =>
+            i === migas.length - 1 ? (
+              <li aria-current="page">{m.nombre}</li>
+            ) : (
+              <li>
+                <a href={ruta(m.ruta)}>{m.nombre}</a>
+              </li>
+            ),
+          )
+        }
+      </ol>
+    </nav>
+
+    <header class="cabecera">
+      <p class="mono text-brasa">{antetitulo}</p>
+      <h1 class="mt-4">{d.titulo}</h1>
+      <p class="lead respuesta mt-6">{d.respuesta}</p>
+      <CTAFunnel />
+      <p class="meta pequeno mt-8" data-plantilla>
+        Por <a href={ruta(`/autor/${AUTOR.slug}`)} class="enlace">{AUTOR.nombre}</a>
+        <span aria-hidden="true">·</span>
+        <time datetime={actualizado.toISOString()}>Actualizado el {fechaLarga(actualizado)}</time>
+        <span aria-hidden="true">·</span>
+        {minutos} min de lectura
+      </p>
+    </header>
+
+    <aside class="tldr" aria-labelledby="en-corto">
+      <h2 id="en-corto" class="mono" data-plantilla>En corto</h2>
+      <ul>
+        {d.tldr.map((t) => <li>{t}</li>)}
+      </ul>
+    </aside>
+
+    {
+      portada && (
+        <figure class="portada">
+          <img
+            src={ruta(portada.webp)}
+            alt={d.portadaAlt ?? ''}
+            width="1200"
+            height="630"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      )
+    }
+
+    <div class="prosa">
+      <slot />
+    </div>
+
+    <slot name="extra" />
+
+    {
+      d.conversacion && (
+        <section class="demo" aria-labelledby="demo-titulo">
+          <div>
+            <h2 id="demo-titulo">{tituloDemo ?? 'Así se ve en WhatsApp'}</h2>
+            <p class="mt-3 text-texto-2" data-plantilla>
+              Negocio inventado, para que veas cómo funciona. Tu versión se arma con tus horarios, tus precios y tu forma de
+              hablar.
+            </p>
+          </div>
+          <ChatMockup negocio={d.conversacion.negocio} mensajes={d.conversacion.mensajes} />
+        </section>
+      )
+    }
+
+    <section class="preguntas" aria-labelledby="preguntas-titulo">
+      <h2 id="preguntas-titulo" data-plantilla>Preguntas frecuentes</h2>
+      <div class="mt-6">
+        {
+          d.faq.map((f, i) => (
+            <details class="acordeon" open={i === 0}>
+              <summary>{f.pregunta}</summary>
+              <div class="acordeon-cuerpo">
+                <p>{f.respuesta}</p>
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <CTAFunnel variante="cierre" pregunta={preguntaCierre} />
+
+    <section class="autor tarjeta" aria-label="Sobre el autor" data-plantilla>
+      <Image src={fotoAutor} alt="Álvaro Sánchez, fundador de Praxia" width={144} height={144} class="autor-foto" />
+      <div>
+        <p class="mono text-texto-3">Escrito por</p>
+        <p class="mt-1 font-[family-name:var(--font-titulos)] text-[1.125rem] font-medium text-texto">
+          <a href={ruta(`/autor/${AUTOR.slug}`)} class="hover:text-brasa">{AUTOR.nombre}</a>
+        </p>
+        <p class="pequeno mt-1 text-texto-2">
+          Ingeniero de sistemas y fundador de Praxia. Antes de Praxia construyó software para empresas grandes; hoy
+          automatiza procesos de dueños de negocio en Latinoamérica y Estados Unidos.
+        </p>
+        <p class="pequeno mt-3 compartir">
+          Compartir:
+          <a href={`https://wa.me/?text=${compartir}`} target="_blank" rel="noopener" class="enlace">WhatsApp</a>
+          <a
+            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(urlPagina)}`}
+            target="_blank"
+            rel="noopener"
+            class="enlace">LinkedIn</a
+          >
+        </p>
+      </div>
+    </section>
+
+    {
+      enlaces.length > 0 && (
+        <nav class="cluster" aria-label="Sigue explorando" data-plantilla>
+          {enlaces.map((g) => (
+            <div>
+              <h2 class="mono text-texto-3">{g.titulo}</h2>
+              <ul>
+                {g.enlaces.map((e) => (
+                  <li>
+                    <a href={ruta(e.href)}>{e.texto}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
+      )
+    }
+  </article>
+</Layout>
+
+<style>
+  .pagina-seo {
+    padding-top: 2.5rem;
+    padding-bottom: 5rem;
+  }
+  @media (min-width: 48rem) {
+    .pagina-seo {
+      padding-top: 4rem;
+    }
+  }
+  .pagina-seo > * {
+    max-width: 46rem;
+  }
+  .migas ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    color: var(--color-texto-3);
+  }
+  .migas li + li::before {
+    content: '/';
+    margin-right: 0.5rem;
+    opacity: 0.6;
+  }
+  .migas a {
+    color: var(--color-texto-2);
+    transition: color 200ms ease;
+  }
+  .migas a:hover,
+  .migas a:focus-visible {
+    color: var(--color-brasa);
+  }
+  .cabecera {
+    margin-top: 2rem;
+  }
+  .cabecera h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+  }
+  .respuesta {
+    color: var(--color-texto);
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.6rem;
+    color: var(--color-texto-3);
+  }
+  .tldr {
+    margin-top: 2.5rem;
+    padding: 1.5rem 1.75rem;
+    border-left: 2px solid var(--color-brasa);
+    background: linear-gradient(90deg, rgb(255 107 53 / 0.08), transparent 70%);
+    border-radius: 0 var(--radius-praxia) var(--radius-praxia) 0;
+  }
+  .tldr h2 {
+    color: var(--color-brasa);
+  }
+  .tldr ul {
+    margin-top: 0.85rem;
+    display: grid;
+    gap: 0.55rem;
+    list-style: disc;
+    padding-left: 1.1rem;
+    color: var(--color-texto);
+    line-height: 1.55;
+  }
+  .portada {
+    margin-top: 2.5rem;
+    border-radius: var(--radius-tarjeta);
+    overflow: hidden;
+    border: 1px solid var(--color-linea);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.04) inset,
+      0 24px 60px rgb(0 0 0 / 0.45),
+      0 8px 24px rgb(255 107 53 / 0.06);
+  }
+  .portada img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .demo {
+    margin-top: 4rem;
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media (min-width: 64rem) {
+    .pagina-seo > .demo {
+      max-width: 60rem;
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+  }
+  .demo h2,
+  .preguntas h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    letter-spacing: -0.02em;
+  }
+  .preguntas {
+    margin-top: 4rem;
+  }
+  .autor {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+  .autor :global(.autor-foto) {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex: none;
+  }
+  .compartir {
+    display: flex;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+    color: var(--color-texto-3);
+  }
+  .cluster {
+    margin-top: 3.5rem;
+    display: grid;
+    gap: 2rem;
+  }
+  @media (min-width: 48rem) {
+    .pagina-seo > .cluster {
+      max-width: 60rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .cluster ul {
+    margin-top: 0.75rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .cluster a {
+    color: var(--color-texto-2);
+    text-decoration: underline;
+    text-decoration-color: var(--color-linea);
+    text-underline-offset: 4px;
+    transition:
+      color 200ms ease,
+      text-decoration-color 200ms ease;
+  }
+  .cluster a:hover,
+  .cluster a:focus-visible {
+    color: var(--color-brasa);
+    text-decoration-color: currentColor;
+  }
+
+  /* --- Cuerpo en markdown --- */
+  .prosa {
+    margin-top: 3rem;
+    color: var(--color-texto-2);
+    line-height: 1.7;
+    font-size: 1.0625rem;
+  }
+  .prosa :global(h2) {
+    margin-top: 3rem;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-texto);
+  }
+  .prosa :global(h3) {
+    margin-top: 2rem;
+    font-size: 1.25rem;
+    color: var(--color-texto);
+  }
+  .prosa :global(p),
+  .prosa :global(ul),
+  .prosa :global(ol),
+  .prosa :global(table) {
+    margin-top: 1.1rem;
+  }
+  .prosa :global(ul) {
+    list-style: disc;
+    padding-left: 1.2rem;
+  }
+  .prosa :global(ol) {
+    list-style: decimal;
+    padding-left: 1.4rem;
+  }
+  .prosa :global(li + li) {
+    margin-top: 0.4rem;
+  }
+  .prosa :global(strong) {
+    color: var(--color-texto);
+    font-weight: 600;
+  }
+  .prosa :global(a) {
+    color: var(--color-brasa);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .prosa :global(a:hover),
+  .prosa :global(a:focus-visible) {
+    color: var(--color-brasa-alto);
+  }
+  .prosa :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+    display: block;
+    overflow-x: auto;
+  }
+  .prosa :global(th),
+  .prosa :global(td) {
+    text-align: left;
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--color-linea);
+    vertical-align: top;
+  }
+  .prosa :global(th) {
+    color: var(--color-texto);
+    font-weight: 600;
+    background: var(--color-surface);
+  }
+  .prosa :global(blockquote) {
+    margin-top: 1.5rem;
+    padding-left: 1.1rem;
+    border-left: 2px solid var(--color-linea-viva);
+    color: var(--color-texto);
+  }
+</style>

@@ -10,10 +10,13 @@
     "preview": "astro preview",
     "check": "astro check",
     "og": "node scripts/generar-og.mjs",
+    "og:paginas": "node scripts/generar-og-paginas.mjs",
     "contraste": "node scripts/verificar-contraste.mjs",
     "captura": "node scripts/captura.mjs",
     "subtitulos": "node scripts/srt-a-vtt.mjs",
-    "limpiar": "rm -rf .astro dist node_modules/.astro && astro build"
+    "limpiar": "rm -rf .astro dist node_modules/.astro && astro build",
+    "similitud": "python scripts/similitud.py",
+    "portadas": "node scripts/generar-portadas.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

@@ -1,0 +1,25 @@
+---
+import Indice from '../../components/seo/Indice.astro';
+import { publicadas, sitio, partes, url } from '../../lib/seo';
+const nichos = (await publicadas('nichos')).sort((a, b) => a.data.orden - b.data.orden);
+const s = await sitio();
+---
+
+<Indice
+  titulo="Automatización con IA por rubro"
+  seoTitulo="Soluciones de automatización con IA por rubro"
+  seoDescripcion="Qué automatizar en una inmobiliaria, una clínica, una concesionaria, un ecommerce o un spa de lujo: procesos, ejemplos y por dónde empezar."
+  intro="Cada rubro pierde plata en un lugar distinto. Elige el tuyo y mira qué se automatiza primero, cómo se ve en WhatsApp y qué necesitas para empezar."
+  rutaPagina="/soluciones"
+  grupos={[
+    { items: nichos.map((n) => ({ titulo: n.data.nombre, resumen: n.data.seoDescripcion, href: url.nicho(n.id) })) },
+    {
+      titulo: 'Por proceso',
+      items: s.nichoProceso.map((p) => ({ titulo: p.data.titulo, href: url.nichoProceso(partes(p.id)[0], p.data.proceso) })),
+    },
+    {
+      titulo: 'Por rubro y ciudad',
+      items: s.nichoCiudad.map((p) => ({ titulo: p.data.titulo, href: url.nichoCiudad(partes(p.id)[0], partes(p.id)[1]) })),
+    },
+  ].filter((g) => g.items.length)}
+/>

@@ -12,7 +12,7 @@ import CapabilityCard from '../../components/CapabilityCard.astro';
 import CTABand from '../../components/CTABand.astro';
 import CTAInline from '../../components/CTAInline.astro';
 import Widget from '../../components/Widget.astro';
-import { CONTEXTO } from '../../consts';
+import { CONTEXTO, SITE, CIUDADES_ATENDIDAS } from '../../consts';
 import { ruta } from '../../rutas';
 
 const widgets = {
@@ -40,9 +40,30 @@ const d = capacidad.data;
 const otras = (await getCapacidades()).filter((c) => c.id !== capacidad.id).slice(0, 3);
 
 const mensaje = CONTEXTO.capacidad(d.nombreCorto);
+
+/** Service de schema.org: cada capacidad es un servicio que presta Praxia. */
+const servicio = {
+  '@type': 'Service',
+  name: d.seoTitulo,
+  serviceType: d.nombreCorto,
+  description: d.seoDescripcion,
+  url: new URL(`/que-puedes-automatizar/${capacidad.id}`, SITE.url).toString(),
+  image: new URL(`/og/${capacidad.id}.jpg`, SITE.url).toString(),
+  provider: { '@id': `${SITE.url}/#praxia` },
+  areaServed: [
+    { '@type': 'Country', name: 'Perú' },
+    ...CIUDADES_ATENDIDAS.map((ciudad) => ({ '@type': 'City', name: ciudad })),
+  ],
+};
 ---
 
-<Layout titulo={d.seoTitulo} descripcion={d.seoDescripcion} contextoWhatsApp={mensaje}>
+<Layout
+  titulo={d.seoTitulo}
+  descripcion={d.seoDescripcion}
+  contextoWhatsApp={mensaje}
+  datosEstructuradosExtra={[servicio]}
+  imagen={`/og/${capacidad.id}.jpg`}
+>
   <Hero
     antetitulo={d.nombreCorto}
     titulo={d.titulo}

@@ -1,0 +1,101 @@
+---
+/**
+ * Página índice de una sección del programa SEO (/soluciones, /ciudades,
+ * /blog, /comparativas, /calculadoras). Grupos de tarjetas con enlace; sin
+ * paginación mientras cada grupo quepa en una pantalla razonable. Las listas
+ * llevan data-plantilla: son navegación (títulos de otras páginas), no
+ * contenido propio, y scripts/similitud.py no las compara.
+ */
+import Layout from '../../layouts/Layout.astro';
+import CTAFunnel from './CTAFunnel.astro';
+import { ruta } from '../../rutas';
+import { SITE } from '../../consts';
+
+interface Props {
+  titulo: string;
+  seoTitulo: string;
+  seoDescripcion: string;
+  intro: string;
+  rutaPagina: string;
+  grupos: { titulo?: string; items: { titulo: string; resumen?: string; href: string }[] }[];
+}
+const { titulo, seoTitulo, seoDescripcion, intro, rutaPagina, grupos } = Astro.props;
+const lista = {
+  '@type': 'CollectionPage',
+  '@id': `${new URL(rutaPagina, SITE.url)}#coleccion`,
+  name: titulo,
+  description: seoDescripcion,
+  hasPart: grupos.flatMap((g) => g.items).map((i) => ({ '@type': 'WebPage', name: i.titulo, url: new URL(i.href, SITE.url).toString() })),
+};
+---
+
+<Layout titulo={seoTitulo} descripcion={seoDescripcion} datosEstructuradosExtra={[lista]}>
+  <section class="contenedor indice">
+    <h1>{titulo}</h1>
+    <p class="lead mt-6 max-w-2xl">{intro}</p>
+    <CTAFunnel />
+    {
+      grupos.map((g) => (
+        <section class="grupo">
+          {g.titulo && <h2>{g.titulo}</h2>}
+          <ul class="rejilla" data-plantilla>
+            {g.items.map((i) => (
+              <li>
+                <a href={ruta(i.href)} class="tarjeta item">
+                  <span class="font-[family-name:var(--font-titulos)] text-[1.0625rem] font-medium text-texto">{i.titulo}</span>
+                  {i.resumen && <span class="pequeno mt-2 block text-texto-2">{i.resumen}</span>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </section>
+</Layout>
+
+<style>
+  .indice {
+    padding-top: 3rem;
+    padding-bottom: 5rem;
+  }
+  .indice h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    max-width: 48rem;
+  }
+  .grupo {
+    margin-top: 3.5rem;
+  }
+  .grupo h2 {
+    font-size: clamp(1.375rem, 3vw, 1.75rem);
+    letter-spacing: -0.02em;
+  }
+  .rejilla {
+    margin-top: 1.25rem;
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 48rem) {
+    .rejilla {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 64rem) {
+    .rejilla {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .item {
+    display: block;
+    height: 100%;
+  }
+  .item:focus-visible {
+    outline: 2px solid var(--color-brasa);
+    outline-offset: 3px;
+  }
+  .item:active {
+    transform: translateY(-1px);
+  }
+</style>

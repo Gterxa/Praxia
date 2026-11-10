@@ -1,0 +1,18 @@
+---
+import Indice from '../../components/seo/Indice.astro';
+import { publicadas, url } from '../../lib/seo';
+const ciudades = (await publicadas('ciudades')).sort((a, b) => a.data.orden - b.data.orden);
+const paises = [...new Set(ciudades.map((c) => c.data.pais))];
+---
+
+<Indice
+  titulo="Ciudades donde trabajamos"
+  seoTitulo="Automatización con IA en Latinoamérica y Estados Unidos"
+  seoDescripcion="Ciudades donde Praxia automatiza procesos para dueños de negocio: Lima, Arequipa, Ciudad de México, Bogotá, Santiago, Miami y más. Todo en remoto."
+  intro="Trabajamos en remoto, por videollamada y WhatsApp, desde Lima. Estas son las ciudades donde están los rubros que más atendemos."
+  rutaPagina="/ciudades"
+  grupos={paises.map((p) => ({
+    titulo: p,
+    items: ciudades.filter((c) => c.data.pais === p).map((c) => ({ titulo: c.data.nombre, resumen: c.data.criterio, href: url.ciudad(c.id) })),
+  }))}
+/>

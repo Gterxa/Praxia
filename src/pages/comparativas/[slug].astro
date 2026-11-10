@@ -1,0 +1,32 @@
+---
+import { render } from 'astro:content';
+import PaginaSeo from '../../components/seo/PaginaSeo.astro';
+import { publicadas, portada, enlacesDe, article, faqPage, persona, url, type Entrada } from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const lista = await publicadas('comparativas');
+  return lista.map((c) => ({ params: { slug: c.id }, props: { c } }));
+}
+const { c } = Astro.props as { c: Entrada<'comparativas'> };
+const { Content } = await render(c);
+const ruta = url.comparativa(c.id);
+const img = portada('comparativas', c.id);
+const datos = [article(ruta, c.data, img?.og ?? null, 'Article'), persona(), faqPage(ruta, c.data.faq)];
+const enlaces = await enlacesDe('comparativa', c.id, { nicho: c.data.nicho, proceso: c.data.proceso });
+---
+
+<PaginaSeo
+  d={c.data}
+  antetitulo="Comparativa"
+  migas={[
+    { nombre: 'Comparativas', ruta: '/comparativas' },
+    { nombre: c.data.titulo, ruta },
+  ]}
+  portada={img}
+  datos={datos}
+  enlaces={enlaces}
+  cuerpo={c.body}
+  tipoOG="article"
+>
+  <Content />
+</PaginaSeo>

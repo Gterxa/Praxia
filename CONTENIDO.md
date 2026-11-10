@@ -56,6 +56,12 @@ preguntas frecuentes. No agregues una quinta.
 **7. El sitio habla de Perú, sin subdividir.**
 Nada de Lima, provincias ni ciudades.
 
+> **Excepción del programa SEO (decisión de Tony, 9-nov-2026).** Las reglas 5 y 7 no aplican a las páginas de
+> `/soluciones`, `/ciudades`, `/blog`, `/comparativas` y `/calculadoras`: ahí se nombra el rubro y la ciudad, porque
+> esas páginas existen justamente para el dueño de ese rubro en esa ciudad. Las ciudades se atienden en remoto y
+> nunca se presentan como oficinas. La regla 6 (sin dinero) **sigue** en todo el sitio. Guía completa:
+> `docs/seo/guia-contenido.md`.
+
 ---
 
 ## Cambiar tu WhatsApp, tu correo o el nombre de la empresa
@@ -68,7 +74,7 @@ Arriba de todo vas a ver algo así:
 export const CONTACTO = {
   /** Formato internacional, sin + ni espacios: así lo pide wa.me. */
   whatsapp: '51960041731',
-  email: 'contacto.praxias@gmail.com',
+  email: 'contacto@trypraxia.tech',
 ```
 
 Si algún día cambia el número, se cambia solo acá. Va sin el `+`, sin espacios y con el 51 de

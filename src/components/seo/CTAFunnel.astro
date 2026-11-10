@@ -1,0 +1,95 @@
+---
+/**
+ * El único CTA del programa SEO: al diagnóstico gratis de /funnel. Va dos
+ * veces por página: arriba (después de la respuesta) y al cierre. Sin UTM:
+ * el origen ya quedó guardado al entrar (src/lib/origen.ts).
+ *
+ * Califica: le habla al dueño que decide, no al curioso.
+ */
+import { ruta } from '../../rutas';
+
+interface Props {
+  variante?: 'arriba' | 'cierre';
+  /** Frase propia de la página para el cierre (ej. «¿Tu inmobiliaria pierde consultas de noche?»). */
+  pregunta?: string;
+}
+const { variante = 'arriba', pregunta } = Astro.props;
+---
+
+{
+  variante === 'arriba' ? (
+    <div class="cta-arriba" data-plantilla>
+      <a href={ruta('/funnel')} class="boton boton-primario boton-compacto" data-cta="funnel-arriba">
+        Quiero mi diagnóstico gratis
+      </a>
+      <p class="pequeno text-texto-2">Para dueños y gerentes que deciden. Te decimos qué automatizar primero y cuánto recuperas.</p>
+    </div>
+  ) : (
+    <section class="cta-cierre tarjeta" aria-labelledby="cta-cierre-titulo" data-plantilla>
+      <p class="mono text-brasa">Diagnóstico gratis</p>
+      <h2 id="cta-cierre-titulo" class="mt-3 text-[1.5rem] md:text-[1.875rem]">
+        {pregunta ?? '¿Cuánto te está costando hacerlo a mano?'}
+      </h2>
+      <p class="mt-3 max-w-xl text-texto-2">
+        En el diagnóstico vemos tu proceso, calculamos lo que se te va cada mes y te damos tres caminos: el completo, el que
+        de verdad te recomendamos y el que entra en tu presupuesto.
+      </p>
+      <ul class="cta-pruebas pequeno mt-5 text-texto-2">
+        <li><strong class="text-texto">No te dejamos tirado.</strong> Lo dejamos funcionando y seguimos contigo.</li>
+        <li><strong class="text-texto">Todo por escrito.</strong> Factura, contrato y alcance claros.</li>
+        <li><strong class="text-texto">Sin jerga.</strong> Te lo explicamos hasta con audios.</li>
+      </ul>
+      <a href={ruta('/funnel')} class="boton boton-primario mt-7" data-cta="funnel-cierre">Quiero mi diagnóstico gratis</a>
+    </section>
+  )
+}
+
+<style>
+  .cta-arriba {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+  }
+  @media (min-width: 40rem) {
+    .cta-arriba {
+      flex-direction: row;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .cta-arriba p {
+      max-width: 26rem;
+    }
+  }
+  .cta-cierre {
+    margin-top: 4rem;
+    padding: 2rem;
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgb(255 107 53 / 0.14), transparent 60%),
+      radial-gradient(90% 80% at 0% 100%, rgb(84 124 255 / 0.1), transparent 65%),
+      var(--color-surface);
+  }
+  @media (min-width: 48rem) {
+    .cta-cierre {
+      padding: 3rem;
+    }
+  }
+  .cta-pruebas {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .cta-pruebas li {
+    padding-left: 1.1rem;
+    position: relative;
+  }
+  .cta-pruebas li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--color-brasa);
+  }
+</style>
