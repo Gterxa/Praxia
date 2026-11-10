@@ -373,6 +373,12 @@ const datosEstructurados = {
       import '../scripts/scroll-suave';
     </script>
 
+    {/* Origen del visitante en todas las páginas: el primero gana (ver src/lib/origen.ts). */}
+    <script>
+      import { guardarOrigen } from '../lib/origen';
+      guardarOrigen();
+    </script>
+
     {conAnalitica && <Analitica />}
 
     {/* Sin #hoja-validar en el DOM (modo funnel) la función sale sola. */}

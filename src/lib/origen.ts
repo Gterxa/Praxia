@@ -1,7 +1,9 @@
 /**
- * De dónde vino el visitante del funnel (UTM del anuncio, fbclid, página que lo
- * mandó). Se guarda al entrar a /funnel, porque el clic a /funnel/aplicar ya no
- * lleva los parámetros, y la aplicación lo manda a GHL con el primer paso.
+ * De dónde vino el visitante (UTM del anuncio, fbclid, buscador que lo mandó y
+ * la página por la que entró). Se guarda en CUALQUIER página del sitio (lo
+ * llama Layout.astro), así un lead que entra por /blog/… o /soluciones/… y
+ * aplica en /funnel llega a GHL con esa página en `entrada`. Los enlaces
+ * internos nunca llevan UTM: si los llevaran, pisarían el origen real.
  */
 import type { Origen } from './ghl';
 
