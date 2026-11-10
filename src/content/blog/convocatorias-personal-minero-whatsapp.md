@@ -4,7 +4,7 @@ proceso: "contenido"
 tipo: "como"
 titulo: "Cómo hacer convocatorias de personal minero por WhatsApp sin ahogarte en mensajes"
 seoTitulo: "Convocatorias de personal minero por WhatsApp: cómo filtrar"
-seoDescripcion: "Cómo publicar una convocatoria de personal para mina y filtrar postulantes por WhatsApp con preguntas de requisitos, sin que el jefe de personal conteste uno por uno."
+seoDescripcion: "Cómo publicar una convocatoria de personal para mina y filtrar postulantes por WhatsApp, sin que el jefe de personal conteste uno por uno."
 respuesta: "Para hacer convocatorias de personal minero por WhatsApp sin ahogarte, publica el aviso con los requisitos claros y un número dedicado, deja que un asistente haga las preguntas de filtro (experiencia, certificaciones, examen médico, disponibilidad para rotar), pide los documentos en orden y pasa a tu equipo solo los perfiles que cumplen. Así el jefe de personal entrevista en vez de contestar mensajes."
 tldr:
   - "Una convocatoria abierta en redes trae decenas de mensajes, y muchos no cumplen lo mínimo."
