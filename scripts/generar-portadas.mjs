@@ -6,8 +6,9 @@
  *   npm run portadas -- --todas   (rehace todas)
  *
  * Entrada:  scripts/portadas-fondos/<carpeta>/<slug>.(jpg|png|webp)
- * Salida:   public/portadas/<carpeta>/<slug>.webp  (la que se ve en la página)
- *           public/portadas/<carpeta>/<slug>.jpg   (la que se comparte, Open Graph)
+ * Salida:   public/portadas/<carpeta>/<slug>.webp  (la escena sola, la que se ve en la página
+ *                                                  debajo del H1: repetir el título ahí sobra)
+ *           public/portadas/<carpeta>/<slug>.jpg   (con el título encima: la que se comparte, Open Graph)
  *
  * <carpeta> y <slug> salen del archivo de contenido:
  *   src/content/nichos/ecommerce.md                → soluciones/ecommerce
@@ -114,9 +115,11 @@ for (const [col, carpeta] of COLECCIONES) {
     const kicker = col === 'ciudades' ? campo(md, 'nombre') : KICKER[col] ?? nicho ?? 'Praxia';
     const titulo = campo(md, 'titulo');
     const base = await sharp(fondo).resize(ANCHO, ALTO, { fit: 'cover', position: 'right' }).toBuffer();
-    const img = sharp(base).composite([{ input: Buffer.from(capa({ kicker, titulo })) }]);
-    await img.clone().webp({ quality: 78 }).toFile(`${salida}.webp`);
-    await img.clone().jpeg({ quality: 80, mozjpeg: true }).toFile(`${salida}.jpg`);
+    await sharp(base).webp({ quality: 78 }).toFile(`${salida}.webp`);
+    await sharp(base)
+      .composite([{ input: Buffer.from(capa({ kicker, titulo })) }])
+      .jpeg({ quality: 80, mozjpeg: true })
+      .toFile(`${salida}.jpg`);
     hechas++;
   }
 }
