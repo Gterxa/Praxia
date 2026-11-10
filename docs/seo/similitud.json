@@ -1,8 +1,13 @@
 {
   "umbral": 0.3,
-  "paginas": 33,
+  "paginas": 113,
   "pares_sobre_umbral": [],
   "pares_cerca": [
+    {
+      "similitud": 0.2742,
+      "a": "/soluciones/constructoras/atencion",
+      "b": "/blog/asistente-whatsapp-constructora"
+    },
     {
       "similitud": 0.2691,
       "a": "/ciudades/miami",
@@ -19,12 +24,29 @@
       "b": "/ciudades/dallas"
     },
     {
+      "similitud": 0.2564,
+      "a": "/blog/cuanto-cuesta-asistente-whatsapp-contratista-minero",
+      "b": "/blog/cuanto-cuesta-asistente-presupuestos-construccion"
+    },
+    {
       "similitud": 0.2551,
       "a": "/ciudades/los-angeles",
       "b": "/ciudades/dallas"
     }
   ],
   "maximo_por_pagina": {
+    "/blog/asistente-whatsapp-constructora": {
+      "similitud": 0.2742,
+      "con": "/soluciones/constructoras/atencion"
+    },
+    "/blog/cuanto-cuesta-asistente-presupuestos-construccion": {
+      "similitud": 0.2564,
+      "con": "/blog/cuanto-cuesta-asistente-whatsapp-contratista-minero"
+    },
+    "/blog/cuanto-cuesta-asistente-whatsapp-contratista-minero": {
+      "similitud": 0.2564,
+      "con": "/blog/cuanto-cuesta-asistente-presupuestos-construccion"
+    },
     "/ciudades/arequipa": {
       "similitud": 0.266,
       "con": "/ciudades/santiago"
@@ -48,6 +70,10 @@
     "/ciudades/santiago": {
       "similitud": 0.266,
       "con": "/ciudades/arequipa"
+    },
+    "/soluciones/constructoras/atencion": {
+      "similitud": 0.2742,
+      "con": "/blog/asistente-whatsapp-constructora"
     }
   }
 }
