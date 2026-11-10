@@ -42,7 +42,7 @@ URLs:
 - Census, ciudades: https://www2.census.gov/programs-surveys/popest/datasets/2020-2024/cities/totals/sub-est2024.csv
 - Census, condados: https://www2.census.gov/programs-surveys/popest/datasets/2020-2024/counties/asrh/
 
-## Cruces nicho × ciudad aprobados (27)
+## Cruces nicho × ciudad aprobados (28)
 
 Solo donde el rubro tiene peso real en esa ciudad. No se llena la matriz.
 
