@@ -50,14 +50,34 @@ const ES = {
     titulo: 'Deja de pagar sueldos por tareas que se hacen solas',
     descripcion: 'Automatizamos WhatsApp, cotizaciones, citas y reportes, y construimos la web que trae clientes. Agenda tu diagnóstico gratis.',
     h1: ['Deja de pagar sueldos por tareas que ', 'ya se pueden hacer solas.'] as Dos,
-    pillsAria: 'Lo que automatizamos',
-    pills: ['WhatsApp', 'Cotizaciones', 'Citas', 'Reportes', 'Web que vende'],
+    // Texto de arranque (Tony, 10-nov): reemplaza las pills. Problema del dueño y el
+    // resultado que le damos (mezcla de los ángulos «ya lo sabes», tranquilidad y
+    // resultado directo). La parte del medio, el resultado, va en negrita.
+    intro: [
+      'Ya sabes que muchas tareas de tu negocio podrían hacerse solas, pero hoy te siguen quitando horas todos los días. En Praxia automatizamos lo que vayas necesitando ',
+      'para que tengas más tiempo para vender y tu negocio funcione sin que estés encima de todo.',
+      ' Mira este video para que entiendas mejor cómo lo hacemos en Praxia.',
+    ] as Tres,
     sub: ['Automatizamos WhatsApp, cotizaciones, citas y reportes, y construimos la web que trae clientes.', ' En 2 a 4 semanas, sobre lo que ya usas.'] as Dos,
+    // Los dos pasos arriba del video: que se vea que después del video hay algo más.
+    pasos: {
+      aria: 'Tu diagnóstico gratis en 2 pasos',
+      uno: { n: 'Paso 1', titulo: 'Mira este video', detalle: 'Y desbloquea tu diagnóstico gratis' },
+      dos: { n: 'Paso 2', titulo: 'Agenda tu diagnóstico', cerrado: 'Se abre después del video', abierto: 'Ya puedes agendar' },
+    },
     cta: 'Quiero mi diagnóstico gratis',
     nota: 'Responde unas preguntas y elige tu horario. Unos 2 minutos.',
     contador: 'La agenda de esta semana cierra en',
     cupos: (n: number) => ['Quedan ', `${n} cupos`, ' de diagnóstico esta semana'] as Tres,
     confiaron: ['Ya confiaron en ', 'nosotros'] as Dos,
+    // Testimonio real en video (Flea Supplements, 10-nov-2026). La cita es literal del video.
+    testimonio: {
+      cita: 'Me abrieron cosas que yo no estaba viendo y me hicieron ver cómo automatizar mi trabajo y mi negocio.',
+      nombre: 'Guillermo Garay',
+      rol: 'Entrenador personal · Flea Supplements',
+      aria: 'Video: testimonio de Guillermo Garay, de Flea Supplements',
+      sinSoporte: 'Tu navegador no puede reproducir este video.',
+    },
     // Webs que hicimos: solo rubro y qué construimos, sin resultados (CONTENIDO.md, regla 1).
     casos: {
       items: [
@@ -239,14 +259,29 @@ const EN: Textos = {
     titulo: 'Stop paying salaries for tasks that can run themselves',
     descripcion: 'We automate WhatsApp, quotes, bookings and reports, and build the website that brings you clients. Book your free diagnosis.',
     h1: ['Stop paying salaries for tasks that ', 'can already run themselves.'],
-    pillsAria: 'What we automate',
-    pills: ['WhatsApp', 'Quotes', 'Bookings', 'Reports', 'A website that sells'],
+    intro: [
+      'You already know many tasks in your business could run on their own, but today they still eat up hours every day. At Praxia we automate whatever you need ',
+      'so you have more time to sell and your business runs without you on top of everything.',
+      ' Watch this video to better understand how we do it at Praxia.',
+    ],
     sub: ['We automate WhatsApp, quotes, bookings and reports, and build the website that brings you clients.', ' In 2 to 4 weeks, on top of the tools you already use.'],
+    pasos: {
+      aria: 'Your free diagnosis in 2 steps',
+      uno: { n: 'Step 1', titulo: 'Watch this video', detalle: 'And unlock your free diagnosis' },
+      dos: { n: 'Step 2', titulo: 'Book your diagnosis', cerrado: 'Opens after the video', abierto: 'You can book now' },
+    },
     cta: 'I want my free diagnosis',
     nota: 'Answer a few questions and pick your time. About 2 minutes.',
     contador: "This week's calendar closes in",
     cupos: (n: number) => ['', `${n} diagnosis spots`, ' left this week'] as Tres,
     confiaron: ['They already ', 'trusted us'],
+    testimonio: {
+      cita: 'They showed me things I wasn’t seeing and ways to automate my work and my business.',
+      nombre: 'Guillermo Garay',
+      rol: 'Personal trainer · Flea Supplements',
+      aria: 'Video: testimonial from Guillermo Garay, of Flea Supplements',
+      sinSoporte: 'Your browser can’t play this video.',
+    },
     casos: {
       items: [
         { nombre: 'Kuadrante Asset', rubro: 'Real estate investment fund', hizo: 'Landing page to attract investors, with a private list and contact with an advisor.' },
