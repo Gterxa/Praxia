@@ -20,6 +20,7 @@ import Layout from '../../layouts/Layout.astro';
 import VideoVSL from './VideoVSL.astro';
 import LogosMarqueeCosmoq from '../LogosMarqueeCosmoq.astro';
 import CasosWebs from './CasosWebs.astro';
+import TestimonioFunnel from './TestimonioFunnel.astro';
 import SelectorIdioma from './SelectorIdioma.astro';
 import { CONTEXTO } from '../../consts';
 import { CUPOS_SEMANA } from '../../funnel';
@@ -130,6 +131,7 @@ const segundos = VIDEO_VSL.segundos;
     <section class="fl-seccion">
       <div class="fl-contenedor">
         <h2 class="fl-h2">{t.confiaron[0]}<span class="fl-calido">{t.confiaron[1]}</span></h2>
+        <TestimonioFunnel idioma={idioma} />
       </div>
       <div class="fl-logos"><LogosMarqueeCosmoq /></div>
       <div class="fl-contenedor fl-ancho">

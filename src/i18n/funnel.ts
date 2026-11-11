@@ -70,6 +70,14 @@ const ES = {
     contador: 'La agenda de esta semana cierra en',
     cupos: (n: number) => ['Quedan ', `${n} cupos`, ' de diagnóstico esta semana'] as Tres,
     confiaron: ['Ya confiaron en ', 'nosotros'] as Dos,
+    // Testimonio real en video (Flea Supplements, 10-nov-2026). La cita es literal del video.
+    testimonio: {
+      cita: 'Me abrieron cosas que yo no estaba viendo y me hicieron ver cómo automatizar mi trabajo y mi negocio.',
+      nombre: 'Guillermo Garay',
+      rol: 'Entrenador personal · Flea Supplements',
+      aria: 'Video: testimonio de Guillermo Garay, de Flea Supplements',
+      sinSoporte: 'Tu navegador no puede reproducir este video.',
+    },
     // Webs que hicimos: solo rubro y qué construimos, sin resultados (CONTENIDO.md, regla 1).
     casos: {
       items: [
@@ -267,6 +275,13 @@ const EN: Textos = {
     contador: "This week's calendar closes in",
     cupos: (n: number) => ['', `${n} diagnosis spots`, ' left this week'] as Tres,
     confiaron: ['They already ', 'trusted us'],
+    testimonio: {
+      cita: 'They showed me things I wasn’t seeing and ways to automate my work and my business.',
+      nombre: 'Guillermo Garay',
+      rol: 'Personal trainer · Flea Supplements',
+      aria: 'Video: testimonial from Guillermo Garay, of Flea Supplements',
+      sinSoporte: 'Your browser can’t play this video.',
+    },
     casos: {
       items: [
         { nombre: 'Kuadrante Asset', rubro: 'Real estate investment fund', hizo: 'Landing page to attract investors, with a private list and contact with an advisor.' },

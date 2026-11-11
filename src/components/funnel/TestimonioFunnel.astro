@@ -1,0 +1,125 @@
+---
+/**
+ * Testimonio real en video (funnel, sección «Ya confiaron en nosotros»): el
+ * video vertical del cliente y, al lado, una cita literal con su nombre y su
+ * marca. El video no se descarga hasta que le dan play (preload="none") y
+ * trae subtítulos en los dos idiomas. Sin cifras ni resultados inventados
+ * (CONTENIDO.md, regla 1): todo sale del video que mandó el cliente.
+ */
+import type { Idioma } from '../../i18n/funnel';
+import { TEXTOS } from '../../i18n/funnel';
+import { NOMBRE_PISTA, VIDEO_TESTIMONIO_FLEA as VIDEO } from '../../videos';
+import { ruta } from '../../rutas';
+
+interface Props {
+  idioma: Idioma;
+}
+const { idioma } = Astro.props;
+const t = TEXTOS[idioma].landing.testimonio;
+const pistas = (Object.entries(VIDEO.subtitulos) as [Idioma, string | undefined][]).filter(
+  (p): p is [Idioma, string] => !!p[1],
+);
+---
+
+<figure class="tf" data-testimonio data-idioma={idioma}>
+  <div class="tf-marco">
+    <video
+      class="tf-video"
+      src={ruta(VIDEO.src)}
+      poster={VIDEO.poster ? ruta(VIDEO.poster) : undefined}
+      preload="none"
+      playsinline
+      controls
+      aria-label={t.aria}
+    >
+      {pistas.map(([lang, src]) => (
+        <track kind="subtitles" srclang={lang} label={NOMBRE_PISTA[lang]} src={ruta(src)} default={lang === idioma} />
+      ))}
+      {t.sinSoporte}
+    </video>
+  </div>
+  <figcaption class="tf-texto">
+    <blockquote class="tf-cita">«{t.cita}»</blockquote>
+    <p class="tf-quien">
+      <b>{t.nombre}</b>
+      <span>{t.rol}</span>
+    </p>
+  </figcaption>
+</figure>
+
+<script>
+  import { encenderSubtitulos } from '../../videos';
+
+  document.querySelectorAll<HTMLElement>('[data-testimonio]').forEach((caja) => {
+    const video = caja.querySelector('video');
+    if (video) encenderSubtitulos(video, caja.dataset['idioma'] ?? 'es');
+  });
+</script>
+
+<style>
+  .tf {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: center;
+    max-width: 46rem;
+    margin: 2rem auto 0;
+    text-align: center;
+  }
+
+  .tf-marco {
+    width: min(100%, 17.5rem);
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 0.16);
+    border-radius: var(--radius-tarjeta);
+    background: #000;
+    aspect-ratio: 9 / 16;
+  }
+
+  .tf-video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .tf-texto {
+    max-width: 30rem;
+  }
+
+  .tf-cita {
+    margin: 0;
+    font-family: var(--font-titulos);
+    font-weight: 600;
+    font-size: clamp(1.25rem, 3.6vw, 1.625rem);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .tf-quien {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    margin-top: 1rem;
+    color: var(--color-texto-2);
+    font-size: 0.9375rem;
+  }
+
+  .tf-quien b {
+    color: var(--color-texto);
+  }
+
+  @media (min-width: 48rem) {
+    .tf {
+      grid-template-columns: 17.5rem 1fr;
+      align-items: center;
+      justify-items: stretch;
+      gap: 2.5rem;
+      text-align: left;
+    }
+
+    .tf-marco {
+      width: 100%;
+    }
+  }
+</style>

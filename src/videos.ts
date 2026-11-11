@@ -67,6 +67,21 @@ export const VIDEO_EVALUACION: VideoFunnel = {
 };
 
 /**
+ * Testimonio real de Flea Supplements (landing del funnel, «Ya confiaron en
+ * nosotros»). Versión de 3:07 del video que mandó el cliente (IMG_9389,
+ * 10-nov-2026), con todo lo que sirve como testimonio. Sin las preguntas que leyó
+ * en voz alta, el olvido ni la autorización del final, que eran para Tony, y con
+ * los silencios largos recortados. Subtítulos corregidos a mano sobre una
+ * transcripción local.
+ */
+export const VIDEO_TESTIMONIO_FLEA: VideoFunnel = {
+  src: '/videos/testimonio-flea.mp4',
+  poster: '/videos/testimonio-flea.jpg',
+  duracion: '3:07 min',
+  subtitulos: { es: '/videos/testimonio-flea.es.vtt', en: '/videos/testimonio-flea.en.vtt' },
+};
+
+/**
  * Enciende la pista del idioma de la página. El atributo `default` del <track>
  * no basta: hay navegadores que lo ignoran o recuerdan que el usuario los apagó
  * en otra visita, y el video arrancaba sin subtítulos.
