@@ -8,6 +8,8 @@
     "render": "node render.mjs"
   },
   "dependencies": {
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/manrope": "^5.3.0",
     "@remotion/bundler": "4.0.441",
     "@remotion/cli": "4.0.441",
     "@remotion/renderer": "4.0.441",

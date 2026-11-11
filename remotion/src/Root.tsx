@@ -1,25 +1,26 @@
 import React, {useEffect, useState} from 'react';
-import {Composition, Folder, continueRender, delayRender} from 'remotion';
+import {Composition, Folder, cancelRender, continueRender, delayRender} from 'remotion';
 import {FLUJOS, LIENZO, type ClaveFlujo} from '../../src/lib/flujos';
 import {Diagrama, FPS, duracion} from './Diagrama';
 
-// Las fuentes del sitio: Manrope (texto) e IBM Plex Mono (números de paso).
+// Las fuentes del sitio, locales (@fontsource): el render no depende de la red. El 10-nov-2026 se cayó el DNS a
+// mitad de una tanda y Google Fonts no cargó; con fuentes remotas el video habría salido con otra fuente sin aviso.
+import '@fontsource/manrope/500.css';
+import '@fontsource/manrope/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+
 const Fuentes: React.FC<{children: React.ReactNode}> = ({children}) => {
   const [h] = useState(() => delayRender('Fuentes Manrope + IBM Plex Mono'));
   useEffect(() => {
-    const id = 'diagramas-fuentes';
-    const listo = () =>
-      Promise.all([document.fonts.load('600 40px "Manrope"'), document.fonts.load('400 20px "IBM Plex Mono"')])
-        .then(() => continueRender(h))
-        .catch(() => continueRender(h));
-    if (document.getElementById(id)) return void listo();
-    const l = document.createElement('link');
-    l.id = id;
-    l.rel = 'stylesheet';
-    l.href = 'https://fonts.googleapis.com/css2?family=Manrope:wght@500;600&family=IBM+Plex+Mono:wght@400&display=block';
-    l.onload = listo;
-    l.onerror = () => continueRender(h);
-    document.head.appendChild(l);
+    Promise.all([
+      document.fonts.load('600 40px "Manrope"', 'Áé ñ¿'),
+      document.fonts.load('500 40px "Manrope"', 'Áé ñ¿'),
+      document.fonts.load('400 20px "IBM Plex Mono"', '0123'),
+    ]).then((caras) => {
+      // Si una fuente no cargó, el render falla: nunca sale un video con la fuente de reserva.
+      if (caras.some((c) => c.length === 0)) cancelRender(new Error('No cargaron las fuentes del diagrama'));
+      else continueRender(h);
+    }, cancelRender);
   }, [h]);
   return <>{children}</>;
 };

@@ -49,31 +49,50 @@ if (pendientes.length === 0) process.exit(0);
 const ff = (...a) => execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', ...a], {stdio: 'inherit'});
 const kb = (p) => Math.round(statSync(p).size / 1024);
 
+async function renderUno(i, t) {
+  const comp = await selectComposition({serveUrl, id: t.id, browserExecutable: CHROME});
+  const master = path.join(TMP, `${t.id}.mp4`);
+  await renderMedia({
+    serveUrl,
+    composition: comp,
+    codec: 'h264',
+    crf: 8,
+    outputLocation: master,
+    browserExecutable: CHROME,
+    concurrency: 8,
+    muted: true,
+  });
+  const [webm, mp4, webp] = archivos(t.id);
+  // VP9 en dos pasadas con calidad constante: gráfico plano sobre fondo liso, comprime muy bien.
+  const log = path.join(TMP, `${t.id}-vp9`);
+  const vp9 = ['-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', '42', '-row-mt', '1', '-pix_fmt', 'yuv420p', '-an'];
+  ff('-i', master, ...vp9, '-pass', '1', '-passlogfile', log, '-f', 'null', 'NUL');
+  ff('-i', master, ...vp9, '-pass', '2', '-passlogfile', log, webm);
+  ff('-i', master, '-c:v', 'libx264', '-preset', 'slow', '-tune', 'animation', '-crf', '30', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an', mp4);
+  ff('-i', master, '-vf', `select=eq(n\\,${cuadroPoster(t.n)})`, '-frames:v', '1', '-c:v', 'libwebp', '-quality', '82', webp);
+  console.log(`[${i + 1}/${pendientes.length}] ${t.id}  webm ${kb(webm)} KB · mp4 ${kb(mp4)} KB · póster ${kb(webp)} KB`);
+  rmSync(master, {force: true});
+}
+
 const serveUrl = await bundle({entryPoint: path.join(AQUI, 'src/index.ts')});
 try {
+  const fallidos = [];
   for (const [i, t] of pendientes.entries()) {
-    const comp = await selectComposition({serveUrl, id: t.id, browserExecutable: CHROME});
-    const master = path.join(TMP, `${t.id}.mp4`);
-    await renderMedia({
-      serveUrl,
-      composition: comp,
-      codec: 'h264',
-      crf: 8,
-      outputLocation: master,
-      browserExecutable: CHROME,
-      concurrency: 8,
-      muted: true,
-    });
-    const [webm, mp4, webp] = archivos(t.id);
-    // VP9 en dos pasadas con calidad constante: gráfico plano sobre fondo liso, comprime muy bien.
-    const log = path.join(TMP, `${t.id}-vp9`);
-    const vp9 = ['-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', '42', '-row-mt', '1', '-pix_fmt', 'yuv420p', '-an'];
-    ff('-i', master, ...vp9, '-pass', '1', '-passlogfile', log, '-f', 'null', 'NUL');
-    ff('-i', master, ...vp9, '-pass', '2', '-passlogfile', log, webm);
-    ff('-i', master, '-c:v', 'libx264', '-preset', 'slow', '-tune', 'animation', '-crf', '30', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an', mp4);
-    ff('-i', master, '-vf', `select=eq(n\\,${cuadroPoster(t.n)})`, '-frames:v', '1', '-c:v', 'libwebp', '-quality', '82', webp);
-    console.log(`[${i + 1}/${pendientes.length}] ${t.id}  webm ${kb(webm)} KB · mp4 ${kb(mp4)} KB · póster ${kb(webp)} KB`);
-    rmSync(master, {force: true});
+    // Un corte (red, Chrome que se cierra) no tumba la tanda: se reintenta y, si no, se sigue con el siguiente.
+    let ok = false;
+    for (let intento = 1; intento <= 3 && !ok; intento++) {
+      try {
+        await renderUno(i, t);
+        ok = true;
+      } catch (e) {
+        console.error(`  ${t.id}: intento ${intento} falló: ${String(e?.message ?? e).split('\n')[0]}`);
+      }
+    }
+    if (!ok) fallidos.push(t.id);
+  }
+  if (fallidos.length) {
+    console.error(`FALLARON ${fallidos.length}: ${fallidos.join(' ')} (vuelve a correr con --faltantes)`);
+    process.exitCode = 1;
   }
 } finally {
   // Remotion deja en %TEMP% una copia de los assets por render (remotion-v*-assets*) y el bundle de webpack
