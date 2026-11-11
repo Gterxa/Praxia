@@ -5,12 +5,14 @@
  *
  * Orden pensado para Google y para los LLM (web-launch-checklist, puntos 5-12):
  * H1 → respuesta en 1-2 frases → CTA → TL;DR → portada → cuerpo (H2/H3,
- * tablas, listas) → demo de WhatsApp → preguntas → CTA de cierre → autor →
+ * tablas, listas) → diagrama de flujo animado → demo de WhatsApp → preguntas → CTA de cierre → autor →
  * enlaces del cluster.
  */
 import Layout from '../../layouts/Layout.astro';
 import ChatMockup from '../ChatMockup.astro';
 import CTAFunnel from './CTAFunnel.astro';
+import DiagramaFlujo from './DiagramaFlujo.astro';
+import type { Nicho, Proceso } from '../../lib/procesos';
 import { ruta } from '../../rutas';
 import { AUTOR, fechaLarga, type GrupoEnlaces } from '../../lib/seo';
 import { SITE } from '../../consts';
@@ -40,9 +42,12 @@ interface Props {
   preguntaCierre?: string;
   tituloDemo?: string;
   tipoOG?: 'website' | 'article';
+  /** Diagrama de flujo animado (src/lib/flujos.ts). Sin proceso: el principal del rubro. */
+  diagrama?: { nicho: Nicho; proceso?: Proceso };
 }
 
-const { d, antetitulo, migas, portada, datos, enlaces, cuerpo = '', preguntaCierre, tituloDemo, tipoOG = 'website' } = Astro.props;
+const { d, antetitulo, migas, portada, datos, enlaces, cuerpo = '', preguntaCierre, tituloDemo, tipoOG = 'website', diagrama } =
+  Astro.props;
 const minutos = Math.max(2, Math.round((cuerpo.split(/\s+/).length + d.tldr.join(' ').split(/\s+/).length) / 200));
 const actualizado = d.actualizado ?? d.fecha;
 const urlPagina = new URL(migas.at(-1)?.ruta ?? '/', SITE.url).toString();
@@ -117,6 +122,8 @@ const compartir = encodeURIComponent(`${d.titulo} ${urlPagina}`);
     </div>
 
     <slot name="extra" />
+
+    {diagrama && <DiagramaFlujo nicho={diagrama.nicho} proceso={diagrama.proceso} />}
 
     {
       d.conversacion && (

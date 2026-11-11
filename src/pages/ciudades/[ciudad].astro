@@ -30,6 +30,7 @@ const enlaces = await enlacesDe('ciudad', c.id, { ciudad: c.id });
   datos={datos}
   enlaces={enlaces}
   cuerpo={c.body}
+  diagrama={{ nicho: c.data.nichos[0] }}
   preguntaCierre={`¿Tienes un negocio en ${c.data.nombre} que todavía hace esto a mano?`}
 >
   <Content />

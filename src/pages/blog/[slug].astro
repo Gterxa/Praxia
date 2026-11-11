@@ -27,6 +27,7 @@ const enlaces = await enlacesDe('blog', b.id, { nicho: b.data.nicho, ciudad: b.d
   enlaces={enlaces}
   cuerpo={b.body}
   tipoOG="article"
+  diagrama={b.data.nicho ? { nicho: b.data.nicho, proceso: b.data.proceso } : undefined}
 >
   <Content />
 </PaginaSeo>

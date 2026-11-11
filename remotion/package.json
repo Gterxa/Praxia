@@ -1,0 +1,21 @@
+{
+  "name": "praxia-diagramas",
+  "private": true,
+  "type": "module",
+  "description": "Diagramas de flujo animados de las páginas SEO (Remotion). No lo instala Vercel: se corre a mano. Ver README.md.",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/manrope": "^5.3.0",
+    "@remotion/bundler": "4.0.441",
+    "@remotion/cli": "4.0.441",
+    "@remotion/renderer": "4.0.441",
+    "lucide-react": "^1.47.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "4.0.441"
+  }
+}
