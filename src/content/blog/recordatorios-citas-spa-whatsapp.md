@@ -3,7 +3,7 @@ nicho: "wellness"
 proceso: "citas"
 tipo: "intencion"
 titulo: "Recordatorios de citas por WhatsApp para spas"
-seoTitulo: "Recordatorios de citas por WhatsApp para spas: cómo hacerlos bien"
+seoTitulo: "Recordatorios de citas por WhatsApp para spas"
 seoDescripcion: "Cuándo enviar el recordatorio, qué debe decir y cómo dejar que la clienta reprograme en el mismo chat para que tu spa no se quede con cabinas vacías."
 respuesta: "Un buen recordatorio de cita para un spa llega por WhatsApp el día anterior, con el nombre de la clienta, el tratamiento, la hora y la terapeuta, y le pide confirmar o mover la cita en el mismo chat. Así el hueco aparece con tiempo para llenarlo, en vez de descubrirlo cuando la cabina ya está preparada."
 tldr:

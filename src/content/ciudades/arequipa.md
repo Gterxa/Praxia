@@ -12,7 +12,7 @@ fuentes:
     url: "https://www.gob.pe/institucion/inei/noticias/1417313-censos-nacionales-2025-lima-metropolitana-continua-siendo-la-provincia-mas-poblada"
     verificado: true
 titulo: "Automatización para contratistas mineros y constructoras de Arequipa"
-seoTitulo: "Automatización con IA en Arequipa para contratistas y constructoras"
+seoTitulo: "Automatización con IA en Arequipa"
 seoDescripcion: "Reportes diarios de obra y de guardia, documentos de seguridad al día y seguimiento de clientes para empresas de Arequipa que trabajan con la minería."
 respuesta: "En Arequipa, el proceso que más plata cuesta suele estar en el papeleo: reportes de guardia que llegan tarde, documentos de seguridad vencidos y valorizaciones que se arman a mano. Automatizamos esos procesos para contratistas mineros y constructoras, en remoto desde Lima."
 tldr:

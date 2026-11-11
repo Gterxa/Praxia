@@ -2,7 +2,7 @@
 nicho: "mineria"
 proceso: "contenido"
 titulo: "Convocatorias de personal y presentación de tu empresa ante las mineras"
-seoTitulo: "Convocatorias de personal y presencia para contratistas mineros"
+seoTitulo: "Convocatorias de personal para contratistas mineros"
 seoDescripcion: "Publica convocatorias que filtran postulantes por WhatsApp y mantén al día tu presentación corporativa para homologar. Para contratistas mineros."
 respuesta: "Un contratista minero no necesita redes para vender a un consumidor: las necesita para conseguir personal calificado rápido y para verse serio ante la mina que lo va a evaluar. Automatizamos las convocatorias con filtro de postulantes por WhatsApp y mantenemos al día tu presentación corporativa."
 tldr:

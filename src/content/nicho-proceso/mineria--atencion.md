@@ -2,7 +2,7 @@
 nicho: "mineria"
 proceso: "atencion"
 titulo: "Que tu gente en turno tenga respuesta sin interrumpir al supervisor"
-seoTitulo: "Asistente de WhatsApp para el personal de contratistas mineros"
+seoTitulo: "Asistente de WhatsApp para contratistas mineros"
 seoDescripcion: "Pagos, bajadas, descuentos y EPP: tu personal en turno pregunta por WhatsApp y recibe respuesta a cualquier hora. Atención para contratistas mineros."
 respuesta: "En una contratista minera, los que más preguntan no son los clientes: son tus propios trabajadores. Cuándo me pagan, cuándo bajo, por qué me descontaron, dónde pido mi EPP. Armamos un asistente de WhatsApp que responde con la información real de cada trabajador y pasa a Recursos Humanos solo lo que necesita una persona."
 tldr:

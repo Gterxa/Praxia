@@ -2,7 +2,7 @@
 nicho: "ecommerce"
 proceso: "atencion"
 titulo: "Atención de preventa para tiendas online"
-seoTitulo: "Atención automática por WhatsApp e Instagram para tiendas online"
+seoTitulo: "Atención automática por WhatsApp para tiendas online"
 seoDescripcion: "Contesta talla, stock y envío en minutos, también a medianoche. Atención de preventa para ecommerce que ya vende y pierde ventas por demora."
 respuesta: "La atención de preventa automática contesta por WhatsApp e Instagram las preguntas que frenan una compra (talla, stock, envío, cambios) con los datos reales de tu tienda, en minutos y a cualquier hora, y pasa a tu equipo las conversaciones que necesitan una persona."
 tldr:

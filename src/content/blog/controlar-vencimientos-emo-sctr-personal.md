@@ -3,7 +3,7 @@ nicho: "mineria"
 proceso: "documentos"
 tipo: "como"
 titulo: "Cómo controlar los vencimientos del examen médico y del SCTR de tu personal minero"
-seoTitulo: "Cómo controlar vencimientos de EMO y SCTR del personal minero"
+seoTitulo: "Controlar vencimientos de EMO y SCTR del personal"
 seoDescripcion: "Un método simple para que ningún trabajador de tu contratista se quede abajo por un examen médico ocupacional o un SCTR vencido."
 respuesta: "Para controlar los vencimientos del examen médico ocupacional (EMO) y del SCTR, registra la fecha de vencimiento de cada documento por trabajador, cruza esas fechas con su próxima subida y avisa con anticipación a quien puede resolverlo. El error común es mirar si el documento está vigente hoy, cuando lo que importa es si estará vigente el día que el trabajador sube."
 tldr:

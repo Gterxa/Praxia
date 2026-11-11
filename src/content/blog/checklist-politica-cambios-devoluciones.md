@@ -3,7 +3,7 @@ nicho: "ecommerce"
 proceso: "documentos"
 tipo: "checklist"
 titulo: "Checklist para tu política de cambios y devoluciones"
-seoTitulo: "Checklist de política de cambios y devoluciones para tu tienda"
+seoTitulo: "Checklist de cambios y devoluciones para tu tienda"
 seoDescripcion: "Plazos, condiciones, quién paga el envío, excepciones, reembolsos y garantías: lo que tu política de cambios debe decir para que se pueda aplicar y automatizar."
 respuesta: "Una buena política de cambios y devoluciones para una tienda online dice en lenguaje simple el plazo, las condiciones del producto, quién paga el envío de vuelta, qué productos no se cambian, cómo y cuándo se devuelve la plata, cómo funcionan las garantías y qué excepciones existen. Si cabe en una página y se aplica igual a todos, se puede automatizar."
 tldr:

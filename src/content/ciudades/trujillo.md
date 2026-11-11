@@ -12,7 +12,7 @@ fuentes:
     url: "https://www.gob.pe/institucion/inei/noticias/1417313-censos-nacionales-2025-lima-metropolitana-continua-siendo-la-provincia-mas-poblada"
     verificado: true
 titulo: "Automatización con IA para empresas de Trujillo y el norte"
-seoTitulo: "Automatización con IA en Trujillo para clínicas y contratistas"
+seoTitulo: "Automatización con IA en Trujillo"
 seoDescripcion: "Citas que sí llegan en clínicas, reportes al día para contratistas mineros y seguimiento de clientes en concesionarias de Trujillo. Todo en remoto."
 respuesta: "Si tu empresa está en Trujillo y atiende a todo el norte, el cuello de botella suele ser el mismo: mucha gente escribiendo por WhatsApp y pocas manos para responder, confirmar y hacer seguimiento. Automatizamos esa parte para clínicas, contratistas mineros y concesionarias."
 tldr:

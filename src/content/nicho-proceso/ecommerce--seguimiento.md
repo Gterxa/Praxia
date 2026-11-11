@@ -2,7 +2,7 @@
 nicho: "ecommerce"
 proceso: "seguimiento"
 titulo: "Carritos, recompra y avisos de reposición"
-seoTitulo: "Seguimiento de carritos abandonados y recompra para ecommerce"
+seoTitulo: "Carritos abandonados y recompra para ecommerce"
 seoDescripcion: "Recupera carritos con un mensaje a tiempo, avisa cuando vuelve un producto y haz que el cliente compre de nuevo. Seguimiento por WhatsApp para tiendas online."
 respuesta: "El seguimiento automático le escribe al cliente que dejó un carrito, al que espera que vuelva un producto y al que ya compró y podría volver a comprar, por WhatsApp y en el momento justo, con el producto que miró y una respuesta a la duda que lo frenó."
 tldr:

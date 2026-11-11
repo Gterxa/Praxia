@@ -3,7 +3,7 @@ nicho: "mineria"
 proceso: "documentos"
 tipo: "como"
 titulo: "Cómo reducir las observaciones en la auditoría de seguridad a tu contratista minera"
-seoTitulo: "Cómo reducir observaciones en auditorías a contratistas mineros"
+seoTitulo: "Reducir observaciones en auditorías a contratistas"
 seoDescripcion: "Las observaciones que más se repiten en auditorías de seguridad a contratistas mineros y cómo evitarlas con documentos completos y fáciles de encontrar."
 respuesta: "Para reducir las observaciones en una auditoría de seguridad, asegúrate de que cada documento exista, esté completo, vigente y se encuentre en minutos. La mayoría de observaciones a contratistas no vienen de prácticas inseguras graves sino de documentos faltantes, vencidos o incompletos: eso es lo más fácil de corregir."
 tldr:

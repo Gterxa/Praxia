@@ -3,7 +3,7 @@ nicho: "abogados"
 proceso: "documentos"
 tipo: "checklist"
 titulo: "Checklist de plantillas"
-seoTitulo: "Plantillas de documentos legales: checklist antes de automatizar"
+seoTitulo: "Plantillas de documentos legales: checklist"
 seoDescripcion: "Qué revisar en las plantillas de tu estudio antes de automatizar documentos: versión vigente, datos variables, cláusulas opcionales, responsable y formato."
 respuesta: "Antes de automatizar documentos, cada plantilla del estudio necesita cinco cosas: una sola versión vigente aprobada, los datos variables marcados, las cláusulas opcionales identificadas con su regla, un abogado responsable y una fecha de última revisión. Con eso, la automatización produce borradores confiables."
 tldr:

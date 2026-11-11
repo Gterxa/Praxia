@@ -3,7 +3,7 @@ nicho: "ecommerce"
 proceso: "atencion"
 tipo: "guia"
 titulo: "Guía de las preguntas de preventa que tu tienda debe responder sola"
-seoTitulo: "Preguntas de preventa de una tienda online: cuáles automatizar"
+seoTitulo: "Preguntas de preventa en tienda online: qué automatizar"
 seoDescripcion: "Las preguntas que hacen los clientes antes de comprar en una tienda online, cuáles se pueden responder solas con tus datos y cuáles necesitan una persona."
 respuesta: "Las preguntas de preventa que una tienda online puede responder sola son las que tienen respuesta en sus datos: disponibilidad, talla y medidas, materiales y cuidados, plazos y costos de envío, medios de pago y política de cambios. Las que necesitan una persona son los pedidos especiales, las compras por volumen, los reclamos y las dudas que no están en ningún documento."
 tldr:

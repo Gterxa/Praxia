@@ -2,7 +2,7 @@
 nicho: "ecommerce"
 proceso: "citas"
 titulo: "Citas de showroom y videollamada para tiendas de lujo"
-seoTitulo: "Citas de showroom y asesoría por videollamada para tiendas de lujo"
+seoTitulo: "Citas de showroom y videollamada para tiendas de lujo"
 seoDescripcion: "Agenda visitas al showroom, pruebas y videollamadas con asesor por WhatsApp, con confirmación automática. Para tiendas online de lujo que venden con cita."
 respuesta: "Una tienda online de lujo también vende con cita: la prueba en el showroom, la videollamada para elegir un anillo o la entrega coordinada a domicilio. Automatizamos esa agenda por WhatsApp, con horarios reales, confirmación el día anterior y aviso a tu asesor."
 tldr:

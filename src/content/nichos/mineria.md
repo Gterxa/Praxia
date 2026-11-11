@@ -4,7 +4,7 @@ tuNegocio: "tu empresa contratista"
 orden: 7
 procesos: ["documentos", "reportes", "citas", "atencion", "seguimiento", "contenido"]
 titulo: "Automatización con IA para contratistas mineros que viven entre papeles y turnos"
-seoTitulo: "Automatización para contratistas mineros: papeles, reportes y turnos"
+seoTitulo: "Automatización para contratistas mineros"
 seoDescripcion: "Acredita a tu personal más rápido, arma el parte diario sin transcribir y cierra la valorización a tiempo. Automatización para contratistas mineros."
 respuesta: "Si tu empresa le presta servicios a una mina, la plata se te va en papeles: personal que no sube porque le falta un documento, partes diarios que alguien transcribe de noche y valorizaciones que salen tarde. Automatizamos la documentación, los reportes y la coordinación de turnos por WhatsApp, sobre lo que tu equipo ya usa."
 tldr:

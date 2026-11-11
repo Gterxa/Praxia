@@ -2,7 +2,7 @@
 nicho: "wellness"
 tipo: "guia"
 titulo: "Guía para medspas con clientas latinas en Estados Unidos"
-seoTitulo: "Medspa con clientas latinas en Estados Unidos: guía de atención"
+seoTitulo: "Medspa con clientas latinas en EE. UU.: guía"
 seoDescripcion: "Idioma, confianza, horarios, documentos bilingües y canales: cómo atender bien a clientas latinas en un medspa de Estados Unidos y que vuelvan y recomienden."
 respuesta: "Para atender bien a clientas latinas en un medspa de Estados Unidos hay que responder en su idioma y a su horario, explicar cada tratamiento con calma y sin jerga, tener fichas, consentimientos e indicaciones revisados en español e inglés, atender por WhatsApp además del teléfono y cuidar la recomendación boca a boca, que en la comunidad latina pesa mucho."
 tldr:

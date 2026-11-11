@@ -2,7 +2,7 @@
 nicho: "mineria"
 proceso: "seguimiento"
 titulo: "Licitaciones, homologaciones y renovaciones con las mineras sin fechas perdidas"
-seoTitulo: "Seguimiento de licitaciones y homologaciones para contratistas mineros"
+seoTitulo: "Licitaciones y homologaciones para contratistas mineros"
 seoDescripcion: "Cada licitación, renovación de contrato y homologación con su fecha, sus documentos y su recordatorio. Seguimiento comercial para contratistas mineros."
 respuesta: "Para un contratista minero, el seguimiento comercial no es llamar clientes: es no perder una fecha de licitación, una renovación de homologación o una consulta de la mina que vence en dos días. Ordenamos cada oportunidad con sus plazos y documentos, y te avisamos antes de que se te pase."
 tldr:

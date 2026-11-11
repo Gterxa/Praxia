@@ -3,7 +3,7 @@ nicho: "constructoras"
 proceso: "atencion"
 tipo: "intencion"
 titulo: "Asistente de WhatsApp para constructoras: atiende al interesado y al cliente con obra"
-seoTitulo: "Asistente de WhatsApp para constructoras: presupuestos y obras"
+seoTitulo: "Asistente de WhatsApp para constructoras"
 seoDescripcion: "Un asistente de WhatsApp que califica solicitudes de presupuesto, agenda visitas técnicas y responde a tus clientes con el avance real de su obra."
 respuesta: "Un asistente de WhatsApp para constructoras hace dos trabajos: a quien pide presupuesto le pide los datos que tu equipo necesita y agenda la visita técnica, y al cliente con obra en curso le responde con el avance real desde el parte diario. El dueño deja de ser la central telefónica de la empresa."
 tldr:

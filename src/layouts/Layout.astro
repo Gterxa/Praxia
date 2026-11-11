@@ -87,9 +87,13 @@ const {
 // GA4, Meta y Clarity: solo si Vercel tiene al menos uno de sus IDs (ver src/analitica.ts).
 const conAnalitica = hayAnalitica(idsAnalitica(import.meta.env));
 
-const tituloCompleto = titulo.includes(SITE.nombre)
-  ? titulo
-  : `${titulo} | ${SITE.nombre}`;
+// Google corta el título en el resultado a ~60 caracteres. Si con el sufijo
+// " | Praxia" se pasa, va sin sufijo: así se lee la búsqueda completa, que es
+// lo que hace clic (la marca ya sale en la URL y en el nombre del sitio).
+const MAX_TITULO = 60;
+const conSufijo = `${titulo} | ${SITE.nombre}`;
+const tituloCompleto =
+  titulo.includes(SITE.nombre) || conSufijo.length > MAX_TITULO ? titulo : conSufijo;
 
 // `sinBase` quita el prefijo de dev: la canonical siempre es la URL de producción.
 const canonical = new URL(sinBase(Astro.url.pathname), Astro.site);

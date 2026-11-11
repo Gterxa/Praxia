@@ -3,7 +3,7 @@ nicho: "abogados"
 proceso: "reportes"
 tipo: "guia"
 titulo: "¿Tu estudio está listo para automatizar?"
-seoTitulo: "Cómo saber si tu estudio de abogados está listo para automatizar"
+seoTitulo: "¿Tu estudio de abogados está listo para automatizar?"
 seoDescripcion: "Las señales de que un estudio de abogados ya necesita automatizar (volumen, horas perdidas, consultas que se enfrían) y las de que todavía conviene esperar."
 respuesta: "Un estudio está listo para automatizar cuando ya tiene volumen: recibe más consultas de las que alcanza a contestar el mismo día, sus abogados pierden horas en tareas repetitivas o repite los mismos documentos cada semana. Si hoy contestas todo a tiempo y haces pocos documentos, primero conviene crecer la cartera."
 tldr:

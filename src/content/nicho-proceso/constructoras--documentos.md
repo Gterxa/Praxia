@@ -2,7 +2,7 @@
 nicho: "constructoras"
 proceso: "documentos"
 titulo: "Actas, planos, contratos y adicionales de cada obra en su lugar"
-seoTitulo: "Documentos de obra ordenados para constructoras: actas y planos"
+seoTitulo: "Documentos de obra ordenados para constructoras"
 seoDescripcion: "Versiones de planos, actas firmadas, contratos de subcontratistas y adicionales aprobados, ordenados por obra. Gestión documental para constructoras."
 respuesta: "En una obra, el documento que no encuentras es el que te hace perder la discusión: el adicional aprobado por WhatsApp, el plano en su última versión, el acta firmada por el subcontratista. Ordenamos los documentos de cada obra automáticamente a medida que llegan, para que estén a la mano cuando los necesites."
 tldr:

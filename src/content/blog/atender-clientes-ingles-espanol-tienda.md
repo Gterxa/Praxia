@@ -3,7 +3,7 @@ nicho: "ecommerce"
 proceso: "atencion"
 tipo: "como"
 titulo: "Cómo atender en inglés y español en tu tienda online"
-seoTitulo: "Atender en inglés y español en tu tienda online sin duplicar equipo"
+seoTitulo: "Atender en inglés y español en tu tienda online"
 seoDescripcion: "Cómo responder a clientes que escriben en inglés, en español o mezclando los dos, con la misma calidad y sin contratar un equipo bilingüe completo."
 respuesta: "Para atender en inglés y español en tu tienda online sin duplicar el equipo, la atención tiene que responder en el idioma en que escribe cada cliente, seguirlo si cambia en medio de la conversación, usar las mismas políticas en los dos idiomas y pasar a una persona los casos delicados con un resumen en el idioma de tu equipo."
 tldr:

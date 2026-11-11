@@ -3,7 +3,7 @@ nicho: "ecommerce"
 proceso: "seguimiento"
 tipo: "intencion"
 titulo: "Cómo recuperar carritos abandonados por WhatsApp"
-seoTitulo: "Recuperar carritos abandonados por WhatsApp: guía para tiendas"
+seoTitulo: "Recuperar carritos abandonados por WhatsApp"
 seoDescripcion: "Cuándo escribir, qué decir y qué no hacer para recuperar carritos abandonados por WhatsApp sin molestar al cliente ni quemar tu número."
 respuesta: "Para recuperar un carrito abandonado por WhatsApp se le escribe al cliente que dejó su número y aceptó mensajes, poco después del abandono, con el producto que eligió y una pregunta abierta sobre lo que lo frenó. La venta se recupera cuando alguien responde esa duda, no cuando se manda un cupón."
 tldr:

@@ -2,7 +2,7 @@
 nicho: "inmobiliarias"
 ciudad: "miami"
 titulo: "Inmobiliarias en Miami con compradores latinoamericanos: preconstrucción sin perder a nadie"
-seoTitulo: "Automatización para inmobiliarias en Miami con compradores LATAM"
+seoTitulo: "Automatización para inmobiliarias en Miami"
 seoDescripcion: "Para brokers en Miami que venden condos y preconstrucción a compradores de Latinoamérica: atención en su horario, tours virtuales y depósitos al día."
 respuesta: "Un broker en Miami que vende preconstrucción a compradores de Latinoamérica pierde negocios por la distancia: el inversionista de Bogotá o de Lima pregunta de noche, quiere ver el proyecto por videollamada y necesita recordar cada depósito. Automatizamos esa atención, la agenda de tours virtuales y el calendario de depósitos."
 tldr:

@@ -3,7 +3,7 @@ nicho: "constructoras"
 proceso: "reportes"
 tipo: "intencion"
 titulo: "Software de parte diario de obra: lo que de verdad necesita una constructora"
-seoTitulo: "Software de parte diario de obra: qué necesita una constructora"
+seoTitulo: "Software de parte diario de obra para constructoras"
 seoDescripcion: "Qué debe hacer un software de parte diario de obra para que tus residentes lo usen y para que te sirva en valorizaciones, adicionales y reclamos de plazo."
 respuesta: "Un software de parte diario de obra sirve si tu residente lo llena en minutos desde el celular, con fotos o por audio, y si con esos datos salen solos el resumen para el dueño, la valorización y el sustento de adicionales y paralizaciones. Si exige sentarse en una computadora al final del día, se va a llenar de memoria o no se va a llenar."
 tldr:

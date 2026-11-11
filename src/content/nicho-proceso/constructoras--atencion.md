@@ -2,7 +2,7 @@
 nicho: "constructoras"
 proceso: "atencion"
 titulo: "Solicitudes de presupuesto y preguntas de tus clientes contestadas el mismo día"
-seoTitulo: "Atención por WhatsApp para constructoras: presupuestos y obras"
+seoTitulo: "Atención por WhatsApp para constructoras"
 seoDescripcion: "Recibe solicitudes de presupuesto con los datos completos y responde a tus clientes sobre el estado de su obra a cualquier hora. Para constructoras."
 respuesta: "A una constructora le escriben dos tipos de personas: el que quiere un presupuesto y el cliente que quiere saber cómo va su obra. Armamos un WhatsApp que al primero le pide lo necesario para cotizar y agenda la visita, y al segundo le responde con el avance real de su obra, sin que el dueño conteste a las 11 de la noche."
 tldr:
