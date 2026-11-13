@@ -40,6 +40,6 @@ queNecesitas:
   - "Un correo o un WhatsApp por donde entren los documentos"
   - "Un lugar donde guardarlos, como Google Drive o una carpeta compartida"
   - "Tus reglas de clasificación, aunque hoy vivan en la cabeza de una persona"
-seoTitulo: "Clasificar documentos automáticamente por correo y WhatsApp"
+seoTitulo: "Clasificar documentos con IA, del correo y WhatsApp"
 seoDescripcion: "Los documentos que entran se clasifican, se archivan y se encuentran describiéndolos. Sin digitar datos a mano. Diagnóstico sin costo."
 ---

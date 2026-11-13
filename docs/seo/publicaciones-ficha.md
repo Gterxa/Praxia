@@ -23,3 +23,53 @@ Botón: https://www.trypraxia.tech/servicios
 ¿Cuánto vendiste esta semana? Si la respuesta toma una tarde armando un Excel, se puede automatizar.
 Te llega el resumen solo, por correo o WhatsApp, con los números que importan.
 Botón: https://www.trypraxia.tech/que-puedes-automatizar/reportes-y-control
+
+## Tanda 2 (programada el 10-nov-2026)
+
+Imágenes 1200×900 en `docs/seo/gbp-posts/` (fondos IA en `scripts/gbp-fondos/`,
+texto compuesto con `node scripts/generar-gbp-posts.mjs`). Todas a las 9:00, botón
+"Más información" con `utm_source=google&utm_medium=organic&utm_campaign=gbp-posts`.
+
+| Fecha | Imagen | Enlace |
+|---|---|---|
+| Oferta 10-nov → 31-dic | oferta-diagnostico.jpg | /funnel (`utm_campaign=gbp-oferta`) |
+| 15 dic | vacaciones-whatsapp.jpg | /que-puedes-automatizar/atencion-y-respuestas |
+| 22 dic | clientes-seguimiento.jpg | /que-puedes-automatizar/clientes-y-seguimiento |
+| 29 dic | documentos.jpg | /que-puedes-automatizar/documentos-y-archivo |
+| 5 ene | agenda-enero.jpg | /que-puedes-automatizar/citas-y-recordatorios |
+| 12 ene | contenido.jpg | /que-puedes-automatizar/contenido-y-presencia |
+| 19 ene | seguridad.jpg | /servicios |
+| 26 ene | como-trabajamos.jpg | /como-trabajamos |
+| 2 feb | soluciones-mayores.jpg | /soluciones-mayores |
+
+Nota al programar a mano: el campo "Enlace de tu botón" solo registra el valor si
+se hace clic real en el campo y se sale con Tab; si no, Google responde "Se
+requiere un enlace para este botón" y no guarda.
+
+## Tanda 3: viernes (programada el 10-nov-2026)
+
+Segunda publicación semanal para subir volumen: martes + viernes hasta febrero.
+Mismo formato (9:00, "Más información", `utm_campaign=gbp-posts`).
+
+| Fecha | Imagen | Enlace |
+|---|---|---|
+| 13 nov | whatsapp-saturado.jpg | /que-puedes-automatizar/atencion-y-respuestas |
+| 20 nov | campana-fin-de-ano.jpg | /que-puedes-automatizar/atencion-y-respuestas |
+| 27 nov | aparecer-en-google.jpg | /servicios |
+| 4 dic | reporte-lunes.jpg | /que-puedes-automatizar/reportes-y-control |
+| 11 dic | clinicas.jpg | /que-puedes-automatizar/citas-y-recordatorios |
+| 18 dic | restaurantes.jpg | /que-puedes-automatizar/atencion-y-respuestas |
+| 8 ene | sin-tecnologia.jpg | /preguntas-frecuentes |
+| 15 ene | datos-seguros.jpg | /seguridad |
+| 22 ene | inmobiliarias.jpg | /que-puedes-automatizar/clientes-y-seguimiento |
+| 29 ene | que-automatizar-primero.jpg | /que-puedes-automatizar |
+| 5 feb | videollamada-diagnostico.jpg | /funnel |
+
+## Tanda 4: lunes, miércoles y jueves (programada el 10-nov-2026)
+
+Con esto la ficha publica de lunes a viernes hasta el 5-feb-2027 (59 programadas,
+verificado en la lista de Google: 0 rechazadas, 0 fechas duplicadas). El detalle de
+cada publicación (fecha, título, texto, enlace y escena de la imagen) está en
+`scripts/gbp-tanda4.json`; las imágenes salen de `node scripts/generar-gbp-posts.mjs`.
+Rubros cubiertos: ferreterías, gimnasios, colegios, talleres, estudios contables,
+hospedajes, agencias de viaje, clínicas dentales, salones y spas, distribuidoras.

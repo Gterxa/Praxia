@@ -1,7 +1,7 @@
 ---
-titulo: "Responde a las 11 de la noche. Aunque tú estés durmiendo."
+titulo: "Responde por WhatsApp a las 11 de la noche. Aunque tú estés durmiendo."
 nombreCorto: "Atención y respuestas"
-subtitulo: "Un asistente que atiende por WhatsApp las preguntas de siempre, toma los datos del cliente y te pasa solo lo que necesita tu atención."
+subtitulo: "Un asistente con IA que atiende por WhatsApp las preguntas de siempre, toma los datos del cliente y te pasa solo lo que necesita tu atención."
 orden: 1
 icono: "conversacion"
 resumen: "Atiende por WhatsApp las preguntas de siempre y te pasa solo lo que necesita tu atención."
@@ -40,6 +40,6 @@ queNecesitas:
   - "Una cuenta de WhatsApp Business con tu número de negocio"
   - "Las preguntas que más te hacen y sus respuestas, aunque sea en una hoja suelta"
   - "Alguien de tu equipo que pueda atender los casos que el asistente derive"
-seoTitulo: "Responder clientes automáticamente por WhatsApp"
-seoDescripcion: "Responde a tus clientes por WhatsApp a cualquier hora, sin que tú contestes. Toma sus datos y te avisa solo cuando alguien necesita hablar contigo. Diagnóstico sin costo."
+seoTitulo: "Chatbot de WhatsApp con IA para atender clientes"
+seoDescripcion: "Un chatbot de WhatsApp con IA que responde a tus clientes a cualquier hora. Toma sus datos y te avisa solo cuando alguien necesita hablar contigo."
 ---
