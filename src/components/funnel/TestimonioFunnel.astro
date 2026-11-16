@@ -5,7 +5,11 @@
  * marca. El video no se descarga hasta que le dan play (preload="none") y
  * trae subtítulos en los dos idiomas. Sin cifras ni resultados inventados
  * (CONTENIDO.md, regla 1): todo sale del video que mandó el cliente.
+ * Debajo de la cita va la captura real de su perfil de TikTok (15-nov-2026),
+ * enlazada a la cuenta, como prueba de que es una persona real con audiencia.
  */
+import { Image } from 'astro:assets';
+import capturaTiktok from '../../assets/casos/flea-tiktok.png';
 import type { Idioma } from '../../i18n/funnel';
 import { TEXTOS } from '../../i18n/funnel';
 import { NOMBRE_PISTA, VIDEO_TESTIMONIO_FLEA as VIDEO } from '../../videos';
@@ -44,6 +48,17 @@ const pistas = (Object.entries(VIDEO.subtitulos) as [Idioma, string | undefined]
       <b>{t.nombre}</b>
       <span>{t.rol}</span>
     </p>
+    <a class="tf-tiktok" href={t.tiktok.url} target="_blank" rel="noopener">
+      <Image
+        class="tf-tiktok-img"
+        src={capturaTiktok}
+        alt={t.tiktok.alt}
+        widths={[400, 802]}
+        sizes="(min-width: 48rem) 26rem, 100vw"
+        loading="lazy"
+      />
+      <span class="tf-tiktok-etiqueta">{t.tiktok.etiqueta} ↗</span>
+    </a>
   </figcaption>
 </figure>
 
@@ -109,6 +124,35 @@ const pistas = (Object.entries(VIDEO.subtitulos) as [Idioma, string | undefined]
     color: var(--color-texto);
   }
 
+  .tf-tiktok {
+    display: grid;
+    gap: 0.5rem;
+    justify-items: center;
+    margin-top: 1.25rem;
+    color: var(--color-texto-2);
+    font-size: 0.875rem;
+    text-decoration: none;
+  }
+
+  .tf-tiktok-img {
+    display: block;
+    width: 100%;
+    max-width: 26rem;
+    height: auto;
+    border: 1px solid rgb(255 255 255 / 0.16);
+    border-radius: var(--radius-tarjeta);
+    transition: border-color 0.2s ease;
+  }
+
+  .tf-tiktok:hover .tf-tiktok-img,
+  .tf-tiktok:focus-visible .tf-tiktok-img {
+    border-color: rgb(255 255 255 / 0.4);
+  }
+
+  .tf-tiktok:hover .tf-tiktok-etiqueta {
+    color: var(--color-texto);
+  }
+
   @media (min-width: 48rem) {
     .tf {
       grid-template-columns: 17.5rem 1fr;
@@ -120,6 +164,10 @@ const pistas = (Object.entries(VIDEO.subtitulos) as [Idioma, string | undefined]
 
     .tf-marco {
       width: 100%;
+    }
+
+    .tf-tiktok {
+      justify-items: start;
     }
   }
 </style>
