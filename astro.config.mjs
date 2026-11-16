@@ -38,7 +38,7 @@ export default defineConfig({
   ],
 
   // Precarga en idle los <a> que entran en viewport (nav, CTAs) para que el
-  // click a /validar, /servicios, etc. sea instantáneo — ya vienen del cache
+  // click a /funnel, /servicios, etc. sea instantáneo — ya vienen del cache
   // del navegador en vez de esperar la respuesta.
   prefetch: {
     prefetchAll: true,
@@ -48,8 +48,14 @@ export default defineConfig({
   // Rediseño "v2" (sep 2026): el diagnóstico pasó a llamarse "validación" y la
   // página de precios se retiró (el precio se da en la llamada, no en la web).
   // Redirects reales para que los enlaces e índices viejos no rompan.
+  //
+  // 16-nov-2026 (Tony): /validar muere y toda entrada va al funnel. Las
+  // páginas viejas de contacto (/validar y el funnel VSL /diagnostico-gratis)
+  // redirigen a /funnel para que anuncios, bios e índices viejos no rompan.
   redirects: {
-    '/diagnostico': '/validar',
+    '/validar': '/funnel',
+    '/diagnostico': '/funnel',
+    '/diagnostico-gratis': '/funnel',
     '/precios': '/servicios',
   },
 

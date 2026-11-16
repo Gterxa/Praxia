@@ -1,7 +1,7 @@
 /**
  * Los once rubros donde Praxia ya sabe qué automatizar primero. Se muestran
  * como chips + panel de detalle en la home ("¿Y si no funciona en mi
- * rubro?") y alimentan el selector de rubro del formulario de /validar.
+ * rubro?") y alimentan el selector de rubro del formulario de contacto.
  *
  * `demo` es una conversación de 3 mensajes en el mismo formato que
  * ChatMockup.astro (`de: 'cliente' | 'negocio'`). Copy del rediseño

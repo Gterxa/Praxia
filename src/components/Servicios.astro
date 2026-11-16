@@ -3,7 +3,7 @@ import Icon from './Icon.astro';
 import Seccion from './Seccion.astro';
 import CabeceraSeccion from './CabeceraSeccion.astro';
 import { SERVICIOS } from '../servicios';
-import { waLink, CONTEXTO } from '../consts';
+import { ruta } from '../rutas';
 ---
 
 <Seccion id="servicios" class="seccion-cosmoq">
@@ -54,9 +54,7 @@ import { waLink, CONTEXTO } from '../consts';
                 ))}
               </ul>
               <a
-                href={waLink(CONTEXTO.servicios(s.etiqueta))}
-                target="_blank"
-                rel="noopener"
+                href={ruta('/funnel')}
                 class="boton boton-primario w-fit"
               >
                 Validar esto para mi negocio
