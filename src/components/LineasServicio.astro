@@ -28,7 +28,7 @@ import CabeceraSeccion from './CabeceraSeccion.astro';
 import EscenaWeb from './ui/escena-web.tsx';
 import BentoIndustrias from './ui/bento-industrias.tsx';
 import { LINEAS_SERVICIO } from '../lineas';
-import { waLink, CONTEXTO } from '../consts';
+import { ruta } from '../rutas';
 ---
 
 <Seccion id="servicios" class="seccion-cosmoq" fondo="surface" paletaFondo="azul">
@@ -86,9 +86,7 @@ import { waLink, CONTEXTO } from '../consts';
             </div>
 
             <a
-              href={waLink(CONTEXTO.servicios(linea.contexto))}
-              target="_blank"
-              rel="noopener"
+              href={ruta('/funnel')}
               class="boton boton-primario w-fit"
             >
               Validar esto para mi negocio

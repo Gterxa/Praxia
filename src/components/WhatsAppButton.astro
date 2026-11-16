@@ -17,7 +17,7 @@ const { contexto } = Astro.props;
   marco del botón se ve igual desde el primer render (SSR); el shader del
   relleno hidrata ~0.5-1s después, cuando el navegador ya respiró.
 */}
-<OrbeContacto waHref={waLink(contexto)} validarHref={ruta('/validar')} client:idle />
+<OrbeContacto waHref={waLink(contexto)} validarHref={ruta('/funnel')} client:idle />
 
 <style is:global>
   /* Disparador del orbe: mismo tratamiento visual que el resto de botones

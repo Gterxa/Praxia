@@ -1,7 +1,7 @@
 ---
 /**
  * Cierre de la home: la llamada a validar, con lo que se lleva el visitante.
- * El wizard completo de 4 pasos vive en /validar (evita duplicar un
+ * El formulario y la agenda viven en /funnel (evita duplicar un
  * formulario con estado en dos lugares de la misma página).
  *
  * Layout "integration" de cosmoq (dos columnas: promesas + CTA a la
@@ -50,7 +50,7 @@ const capacidades = await getCapacidades();
       </ul>
 
       <div class="flex flex-col gap-3 sm:flex-row">
-        <a href={ruta('/validar')} class="boton boton-primario">Validemos en 15 minutos</a>
+        <a href={ruta('/funnel')} class="boton boton-primario">Validemos en 15 minutos</a>
         <a href={waLink(CONTEXTO.cierre)} target="_blank" rel="noopener" class="boton boton-secundario">
           <Icon nombre="whatsapp" tamano={20} />
           WhatsApp
