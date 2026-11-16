@@ -77,6 +77,12 @@ const ES = {
       rol: 'Entrenador personal · Flea Supplements',
       aria: 'Video: testimonio de Guillermo Garay, de Flea Supplements',
       sinSoporte: 'Tu navegador no puede reproducir este video.',
+      // Captura real de su perfil de TikTok (15-nov-2026); enlaza a la cuenta.
+      tiktok: {
+        url: 'https://www.tiktok.com/@memodkx',
+        etiqueta: 'Míralo en TikTok: @memodkx',
+        alt: 'Perfil de TikTok de Guillermo Garay (@memodkx) con 2,853 seguidores, 388.8K me gusta y videos de más de 250 mil vistas',
+      },
     },
     // Webs que hicimos: solo rubro y qué construimos, sin resultados (CONTENIDO.md, regla 1).
     casos: {
@@ -281,6 +287,11 @@ const EN: Textos = {
       rol: 'Personal trainer · Flea Supplements',
       aria: 'Video: testimonial from Guillermo Garay, of Flea Supplements',
       sinSoporte: 'Your browser can’t play this video.',
+      tiktok: {
+        url: 'https://www.tiktok.com/@memodkx',
+        etiqueta: 'See him on TikTok: @memodkx',
+        alt: 'TikTok profile of Guillermo Garay (@memodkx) with 2,853 followers, 388.8K likes and videos with over 250K views',
+      },
     },
     casos: {
       items: [
