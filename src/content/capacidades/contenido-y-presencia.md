@@ -37,6 +37,6 @@ queNecesitas:
   - "Tus cuentas de redes y quién las administra"
   - "Algunas publicaciones anteriores que representen cómo hablas"
   - "Diez minutos a la semana para revisar y aprobar"
-seoTitulo: "Automatizar publicaciones y contenido de tu negocio"
-seoDescripcion: "Publicaciones y novedades listas cada semana para que solo revises y apruebes. Nada se publica sin tu visto bueno."
+seoTitulo: "Publicaciones para redes sociales con IA"
+seoDescripcion: "Publicaciones para tus redes sociales, preparadas con IA y listas cada semana para que solo revises y apruebes. Nada se publica sin tu visto bueno."
 ---

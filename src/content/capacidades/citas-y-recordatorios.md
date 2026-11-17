@@ -40,6 +40,6 @@ queNecesitas:
   - "Tus horarios de atención y cuánto dura cada servicio"
   - "Tus reglas: con cuánta anticipación se reserva, hasta cuándo se puede cancelar"
   - "Un calendario donde vivan las citas, aunque hoy sea un cuaderno"
-seoTitulo: "Automatizar citas y recordatorios por WhatsApp"
-seoDescripcion: "Automatiza la agenda y los recordatorios de tu negocio por WhatsApp. Menos llamadas y menos citas perdidas. Diagnóstico sin costo."
+seoTitulo: "Agenda de citas y recordatorios por WhatsApp"
+seoDescripcion: "Agenda de citas automática por WhatsApp: tus clientes reservan, confirman y reciben recordatorios sin llamadas. Menos citas perdidas. Diagnóstico sin costo."
 ---
