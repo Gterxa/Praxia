@@ -17,10 +17,10 @@ import { ruta } from '../rutas';
 import { getCapacidades } from '../capacidades';
 
 const PROMESAS = [
-  'Precio y plazo estimados',
-  'Viabilidad honesta: sí, no o aún no',
-  'Diagrama del flujo que propondríamos',
-  'Qué automatizar primero',
+  'Cómo opera hoy tu empresa',
+  'Cuánto te cuesta lo que se hace a mano',
+  'Qué construiríamos y en qué orden',
+  'Siguiente paso: alcance, precio y fechas',
 ] as const;
 
 const capacidades = await getCapacidades();
@@ -29,10 +29,11 @@ const capacidades = await getCapacidades();
 <Seccion id="validar" class="seccion-cosmoq" fondo="acento">
   <div class="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-20">
     <div class="flex flex-col gap-10 lg:gap-12">
-      <CabeceraSeccion etiqueta="Validemos tu idea" icono="check" apilada>
-        <h2 slot="titulo" class="revelar" style="--i:0">Cuéntanos qué quieres automatizar.</h2>
+      <CabeceraSeccion etiqueta="Auditoría de IA" icono="check" apilada>
+        <h2 slot="titulo" class="revelar" style="--i:0">Encontremos lo que vale la pena construir.</h2>
         <p slot="subtitulo" class="revelar" style="--i:1">
-          Cuatro pasos cortos. Te respondemos el mismo día con una hora para los 15 minutos.
+          Revisamos lo que usas hoy, cuánto te cuesta y qué construiríamos para reemplazarlo o
+          mejorarlo. Unas preguntas cortas, eliges la hora y es gratis.
         </p>
       </CabeceraSeccion>
 
@@ -50,7 +51,7 @@ const capacidades = await getCapacidades();
       </ul>
 
       <div class="flex flex-col gap-3 sm:flex-row">
-        <a href={ruta('/funnel')} class="boton boton-primario">Validemos en 15 minutos</a>
+        <a href={ruta('/funnel')} class="boton boton-primario">Agenda tu auditoría de IA</a>
         <a href={waLink(CONTEXTO.cierre)} target="_blank" rel="noopener" class="boton boton-secundario">
           <Icon nombre="whatsapp" tamano={20} />
           WhatsApp

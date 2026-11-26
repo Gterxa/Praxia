@@ -7,14 +7,14 @@ export const PORQUE = [
   {
     span: 7,
     tipo: 'panel',
-    titulo: 'Primero te escuchamos, no te cotizamos',
+    titulo: 'Empezamos con una auditoría de IA, gratis',
     texto:
-      'Quince minutos, sin costo, para ver tu negocio y tus ideas: qué se repite, qué te quita tiempo, dónde te duele de verdad. El problema que sale de ahí no siempre es el que traías en mente.',
+      'Revisamos lo que usas hoy, cuánto te cuesta y qué construiríamos para reemplazarlo o mejorarlo. Si tu sistema pide más, hacemos una asesoría tecnológica a fondo que define el alcance exacto y su cotización.',
   },
   {
     span: 5,
     tipo: 'anillo',
-    titulo: 'Tu AI & Automation Growth Partner',
+    titulo: 'Tu socio de ingeniería e IA',
     texto:
       'No es un proyecto que se entrega y se olvida. Seguimos optimizando lo que construimos a medida que tu negocio crece.',
   },
@@ -27,8 +27,8 @@ export const PORQUE = [
   {
     span: 4,
     tipo: 'barras',
-    titulo: '2 a 4 semanas',
-    texto: 'De la llamada a funcionando. Plazo real, no de folleto.',
+    titulo: 'Fechas de entrega desde el día uno',
+    texto: 'Cada proyecto arranca con un cronograma por hitos que acordamos contigo antes de empezar.',
   },
   {
     span: 4,
