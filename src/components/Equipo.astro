@@ -7,7 +7,9 @@
  * Reemplaza a QuienesSomos.astro en el flujo de la home (mismo lugar,
  * después de Ejemplos y antes de FAQ).
  *
- * Nombres, roles y fotos son los reales. Fotos en src/assets/equipo/,
+ * Nombres, roles y fotos son los reales. Fotos en src/assets/equipo/eq-*.jpg:
+ * todas recortadas a 4:5 con la cabeza a la misma escala (58 % del alto,
+ * pelo a 4 % del borde) para que nadie se vea más grande que otro;
  * optimizadas acá con getImage (webp, 512px = 2x la tarjeta
  * más ancha) y pasadas ya resueltas al <img> del carrusel.
  */
@@ -16,18 +18,18 @@ import Seccion from './Seccion.astro';
 import CabeceraSeccion from './CabeceraSeccion.astro';
 import type { MiembroEquipo } from './ui/equipo-showcase.tsx';
 import Marquee from './Marquee.astro';
-import alvaro from '../assets/equipo/alvaro-sanchez.png';
-import piero from '../assets/equipo/piero-pizarro.jpg';
-import gabriel from '../assets/equipo/gabriel-curay.jpeg';
-import cesar from '../assets/equipo/cesar-garcia.jpeg';
-import carlos from '../assets/equipo/carlos-malca.jpg';
+import alvaro from '../assets/equipo/eq-alvaro.jpg';
+import piero from '../assets/equipo/eq-piero.jpg';
+import gabriel from '../assets/equipo/eq-gabriel.jpg';
+import cesar from '../assets/equipo/eq-cesar.jpg';
+import carlos from '../assets/equipo/eq-carlos.jpg';
 
 const FUENTES = [
-  { id: '1', nombre: 'Álvaro Sánchez', rol: 'Founder, Soluciones e IA', src: alvaro, social: { linkedin: 'https://www.linkedin.com/in/aalvaroasanchez/' } },
-  { id: '2', nombre: 'Piero Pizarro', rol: 'Co-founder, Automatización', src: piero, social: { linkedin: 'https://www.linkedin.com/in/piero-andr%C3%A9-pizarro-basile/' } },
-  { id: '3', nombre: 'Gabriel Curay', rol: 'Co-founder, Arquitectura', src: gabriel, social: { linkedin: 'https://www.linkedin.com/in/gabriel-curay-b11973262/' } },
-  { id: '4', nombre: 'César García', rol: 'Partner, Dirección técnica', src: cesar, social: { linkedin: 'https://www.linkedin.com/in/cesarandresd04/' } },
-  { id: '5', nombre: 'Carlos Malca', rol: 'Líder Comercial, Partner', src: carlos, social: undefined },
+  { id: '1', nombre: 'Álvaro Sánchez', rol: 'Gerente General', src: alvaro, social: { linkedin: 'https://www.linkedin.com/in/aalvaroasanchez/' } },
+  { id: '2', nombre: 'Piero Pizarro', rol: 'Gerente de Operaciones', src: piero, social: { linkedin: 'https://www.linkedin.com/in/piero-andr%C3%A9-pizarro-basile/' } },
+  { id: '3', nombre: 'Gabriel Curay', rol: 'Gerente de Tecnología', src: gabriel, social: { linkedin: 'https://www.linkedin.com/in/gabriel-curay-b11973262/' } },
+  { id: '4', nombre: 'César García', rol: 'Gerente de Crecimiento', src: cesar, social: { linkedin: 'https://www.linkedin.com/in/cesarandresd04/' } },
+  { id: '5', nombre: 'David M. Benavides', rol: 'Gerente de Finanzas', src: carlos, social: undefined },
 ] as const;
 
 // 512px = 2x la tarjeta más ancha (256px, lg:w-64): nítido en retina sin
@@ -46,11 +48,12 @@ const MIEMBROS: MiembroEquipo[] = await Promise.all(
 <Seccion id="equipo" class="seccion-cosmoq" fondo="surface">
   <CabeceraSeccion etiqueta="El equipo" icono="personas" apilada>
     <h2 slot="titulo" class="revelar" style="--i:0">
-      Un núcleo pequeño, especialistas según el proyecto
+      Un equipo directivo con especialistas según el proyecto
     </h2>
     <div slot="subtitulo" class="flex flex-col gap-4">
       <p class="lead text-texto-2 revelar" style="--i:1">
-        Hablas con quien construye. Nadie te vende algo que no vamos a poder sostener.
+        Cada proyecto lo lidera un gerente de Praxia, que responde por él de principio a fin y suma
+        a los especialistas que tu operación requiere.
       </p>
     </div>
   </CabeceraSeccion>

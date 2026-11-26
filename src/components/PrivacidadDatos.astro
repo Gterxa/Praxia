@@ -13,16 +13,23 @@ import { ruta } from '../rutas';
 // proyecto en esa carpeta), mismas proporciones y blends, solo convertido de
 // px a rem.
 const PUNTOS = [
-  'Ya pasamos por esto antes: sabemos qué exige la Ley de Protección de Datos Personales.',
-  'Aunque no estamos certificados todavía, seguimos esos marcos igual.',
+  'Por nuestra experiencia en ciberseguridad, sabemos qué controles poner en cada sistema.',
+  'Cumplimos la Ley 29733 de Protección de Datos Personales desde el diseño.',
   'Tu información es tuya. Solo la usamos para construir y mejorar lo que te entregamos.',
+] as const;
+
+/** Marcos que seguimos. Sin certificación todavía: lo dice la nota de abajo. */
+const MARCOS = [
+  { sigla: 'ISO/IEC 27001', detalle: 'Gestión de la seguridad de la información', icono: 'escudo' },
+  { sigla: 'SOC 2', detalle: 'Seguridad, disponibilidad y confidencialidad', icono: 'candado' },
+  { sigla: 'Ley 29733', detalle: 'Protección de datos personales en Perú', icono: 'libro' },
 ] as const;
 ---
 
 <Seccion id="privacidad-datos" class="seccion-cosmoq" fondo="void">
   <div class="data__content flex flex-col gap-12 lg:flex-row lg:items-center lg:justify-center lg:gap-16">
     <div class="data__title flex flex-1 flex-col justify-center gap-8 lg:gap-10">
-      <CabeceraSeccion etiqueta="Privacidad y confidencialidad" icono="candado" apilada>
+      <CabeceraSeccion etiqueta="La seguridad va primero" icono="candado" apilada>
         <h2 slot="titulo" class="revelar" style="--i:0">
           <EncryptedText
             client:visible
@@ -34,8 +41,8 @@ const PUNTOS = [
           />
         </h2>
         <p slot="subtitulo" class="lead text-texto-2 revelar" style="--i:1">
-          No vendemos tu información ni la usamos para nada distinto a lo que construimos
-          contigo. Punto.
+          Cada sistema que construimos sigue políticas de ISO/IEC 27001 y SOC 2: permisos por rol,
+          registro de quién cambió qué y tus datos bajo tu control.
         </p>
       </CabeceraSeccion>
 
@@ -49,6 +56,26 @@ const PUNTOS = [
           ))
         }
       </ul>
+
+      <div class="marcos revelar-item" style="--i:3">
+        <ul class="marcos__lista">
+          {
+            MARCOS.map((m) => (
+              <li class="marco">
+                <span class="marco__icono">
+                  <Icon nombre={m.icono} tamano={22} />
+                </span>
+                <span class="marco__sigla">{m.sigla}</span>
+                <span class="marco__detalle">{m.detalle}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="marcos__nota">
+          Seguimos las prácticas de ISO/IEC 27001 y SOC 2 en cada proyecto. Todavía no tenemos esas
+          certificaciones.
+        </p>
+      </div>
     </div>
 
     <div class="data__graphics revelar-visual flex flex-1 items-center justify-center" style="--i:0" aria-hidden="true">
@@ -74,6 +101,60 @@ const PUNTOS = [
   .privacidad-punto :global(svg) {
     margin-top: 0.1875rem;
     flex: none;
+  }
+
+  .marcos__lista {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  @media (width < 30rem) {
+    .marcos__lista {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .marco {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--color-linea, rgb(255 255 255 / 0.1));
+    border-radius: 0.75rem;
+    background: rgb(255 255 255 / 0.03);
+  }
+
+  .marco__icono {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.625rem;
+    border: 1px solid var(--color-linea, rgb(255 255 255 / 0.1));
+    color: var(--color-brasa);
+    background: rgb(255 255 255 / 0.04);
+  }
+
+  .marco__sigla {
+    font-family: var(--font-titulos);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-texto);
+  }
+
+  .marco__detalle {
+    font-size: 0.8125rem;
+    line-height: 1.25rem;
+    color: var(--color-texto-3);
+  }
+
+  .marcos__nota {
+    margin-top: 0.75rem;
+    font-size: 0.8125rem;
+    line-height: 1.25rem;
+    color: var(--color-texto-3);
   }
 
   .privacidad-punto p {

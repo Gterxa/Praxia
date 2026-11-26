@@ -33,13 +33,13 @@ export interface LineaServicio {
 export const LINEAS_SERVICIO: readonly LineaServicio[] = [
   {
     id: 'presencia',
-    etiqueta: 'Presencia digital',
-    titulo: 'Que te encuentren y te entiendan',
+    etiqueta: 'Captación y presencia',
+    titulo: 'La parte del sistema que ven tus clientes',
     descripcion:
-      'Web o landing rápida y clara, SEO técnico y de contenido, y textos que se entienden. Lo dejamos publicado y midiendo, no en una carpeta.',
+      'Web, SEO y captación conectados a tu CRM: cada cliente que llega queda registrado y con seguimiento, sin que nadie copie datos a mano.',
     puntos: [
-      'Web o landing lista en 2 a 4 semanas',
-      'SEO técnico incluido, sin cobro aparte',
+      'Web y captación conectadas a tu CRM',
+      'SEO y búsqueda en IA incluidos',
       'Ficha de Google Business al día',
     ],
     visual: 'escena',
@@ -47,14 +47,14 @@ export const LINEAS_SERVICIO: readonly LineaServicio[] = [
   },
   {
     id: 'automatizacion',
-    etiqueta: 'Automatización con IA',
-    titulo: 'Que las cosas repetitivas pasen solas',
+    etiqueta: 'Operación con IA',
+    titulo: 'Toda tu operación en un solo sistema',
     descripcion:
-      'Atención por WhatsApp y correo, citas, cotizaciones y seguimiento. Lo que hoy ocupa a una persona todo el día pasa a correr sin que nadie lo toque.',
+      'Back-office, CRM con tu marca, agentes de IA, integración con tu ERP y tableros. Lo que hoy pasa por hojas de cálculo y personas copiando datos, pasa a un sistema que conecta todas tus áreas.',
     puntos: [
-      'Atención por WhatsApp 24/7',
-      'Citas y cotizaciones sin intervención',
-      'Reporte semanal de lo que pasó solo',
+      'CRM y back-office a medida',
+      'Agentes de IA para atención y tareas internas',
+      'Tableros con los datos de todas tus áreas',
     ],
     visual: 'bento',
     contexto: 'automatización con IA',

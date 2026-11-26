@@ -12,7 +12,7 @@ interface Props {
   contextoWhatsApp?: string;
 }
 const {
-  texto = 'Validación de tu idea en 15 minutos, sin costo.',
+  texto = 'Auditoría de IA gratis: vemos qué vale la pena construir en tu empresa.',
   contextoWhatsApp = CONTEXTO.cierre,
 } = Astro.props;
 ---
@@ -24,7 +24,7 @@ const {
         {texto}
       </p>
       <div class="flex flex-none flex-col gap-3 sm:flex-row">
-        <a href={ruta('/funnel')} class="boton boton-primario">Validemos en 15 minutos</a>
+        <a href={ruta('/funnel')} class="boton boton-primario">Agenda tu auditoría de IA</a>
         <a
           href={waLink(contextoWhatsApp)}
           target="_blank"

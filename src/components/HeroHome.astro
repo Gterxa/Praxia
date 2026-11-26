@@ -23,20 +23,22 @@ import { ruta } from '../rutas';
   <div class="hero__velo" aria-hidden="true"></div>
 
   <div class="contenedor hero__contenido">
+    <p class="mono hero__nota mb-5">Sistemas con IA para empresas que ya operan</p>
     <h1 class="hero__titulo">
-      <span data-palabras>Ya sabes qué quieres automatizar.</span>{' '}<span
+      <span data-palabras>Construimos los sistemas con IA</span>{' '}<span
         class="hero__calido"
-        data-palabras>Nosotros lo construimos.</span
+        data-palabras>que hacen funcionar tu empresa.</span
       >
     </h1>
 
     <p class="lead hero__sub mx-auto max-w-2xl" data-palabras>
-      El equipo técnico que tu negocio no tiene: automatización con IA, webs, SEO y seguridad
-      básica, con un solo responsable y en 2 a 4 semanas.
+      Diseñamos, desarrollamos e implementamos software a medida que une tus áreas, tus procesos
+      y tus datos. Automatiza la operación, baja tus costos y te deja crecer sin sumar gente para
+      el trabajo manual.
     </p>
 
     <div class="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-      <a href={ruta('/funnel')} class="boton boton-primario">Validemos en 15 minutos</a>
+      <a href={ruta('/funnel')} class="boton boton-primario">Agenda tu auditoría de IA</a>
       <a
         href={waLink(CONTEXTO.home)}
         target="_blank"
@@ -44,9 +46,10 @@ import { ruta } from '../rutas';
         class="boton boton-secundario"
       >
         <Icon nombre="whatsapp" tamano={20} />
-        Ver el paquete
+        Escríbenos por WhatsApp
       </a>
     </div>
+    <p class="mono hero__nota mt-5">Unas preguntas cortas y eliges la hora. La auditoría es gratis.</p>
   </div>
 </section>
 
@@ -131,6 +134,16 @@ import { ruta } from '../rutas';
     z-index: 2;
   }
 
+  /* Antetítulo y nota bajo los botones: un solo estilo. Blanco y con sombra
+     oscura porque el fondo animado pasa por naranjas claros donde el gris
+     de --color-texto-3 no llegaba al contraste mínimo. */
+  .hero__nota {
+    color: var(--color-texto);
+    text-shadow:
+      0 1px 2px rgb(4 8 20 / 0.7),
+      0 0 14px rgb(4 8 20 / 0.55);
+  }
+
   .hero__titulo {
     margin-inline: auto;
     max-width: 46rem;
@@ -139,6 +152,11 @@ import { ruta } from '../rutas';
   /* El titular es grande: sin este aire el párrafo se le pega debajo. */
   .hero__sub {
     margin-top: 1.5rem;
+    /* Mismo motivo que .hero__nota: el gris del lead se perdía sobre el naranja. */
+    color: rgb(232 236 244 / 0.88);
+    text-shadow:
+      0 1px 2px rgb(4 8 20 / 0.7),
+      0 0 14px rgb(4 8 20 / 0.55);
   }
 
   /* Cada palabra entra por separado: opacidad + blur + translateY. */

@@ -5,7 +5,6 @@ import CabeceraSeccion from './CabeceraSeccion.astro';
 import { GlassCalendar } from './ui/glass-calendar';
 import { OrbitTools } from './ui/orbit-tools';
 import CurvasCrecimiento from './CurvasCrecimiento.astro';
-import CronoDiagnostico from './ui/crono-diagnostico';
 import { PORQUE } from '../porque';
 import { ruta } from '../rutas';
 
@@ -54,10 +53,10 @@ const GLOW_DIMENSIONES: Record<string, { w: number; h: number }> = {
 
 <Seccion id="por-que" class="seccion-cosmoq">
   <CabeceraSeccion etiqueta="Por qué Praxia" icono="check">
-    <h2 slot="titulo" class="revelar" style="--i:0">Alcanzable para un negocio como el tuyo</h2>
+    <h2 slot="titulo" class="revelar" style="--i:0">Tu área de tecnología, sin armarla desde cero</h2>
     <p slot="subtitulo" class="lead revelar" style="--i:1">
-      No hace falta un área de tecnología ni un presupuesto de corporación. Hace falta saber qué
-      quieres, y eso ya lo tienes.
+      Ingeniería, datos e IA en un solo equipo, con un responsable que responde por todo el
+      proyecto, de la auditoría a la entrega.
     </p>
   </CabeceraSeccion>
 
@@ -103,7 +102,6 @@ const GLOW_DIMENSIONES: Record<string, { w: number; h: number }> = {
                   </div>
                 </>
               )}
-              {t.tipo === 'panel' && <CronoDiagnostico client:visible />}
 
               {t.tipo === 'anillo' && (
                 <div class="curva-crecimiento fcard-capa">

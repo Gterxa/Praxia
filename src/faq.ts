@@ -29,13 +29,13 @@ export const PREGUNTAS_FRECUENTES = [
     categoria: 'validacion',
     pregunta: '¿Y si no funciona en mi rubro?',
     respuesta:
-      'Para eso existe la primera conversación. En 15 minutos te decimos si tu idea es viable en tu rubro, con qué y en cuánto tiempo. Si no lo es, te lo decimos y no te cobramos nada.',
+      'Para eso está la auditoría de IA, que es gratis. Revisamos tu operación y te decimos qué conviene construir, con qué y en qué orden. Si no vemos un caso claro, te lo decimos.',
   },
   {
     categoria: 'validacion',
     pregunta: '¿Cuánto cuesta?',
     respuesta:
-      'Depende del alcance, y no te vamos a dar un número inventado. Sales de la llamada de validación con un precio estimado real, antes de comprometerte con nada.',
+      'Depende del alcance, y no te vamos a dar un número inventado. Después de la auditoría, y de la asesoría tecnológica si tu sistema la necesita, te damos un precio fijo y desglosado antes de que decidas nada.',
   },
   {
     categoria: 'trabajo',
@@ -47,7 +47,7 @@ export const PREGUNTAS_FRECUENTES = [
     categoria: 'validacion',
     pregunta: '¿Cuánto demora?',
     respuesta:
-      'La mayoría de proyectos toma entre 2 y 4 semanas desde que decimos que sí. En la validación te damos el plazo específico para tu caso.',
+      'Depende del sistema. Antes de empezar acordamos contigo un cronograma por hitos, con una fecha de entrega para cada uno.',
   },
   {
     categoria: 'entrega',

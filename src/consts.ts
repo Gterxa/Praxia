@@ -7,7 +7,7 @@ export const SITE = {
   nombre: 'Praxia',
   tagline: 'El equipo técnico que tu negocio no tiene.',
   descripcion:
-    'Automatización con IA, web, SEO y seguridad para pymes del Perú. Validamos tu idea en 15 minutos, sin costo, y la construimos en 2 a 4 semanas.',
+    'Ingeniería de software con IA para empresas de Latinoamérica: sistemas a medida que integran tus áreas, procesos y datos. Agenda una auditoría de IA gratis.',
   // Dominio de producción en Vercel. El apex redirige 308 a www, así que la
   // canonical, el OG, el JSON-LD y el sitemap salen con www. Ojo: praxia.pe
   // es un sitio ajeno, no nuestro.
@@ -88,7 +88,7 @@ export const REGIONES_ATENDIDAS = ['Latinoamérica', 'Estados Unidos'] as const;
 
 /** El contexto que se prellena en cada página. */
 export const CONTEXTO = {
-  home: 'quiero validar una idea para automatizar mi negocio',
+  home: 'quiero agendar una auditoría de IA para mi empresa',
   hub: 'estuve viendo qué se puede automatizar y quiero conversarlo',
   capacidad: (nombreCorto: string) =>
     `me interesa automatizar ${nombreCorto.toLowerCase()} en mi negocio`,
@@ -124,55 +124,54 @@ export const NAV_PRINCIPAL = [
 export const METODO = [
   {
     numero: 1,
-    titulo: 'Conversamos 15 minutos',
-    resumen: 'Nos cuentas qué quieres automatizar u optimizar. Sin tecnicismos, sin brief.',
+    titulo: 'Auditoría de IA',
+    resumen: 'Vemos lo que usas hoy, cuánto te cuesta y qué construiríamos. Es gratis.',
     detalle:
-      'Nos sentamos 15 minutos, por videollamada o WhatsApp, y nos cuentas qué parte de tu día se te va en lo mismo de siempre. No necesitas saber de tecnología ni llegar con un requerimiento armado. Preguntamos por tu operación: cuántas consultas recibes, quién las atiende, qué pasa cuando nadie contesta. De ahí sale el problema real, que muchas veces no es el que traías en mente.',
+      'Revisamos cómo opera tu empresa: qué sistemas usas, qué se sigue haciendo a mano, qué áreas no conversan entre sí y cuánto te cuesta todo eso. Sales con una lectura clara de qué vale la pena construir primero.',
     panel: [
-      { clave: 'Duración', valor: '15 min' },
-      { clave: 'Costo', valor: 'S/0' },
-      { clave: 'Canal', valor: 'Videollamada o WhatsApp' },
-      { clave: 'Necesitas traer', valor: 'Solo la idea' },
+      { clave: 'Costo', valor: 'Gratis' },
+      { clave: 'Canal', valor: 'Videollamada' },
+      { clave: 'Qué revisamos', valor: 'Sistemas, procesos y datos' },
+      { clave: 'Sales con', valor: 'Qué construir primero' },
     ],
   },
   {
     numero: 2,
-    titulo: 'Validamos y te damos números',
-    resumen: 'Precio, plazo, viabilidad, diagrama del flujo y qué automatizar primero. Todo antes de cobrarte.',
+    titulo: 'Asesoría tecnológica y propuesta',
+    resumen: 'Alcance exacto, arquitectura, precio fijo y fechas de entrega por hitos.',
     detalle:
-      'Revisamos si lo que quieres se puede hacer con la tecnología de hoy y con las herramientas que ya usas. Acá te decimos qué costaría, antes de que decidas nada. Si el camino que imaginabas no es el mejor, te proponemos el que sí funciona y te explicamos por qué.',
+      'Si tu sistema lo pide, hacemos una asesoría tecnológica a fondo: definimos el alcance exacto, la arquitectura y qué se integra con qué. Con eso te damos un precio fijo y desglosado y un cronograma por hitos, antes de que decidas nada.',
     panel: [
-      { clave: 'Precio', valor: 'Sí' },
-      { clave: 'Plazo', valor: 'Sí' },
-      { clave: 'Veredicto', valor: 'Sí, no o aún no' },
-      { clave: 'Diagrama del flujo', valor: 'Sí' },
-      { clave: 'Qué automatizar primero', valor: 'Sí' },
+      { clave: 'Alcance', valor: 'Exacto y por escrito' },
+      { clave: 'Arquitectura', valor: 'Definida' },
+      { clave: 'Precio', valor: 'Fijo y desglosado' },
+      { clave: 'Fechas', valor: 'Por hitos' },
     ],
   },
   {
     numero: 3,
     titulo: 'Construimos e integramos',
-    resumen: 'Sobre WhatsApp, tu correo, tu web. 2 a 4 semanas, un solo responsable.',
+    resumen: 'Sobre los sistemas que ya usas, por hitos y con avances que puedes ver.',
     detalle:
-      'La mayoría de proyectos toma entre 2 y 4 semanas. Trabajamos sobre lo que ya tienes: WhatsApp, correo, tu Excel, tu web, tus redes. No te pedimos cambiar de plataforma ni comprar software nuevo si no hace falta. Te mostramos avances cada semana y encendemos cuando tú das el visto bueno.',
+      'Construimos alrededor de cómo ya trabaja tu equipo y lo conectamos con lo que usas hoy: tu ERP, tu CRM, tus bases de datos, tu web y tu WhatsApp. Cada hito se entrega, se revisa contigo y recién ahí seguimos.',
     panel: [
-      { clave: 'Plazo', valor: '2 a 4 semanas' },
+      { clave: 'Entrega', valor: 'Por hitos' },
       { clave: 'Responsable', valor: 'Uno solo' },
-      { clave: 'Sobre qué', valor: 'Lo que ya usas' },
+      { clave: 'Integración', valor: 'Con tus sistemas' },
       { clave: 'Avances', valor: 'Cada semana' },
     ],
   },
   {
     numero: 4,
-    titulo: 'Te enseñamos a usarlo',
-    resumen: 'Quedas con el control y con acceso a todo. No dependiente de nosotros.',
+    titulo: 'Capacitamos y seguimos contigo',
+    resumen: 'Tu equipo aprende a usarlo y el sistema queda a nombre de tu empresa.',
     detalle:
-      'Capacitamos a tu equipo durante la implementación y te dejamos documentado qué se construyó y cómo funciona. La idea no es que dependas de nosotros: es que entiendas la herramienta y puedas decidir sobre ella.',
+      'Capacitamos a tu equipo mientras implementamos y dejamos documentado qué se construyó y cómo funciona. Al terminar de pagar, el código es de tu empresa. Si quieres, seguimos con un plan de continuidad: soporte, monitoreo y mejoras.',
     panel: [
       { clave: 'Capacitación', valor: 'Incluida' },
-      { clave: 'Accesos', valor: 'Todos, tuyos' },
-      { clave: 'Documentación', valor: 'En tu idioma' },
-      { clave: 'Mantenimiento', valor: 'Opcional, mensual' },
+      { clave: 'Código', valor: 'De tu empresa' },
+      { clave: 'Documentación', valor: 'Completa' },
+      { clave: 'Continuidad', valor: 'Opcional, mensual' },
     ],
   },
 ] as const;
